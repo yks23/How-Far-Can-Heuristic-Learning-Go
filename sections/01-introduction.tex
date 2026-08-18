@@ -21,8 +21,11 @@
 %      Then the axis: description length of a good-enough policy against the
 %      agent's maintenance capacity. Go is the counterexample that kills rule
 %      complexity as the x-axis. The LLM boundary falls out of the same axis.
-%   7. Why this was never measured: human iteration cost is confounded with
-%      the paradigm in every prior result of this kind.
+%   7. Why *this* ceiling has not been measured. Careful: agent self-improvement
+%      decay HAS been measured (frontiereng2026, t^-1, plateau within tens of
+%      iterations). Do not write "never measured" -- concede that result and say
+%      what it lacks: single-agent tasks, no human field, no RL baseline. The
+%      confound we remove is a different one, human iteration cost.
 %   8. The venue.
 %   9. HL, plus the selection-effect concession.
 %  10. Contributions.
@@ -183,15 +186,19 @@ because no policy of a maintainable description length is any good at them. The
 ceiling is a property of the maintainer rather than of the paradigm, which is why
 it moves with model capability, and why it can be measured at all.
 
-\paragraph{Why the ceiling has never been measured.} Because until now the
-maintainer was human. Every result comparing a hand-written program against a
-learned policy measured the paradigm and the cost of human iteration together,
-with no way to separate them: a heuristic program that stopped improving might
-have exhausted the paradigm or exhausted its author's weekend, and the record
-cannot say which. That confound is what makes the question answerable now rather
-than earlier. Replacing the author with an agent holds the paradigm fixed and
-changes the cost of iteration --- and the cost of iteration is the term that was
-never varied.
+\paragraph{Why this ceiling has not been measured.} Agent self-improvement is
+already known to decay: on real engineering tasks, improvement frequency falls
+roughly as $t^{-1}$ and flattens within tens of iterations
+\citep{frontiereng2026}. What that does not establish is where the symbolic
+paradigm stands against a learned one, because those tasks are single-agent and
+carry neither a human field nor an RL baseline --- the two reference points the
+question requires. Comparisons that do have both have always had a human
+maintainer, and so measured the paradigm and the cost of human iteration
+together, with no way to separate them: a heuristic program that stopped
+improving might have exhausted the paradigm or exhausted its author's weekend,
+and the record cannot say which. Replacing the author with an agent holds the
+paradigm fixed and changes the cost of iteration --- the term that was never
+varied.
 
 \paragraph{Where to measure it.} Answering the question requires a domain where
 the symbolic paradigm was already driven as hard as human authors could drive
