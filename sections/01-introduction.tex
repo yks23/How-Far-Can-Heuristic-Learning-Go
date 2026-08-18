@@ -48,8 +48,15 @@
 %     draft rejected it with the Go example and then wrote "rule complexity and
 %     revision count are the same axis seen twice" three sentences later, which
 %     contradicts the paragraph's own thesis. The axis is K(pi_good), always.
-%     A game plateaus early because its *winning policy* is long, not because
+%     A game defeats the loop because its *winning policy* is long, not because
 %     its rulebook is.
+%     Related, and also drafted wrong once: do not write that a hard game
+%     "starts near the capacity". The program grows from a naive draft in every
+%     game; the capacity is fixed by the agent. What varies across games is where
+%     K(pi_good) sits relative to that ceiling -- below it, the program reaches
+%     winning strength before it becomes unmaintainable; above it, the program
+%     stops improving while still short of winning. Getting this backwards makes
+%     the paper's central inequality read as though the game moved the ceiling.
 %
 % LENGTH. Roughly 2,200 words plus 400 of contributions, which is long. It is
 % long because the argument is two-sided, carries external evidence, and answers
@@ -179,11 +186,13 @@ $K(\pi_{\mathrm{good}})$ after Kolmogorov complexity and estimate through a
 compression proxy, the quantity itself being uncomputable
 \citep{lividanyi2019kolmogorov,rissanen1978mdl}. The prediction is a single
 inequality: HL succeeds while $K(\pi_{\mathrm{good}})$ stays below the agent's
-maintenance capacity, and plateaus as it approaches it. That single quantity
-also explains what the revision count is measuring --- a game whose winning
-policy is long starts near the capacity and plateaus early, one whose policy is
-short has room to grow into it --- and the boundary of the paradigm follows
-without a separate argument. Tasks at the scale of language
+maintenance capacity, and plateaus as it approaches it. The program grows from a
+naive draft in every game, so what differs between games is where the target sits
+relative to the ceiling: where $K(\pi_{\mathrm{good}})$ lies below the capacity,
+the program reaches winning strength before it becomes unmaintainable, and where
+it lies above, the program stops improving while still short of it. That is what
+makes the plateau diagnostic rather than incidental, and the boundary of the
+paradigm follows without a separate argument. Tasks at the scale of language
 modelling lie outside it not because they are adversarial or unstructured, but
 because no policy of a maintainable description length is any good at them. The
 ceiling is a property of the maintainer rather than of the paradigm, which is why

@@ -33,6 +33,17 @@
 %    it is not is the single easiest way to lose the paper. If it fails, the
 %    finding is still worth reporting; the framing changes, not the data.
 %
+%    Report the two halves of the prediction together, because each is weak
+%    alone. The mechanism says the capacity belongs to the agent and K(pi_good) to
+%    the game, so description length at the plateau should CONVERGE across games
+%    while the Elo reached at that plateau should VARY with the game -- high where
+%    a winning policy is short enough to fit under the capacity, low where it is
+%    not. Convergent length with convergent Elo would undercut the story as much
+%    as divergent length does: it would suggest the games do not actually differ
+%    in K(pi_good), and the cross-game comparison carries no information. So plot
+%    length-at-plateau and Elo-at-plateau on the same set of games and say
+%    explicitly which of the four combinations the data show.
+%
 %    Two supporting cuts, both cheap given the log: does program size at the
 %    plateau move with model capability (the mechanism predicts it should, since
 %    the bound is the maintainer's), and do the failed revisions near the plateau
