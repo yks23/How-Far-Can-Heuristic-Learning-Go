@@ -1,0 +1,233 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{kexiearticle}[2026/08/15 CST SAST article style]
+
+\RequirePackage{iftex}
+\RequirePackage[a4paper,top=24mm,bottom=25mm,left=26mm,right=26mm,headheight=20pt,headsep=7mm]{geometry}
+\RequirePackage{microtype}
+\RequirePackage{xcolor}
+\RequirePackage{graphicx}
+\RequirePackage{booktabs}
+\RequirePackage{tabularx}
+\RequirePackage{array}
+\RequirePackage{amsmath}
+\ifPDFTeX
+  \RequirePackage[T1]{fontenc}
+  \RequirePackage{tgtermes}
+  \RequirePackage{newtxmath}
+\else
+  \RequirePackage{fontspec}
+  \RequirePackage{unicode-math}
+\fi
+\RequirePackage{enumitem}
+\RequirePackage{caption}
+\RequirePackage{subcaption}
+\RequirePackage{algorithm}
+\RequirePackage{algpseudocode}
+\RequirePackage[section]{placeins}
+\RequirePackage{natbib}
+\RequirePackage{fancyhdr}
+\RequirePackage{titlesec}
+\RequirePackage{tikz}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{lastpage}
+\RequirePackage{hyperref}
+\RequirePackage{cleveref}
+
+\ifPDFTeX\else
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+  \setmainfont{texgyretermes}[
+    Extension=.otf,
+    UprightFont=*-regular,
+    BoldFont=*-bold,
+    ItalicFont=*-italic,
+    BoldItalicFont=*-bolditalic
+  ]
+  \setsansfont{texgyreheros}[
+    Extension=.otf,
+    UprightFont=*-regular,
+    BoldFont=*-bold,
+    ItalicFont=*-italic,
+    BoldItalicFont=*-bolditalic
+  ]
+  \setmonofont{texgyrecursor}[
+    Extension=.otf,
+    UprightFont=*-regular,
+    BoldFont=*-bold,
+    ItalicFont=*-italic,
+    BoldItalicFont=*-bolditalic
+  ]
+  \setmathfont{STIXTwoMath-Regular.otf}
+\fi
+
+\definecolor{KXInk}{HTML}{252525}
+\definecolor{KXMuted}{HTML}{686868}
+\definecolor{KXAccent}{HTML}{5A5A5A}
+\definecolor{KXAccentDark}{HTML}{444444}
+\definecolor{KXSection}{HTML}{654168}
+\definecolor{KXSoft}{HTML}{F4F4F4}
+\definecolor{KXWarm}{HTML}{888888}
+\definecolor{KXLine}{HTML}{D7D7D7}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=KXInk,
+  citecolor=KXInk,
+  urlcolor=KXInk,
+  pdfauthor={},
+  pdftitle={}
+}
+
+\setlength{\parindent}{1em}
+\setlength{\parskip}{0pt}
+\setlength{\emergencystretch}{2em}
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\raggedbottom
+
+\setlist[itemize]{leftmargin=1.7em,itemsep=2pt,topsep=4pt,parsep=1pt}
+\setlist[enumerate]{leftmargin=1.9em,itemsep=2pt,topsep=4pt,parsep=1pt}
+\captionsetup{font=small,labelfont=bf,labelsep=period,skip=5pt}
+\renewcommand{\arraystretch}{1.12}
+\renewcommand{\figurename}{Figure}
+\renewcommand{\tablename}{Table}
+\renewcommand{\refname}{References}
+
+\titleformat{\section}
+  {\large\bfseries\color{KXSection}}
+  {\textcolor{KXSection}{\thesection}}
+  {0.65em}{}
+\titleformat{\subsection}
+  {\normalsize\bfseries\color{KXInk}}
+  {\thesubsection}{0.55em}{}
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\color{KXInk}}
+  {\thesubsubsection}{0.5em}{}
+\titlespacing*{\section}{0pt}{2.0ex plus 0.5ex minus 0.2ex}{1.0ex plus 0.2ex}
+\titlespacing*{\subsection}{0pt}{1.7ex plus 0.4ex minus 0.2ex}{0.7ex plus 0.2ex}
+\titlespacing*{\subsubsection}{0pt}{1.4ex plus 0.3ex minus 0.2ex}{0.5ex plus 0.2ex}
+
+\pagestyle{fancy}
+\makeatletter
+\linespread{1}
+\renewcommand\normalsize{\@setfontsize\normalsize{11pt}{13.2pt}}
+\renewcommand\small{\@setfontsize\small{10pt}{12pt}}
+\renewcommand\footnotesize{\@setfontsize\footnotesize{9pt}{11pt}}
+\renewcommand\large{\@setfontsize\large{13pt}{15pt}}
+\normalsize
+\fancyhf{}
+\fancyhead[L]{\footnotesize\color{KXMuted}\textsc{CST SAST Technical Article}}
+\fancyhead[R]{\footnotesize\color{KXMuted}\@shorttitle}
+\fancyfoot[C]{\footnotesize\color{KXMuted}\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{KXLine}\leaders\hrule height \headrulewidth\hfill}}
+
+\newcommand{\@shorttitle}{Article Title}
+\newcommand{\@affiliation}{}
+\newcommand{\@email}{}
+\newcommand{\kexietwodigits}[1]{\ifnum#1<10 0\fi\number#1}
+\newcommand{\@articledate}{\number\year-\kexietwodigits{\month}-\kexietwodigits{\day}}
+\newcommand{\@keywords}{}
+\newcommand{\shorttitle}[1]{\renewcommand{\@shorttitle}{#1}}
+\newcommand{\affiliation}[1]{\renewcommand{\@affiliation}{#1}}
+\newcommand{\email}[1]{\renewcommand{\@email}{#1}}
+\newcommand{\articledate}[1]{\renewcommand{\@articledate}{#1}}
+\newcommand{\keywords}[1]{\renewcommand{\@keywords}{#1}}
+
+% C3I-style author roles. Add a matching superscript to the author name, then
+% declare its meaning with \role, for example \role[*]{Equal Contribution.}.
+\newcounter{kexierole}
+\newcommand{\role}[2][]{%
+  \stepcounter{kexierole}%
+  \expandafter\gdef\csname kexieroletext\thekexierole\endcsname{#2}%
+  \if\relax\detokenize{#1}\relax
+    \expandafter\gdef\csname kexierolelabel\thekexierole\endcsname{}%
+  \else
+    \expandafter\gdef\csname kexierolelabel\thekexierole\endcsname{$^{#1}$}%
+  \fi
+}
+\newcommand{\@kexieroles}{%
+  \ifnum\value{kexierole}>0
+    \vspace{1pt}%
+    {\centering\fontsize{9}{11}\selectfont\bfseries
+      \@tempcnta=1
+      \loop
+        \csname kexierolelabel\the\@tempcnta\endcsname
+        \csname kexieroletext\the\@tempcnta\endcsname
+        \advance\@tempcnta by 1
+        \ifnum\@tempcnta>\value{kexierole}\else\hspace{1.5em}\fi
+      \ifnum\@tempcnta>\value{kexierole}\else\repeat
+      \par}%
+  \fi
+}
+
+\newcommand{\kexiemark}{%
+  \includegraphics[height=15mm]{assets/thu-logo.pdf}%
+  \headerlogosep
+  \includegraphics[height=15mm]{assets/cst-logo.pdf}%
+  \headerlogosep
+  \includegraphics[height=15mm]{assets/sast-icon.png}%
+}
+
+% The title header accepts any number of marks. The three official marks are
+% the default so the template works without additional image files.
+\newcommand{\headerlogos}{\kexiemark}
+\newcommand{\setheaderlogos}[1]{\gdef\headerlogos{#1}}
+\newcommand{\headerlogosep}{\hspace{4mm}}
+
+\newcommand{\makekexietitle}{%
+  \thispagestyle{empty}%
+  \par\noindent\hbox to \linewidth{%
+    \headerlogos\hfil
+    \begin{tabular}[c]{@{}r@{}}
+      {\fontsize{15}{17}\selectfont\color{KXInk}\@articledate}
+    \end{tabular}%
+  }\par
+  \vspace{2pt}
+  \noindent{\color{KXLine}\rule{\linewidth}{0.45pt}}\par
+  \vspace{6pt}
+  \begingroup
+    \centering
+    {\fontsize{19.5}{21.5}\selectfont\bfseries\color{KXInk}\@title\par}
+    \vspace{5pt}
+    {\fontsize{11.5}{13}\selectfont\bfseries\@author\par}
+    \vspace{1pt}
+    \ifx\@affiliation\@empty\else
+      {\fontsize{10.5}{12.3}\selectfont\color{KXMuted}\@affiliation\par}
+    \fi
+    \@kexieroles
+    \ifx\@email\@empty\else
+      {\fontsize{10.5}{12.3}\selectfont\href{mailto:\@email}{\@email}\par}
+    \fi
+    \vspace{5pt}
+  \endgroup
+}
+
+\renewenvironment{abstract}{%
+  \begin{tcolorbox}[
+    enhanced,
+    breakable,
+    colback=KXSoft,
+    colframe=KXLine,
+    boxrule=0.4pt,
+    arc=0pt,
+    left=2.5mm,right=2.5mm,top=1.5mm,bottom=1.5mm,
+    before skip=0pt,after skip=6pt,
+    borderline west={1.2pt}{0pt}{KXAccent}
+  ]
+  \small\textbf{Abstract.}\enspace
+}{%
+  \ifx\@keywords\@empty\else
+    \par\smallskip
+    {\footnotesize\bfseries Keywords:}\enspace
+    {\footnotesize\@keywords}
+  \fi
+  \end{tcolorbox}
+}
+
+\crefname{figure}{Fig.}{Figs.}
+\crefname{table}{Table}{Tables}
+\crefname{section}{Sec.}{Secs.}
+\crefname{equation}{Eq.}{Eqs.}
+\makeatother
