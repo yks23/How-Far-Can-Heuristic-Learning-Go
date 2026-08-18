@@ -58,12 +58,22 @@ Characterizing Performance Ceilings, Complexity, and Sample Efficiency in Large-
 % here or record why it is argument-only -- the two drifting apart without anyone
 % noticing is how the abstract stops being a summary of the paper.
 %
-% Currently 261 words. 250 was a self-imposed target, not a venue limit -- most
+% Currently 288 words. 250 was a self-imposed target, not a venue limit -- most
 % take 300. Trim only if the venue says so, and not by cutting the last
 % sentence: it carries the negative claim (NOT rule complexity) that appears
 % nowhere else here and is the paper's sharpest point. Cut the venue clause
 % instead -- "built to be played rather than evaluated" is expanded in Section 1
 % and the archive's scale survives without it.
+%
+% Do not cut the eloplatspread clause to save words either, though it looks like
+% a redundant second number. maintcapspread ALONE does not support the
+% conclusion drawn from it: convergent description length across games is also
+% exactly what one would see if the games never differed in complexity, in which
+% case the cross-game argument carries no information. It is the pair -- length
+% converging while plateau Elo spreads -- that separates a limit of the agent
+% from a limit of the game. Section 5 requires both be reported together and
+% names all four combinations; the contributions list asserted the one-number
+% version until 2026-08-18, and the abstract inherited it.
 %
 % "model-based RL" in the results sentence is deliberate and should not be
 % shortened back to "RL". A reader who knows the field asks "against which RL?"
@@ -110,8 +120,10 @@ that baseline overtakes beyond \val{crossover} environment steps, and improvemen
 halts near
 \val{plateau} revisions as the program's description length approaches
 \val{ceilingcause}: \val{maintcap}, within \val{maintcapspread} across games of
-differing complexity. What bounds the paradigm is the description length of a
-winning program, not the complexity of the rules.}
+differing complexity, while the Elo reached there spreads by
+\val{eloplatspread} --- equal maintainable size at unequal strength, which makes
+the ceiling the agent's and not the game's. What bounds the paradigm is the
+description length of a winning program, not the complexity of the rules.}
 
 \date{August 18, 2026}
 

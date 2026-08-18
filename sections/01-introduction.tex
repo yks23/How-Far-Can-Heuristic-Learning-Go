@@ -26,6 +26,13 @@
 %      program's. Deleting the concession to strengthen the lower bound would
 %      collapse them into one claim and hand a referee the objection ("then why
 %      the program at all?") with no answer in the text.
+%      Keep the system NAMES in both places -- "ECHO" here and "DiPRL" in the
+%      editability paragraph. Chengpeng Hu (diprl2026) and Michael Y. Hu
+%      (echo2025hindsight) are different people, and natbib renders both as
+%      "Hu et al." with only the year to tell them apart, so the two read as one
+%      group's pair. Naming the systems is what disambiguates them for a reader;
+%      do not revert either to "a recent system". Found by reading the rendered
+%      intro end to end -- no mechanical check catches it.
 %   6. Upper bound, in three paragraphs: the mechanism (accumulation defeats
 %      placement); the external evidence for it (SlopCodeBench, plus the two
 %      results isolating context accumulation and self-conditioning); and the
@@ -118,10 +125,11 @@ specific failure traces to a specific parameter. The relevant axis is
 can understand the policy, and a reader may reasonably not care. Editability
 asks whether the optimization loop can act on the artifact at all, which for an
 agent-driven loop is a precondition rather than a virtue. The two come apart in
-practice: a recent system plays by emitting natural-language reasoning for each
+practice: Think-in-Games plays by emitting natural-language reasoning for each
 decision, and is interpretable in any ordinary sense, while the artifact its
 learning loop updates remains the weights \citep{tig2025think}. Programmatic RL
-already describes its policies as human-readable and editable \citep{diprl2026};
+already describes its policies as human-readable and editable
+\citep[DiPRL;][]{diprl2026};
 what changes here is the role the property plays --- not a feature of the
 delivered artifact, but the reason an optimizer exists for it.
 
@@ -155,8 +163,8 @@ on-policy-versus-off-policy, so model-based RL is our primary baseline and polic
 gradient the on-policy reference point.
 
 The information advantage is narrower than it looks, and the narrower version is
-the one worth defending. An agent that rewrites its own failed episodes into usable
-experience becomes more sample-efficient while holding no program at all
+the one worth defending. ECHO rewrites its own failed episodes into usable
+experience and becomes more sample-efficient holding no program at all
 \citep{echo2025hindsight}: what buys the extra information per sample is the
 reader, not the symbolic form. The program earns its place on the other side of
 the question, as what makes the policy an object the loop can edit --- and
@@ -356,10 +364,13 @@ and dollars --- including the axes on which HL is the more expensive method.
   \val{loseaxis}, so neither paradigm dominates: which one wins is set by the
   budget and by the game's structure. Improvement frequency decays as
   \val{decay} and plateaus near \val{plateau} revisions, and we trace that
-  ceiling to maintenance capacity --- program description length at the plateau
-  converges to \val{maintcap} within \val{maintcapspread} across games of
-  differing complexity, which separates a limit of the agent from a limit of the
-  game. The loop transfers to \val{ntransfer} further benchmarks without
-  retuning.
+  ceiling to maintenance capacity. That diagnosis rests on a pair of quantities
+  rather than one: description length at the plateau converges to \val{maintcap}
+  within \val{maintcapspread} across games of differing complexity, while the Elo
+  reached at that plateau varies by \val{eloplatspread} over those same games.
+  The same maintainable size at different strengths is what separates a limit of
+  the agent from a limit of the game; convergent length on its own would not,
+  being equally consistent with games that never differed in complexity. The loop
+  transfers to \val{ntransfer} further benchmarks without retuning.
 \end{itemize}
 
