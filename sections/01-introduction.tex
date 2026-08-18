@@ -213,8 +213,9 @@ paradigm fixed and changes the cost of iteration --- the term that was never
 varied.
 
 \paragraph{Where to measure it.} Answering the question requires a domain where
-the symbolic paradigm was already driven as hard as human authors could drive
-it, with the results recorded. We use the complete archive of a collegiate game
+many independent authors pushed the symbolic paradigm as far as a real budget
+allowed, with the results recorded and the budget the same for every method they
+might have chosen. We use the complete archive of a collegiate game
 AI contest running since \val{founded}: games invented for the contest,
 \val{nsub} submissions, and \val{nmatch} adjudicated matches, written by
 contestants under deadline with standings at stake. Contests of this kind carry
@@ -277,10 +278,13 @@ general-purpose model already existing, which is the condition under which the
 question is being asked in practice.
 
 The second is that the archive's RL scarcity is confounded with the cost
-structure of its participants:
-undergraduates on a deadline have limited compute, limited time, and limited RL
-expertise, so RL's absence is evidence about what wins under contest constraints,
-not about what RL reaches given a research budget. We do not claim otherwise.
+structure of its participants: undergraduates on a deadline have limited compute,
+limited time, and limited RL expertise, so RL's absence is evidence about what
+wins under contest constraints, not about what RL reaches given a research budget.
+We do not claim otherwise. What the archive does hold fixed is that the same
+constraint applied to whichever method a contestant chose, so it records both
+paradigms priced at one budget --- which is the comparison this paper is about,
+and the reason the budget is stated in every result rather than assumed away.
 Every comparison here is budget-conditional, and Section~\ref{sec:experiments}
 reports the full ledger --- environment steps, agent calls, tokens, wall-clock,
 and dollars --- including the axes on which HL is the more expensive method.
