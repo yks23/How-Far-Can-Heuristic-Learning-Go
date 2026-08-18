@@ -283,14 +283,21 @@ loops that stall generally do so with weak or self-supplied evaluators.
 
 That HL is not merely a matter of a stronger model is worth establishing early,
 because the closest existing head-to-head between LLM-written agents and human
-contestants in a competitive game found the humans winning: across more than
-38{,}000 matches, human-written agents took the top five places, most LLM-written
-agents lost to trivial baselines, and asking a frontier model to improve the
-winning student's program made it substantially worse
-\citep{vibecoding2025tournament}. That work generates code once, with prompting
-strategies in place of a loop. We read its result as the motivation for ours: if
-single-shot generation loses to undergraduates, then whatever closes the gap is
-the loop, not the model --- and the loop is what this paper measures.
+contestants in a competitive game found the humans winning: across 38{,}304
+matches, human-written agents took the top five places, 33 of 40 LLM-written
+agents lost to very simple baselines, and a frontier model given the winning
+student's program and asked to improve it dropped it to tenth
+\citep{vibecoding2025tournament}. Their agents were not one-shot, and the
+comparison is not weakened by saying so: sixteen of the forty received a revision
+round, and every one of the forty was debugged over five to fifteen cycles of
+error feedback --- more remediation than the students got, whose crashes simply
+scored as losses. What that loop optimized, though, was compilability. The one
+round aimed at strength scored a candidate against itself, on a signal its own
+authors call weak next to iterative refinement elsewhere, and no agent was ever
+revised against the tournament it would be judged in. So the gap their result
+identifies is not model capability and not a missing edit; it is the absence of
+many revisions carrying an adversarial signal, which is the loop this paper
+measures.
 
 Two objections deserve stating before the results rather than after. The first
 is that a sample-efficiency comparison between an agent and RL from scratch is
@@ -309,7 +316,7 @@ general-purpose model already existing, which is the condition under which the
 question is being asked in practice.
 
 The second is that the archive's RL scarcity is confounded with the cost
-structure of its participants: undergraduates on a deadline have limited compute,
+structure of its participants: students on a deadline have limited compute,
 limited time, and limited RL expertise, so RL's absence is evidence about what
 wins under contest constraints, not about what RL reaches given a research budget.
 We do not claim otherwise. What the archive does hold fixed is that the same

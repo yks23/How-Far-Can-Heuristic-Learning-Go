@@ -32,6 +32,30 @@
   note   = {38{,}304 matches, 40 LLM-coded agents vs.\ 17 human-coded agents}
 }
 
+% Verified against the HTML full text 2026-08-18, because the introduction had
+% described this paper wrongly in a way that flattered our argument. Facts, so
+% nobody has to re-derive them:
+%   - humans were GRADUATE students ("human(graduate students)-coded agents"),
+%     not undergraduates. The archive's contestants are a different population;
+%     do not let the two swap wording.
+%   - 38,304 matches (3192 x 12 double all-play-all), 112 per agent. The
+%     abstract rounds this to ~40k; the exact figure is in the body.
+%   - humans took the top 5 spots; 33 of 40 LLM agents lost to very simple
+%     baselines; GPT-5 Pro given the winning student program placed 10th.
+%   - NOT single-shot, which the intro asserted for several drafts. 5 prompting
+%     strategies x 4 models x 2 runs: A1/A2/GEN are one generation pass, but IR
+%     (self-play scores fed back) and CR (GPT-5 critique) each add a revision
+%     round -- 16 of 40 agents. On top of that ALL 40 went through an unbounded
+%     human-in-the-loop debug cycle, "e.g., 5-15" prompt-with-error rounds, and
+%     the authors note they had to generate extra agents to get 40 bug-free
+%     ones. Student code got no such treatment; crashes scored as losses.
+% What survives, and what the intro now says instead: the revision they do is
+% one round on a SELF-PLAY signal the authors themselves call "weak, compared to
+% iterative refinement in other coding benchmarks", the debug loop optimizes
+% compilability rather than strength, and no agent was revised against the
+% tournament. Our claim is about many revisions carrying an adversarial signal.
+% Do not restore "generates code once" -- it is false and it is not needed.
+
 % ---------------------------------------------------------------------------
 % Load-bearing for the upper bound. Agents repeatedly extend their own prior
 % code under an evolving spec: structural erosion rises in 80% of trajectories,
