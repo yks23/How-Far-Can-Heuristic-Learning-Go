@@ -5,10 +5,19 @@
 % literature review -- that is 07-related-work.
 %
 %   - the contest: founded \val{founded}, \val{editions} editions, \val{nsub}
-%     submissions, \val{nmatch} matches. Why a public benchmark cannot
-%     reproduce it: original rules (so absent from pretraining data) and human
-%     code spanning a natural skill gradient rather than one reference solution.
+%     submissions, \val{nmatch} matches. Why a public benchmark cannot reproduce
+%     it: games original to the venue, and human code spanning a natural skill
+%     gradient rather than one reference solution. Do NOT write that original
+%     rules are "absent from pretraining data" -- it does not follow (the archive
+%     is public) and Section 4 tests it instead. Say the games are the venue's own
+%     and point at that test.
 %   - the \val{ngames} games, plus the classic games kept as structural controls.
+%     Say what they control for, or the word "control" is decoration: they are
+%     games whose strategic structure is independently documented and whose
+%     K(pi_good) can be argued about without our proxy, so they calibrate the
+%     proxy and give the cross-game complexity ordering an external reference
+%     point. Without them, every complexity claim rests on a measurement made by
+%     the same pipeline it is meant to validate.
 %   - definitions: heuristic learning; the folk hierarchy; budget, split into
 %     learning-only / evaluation / total and kept separate everywhere; the Elo
 %     protocol (batch vs online); the three opponent pools (training, frozen
