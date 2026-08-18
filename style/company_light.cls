@@ -34,10 +34,35 @@
 \setlength{\brandlogowidth}{1.2cm}
 \newcommand{\brandlogofile}{assets/sast-icon-transparent.png}
 
+% Title block metrics. Every gap in the header is an explicit parameter rather
+% than inherited \parskip, so the vertical rhythm can be retuned here without
+% reading \mymaketitle. Sizes are font-size commands, not lengths.
+%
+%   \brandtitlesize   title face. \huge (20.7pt on a 10pt body) read as a 2:1
+%                     jump over everything else; \LARGE keeps it dominant
+%                     without swamping the author and abstract.
+%   \brandauthorsize  author/affiliation face, one step over the body text so
+%                     the hierarchy title > author > abstract is legible.
+\newcommand{\brandtitlesize}{\LARGE}
+\newcommand{\brandauthorsize}{\large}
+
 % Baseline-to-baseline distance for the title. Absolute rather than a stretch
-% factor: see the note in \mymaketitle. Raise it to open the title up further.
+% factor: see the note in \mymaketitle. Roughly 1.19x the glyph size, which is
+% looser than TeX's default for a display face and keeps a 4-line title open.
 \newlength{\brandtitleleading}
-\setlength{\brandtitleleading}{22.6pt}
+\setlength{\brandtitleleading}{20.5pt}
+
+% Gaps between the header's blocks, top to bottom. They widen going down so
+% each block groups with what it belongs to: the author sits nearer the title
+% than the abstract does, and the metadata row is clearly separate.
+\newlength{\brandtitlegap}      % title    -> author
+\newlength{\brandsublinegap}    % author   -> affiliation / contribution
+\newlength{\brandauthorgap}     % author   -> abstract
+\newlength{\brandabstractgap}   % abstract -> metadata row
+\setlength{\brandtitlegap}{0.4cm}
+\setlength{\brandsublinegap}{0.15cm}
+\setlength{\brandauthorgap}{0.5cm}
+\setlength{\brandabstractgap}{0.6cm}
 
 % Tables %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -129,7 +154,7 @@
 }
 
 \newcommand\authorlist{}
-\newcommand\authorformat[2][]{{\sffamily \bfseries #2$^{#1}$}}
+\newcommand\authorformat[2][]{{\brandauthorsize\sffamily \bfseries #2$^{#1}$}}
 \renewcommand\author[2][]{\addtolist[#1]{#2}{\authorlist}{\authorformat}{, }}
 
 \newcommand\affiliationlist{}
@@ -150,7 +175,7 @@
 \renewcommand\date[1]{\metadata[Date]{#1}}
 \newcommand\correspondence[1]{\metadata[Correspondence]{#1}}
 
-\renewcommand{\title}[1]{\newcommand{\titlelist}{{\huge\sffamily\bfseries #1}}}
+\renewcommand{\title}[1]{\newcommand{\titlelist}{{\brandtitlesize\sffamily\bfseries #1}}}
 
 \newcommand{\beginappendix}{\appendix{\huge\sffamily Appendix\par}}
 
@@ -172,36 +197,43 @@
   %
   \begin{tcolorbox}
     \setlength{\parindent}{0cm}
-    \setlength{\parskip}{0.5cm}
+    % Outer \parskip stays at zero: every gap below is an explicit \vskip from
+    % the parameters at the top of this file. The upstream design mixed a 0.5cm
+    % \parskip with 0.2cm \vskips, so the author ended up 0.2cm under the title
+    % but 0.7cm above the abstract and read as part of the title block.
+    \setlength{\parskip}{0cm}
     {
-      \setlength{\parskip}{0cm}
       \raggedright
       \nohyphens
       %
       % Title leading is set explicitly rather than via \setstretch. Two reasons:
-      % \titlelist carries its own group, so \huge is restored before the \par
+      % \titlelist carries its own group, so the size is restored before the \par
       % that breaks the title into lines and a stretch would scale the *body*
-      % font's baselineskip; and at ~20.5pt the 19.9pt-tall glyphs pushed TeX
-      % onto its \lineskip fallback, which capped any stretch increase. Setting
+      % font's baselineskip; and when the leading is close to the glyph height
+      % TeX falls back on \lineskip, which caps any stretch increase. Setting
       % \baselineskip just before \par is what the line breaker actually reads.
       {
         \titlelist
         \baselineskip=\brandtitleleading
         \par
       }
-      \vskip 0.2cm
+      \vskip \brandtitlegap
       %
       \authorlist\par
-      \vskip 0.2cm
       %
-      \affiliationlist\par
-      %
-      \contributionlist\par
+      % Guarded: an unguarded \par on an empty list still contributes a line's
+      % worth of space, which showed up as an unexplained gap under the author.
+      \ifdefempty{\affiliationlist}{}{\vskip \brandsublinegap \affiliationlist\par}
+      \ifdefempty{\contributionlist}{}{\vskip \brandsublinegap \contributionlist\par}
     }
     %
-    \abstractlist\par
+    \vskip \brandauthorgap
     %
-    \vskip 0.5cm
+    % \parskip is restored inside the abstract only, so a multi-paragraph
+    % abstract still separates its paragraphs.
+    {\setlength{\parskip}{0.5\baselineskip}\abstractlist\par}
+    %
+    \vskip \brandabstractgap
     %
     % Bottom row: metadata on the left, logo on the right. Both are real boxes
     % rather than a tcolorbox overlay, so the logo occupies layout space and the
