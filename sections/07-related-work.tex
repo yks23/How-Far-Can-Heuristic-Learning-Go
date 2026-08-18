@@ -87,6 +87,33 @@
 % Note the name clash: AgentBench (arXiv 2308.03688) is a different paper, also
 % from Tsinghua, and is the style reference in _reference_paper/. The project
 % name is still undecided.
+%
+% FIGURES MOVED HERE FROM SECTION 1 on 2026-08-18, when the introduction was cut
+% from 4.5 pages to 2.5. The intro now states these results qualitatively and
+% this section owes the numbers. All are verified against full text; the
+% refs.bib annotations remain authoritative.
+%   - slopcodebench2026 (v2: 36 problems, 196 checkpoints, 15 agents): erosion
+%     rises in 77% of trajectories, verbosity in 75.5%; cost per checkpoint 2.2x
+%     first-to-last "without corresponding improvements to correctness"; agent
+%     code 2.3x more verbose and 2.0x more eroded than 473 open-source Python
+%     repos; per-revision accumulation 6.6x (verbosity) and 5.0x (erosion)
+%     faster. The human panel: 68% of repos end more verbose (median +36%),
+%     erosion rises in 53%, slopes 0.0022/0.0053 vs the agents' 0.0144/0.0264 --
+%     a RATE gap, never an exemption. Quality-aware prompting: verbosity -27.5
+%     to -35.6%, erosion -34.3 to -57.6% at the intercept, growth rate unchanged,
+%     price -2.3 pp strict correctness and +12.1% cost. There is NO significance
+%     test on that experiment; never write "statistically unchanged".
+%   - longcontextbugfix2026: successful agentic trajectories stay under 20-30k
+%     tokens. The 64k single-shot result (7% and 0%) is a DIFFERENT model set and
+%     not the agentic harness -- report it as their framing does, decomposition
+%     vs retrieval, not "padding the context makes it worse".
+%   - longhorizonexecution2026: single-turn execution horizons, GPT-5 2176 steps,
+%     Claude-4 Sonnet 432, Grok 4 384, Gemini 2.5 Pro 120. Scaling model size
+%     INCREASES self-conditioning; thinking removes it entirely (their Result 5).
+%     Their thesis argues against diminishing returns -- we cite the mechanism,
+%     not the thesis.
+%   - frontiereng2026: t^-1 frequency and k^-1 magnitude, both R^2 > 0.83,
+%     marginal returns near zero after ~50-100 iterations, tail to 500, 47 tasks.
 % ---------------------------------------------------------------------------
 
 \section{Related Work}

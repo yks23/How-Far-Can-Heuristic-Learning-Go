@@ -132,273 +132,198 @@
 
 \section{Introduction}
 
-Reinforcement learning (RL) established itself on adversarial games. Chess,
-Go, shogi, StarCraft, and Dota were where learned policies first beat the
-strongest humans alive, and where the field's characteristic result took shape:
-a policy trained by self-play, given enough interaction, exceeds anything a
-person wrote by hand \citep{alphazero2018,alphastar2019,openaifive2019}. Games
-are also where the symbolic alternative --- rules, an evaluation function, a
-search procedure --- was judged to have the lower ceiling. That judgment was
-formed on RL's home turf, and this paper stays there rather than retreating to
-a setting chosen to favour programs.
+Reinforcement learning (RL) established itself on adversarial games. Chess, Go,
+shogi, StarCraft, and Dota were where learned policies first beat the strongest
+humans alive, and where the field's characteristic result took shape: a policy
+trained by self-play, given enough interaction, exceeds anything a person wrote by
+hand \citep{alphazero2018,alphastar2019,openaifive2019}. Games are also where the
+symbolic alternative --- rules, an evaluation function, a search procedure --- was
+judged to have the lower ceiling, and this paper stays on that turf rather than
+retreating to a setting chosen to favour programs.
 
-The objection to symbolic methods is that a program exhibits only the behaviour
-somebody wrote down. Every new case is another case a person has to notice,
-encode, and reconcile with the rules already present, and the cost of that
-reconciliation grows with the program. This is correct, and we do not dispute
-it. But read it closely: it is a claim about the author, not about the artifact.
-Nothing in the symbolic paradigm caps what a program can express --- the cap is
-on how much of it a human will maintain before the reconciliation cost exceeds
-what they can pay. Asymptotically the learned policy still wins; we are not
-arguing otherwise. The question is what happens under a budget, where the
-authoring cost is the binding term.
+The objection is that a program exhibits only the behaviour somebody wrote down:
+every new case has to be noticed, encoded, and reconciled with the rules already
+present, at a cost that grows with the program. This is correct and we do not
+dispute it. But it is a claim about the author, not the artifact. Nothing in the
+symbolic paradigm caps what a program can express --- the cap is on how much of it
+a human will maintain before the reconciliation cost exceeds what they can pay.
+Asymptotically the learned policy still wins. The question is what happens under a
+budget, where the authoring cost is the binding term.
 
 \paragraph{What coding agents changed.} They change who the author is, and the
 property that matters once the author is a machine is not the one usually
-argued. A symbolic program can be read in full and changed in part: a revision
-is a diff, a change can be made locally, and each edit is attributable to the
-behaviour it was meant to
-fix; an agent accepts exactly the heterogeneous inputs that maintenance requires
---- the rules of the game, the program's own source, replays of matches it lost.
-A learned policy admits no comparable loop: its behaviour lives in weights that
-cannot be read, cannot be edited locally, and offer no handle by which a
-specific failure traces to a specific parameter. The relevant axis is
-\emph{editability}, not interpretability. Interpretability asks whether a human
-can understand the policy, and a reader may reasonably not care. Editability
-asks whether the optimization loop can act on the artifact at all, which for an
-agent-driven loop is a precondition rather than a virtue. The two come apart in
-practice, and they come apart inside an adversarial game: Think-in-Games plays a
-competitive MOBA by emitting natural-language reasoning for each decision, and is
-interpretable in any ordinary sense, while the artifact its learning loop updates
-remains the weights \citep{tig2025think}. Programmatic RL
-already describes its policies as human-readable and editable
-\citep[DiPRL;][]{diprl2026};
-what changes here is the role the property plays --- not a feature of the
-delivered artifact, but the reason an optimizer exists for it.
+argued. The axis is \emph{editability}, not interpretability: interpretability
+asks whether a human understands the policy, which a reader may reasonably not
+care about, while editability asks whether the optimization loop can act on the
+artifact at all. A symbolic program can be read in full and changed in part, and
+takes the heterogeneous inputs maintenance requires --- rules, its own source,
+replays of losses. A learned policy admits no comparable loop: its behaviour lives
+in weights that cannot be edited locally and offer no handle by which a specific
+failure traces to a specific parameter. The two properties do come apart --- a
+system can reason in natural language about every decision it makes and still hold
+its policy in weights \citep{tig2025think} --- and programmatic RL already calls
+its policies human-readable and editable \citep[DiPRL;][]{diprl2026}. What changes
+here is the role the property plays: not a feature of the delivered artifact, but
+the reason an optimizer exists for it.
 
 So the question reopens, and this time it is measurable: \emph{how far does the
 symbolic paradigm go once a machine pays the maintenance cost?} The answer is
-two-sided, and both sides are needed. There is a regime where an
-agent-maintained program wins, for a reason having nothing to do with
-expressiveness, and a point where it stops, for a reason having everything to do
-with the program and nothing to do with the paradigm.
+two-sided --- an agent-maintained program wins for a reason having nothing to do
+with expressiveness, and stops for a reason having everything to do with the program
+and nothing to do with the paradigm.
 
-\paragraph{Why an agent-maintained program wins under a budget.} The binding constraint
-under a budget is information per sample. A scalar reward reports that an
-episode went badly. The rules of the game plus a replay of the loss report what
-happened, when the position turned, and which decision was responsible --- and
-that difference compounds, because it determines how much of the sample survives
-to the next revision. Policy-gradient methods are on-policy: a batch is used for
-one update and discarded \citep{offpolicyvaluellm2026}. Off-policy methods reuse
-it \citep{samplereuse2022}. A maintained program sits at the far end of the same
-spectrum: it is off-policy and \emph{cross-policy-class}, able to learn from
-replays of any opponent and from human source code that no gradient method can
-consume, and it reads the rules directly --- a prior obtained without spending
-samples at all. The effect has been reported directly: an LLM revising a Python
-policy from execution traces is competitive with deep-RL baselines on
-single-agent tasks at far fewer environment interactions
-\citep{kuang2025generative}. That result is directional --- one family of tasks,
-no shared budget accounting, no adversary --- which is part of what this paper is
-for.
+\paragraph{Why an agent-maintained program wins under a budget.} The binding
+constraint under a budget is information per sample. A scalar reward reports that
+an episode went badly; the rules plus a replay of the loss report what happened,
+when the position turned, and which decision was responsible --- and the
+difference compounds, because it determines how much of the sample survives to the
+next revision. Policy-gradient methods are on-policy, using a batch for one update
+and discarding it \citep{offpolicyvaluellm2026}; off-policy methods reuse it
+\citep{samplereuse2022}. A maintained program sits at the far end of that
+spectrum: off-policy and \emph{cross-policy-class}, able to learn from replays of
+any opponent and from human source code no gradient method can consume, and it
+reads the rules directly --- a prior obtained without spending samples at all. An
+LLM revising a Python policy from execution traces is already competitive with
+deep-RL baselines on single-agent tasks at far fewer environment interactions
+\citep{kuang2025generative}, though only directionally: one family of tasks, no
+shared budget accounting, no adversary. The spectrum also settles how the
+comparison must be run, since measuring against policy gradient alone confounds
+symbolic-versus-neural with on-policy-versus-off-policy --- so model-based RL is
+our primary baseline and policy gradient the on-policy reference point.
 
-That spectrum also settles how the comparison must be run. Measuring against
-policy gradient alone confounds symbolic-versus-neural with
-on-policy-versus-off-policy, so model-based RL is our primary baseline and policy
-gradient the on-policy reference point.
-
-The information advantage is narrower than it looks, and the narrower version is
-the one worth defending. ECHO rewrites its own failed episodes into usable
-experience and becomes more sample-efficient holding no program at all
-\citep{echo2025hindsight}: what buys the extra information per sample is the
-reader, not the symbolic form. The program earns its place on the other side of
-the question, as what makes the policy an object the loop can edit --- and
-therefore as what sets where the loop stops. The two bounds are consequently
-measured against different things: the lower against RL's sample budget, the
-upper against the agent's own capacity.
+The advantage is narrower than it looks, and the narrow version is the one worth
+defending. ECHO rewrites its own failed episodes into usable experience and becomes
+more sample-efficient holding no program at all \citep{echo2025hindsight}: what
+buys the information per sample is the reader, not the symbolic form. The program
+earns its place on the other side of the question, as what makes the policy an
+object the loop can edit --- and therefore as what sets where the loop stops. The
+two bounds are measured against different things: the lower against RL's sample
+budget, the upper against the agent's own capacity.
 
 \paragraph{Why it stops.} What the loop accumulates is what eventually stops it.
 Revisions leave the program larger and more interconnected, and each further
-revision has to place an edit without disturbing what already works. Past some
-size that placement fails more often than it succeeds, and improvement halts ---
-not because the paradigm ran out of expressiveness, but because the artifact
-outgrew what its maintainer can hold, attribute, and change.
+revision has to place an edit without disturbing what already works; past some size
+that placement fails more often than it succeeds --- not because the paradigm ran
+out of expressiveness, but because the artifact outgrew what its maintainer can
+hold, attribute, and change. This is measurable outside our setting. Coding agents
+extending their own prior
+code accumulate structural damage as they go, at rising cost and no matching gain
+in correctness; human maintainers are not exempt but accumulate it several times
+more slowly per revision, so what separates a maintainer that keeps working from
+one that stalls is a rate rather than an exemption
+\citep{slopcodebench2026}. Quality-aware prompting lowers the starting level
+without slowing the growth, and costs correctness to do it --- the signature of a
+capacity limit rather than a prompting defect. Two mechanisms underneath are not
+about code quality at all: agentic repair succeeds only while the context each step
+accumulates stays small, which locates the advantage in decomposition rather than
+retrieval \citep{longcontextbugfix2026}; and given the plan up front, per-step
+accuracy still falls as steps accumulate, models erring more once their own earlier
+errors are in context \citep{longhorizonexecution2026}. Reasoning mitigates that
+second failure, which helps us rather than hurts --- a plateau reached by a
+reasoning agent cannot be attributed to self-conditioning --- and what survives is
+the finite single-turn execution horizon each frontier model has, an order of
+magnitude apart between them. That is capacity as a property of the agent rather
+than of the task, and a program under revision is the case that cannot be
+decomposed away: the artifact is the accumulated context, and every revision has to
+hold it whole.
 
-This is measurable outside our setting, and three recent results measure it.
-Coding agents that extend their own prior code under a growing specification
-accumulate structural damage as they go: complexity concentrates in 77\% of
-trajectories, and cost per checkpoint climbs 2.2 times from first to last with no
-matching gain in correctness \citep{slopcodebench2026}. Human maintainers are not
-exempt, which is the more useful half of the result --- 68\% of the repositories
-they are calibrated against also end more verbose than they began, but they
-accumulate verbosity and concentrated complexity some 6.6 and 5.0 times more
-slowly per revision. What separates a maintainer that keeps working from one that
-stalls is the rate at which it builds structure it can no longer place an edit
-into, not whether it builds any. The decay also resists prompting. Quality-aware
-prompts cut initial verbosity by about a third and erosion by more, without
-slowing the rate at which either grows, and they are not free: strict correctness
-falls 2.3 points and cost per checkpoint rises 12.1\%. An intervention that buys a
-better starting point, pays capability for it, and still does not bend the curve
-is the signature of a capacity limit rather than a prompting defect.
-
-Two further results isolate mechanisms behind that limit, and neither is about
-code quality. Agentic repair succeeds only while the context each step accumulates
-stays small --- successful trajectories on SWE-bench Verified typically stay under
-20--30k tokens, and longer accumulated contexts resolve less often --- which
-locates the harness's advantage in decomposition into short-context steps rather
-than in long-context reasoning. Handed tasks from that same benchmark whole at
-64k tokens with every required file guaranteed present, one model resolves 7\% of
-them and another none, so what defeats them is not retrieval
-\citep{longcontextbugfix2026}. And given the plan and
-knowledge up front, so that reasoning is not the variable under test, per-step
-accuracy still falls as steps accumulate, with models more likely to err once
-their own earlier errors are in the context --- an effect that grows with
-parameter count rather than washing out
-\citep{longhorizonexecution2026}. Reasoning before acting does mitigate that
-particular failure, which is a caveat worth stating and also a help: a plateau
-reached by a reasoning agent cannot be attributed to self-conditioning alone.
-The bound itself survives. Benchmarked on how long a task they can execute in a
-single turn, frontier reasoning models separate by more than an order of
-magnitude and each of them stops somewhere --- which is what it means for
-capacity to belong to the agent rather than to the task. A program under revision
-is the case that cannot be decomposed away: the artifact is the accumulated
-context, and every revision has to hold it whole.
-
-The degradation benchmark cuts both ways, and the distinction is what makes our
-loop tractable rather than doomed. What drives its decay is the
-specification growing --- that is the benchmark's design, requiring architectural
-decisions under requirements that keep arriving, so that the agent's own output
-must accumulate across steps and nothing may be discarded. A game's rules do not
-change. The agent is improving a policy against a fixed specification, so a
+The evidence cuts both ways, though. Their decay is driven by a specification that
+keeps growing, so nothing may be discarded; a game's rules do not change, so a
 better heuristic may \emph{replace} a worse one instead of being layered on top of
-it, and the program is free to get shorter. Accumulation is therefore a tendency here rather than an obligation ---
-which is why the ceiling is a question worth measuring instead of a foregone
-conclusion, and why we log program size at every revision rather than only Elo.
+it and the program is free to get shorter. Accumulation is a tendency here rather
+than an obligation --- which is why the ceiling is worth measuring instead of
+assuming, and why we log program size at every revision rather than only Elo.
 
-The axis on which the maintenance limit falls is a description length, and it is
-not the length of the rules. Go's rules fit on a page, yet no compact symbolic policy
-plays it well --- the programs that do play it well carry their strength in
-weights. A contest game may run to pages of special cases and still admit a
-strong policy in a few hundred lines. What governs the outcome is therefore the
-description length of a \emph{symbolic} policy good enough to win, which we write
-$K(\pi_{\mathrm{good}})$ after Kolmogorov complexity and estimate through a
-compression proxy, the quantity itself being uncomputable
-\citep{lividanyi2019kolmogorov,rissanen1978mdl}. The prediction is a single
-inequality: HL succeeds while $K(\pi_{\mathrm{good}})$ stays below the agent's
-maintenance capacity, and plateaus as it approaches it. The program grows from a
-naive draft in every game, so what differs between games is where the target sits
-relative to the ceiling: where $K(\pi_{\mathrm{good}})$ lies below the capacity,
-the program reaches winning strength before it becomes unmaintainable, and where
-it lies above, the program stops improving while still short of it. Because the
-capacity belongs to the agent, this predicts a signature: the size at which the
-loop stalls should be roughly the same from game to game while the strength
-reached there should not, and it is that pairing, rather than either half of it,
-that distinguishes a limit of the maintainer from a limit of the game. That is
-what makes the plateau diagnostic rather than incidental, and the boundary of the
-paradigm follows without a separate argument. Tasks at the scale of language
+The axis this limit falls on is a description length, and not the length of the
+rules. Go's rules fit on a page, yet no compact symbolic policy plays it well ---
+the programs that do carry their strength in weights --- while a contest game may
+run to pages of special cases and still admit a strong policy in a few hundred
+lines. What governs the outcome is the description length of a \emph{symbolic}
+policy good enough to win, which we write $K(\pi_{\mathrm{good}})$ after
+Kolmogorov complexity and estimate through a compression proxy, the quantity itself
+being uncomputable \citep{lividanyi2019kolmogorov,rissanen1978mdl}. The prediction
+is a single inequality: HL succeeds while $K(\pi_{\mathrm{good}})$ stays below the
+agent's maintenance capacity, and plateaus as it approaches it. Since the program
+grows from a naive draft in every game, what differs is where the target sits
+relative to the ceiling --- below it, the program reaches winning strength before it
+becomes unmaintainable; above it, the program stops improving while still short.
+And because the capacity belongs to the agent, this predicts a signature: the size
+at which the loop stalls should be roughly the same from game to game while the
+strength reached there should not, and it is that pairing, not either half, that
+distinguishes a limit of the maintainer from a limit of the game. The paradigm's
+boundary then follows without a separate argument: tasks at the scale of language
 modelling lie outside it not because they are adversarial or unstructured, but
-because no policy of a maintainable description length is any good at them. The
-ceiling is a property of the maintainer rather than of the paradigm, which is why
-it moves with model capability, and why it can be measured at all.
+because no policy of a maintainable description length is any good at them. And
+since the ceiling belongs to the maintainer, it moves with model capability, which
+is why it can be measured at all.
 
-\paragraph{Why the question is still open.} Agent self-improvement is
-already known to decay, and to decay from both directions at once: across 47
-real engineering tasks, the frequency of improvements falls as $t^{-1}$ over
-iterations while the magnitude of the $k$-th improvement falls as $k^{-1}$, a
-double squeeze that drives marginal returns near zero after 50 to 100 iterations
-\citep{frontiereng2026}. What that does not establish is where the symbolic
-paradigm stands against a learned one, because those tasks are single-agent and
-carry neither a human field nor an RL baseline --- the two reference points the
-question requires. Where both reference points were present, the maintainer was
-always human, so the paradigm and the cost of human iteration were measured
-together with no way to separate them: a heuristic program that stopped
-improving might have exhausted the paradigm or exhausted its author's weekend,
-and the record cannot say which. Replacing the author with an agent holds the
-paradigm fixed and changes the cost of iteration --- the term that was never
+\paragraph{Why the question is still open.} Agent self-improvement is already
+known to decay, and from both directions at once: across 47 real engineering
+tasks, improvement frequency falls as $t^{-1}$ while the magnitude of the $k$-th
+improvement falls as $k^{-1}$, a double squeeze driving marginal returns near zero
+after 50 to 100 iterations \citep{frontiereng2026}. What that leaves open is where
+the symbolic paradigm stands against a learned one, since those tasks are
+single-agent and carry neither a human field nor an RL baseline. Where both
+reference points were present, the maintainer was always human, so the paradigm
+and the cost of human iteration were measured together: a heuristic program that
+stopped improving might have exhausted the paradigm or exhausted its author's
+weekend, and the record cannot say which. Replacing the author with an agent holds
+the paradigm fixed and changes the cost of iteration --- the term that was never
 varied.
 
-\paragraph{Where to measure it.} Answering the question requires a domain where
-many independent authors pushed the symbolic paradigm as far as a real budget
-allowed, with the results recorded and the budget the same for every method they
-might have chosen. We use the complete archive of a collegiate game
-AI contest running since \val{founded}: games authored for the contest itself,
-\val{nsub} submissions, and \val{nmatch} adjudicated matches, written by
-contestants under deadline with standings at stake. Contests of this kind carry
-their own folk ordering of methods --- rules for beginners, search for the
-intermediate, RL as the approach with the highest ceiling --- and it is worth
-naming, because it is the ordering the field's own results are taken to endorse.
-What the archive records is that the same ordering gets the asymptotic ceilings
-right and still fails to predict who wins:
-\val{pheur} of prize-winning programs contain no learned component, and RL,
-present in \val{prl} of submissions, reached the finals in \val{nrlfinal} of
-\val{editions} editions.
+\paragraph{Where to measure it.} The question needs a domain where many
+independent authors pushed the symbolic paradigm as far as a real budget allowed,
+with the results recorded and the budget the same for every method they might have
+chosen. We use the complete archive of a collegiate game AI contest running since
+\val{founded}: games authored for the contest itself, \val{nsub} submissions, and
+\val{nmatch} adjudicated matches, written under deadline with standings at stake.
+Contests of this kind carry a folk ordering of methods --- rules for beginners,
+search for the intermediate, RL as the highest ceiling --- which is worth naming
+because it is the ordering the field's own results are taken to endorse. The
+archive records that this ordering gets the asymptotic ceilings right and still
+fails to predict who wins: \val{pheur} of prize-winning programs contain no
+learned component, and RL, present in \val{prl} of submissions, reached the finals
+in \val{nrlfinal} of \val{editions} editions.
 
-The archive also supplies something no constructed benchmark has. Contamination
-resistance is usually bought by authoring fresh tasks or by collecting new ones
-continuously \citep{livecodebench2024,workbuddybench2026}; here it comes from a
-venue that predates the benchmark and was never built for evaluation --- a
-different provenance, which we still verify rather than assume. More
-importantly, because thousands of people attempted the same games, the archive
-carries a \emph{distribution} of human skill rather than a reference solution ---
-so a method can be placed at a percentile of a real field, as agents have been
-placed against Kaggle competitors and informatics olympiad contestants
-\citep{mlebench2024,olympiad2025percentile}, instead of scored against one
-baseline someone chose.
+Two properties follow from provenance rather than design. Contamination resistance
+is usually bought by authoring fresh tasks or collecting new ones continuously
+\citep{livecodebench2024,workbuddybench2026}; here it comes from a venue that
+predates the benchmark and was never built for evaluation --- which we still verify
+rather than assume. And because thousands of people attempted the same games, the
+archive carries a \emph{distribution} of human skill rather than a reference
+solution, so a method can be placed at a percentile of a real field, as agents have
+been placed against Kaggle competitors and informatics olympiad contestants
+\citep{mlebench2024,olympiad2025percentile}.
 
 \paragraph{Heuristic learning.} We remove the confound with heuristic learning
 (HL): a coding agent maintains a heuristic program by reading the rules, its own
-source, and replays of its losses, revising the policy, and rescoring it against
-a frozen opponent pool. The loop is deliberately narrow --- one revision per
-iteration, every version and score kept --- because attribution is the property
-we are trying to preserve. Its evaluator is a game engine and its opponents are
-frozen, which places it at the strong end of the verification hierarchy along
-which demonstrated self-improvement tracks \citep{selfimprovement2026survey};
-loops that stall generally do so with weak or self-supplied evaluators.
+source, and replays of its losses, then rescores it against a frozen opponent pool.
+The loop is deliberately narrow --- one revision per iteration, every version and
+score kept --- because attribution is the property we are trying to preserve. Its
+evaluator is a game engine and its opponents are frozen, placing it at the strong
+end of the verification hierarchy along which demonstrated self-improvement tracks
+\citep{selfimprovement2026survey}.
 
-That HL is not merely a matter of a stronger model is worth establishing early,
-because the closest existing head-to-head between LLM-written agents and human
-contestants in a competitive game found the humans winning: across 38{,}304
-matches, human-written agents took the top five places, 33 of 40 LLM-written
-agents lost to very simple baselines, and a frontier model given the winning
-student's program and asked to improve it dropped it to tenth
-\citep{vibecoding2025tournament}. Their agents were not one-shot, and the
-comparison is not weakened by saying so: sixteen of the forty received a revision
-round, and every one of the forty was debugged over five to fifteen cycles of
-error feedback --- more remediation than the students got, whose crashes simply
-scored as losses. What that loop optimized, though, was compilability. The one
-round aimed at strength scored a candidate against itself, on a signal its own
-authors call weak next to iterative refinement elsewhere, and no agent was ever
-revised against the tournament it would be judged in. So the gap their result
-identifies is not model capability and not a missing edit; it is the absence of
-many revisions carrying an adversarial signal, which is the loop this paper
-measures.
+That this is not merely a matter of a stronger model matters, because the closest
+existing head-to-head found the humans winning: across 38{,}304 matches,
+human-written agents took the top five places and a frontier model handed the
+winning student's program dropped it to tenth
+\citep{vibecoding2025tournament}. Their agents were not one-shot --- most were
+revised and all were debugged over many cycles --- but that loop optimized
+compilability, and no agent was ever revised against the tournament it would be
+judged in. The gap is therefore neither model capability nor a missing edit; it is
+the absence of many revisions carrying an adversarial signal, which is the loop this
+paper measures.
 
-Two objections deserve stating before the results rather than after. The first
-is that a sample-efficiency comparison between an agent and RL from scratch is
-unfair, because the agent arrives with pretraining behind it. This is true, and
-no accounting makes it go away: we report environment steps because they are the
-resource that is scarce in a new domain, not because pretraining was free. What
-can be said is narrower and is the reason the archive was chosen. The contest's
-games are its own, so what pretraining plausibly supplies is general programming
-competence rather than strategy for these games --- and because that is a claim
-about a training corpus rather than about the venue, we test it
-(Section~\ref{sec:experiments}) instead of asserting it. Under that condition the
-comparison is between an agent that knows how to write code and an RL system that
-knows how to optimize, each starting without experience of the game in question. Readers who prefer to price
-pretraining in should read our efficiency figures as conditional on a
-general-purpose model already existing, which is the condition under which the
-question is being asked in practice.
-
-The second is that the archive's RL scarcity is confounded with the cost
-structure of its participants: students on a deadline have limited compute,
-limited time, and limited RL expertise, so RL's absence is evidence about what
-wins under contest constraints, not about what RL reaches given a research budget.
-We do not claim otherwise. What the archive does hold fixed is that the same
-constraint applied to whichever method a contestant chose, so it records both
-paradigms priced at one budget --- which is the comparison this paper is about,
-and the reason the budget is stated in every result rather than assumed away.
-Every comparison here is budget-conditional, and Section~\ref{sec:experiments}
-reports the full ledger --- environment steps, agent calls, tokens, wall-clock,
-and dollars --- including the axes on which HL is the more expensive method.
+Two objections are conceded here and answered in full in
+Section~\ref{sec:discussion}. The agent arrives with a pretraining corpus while RL
+starts cold, and no denominator makes that symmetric; we report environment steps
+as what is scarce in a new domain, and test what pretraining supplies
+(Section~\ref{sec:experiments}) rather than asserting it. And the archive's RL
+scarcity is confounded with its participants' cost structure --- students on a
+deadline have limited compute, time, and RL expertise --- so what it records is
+what wins under contest constraints, at one budget applied to whichever method a
+contestant chose. Every comparison here is budget-conditional.
 
 \subsection*{Contributions}
 
@@ -410,47 +335,35 @@ and dollars --- including the axes on which HL is the more expensive method.
   \item \textbf{Heuristic learning (HL): agent-maintained symbolic policies under
   adversarial pressure, instrumented so the ceiling can be located.} That an LLM
   can revise a program from execution feedback is established
-  \citep{kuang2025generative}; what HL adds is the setting and the discipline. The
-  agent reads the rules, its own source, and replays of the matches it lost,
-  hypothesizes a failure mode, edits the program, and rescores against a frozen
-  opponent pool --- so what comes back is not one scalar from a fixed evaluator
-  but an outcome against each of many real adversaries, any of which can be
-  exploited or exploit back. One revision per iteration, with every version, edit, and
-  score in an append-only log, which is what lets a change in behaviour be
-  attributed to the edit that caused it. That attribution is not a convenience:
-  it is the only reason a plateau can be diagnosed rather than merely observed.
+  \citep{kuang2025generative}; what HL adds is the adversary and the discipline ---
+  one revision per iteration, every version and score in an append-only log, so
+  that a change in behaviour is attributable to the edit that caused it. Without
+  that attribution a plateau can be observed but not diagnosed.
 
-  \item \textbf{A benchmark drawn from a real competition rather than
-  constructed for evaluation.} Its games were designed to be played and its
-  submissions written to win, under deadline with standings at stake --- not
-  authored as tasks, and not solved by anyone who knew a benchmark would be built
-  from them. To the archive's \val{nsub} submissions and \val{nmatch} adjudicated
-  matches we add the apparatus a benchmark needs: classic games as structural
-  controls, three opponent pools (training, frozen test, Elo anchor), a frozen
-  evaluation set, and an Elo protocol comparable across games and editions. We
-  also classify every submission by whether it contains a learned component,
-  which is what makes the audit above a measurement rather than an impression.
+  \item \textbf{A benchmark drawn from a real competition rather than constructed
+  for evaluation.} To the archive's \val{nsub} submissions and \val{nmatch}
+  adjudicated matches --- written to win under deadline, not authored as tasks ---
+  we add the apparatus a benchmark needs: classic games as structural controls,
+  three opponent pools (training, frozen test, Elo anchor), a frozen evaluation
+  set, and an Elo protocol comparable across games and editions. We also classify
+  every submission by whether it contains a learned component, which is what makes
+  the audit above a measurement rather than an impression.
 
   \item \textbf{A broad comparison of HL and RL, and a mechanism for where HL
-  stops.} We compare the paradigms across the benchmark's games, against
-  model-based RL and policy gradient, over a range of budgets, and against the
-  human field --- reporting a shared ledger in every denominator (environment
-  steps, agent calls, tokens, wall-clock, dollars) rather than the one that
-  favours either method. HL reaches the \val{pct}th percentile of the human field
-  and surpasses the strongest recorded human on \val{nbeat} games. It is
-  \val{effratio} more sample-efficient than model-based RL at matched Elo, but
-  that baseline overtakes beyond \val{crossover} environment steps and HL is the
-  costlier method
-  \val{loseaxis}, so neither paradigm dominates: which one wins is set by the
-  budget and by the game's structure. Improvement frequency decays as
-  \val{decay} and plateaus near \val{plateau} revisions, and we trace that
-  ceiling to maintenance capacity. That diagnosis rests on a pair of quantities
-  rather than one: description length at the plateau converges to \val{maintcap}
-  within \val{maintcapspread} across games of differing complexity, while the Elo
-  reached at that plateau varies by \val{eloplatspread} over those same games.
-  The same maintainable size at different strengths is what separates a limit of
-  the agent from a limit of the game; convergent length on its own would not,
-  being equally consistent with games that never differed in complexity. The loop
-  transfers to \val{ntransfer} further benchmarks without retuning.
+  stops.} Against model-based RL, policy gradient, and the human field, over a
+  range of budgets, reported in every denominator rather than the favourable one:
+  HL reaches the \val{pct}th percentile of the field and beats the strongest
+  recorded human on \val{nbeat} games, and is \val{effratio} more sample-efficient
+  than model-based RL at matched Elo --- but that baseline overtakes beyond
+  \val{crossover} environment steps and HL costs more \val{loseaxis}. Neither
+  paradigm dominates; the budget and the game's structure decide. Improvement
+  frequency decays as \val{decay} and plateaus near \val{plateau} revisions, which
+  we trace to maintenance capacity on a pair of quantities: description length at
+  the plateau converges to \val{maintcap} within \val{maintcapspread} across games
+  of differing complexity, while the Elo reached there varies by
+  \val{eloplatspread}. Equal maintainable size at unequal strength is what
+  separates a limit of the agent from a limit of the game --- convergent length
+  alone would not, being equally consistent with games that never differed. The
+  loop transfers to \val{ntransfer} further benchmarks without retuning.
 \end{itemize}
 
