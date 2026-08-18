@@ -1,5 +1,5 @@
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% THU CS SAST Article Template: Light brand background (derived from logo color #7B3FF2)
+% THU CS SAST Article Template: Light brand background (derived from logo color #1877F2 Meta Blue)
 % Based on fairmeta.cls
 % Compilation: pdflatex --shell-escape (required for SVG logo via Inkscape)
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -36,18 +36,18 @@
 \RequirePackage{bm}
 \newcommand{\nm}[1]{#1}
 
-% Brand colors — derived from logo primary #7B3FF2 (Purple) %%%%%%%%%%
+% Brand colors — derived from logo primary #1877F2 (Meta Blue) %%%%%%%%%%
 %
-%   brandbg      = 15% primary + 85% white  →  #F0E6FF  (abstract / title bg)
-%   brandprimary = logo color itself         →  #7B3FF2  (decorative accents)
-%   brandaccent  = darkened for readability  →  #5B2FB8  (links, section heads)
+%   brandbg      = 15% primary + 85% white  →  #DCEAFD  (abstract / title bg)
+%   brandprimary = Meta blue itself          →  #1877F2  (decorative accents)
+%   brandaccent  = darkened for readability  →  #0052CC  (links, section heads)
 %   brandfg      = dark neutral              →  #1C2B33  (body text)
 %
 \RequirePackage{xcolor}
 \RequirePackage[skins]{tcolorbox}
-\definecolor{brandbg}{HTML}{F0E6FF}
-\definecolor{brandprimary}{HTML}{7B3FF2}
-\definecolor{brandaccent}{HTML}{5B2FB8}
+\definecolor{brandbg}{HTML}{DCEAFD}
+\definecolor{brandprimary}{HTML}{1877F2}
+\definecolor{brandaccent}{HTML}{0052CC}
 \definecolor{brandfg}{HTML}{1C2B33}
 
 % References %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
