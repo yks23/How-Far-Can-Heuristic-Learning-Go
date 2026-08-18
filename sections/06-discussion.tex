@@ -24,8 +24,21 @@
 %     maintainable description length is any good at them.
 %   - what the winning human programs actually contain, and what that says about
 %     representation (RQ3).
-%   - Limitations, as its own labelled subsection, opening with the selection
-%     effect: the archive's RL scarcity is confounded with student cost
+%   - Limitations, as its own labelled subsection. Two objections are raised in
+%     the introduction and have to be answered in full here, not merely repeated.
+%
+%     Pretraining. The efficiency comparison is between an agent carrying a
+%     pretraining corpus and RL starting cold, and no denominator makes that
+%     symmetric. What is defensible: environment steps are the scarce resource
+%     in a new domain, and the contest's rules are original, so pretraining
+%     supplies general coding competence rather than knowledge of these games.
+%     Report the figures as conditional on a general-purpose model existing.
+%     Do not attempt to amortize pretraining into a per-task number -- any such
+%     figure is arbitrary and a referee will say so. If a pretraining-inclusive
+%     comparison is wanted, the honest form is a sensitivity statement: how large
+%     would the amortized cost have to be to erase the gap?
+%
+%     The selection effect: the archive's RL scarcity is confounded with student cost
 %     structure -- no GPUs, no time, no RL expertise -- so it is evidence about
 %     what wins under contest constraints, not about what RL can reach. Say this
 %     plainly and cite the budget ledger. Burying it here unlabelled reads as

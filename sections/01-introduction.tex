@@ -221,8 +221,22 @@ strategies in place of a loop. We read its result as the motivation for ours: if
 single-shot generation loses to undergraduates, then whatever closes the gap is
 the loop, not the model --- and the loop is what this paper measures.
 
-One objection deserves stating before the results rather than after. The
-archive's RL scarcity is confounded with the cost structure of its participants:
+Two objections deserve stating before the results rather than after. The first
+is that a sample-efficiency comparison between an agent and RL from scratch is
+unfair, because the agent arrives with pretraining behind it. This is true, and
+no accounting makes it go away: we report environment steps because they are the
+resource that is scarce in a new domain, not because pretraining was free. What
+can be said is narrower and is the reason the archive was chosen. The contest's
+rules are original to it, so pretraining supplies general programming competence
+rather than knowledge of these games --- the comparison is between an agent that
+knows how to write code and an RL system that knows how to optimize, each
+starting from no experience of the game in question. Readers who prefer to price
+pretraining in should read our efficiency figures as conditional on a
+general-purpose model already existing, which is the condition under which the
+question is being asked in practice.
+
+The second is that the archive's RL scarcity is confounded with the cost
+structure of its participants:
 undergraduates on a deadline have limited compute, limited time, and limited RL
 expertise, so RL's absence is evidence about what wins under contest constraints,
 not about what RL reaches given a research budget. We do not claim otherwise.
