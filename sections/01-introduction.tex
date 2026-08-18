@@ -143,8 +143,9 @@ authoring cost is the binding term.
 
 \paragraph{What coding agents changed.} They change who the author is, and the
 property that matters once the author is a machine is not the one usually
-argued. A symbolic program is readable, a revision is a diff, a change can be
-made locally, and each edit is attributable to the behaviour it was meant to
+argued. A symbolic program can be read in full and changed in part: a revision
+is a diff, a change can be made locally, and each edit is attributable to the
+behaviour it was meant to
 fix; an agent accepts exactly the heterogeneous inputs that maintenance requires
 --- the rules of the game, the program's own source, replays of matches it lost.
 A learned policy admits no comparable loop: its behaviour lives in weights that
@@ -283,7 +284,7 @@ because no policy of a maintainable description length is any good at them. The
 ceiling is a property of the maintainer rather than of the paradigm, which is why
 it moves with model capability, and why it can be measured at all.
 
-\paragraph{Why this ceiling has not been measured.} Agent self-improvement is
+\paragraph{Why the question is still open.} Agent self-improvement is
 already known to decay, and to decay from both directions at once: across 47
 real engineering tasks, the frequency of improvements falls as $t^{-1}$ over
 iterations while the magnitude of the $k$-th improvement falls as $k^{-1}$, a
