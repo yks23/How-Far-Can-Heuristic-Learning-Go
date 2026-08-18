@@ -20,7 +20,13 @@
 %     Report HL and RL in all of them, including the ones where HL loses
 %     (\val{loseaxis}).
 %   - the frozen evaluation set and the three opponent pools; how Elo anchors
-%     stay comparable across games and across editions.
+%     stay comparable across games and across editions. Cite asro2026coevolution
+%     here: it is the nearest neighbour on pool design (LLM best-response oracles
+%     over a growing strategy pool in a two-player zero-sum game), and the
+%     contrast worth drawing is that its pool grows by construction while ours is
+%     frozen at test time -- we buy comparable Elo within a run and give up
+%     co-evolutionary pressure, which is a design choice to defend rather than
+%     omit.
 %   - RL budget ceiling: to claim a crossover at \val{crossover} the baselines
 %     have to actually be run past it. If they are not, report a lower bound
 %     ("no crossover within X steps"), never an extrapolation.

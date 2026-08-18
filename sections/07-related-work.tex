@@ -32,8 +32,11 @@
 % context -- is the direct evidence for the long-trajectory premise.
 %
 % Programmatic RL is the nearest representational neighbour and needs its own
-% paragraph: programmaticrl2024foundations for the size/expressiveness tradeoff,
-% diprl2026 and llmguidedsearch2024 for the current line, kuang2025generative for
+% paragraph: programmaticrl2024foundations for the size/expressiveness tradeoff
+% (it bounds the size of optimal programmatic policies, which is the formal
+% relative of K(pi_good) -- cite it for that and not for editability, which it
+% never claims), diprl2026 and llmguidedsearch2024 for the current line,
+% kuang2025generative for
 % the closest method (LLM revises a Python policy from execution traces, beats
 % deep RL baselines at far fewer interactions). What we add over kuang2025generative:
 % adversarial rather than single-agent, a human field to be placed within, a
@@ -47,6 +50,14 @@
 % compulsory. A game's rules are fixed, so a better heuristic can replace a worse
 % one and the program may shrink. Without that distinction a referee reads their
 % result as predicting our loop cannot work.
+%
+% agent2rlbench2026 earns one sentence, for a point that is easy to miss: in
+% AI4AI the agent is already a symbolic program manipulating a connectionist
+% artifact, so the first thing an LLM does to RL is write code around it. That is
+% what makes "then why not have it write the policy itself" the obvious next
+% question rather than a contrarian one -- which is this paper. Do not overstate
+% it into a claim that they anticipated HL; they benchmark agents engineering RL
+% post-training, a different task.
 %
 % Then: RL in games, program synthesis / LLM-driven code search, automated
 % heuristic design, continual learning. The 21-item survey in the earlier

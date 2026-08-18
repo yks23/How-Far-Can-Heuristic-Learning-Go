@@ -33,6 +33,15 @@
 %    it is not is the single easiest way to lose the paper. If it fails, the
 %    finding is still worth reporting; the framing changes, not the data.
 %
+%    Report starting Elo and improvement rate as separate quantities, never
+%    folded into final Elo. catarena2025 scores code agents on iterated
+%    tournaments along two axes -- proficiency at initial generation and
+%    improvement realized through iteration -- and finds the two not strictly
+%    correlated. So a strong final Elo can come from a strong first draft with a
+%    flat trajectory, which is the opposite of the claim this paper makes. The
+%    decay exponent \val{decay} is a statement about the trajectory and is
+%    uninterpretable without the intercept beside it.
+%
 %    Report the two halves of the prediction together, because each is weak
 %    alone. The mechanism says the capacity belongs to the agent and K(pi_good) to
 %    the game, so description length at the plateau should CONVERGE across games
