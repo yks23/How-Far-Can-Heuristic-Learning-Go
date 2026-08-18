@@ -311,8 +311,9 @@ and dollars --- including the axes on which HL is the more expensive method.
   steps, agent calls, tokens, wall-clock, dollars) rather than the one that
   favours either method. HL reaches the \val{pct}th percentile of the human field
   and surpasses the strongest recorded human on \val{nbeat} games. It is
-  \val{effratio} more sample-efficient than RL at matched Elo, but RL overtakes
-  beyond \val{crossover} environment steps and HL is the costlier method
+  \val{effratio} more sample-efficient than model-based RL at matched Elo, but
+  that baseline overtakes beyond \val{crossover} environment steps and HL is the
+  costlier method
   \val{loseaxis}, so neither paradigm dominates: which one wins is set by the
   budget and by the game's structure. Improvement frequency decays as
   \val{decay} and plateaus near \val{plateau} revisions, and we trace that
