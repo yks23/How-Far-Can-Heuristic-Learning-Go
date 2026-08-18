@@ -27,7 +27,12 @@
 % Graphics %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{graphicx}
-% Logo is pre-converted to assets/logo.pdf via cairosvg.
+
+% Logo shown at the bottom right of the title box. Override either of these in
+% the preamble to swap the mark or resize it.
+\newlength{\brandlogowidth}
+\setlength{\brandlogowidth}{1.2cm}
+\newcommand{\brandlogofile}{assets/sast-icon.png}
 
 % Tables %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -159,11 +164,6 @@
   \tcbset{before skip=0pt}
   \tcbset{grow to left by=1.5pt}
   \tcbset{grow to right by=1.5pt}
-  \tcbset{overlay={\node[
-    anchor=south east,
-    at= (frame.south east),
-    xshift=-0.8cm,
-    yshift=0.8cm] {\includegraphics[width=1.2cm]{assets/sast-icon.png}};}}
   %
   \begin{tcolorbox}
     \setlength{\parindent}{0cm}
@@ -191,9 +191,20 @@
     %
     \vskip 0.5cm
     %
+    % Bottom row: metadata on the left, logo on the right. Both are real boxes
+    % rather than a tcolorbox overlay, so the logo occupies layout space and the
+    % abstract above it can never run underneath — which it did when the
+    % metadata block was shorter than the logo is tall.
     {
       \setlength{\parskip}{0cm}
-      \ifdefempty{\metadatalist}{\vspace*{0.65cm}}{\metadatalist\par}
+      \noindent
+      \begin{minipage}[c]{\dimexpr\linewidth-\brandlogowidth-0.5cm\relax}
+        \ifdefempty{\metadatalist}{\vphantom{Xg}}{\metadatalist\par}
+      \end{minipage}%
+      \hfill
+      \begin{minipage}[c]{\brandlogowidth}
+        \raggedleft\includegraphics[width=\brandlogowidth]{\brandlogofile}%
+      \end{minipage}
     }
   \end{tcolorbox}
   \tcbset{reset}
