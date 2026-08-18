@@ -1,47 +1,57 @@
-\documentclass[UTF8,a4paper,10pt,fontset=none]{ctexart}
+\pdfminorversion=7
+\PassOptionsToPackage{round,authoryear}{natbib}
+\PassOptionsToPackage{table,dvipsnames}{xcolor}
+\documentclass[]{style/company_light}
 
-\usepackage{kexiearticle}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{adjustbox}
+\usepackage{array}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\setlength{\emergencystretch}{3em}
+\hbadness=10000
+\ifdefined\pdfsuppresswarningpagegroup\pdfsuppresswarningpagegroup=1\fi
 
-\title{How Far Can Heuristic Learning Go? 
+\title{How Far Can Heuristic Learning Go? \\
+Characterizing Performance Ceilings, Complexity, and Sample Efficiency in Large-Scale Real-World Competitive Games}
 
-Characterizing Performance Ceilings,
-Complexity, and Sample Efficiency in Large-Scale Real-World Competitive Games}
-\shorttitle{How Far Can Heuristic Learning Go?}
-\author{Kaisen Yang$^{\sharp}$}
-% @刘青乐确认一下author list
+\author{Kaisen Yang}
 \affiliation{Department of Computer Science and Technology, Tsinghua University}
-\role[\sharp]{Corresponding Author.}
-\email{yks23@mails.tsinghua.edu.cn}
-\articledate{2026-08-15}
+
+\abstract{This paper investigates the fundamental capabilities and limitations of heuristic learning (HL) in complex, large-scale real-world competitive games. We establish a comprehensive benchmark and characterize the performance ceilings, computational complexity, and sample efficiency of HL approaches across diverse game domains.}
+
+\date{August 18, 2026}
 
 \begin{document}
 
-\makekexietitle
+\maketitle
 
-\begin{abstract}
-% Write the abstract here.
-\end{abstract}
-% 需要一个头图，大概表示我们干了什么事情
 \section{Introduction}
-% contribution: 1. 定义了HL范式及其优化过程 2. 建立了benchmark 3. 验证了xxx等现象
-\section{Preliminary}
-% 定义清楚要用到的东西
-\section{Method}
-% method图，展示算法核心概念
-\subsection{Motivation}
-% 何以想到HL的？- Agent - 样本Efficiency - 实际的效果
-\subsection{HL Algorithms}
-% 定义清楚有哪些自己的HL算法
+
+\section{Background}
+
+\section{Methodology}
+
 \section{Experiments}
-\subsection{set up of Benchmark}
-% Benchmark的示意图
-% 先把讨论的实验做了搬上来
-\subsection{Experiments}
+
+\section{Results}
+
+\section{Discussion}
 
 \section{Related Work}
-\section{Future work and Limitation}
-\section{Conclusion}
 
-\appendix
+\section{Conclusion}
 
 \end{document}
