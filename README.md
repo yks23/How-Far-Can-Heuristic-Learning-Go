@@ -1,4 +1,4 @@
-# CST SAST Article Template
+# THU CS SAST Article Template
 
 An A4 single-column LaTeX template with conference-paper typography for technical articles published by the
 Student Association for Science and Technology of Tsinghua University's
@@ -47,7 +47,7 @@ figures legible at the template's single-column text width.
 ## Header marks
 
 The original-color Tsinghua University, Department of Computer Science and
-Technology, and CST SAST marks appear at the upper left by default. To use a
+Technology, and THU CS SAST marks appear at the upper left by default. To use a
 different set of marks, set the complete row in `main.tex`:
 
 ```latex
