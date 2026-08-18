@@ -54,6 +54,54 @@
 }
 
 % ---------------------------------------------------------------------------
+% The quantitative anchor for maintenance capacity, and mechanistically closer
+% than SlopCodeBench: successful agentic trajectories on SWE-bench Verified stay
+% under 20k-30k tokens, and longer accumulated context correlates with lower
+% resolve rates. Padding context to 64k with guaranteed perfect retrieval makes
+% it worse, not better (Qwen3-Coder-30B-A3B 7%, GPT-5-nano 0 tasks), which rules
+% out retrieval failure as the explanation. Failure modes are hallucinated diffs
+% and wrong file targets -- edits that damage working code, which is the
+% signature our plateau should show.
+%
+% CAUTION, and it must be stated in the text: their axis is accumulated
+% *context*, ours is program *description length*. Related, not identical. Use
+% this as an independent order-of-magnitude check on \val{maintcap} after
+% converting units, never as though it measured the same thing. If our measured
+% capacity lands near their threshold that is convergent evidence worth naming;
+% if it does not, the difference is a result, not an error.
+% ---------------------------------------------------------------------------
+@inproceedings{longcontextbugfix2026,
+  title     = {The Limits of Long-Context Reasoning in Automated Bug Fixing},
+  author    = {Raju, Ravi and Ji, Mengmeng and Upasani, Shubhangi and
+               Li, Bo and Thakker, Urmish},
+  booktitle = {ICLR Workshop on I Can't Believe It's Not Better},
+  year      = {2026},
+  note      = {arXiv:2602.16069}
+}
+
+% ---------------------------------------------------------------------------
+% Why accumulation degrades revision quality, isolated from context length.
+% Given the knowledge and plan up front -- so reasoning is not the variable --
+% per-step accuracy still falls as steps accumulate, and models become more
+% likely to err when the context already contains their own earlier errors.
+% Self-conditioning is not fixed by scaling parameters; thinking mitigates it.
+%
+% This is the mechanism our append-only log can test directly: near the plateau,
+% do failed revisions regress already-working behaviour rather than merely add
+% nothing? Cite for the mechanism, not for a number -- the abstract states the
+% decay qualitatively and the figures were not read from the PDF.
+% ---------------------------------------------------------------------------
+@inproceedings{longhorizonexecution2026,
+  title     = {The Illusion of Diminishing Returns: Measuring Long Horizon
+               Execution in {LLM}s},
+  author    = {Sinha, Akshit and Arun, Arvindh and Goel, Shashwat and
+               Staab, Steffen and Geiping, Jonas},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2026},
+  note      = {arXiv:2509.09677}
+}
+
+% ---------------------------------------------------------------------------
 % Precedent for our headline metric. Model performance reported as a
 % percentile of the actual ranked human field (GPT-5: 81.76th percentile,
 % 2414 Elo), scored into contest points against official standings. Also the

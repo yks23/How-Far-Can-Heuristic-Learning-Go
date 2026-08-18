@@ -133,6 +133,15 @@
 %
 % Units matter: report compressed bytes, not lines. Lines are a style artifact
 % and are not comparable across the languages the archive contains.
+%
+% There is an external anchor to check this against. longcontextbugfix2026 finds
+% successful agentic repair trajectories staying under 20-30k tokens on
+% SWE-bench Verified, with resolve rates falling past that. Their axis is
+% accumulated context, not program description length, so this is an
+% order-of-magnitude sanity check after unit conversion and nothing stronger.
+% Landing near their range is convergent evidence worth naming; landing far from
+% it is a finding about how the two axes differ, not a measurement error. Decide
+% the conversion before looking at our data, or the check is worthless.
 % ---------------------------------------------------------------------------
 \defTBD{maintcap}{$\sim$XX kB}
 \defTBD{maintcapspread}{$\pm$XX\%}
