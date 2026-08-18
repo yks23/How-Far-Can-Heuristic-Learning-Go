@@ -1,0 +1,113 @@
+% ===========================================================================
+% numbers.tex -- every quantitative claim in the paper, defined in one place.
+%
+% The body never writes a literal number. It writes \val{key}, and the value
+% lives here. Two reasons: a number that appears in the abstract, a table, and
+% the discussion can only disagree with itself if it is typed three times; and
+% a provisional number has to be visibly provisional until it is measured.
+%
+%   \defval{key}{value}   a measured number. Prints plain.
+%   \defTBD{key}{guess}   not measured yet. Prints in accent bold while
+%                         \hldraft is on, so it cannot ship unnoticed, and is
+%                         listed by \printTBD.
+%   \val{key}             use a number. An undefined key prints a red marker
+%                         and raises a LaTeX warning rather than failing quietly.
+%   \todo{note}           a prose-level gap, same visibility rules.
+%   \printTBD             renders the outstanding-measurement list. Put it at
+%                         the end of the document; it disappears with \hldraft.
+%
+% Camera-ready: \togglefalse{hldraft}. Every placeholder then prints as if it
+% were real, which is exactly why \printTBD must read empty before that switch
+% is thrown.
+% ===========================================================================
+
+\newtoggle{hldraft}
+\toggletrue{hldraft}
+
+\newcommand{\hlnumtbdlist}{}
+
+\newcommand{\defval}[2]{\csdef{hlnum@#1}{#2}\csundef{hlntbd@#1}}
+\newcommand{\defTBD}[2]{%
+  \csdef{hlnum@#1}{#2}\csdef{hlntbd@#1}{}\listadd{\hlnumtbdlist}{#1}}
+
+\newcommand{\val}[1]{%
+  \ifcsdef{hlnum@#1}{%
+    \ifcsdef{hlntbd@#1}{%
+      \iftoggle{hldraft}{\textcolor{brandaccent}{\bfseries\csuse{hlnum@#1}}}%
+                        {\csuse{hlnum@#1}}%
+    }{\csuse{hlnum@#1}}%
+  }{%
+    \textcolor{red}{\bfseries[?\,\texttt{#1}]}%
+    \PackageWarning{hlnumbers}{Undefined number key '#1'}%
+  }%
+}
+
+\newcommand{\todo}[1]{%
+  \iftoggle{hldraft}{\textcolor{red}{\bfseries[TODO: #1]}}{}}
+
+\newcommand{\hlnumtbditem}[1]{\item \texttt{#1} \dotfill\ \csuse{hlnum@#1}}
+\newcommand{\printTBD}{%
+  \iftoggle{hldraft}{%
+    \section*{Outstanding measurements}
+    Placeholders still standing in for unmeasured quantities. This list must be
+    empty before submission.
+    \begin{itemize}[nosep,leftmargin=*]
+      \forlistloop{\hlnumtbditem}{\hlnumtbdlist}
+    \end{itemize}}{}}
+
+% ---------------------------------------------------------------------------
+% Archive scale. Editions and founding year are documented facts; the
+% submission and match counts were quoted as round approximations in the
+% proposal and need an exact recount off the archive before they are claims.
+% ---------------------------------------------------------------------------
+% Keys hold bare quantities, never connective words: "X of nine" or "XXth" bakes
+% English grammar into the value and cannot be reused by the Chinese abstract.
+% Connectives live in the prose. Two values are unavoidably prose (loseaxis,
+% ceilingcause) and carry a *zh sibling.
+% 1997 was the first edition, so 2026 is the 30th. The proposal's "27 editions"
+% counted through 2023.
+\defval{editions}{30}
+\defval{founded}{1997}
+\defTBD{nsub}{$\sim$10{,}000}
+\defTBD{nmatch}{$\sim$100{,}000}
+\defval{ngames}{9}
+
+% ---------------------------------------------------------------------------
+% The audit: does the folk hierarchy predict who wins? Descriptive shares over
+% the archive, no counterfactual claimed. The RL scarcity here is confounded by
+% student cost structure -- addressed in the introduction, not the abstract.
+% ---------------------------------------------------------------------------
+\defTBD{pheur}{XX\%}
+\defTBD{prl}{X.X\%}
+\defTBD{nrlfinal}{X}
+
+% ---------------------------------------------------------------------------
+% Headline result. Percentile of the human field is the metric the archive
+% uniquely affords: a skill gradient rather than one reference solution.
+% ---------------------------------------------------------------------------
+\defTBD{pct}{XX}
+\defTBD{nbeat}{X}
+\defTBD{elogap}{$+$XX}
+
+% ---------------------------------------------------------------------------
+% Sample efficiency against RL. The crossover matters more than the ratio: the
+% claim is budget-conditional, not a claim that HL dominates. loseaxis names
+% the denominator on which HL is the worse method, stated up front on purpose.
+% ---------------------------------------------------------------------------
+\defTBD{effratio}{XX$\times$}
+\defTBD{crossover}{$\sim$XXX k}
+\defTBD{loseaxis}{per wall-clock hour and per dollar}
+
+% ---------------------------------------------------------------------------
+% The ceiling. Frontier-Eng (arXiv 2604.12290) reports improvement frequency
+% decaying as t^-1 with a plateau by 50-100 iterations on single-agent tasks.
+% Whether an adversarial setting decays slower is the interesting comparison,
+% so the exponent is a measured quantity here, not an assumed one.
+% ---------------------------------------------------------------------------
+\defTBD{decay}{$t^{-\alpha}$}
+\defTBD{plateau}{$\sim$XX}
+% Prose-valued keys stay English-only: the document is compiled with pdfLaTeX,
+% which cannot typeset CJK without CJKutf8, and \printTBD renders every
+% registered key whether the body cites it or not.
+\defTBD{ceilingcause}{TBD mechanism}
+\defTBD{ntransfer}{X}

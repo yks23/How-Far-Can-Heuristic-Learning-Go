@@ -24,12 +24,43 @@
 \hbadness=10000
 \ifdefined\pdfsuppresswarningpagegroup\pdfsuppresswarningpagegroup=1\fi
 
+% Every number in the paper is defined there and referenced here as \val{key}.
+% Unmeasured quantities print in accent bold and are listed by \printTBD.
+\input{numbers}
+
 \title{How Far Can Heuristic Learning Go? \\
 Characterizing Performance Ceilings, Complexity, and Sample Efficiency in Large-Scale Real-World Competitive Games}
 
 \author{THU-CST-SAST}
 
-\abstract{This paper investigates the fundamental capabilities and limitations of heuristic learning (HL) in complex, large-scale real-world competitive games. We establish a comprehensive benchmark and characterize the performance ceilings, computational complexity, and sample efficiency of HL approaches across diverse game domains.}
+\abstract{Symbolic systems --- heuristic rules and search --- are widely held to
+lack the extensibility of connectionist ones: a symbolic program exhibits only
+behaviour someone wrote down, while a learned policy acquires behaviour its
+designer never specified. Coding agents unsettle that premise. A symbolic program
+is the artifact an agent can maintain --- readable, diffable, revisable in place
+--- while a learned policy hides in its weights and admits no such loop. How far,
+then, does the symbolic paradigm now go? Auditing the complete archive of a
+collegiate game AI contest running since \val{founded} (\val{editions} editions,
+\val{nsub} submissions, \val{nmatch} evaluated matches) shows the received
+ordering describing asymptotic ceilings correctly while failing to predict who
+wins: \val{pheur} of prize-winning programs contain no learned component, and RL,
+present in \val{prl} of submissions, reached the finals in \val{nrlfinal} of
+\val{editions} editions. Contests are decided under a budget,
+where the binding constraint is the width of the feedback channel rather than the
+expressiveness of the policy class --- rules and replays carry far more
+information per sample than a scalar reward. Human heuristics were thus bounded
+by the cost of human iteration, not by the paradigm, a confound that has left its
+ceiling unmeasured. We remove it with \emph{heuristic learning} (HL): a coding
+agent maintains a heuristic program by reading the rules, its own source, and
+replays of its losses, revising, and rescoring against a frozen opponent pool.
+Because the archive supplies a gradient of human skill rather than a single
+baseline, HL can be placed within the human field: it reaches the \val{pct}th
+percentile across \val{ngames} games and surpasses the strongest recorded human on
+\val{nbeat}. It is \val{effratio} more sample-efficient than model-based RL and
+policy gradient at matched Elo, though RL overtakes beyond \val{crossover}
+environment steps and HL stays costlier \val{loseaxis}. Improvement frequency
+decays as \val{decay} and plateaus near \val{plateau} revisions, a ceiling we
+trace to \val{ceilingcause}.}
 
 \date{August 18, 2026}
 
@@ -37,20 +68,15 @@ Characterizing Performance Ceilings, Complexity, and Sample Efficiency in Large-
 
 \maketitle
 
-\section{Introduction}
+\input{sections/01-introduction}
+\input{sections/02-background}
+\input{sections/03-methodology}
+\input{sections/04-experiments}
+\input{sections/05-results}
+\input{sections/06-discussion}
+\input{sections/07-related-work}
+\input{sections/08-conclusion}
 
-\section{Background}
-
-\section{Methodology}
-
-\section{Experiments}
-
-\section{Results}
-
-\section{Discussion}
-
-\section{Related Work}
-
-\section{Conclusion}
+\printTBD
 
 \end{document}

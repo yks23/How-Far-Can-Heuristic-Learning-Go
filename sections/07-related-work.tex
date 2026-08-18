@@ -1,0 +1,38 @@
+% ---------------------------------------------------------------------------
+% Related work
+%
+% Frontier-Eng (arXiv 2604.12290) goes first and gets the most room: its
+% formalization is nearly ours. A task is (C, x0, E) -- read-only context, a
+% feasible-but-naive starting artifact, a frozen evaluator returning a
+% feasibility flag plus a scalar score -- and the agent proposes revisions from
+% the full history under a fixed budget. Three differences to state plainly,
+% because they are what this paper adds rather than repeats:
+%   1. it has no human baseline and no RL baseline; its reference points are
+%      contributor-written naive programs plus correctness anchors. Work items
+%      2 and 3 are exactly those two missing cells.
+%   2. its budget is evaluator interactions only -- no tokens, dollars, or
+%      wall-clock.
+%   3. it optimizes against a frozen evaluator with no opponent, so its score is
+%      absolute and monotone. Elo against a drifting opponent pool is neither,
+%      which is also why its metrics cannot be adopted directly.
+% Cite its numbers as reported: the abstract says eight models and the
+% experiments nine, the power law rests on one model-framework pair, and the
+% depth/width result on a 10-task subset.
+%
+% MLE-bench (arXiv 2410.07095) for the premise that agents iterate programs
+% effectively; arXiv 2507.02554 for the cleaner framing of a research agent as a
+% search policy over a solution space, which is how the HL loop should be
+% described. Frontier-Eng's depth-vs-width finding -- one deep chain beats
+% parallel restarts at fixed budget, because restarts discard accumulated
+% context -- is the direct evidence for the long-trajectory premise.
+%
+% Then: RL in games, program synthesis / LLM-driven code search, automated
+% heuristic design, continual learning. The 21-item survey in the earlier
+% proposal (proposal(1)(2).pdf) is the starting list.
+%
+% Note the name clash: AgentBench (arXiv 2308.03688) is a different paper, also
+% from Tsinghua, and is the style reference in _reference_paper/. The project
+% name is still undecided.
+% ---------------------------------------------------------------------------
+
+\section{Related Work}

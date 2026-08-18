@@ -1,0 +1,150 @@
+% ---------------------------------------------------------------------------
+% Introduction
+%
+% The argument, in order: folk consensus -> why it was right -> what coding
+% agents changed (editability, not interpretability) -> the question -> the
+% archive audit -> the budget mechanism -> the confound -> HL -> contributions.
+%
+% Two things to hold onto while editing:
+%   - The consensus is conceded, not refuted. It ranks asymptotic expressiveness
+%     correctly; it is the wrong ranking for a contest under a budget. Saying
+%     "everyone was wrong" is both weaker and less true.
+%   - Do not write "if-else". Characterizing what the winning programs actually
+%     contain is a contribution (RQ3), not a punchline.
+% ---------------------------------------------------------------------------
+
+\section{Introduction}
+
+Symbolic systems are widely held to lack the extensibility of connectionist ones.
+A heuristic program --- rules, an evaluation function, a search procedure ---
+exhibits only the behaviour somebody wrote down, whereas a policy trained by
+reinforcement learning (RL) acquires behaviour its designer never specified by
+interacting with the environment. The implied ordering places RL above symbolic
+methods, its ceiling set by compute rather than by authorship.
+
+That judgment is correct, and we do not dispute it. A hand-written rule set has
+no mechanism for extending its own behaviour repertoire; every new case is
+another case somebody has to notice, encode, and reconcile with the rules
+already there. The cost of that reconciliation grows with the program, which is
+the standard and accurate objection to symbolic methods. Under unbounded
+interaction a learned policy should win, and asymptotically it does.
+
+\paragraph{What coding agents changed.} The extensibility gap was never really
+about expressiveness --- it was about who pays the maintenance cost. A symbolic program is exactly the kind of artifact a coding agent can
+maintain: rule text and source code are readable, a revision is a diff, a change
+can be made locally without disturbing the rest of the program, and each edit is
+attributable to a specific behaviour it was meant to fix. Agents also accept the
+heterogeneous inputs that maintenance requires --- the rules of the game, the
+program's own source, and replays of the matches it lost --- and so can occupy
+the role that previously required a human author. A learned policy admits no
+comparable loop: its behaviour lives in weights that cannot be read, cannot be
+edited locally, and offer no handle by which a specific failure can be traced to
+a specific parameter. The property that matters here is editability, not
+interpretability. Interpretability asks whether a human can understand the
+policy, and a reader may reasonably not care. Editability asks whether the
+optimization loop can act on the artifact at all, and for an agent-driven loop it
+is a precondition. On this axis the symbolic/connectionist ordering reverses.
+
+So the question is open again, and for the first time answerable: \emph{how far
+does the symbolic paradigm go once the human maintenance bottleneck is removed?}
+
+\paragraph{A setting where humans already pushed the paradigm.} Answering it
+requires a domain where the symbolic paradigm was driven as hard as human authors
+could drive it. We use the complete archive of a collegiate game AI contest
+running since \val{founded}: \val{editions} editions, \val{nsub} submissions,
+\val{nmatch} evaluated matches, with original game rules that appear in no
+pretraining corpus and human code spanning a natural gradient of skill rather
+than a single reference solution.
+
+Contests of this kind carry their own folk version of the ordering above, and it
+is worth naming because it shaped what the archive contains. Among participants,
+writing rules is the beginner's craft, search the intermediate's, and RL the
+approach with the highest ceiling --- a ranking passed along in tutorials and
+postmortems, and one that contestants chose their methods by. The archive is
+therefore a record of many people attempting the ladder, which is what makes it
+usable as evidence.
+
+What it records is the ordering describing asymptotic ceilings correctly while
+failing to predict who wins. \val{pheur} of prize-winning programs contain no
+learned component; RL appears in \val{prl} of submissions and reached the finals
+in \val{nrlfinal} of \val{editions} editions. The methods ranked lowest took the
+prizes, and the method ranked highest largely did not arrive.
+
+\paragraph{Why.} Contests are decided under a budget, and under a budget the
+binding constraint is not the expressiveness of the policy class but the width of
+the feedback channel. A scalar reward reports that an episode went badly. The
+rules of the game plus a replay of the loss report what happened, when the
+position turned, and which decision was responsible. The second channel carries
+far more information per sample, and when samples --- not asymptotics --- are what
+is scarce, it dominates. This reframes the archive: human heuristics were not
+bounded by the heuristic paradigm, they were bounded by the cost of human
+iteration. The two have been confounded in every result of this kind, which is
+why the paradigm's actual ceiling has never been measured.
+
+\paragraph{Heuristic learning.} We remove the confound with heuristic learning
+(HL): a coding agent maintains a heuristic program by reading the rules, its own
+source, and replays of its losses, revising the policy, and rescoring it against
+a frozen opponent pool. Because the archive supplies a gradient of human skill,
+HL can be placed within the human field rather than compared to one baseline ---
+we report the percentile of the human distribution it reaches, not a percentage
+improvement over a reference implementation.
+
+One objection deserves stating before the results rather than after. The
+archive's RL scarcity is confounded with the cost structure of its participants:
+undergraduates competing on a deadline have limited compute, limited time, and
+limited RL expertise, so RL's absence is evidence about what wins under contest
+constraints, not about what RL can reach given a research budget. We do not
+claim otherwise. Every comparison in this paper is budget-conditional, and
+Section~\ref{sec:experiments} reports the full ledger --- environment steps,
+agent calls, tokens, wall-clock, and dollars --- including the axes on which HL
+is the more expensive method.
+
+\subsection*{Contributions}
+
+% Method, benchmark, comparison -- in that order, so the algorithm is the paper's
+% subject and the benchmark is what it is measured on. The archive audit sits
+% under the benchmark: it describes what the archive contains, and is not a
+% result of comparing HL against RL.
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Heuristic learning (HL), an algorithm that maintains a symbolic
+  policy without a human author.} One revision per iteration: the agent reads the
+  rules, its own source, and replays of the matches it lost, hypothesizes a
+  failure mode, edits the program, and rescores it against a frozen opponent
+  pool. Every version, edit, and score is kept in an append-only log, so a change
+  in behaviour can be attributed to the edit that caused it --- the property a
+  learned policy does not offer.
+
+  \item \textbf{A benchmark drawn from a real competition rather than
+  constructed for evaluation.} Its games were designed to be played and its
+  submissions were written to win, by contestants under deadline with standings
+  at stake --- not authored as tasks, and not solved by anyone who knew a
+  benchmark would be built from them. The rules are original to the contest and
+  appear in no pretraining corpus, and every match outcome is one that was
+  actually adjudicated. Scale follows from the contest having run continuously
+  since \val{founded}: \val{nsub} submissions and \val{nmatch} evaluated matches,
+  which is what supplies a natural gradient of human skill and lets a method be
+  placed at a percentile of real contestants instead of against a single
+  reference. On top of the archive we add the apparatus a benchmark needs ---
+  classic games as structural controls, three opponent pools (training, frozen
+  test, Elo anchor), a frozen evaluation set, and an Elo protocol comparable
+  across games and editions --- and we classify the submissions by whether they
+  contain a learned component: \val{pheur} of prize-winning programs do not, and
+  RL, present in \val{prl} of submissions, reached the finals in \val{nrlfinal}
+  of \val{editions} editions.
+
+  \item \textbf{A broad comparison of HL and RL.} We compare the two paradigms
+  across the benchmark's games, against model-based RL and policy gradient, over
+  a range of budgets, and against the human field --- reporting a shared ledger
+  in every denominator (environment steps, agent calls, tokens, wall-clock,
+  dollars) rather than the one that favours either method. Four findings. HL
+  reaches the \val{pct}th percentile of the human field and surpasses the
+  strongest recorded human on \val{nbeat} games. It is \val{effratio} more
+  sample-efficient than RL at matched Elo, but RL overtakes beyond
+  \val{crossover} environment steps and HL is the costlier method
+  \val{loseaxis}, so neither paradigm dominates: which one wins is set by the
+  budget and by the game's structure --- rule complexity, replay
+  interpretability, state-space size, and simulation cost. HL's improvement
+  frequency decays as \val{decay} and plateaus near \val{plateau} revisions, a
+  ceiling we trace to \val{ceilingcause}. And the loop transfers to
+  \val{ntransfer} further benchmarks without retuning.
+\end{itemize}

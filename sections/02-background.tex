@@ -1,0 +1,23 @@
+% ---------------------------------------------------------------------------
+% Background
+%
+% The setting and the vocabulary the rest of the paper depends on. Not a
+% literature review -- that is 07-related-work.
+%
+%   - the contest: founded \val{founded}, \val{editions} editions, \val{nsub}
+%     submissions, \val{nmatch} matches. Why a public benchmark cannot
+%     reproduce it: original rules (so absent from pretraining data) and human
+%     code spanning a natural skill gradient rather than one reference solution.
+%   - the \val{ngames} games, plus the classic games kept as structural controls.
+%   - definitions: heuristic learning; the folk hierarchy; budget, split into
+%     learning-only / evaluation / total and kept separate everywhere; the Elo
+%     protocol (batch vs online); the three opponent pools (training, frozen
+%     test, Elo anchor).
+%   - the archive audit protocol: what counts as "no learned component". The
+%     criterion has to be decidable -- weight files, training scripts, whether
+%     hand-tuned evaluation coefficients count -- because \val{pheur} and
+%     \val{prl} are worth exactly as much as this definition is. Classifying the
+%     winners is also how RQ3 gets answered, so it is not mere bookkeeping.
+% ---------------------------------------------------------------------------
+
+\section{Background}

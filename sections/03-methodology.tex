@@ -1,0 +1,23 @@
+% ---------------------------------------------------------------------------
+% Methodology
+%
+% The HL loop, one coding_agent_act per policy version: read rules + own source
+% + replays of losses -> hypothesize failure modes -> revise policy -> rescore
+% on the frozen set. Append-only event log; missing token/time data recorded as
+% unknown/missing, never zero.
+%
+% Also here:
+%   - the RL baselines (model-based, policy gradient) and how their budget is
+%     made commensurable with HL's. This is the crux of the sample-efficiency
+%     claim: an episode and a coding_agent_act are not the same unit, so state
+%     the conversion and its assumptions explicitly.
+%   - measurement: Final Elo, Elo gain, Elo-budget curve, Elo-budget AUC. Every
+%     AUC carries its x-axis unit (AUC_Elo_episode, AUC_Elo_token, ...).
+%   - LocalPolicyKL between adjacent versions, over decision points actually
+%     reached. Deliberately not framed as epistemic uncertainty reduction.
+%     Occupancy shift is logged separately and never summed with the KL.
+%   - the discipline: a policy change is not a result. The question is how much
+%     Elo a given behaviour change bought.
+% ---------------------------------------------------------------------------
+
+\section{Methodology}

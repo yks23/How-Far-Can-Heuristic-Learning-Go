@@ -1,0 +1,22 @@
+% ---------------------------------------------------------------------------
+% Experiments
+%
+% Setup only; findings go in 05-results.
+%
+%   - models and scaffolds under test; which are held fixed across games.
+%   - the budget ledger. This table is what answers the selection-effect
+%     objection raised in the introduction, so it needs every denominator:
+%     environment steps, coding_agent_act calls, tokens, dollars, wall-clock.
+%     Report HL and RL in all of them, including the ones where HL loses
+%     (\val{loseaxis}).
+%   - the frozen evaluation set and the three opponent pools; how Elo anchors
+%     stay comparable across games and across editions.
+%   - RL budget ceiling: to claim a crossover at \val{crossover} the baselines
+%     have to actually be run past it. If they are not, report a lower bound
+%     ("no crossover within X steps"), never an extrapolation.
+%   - the transfer suite: \val{ntransfer} further benchmarks, no retuning.
+%   - seeds, repeats, and how variance is reported.
+% ---------------------------------------------------------------------------
+
+\section{Experiments}
+\label{sec:experiments}
