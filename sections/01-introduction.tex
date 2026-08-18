@@ -38,6 +38,23 @@
 %      results isolating context accumulation and self-conditioning); and the
 %      distinction that keeps our loop tractable (their spec grows, a game's
 %      rules do not, so a heuristic can be replaced rather than layered).
+%      Two claims about SlopCodeBench were drafted wrong and are now fixed
+%      against the v2 full text; both flattered us, which is why they lasted.
+%      (a) Human repos do NOT "flatten". 68% of them end more verbose than they
+%      began. The finding is a rate gap -- per-checkpoint slope 0.0022 vs 0.0144
+%      for verbosity -- and the rate gap is the better claim anyway, since a
+%      human exemption would make maintenance capacity look like an
+%      agent-specific defect instead of a general limit that agents hit sooner.
+%      (b) Never write that quality-aware prompting leaves the slope
+%      "statistically unchanged". Their paper runs no significance test on that
+%      experiment at all; "slope" and "intercept" appear only in Appendix D,
+%      about the human panel. Say the prompts move the starting level without
+%      slowing the growth -- and keep the price attached (2.3 pp of strict
+%      correctness, 12.1% cost), because an intervention that trades capability
+%      for initial quality and still does not bend the curve is the actual
+%      argument for a capacity limit. All figures live in the refs.bib
+%      annotation, which is authoritative; re-verify if a v3 appears, since
+%      every v1 number changed in v2 and this paragraph inherited the v1 set.
 %      Then the axis: description length of a good-enough policy against the
 %      agent's maintenance capacity. Go is the counterexample that kills rule
 %      complexity as the x-axis. The LLM boundary falls out of the same axis.
@@ -180,14 +197,22 @@ not because the paradigm ran out of expressiveness, but because the artifact
 outgrew what its maintainer can hold, attribute, and change.
 
 This is measurable outside our setting, and three recent results measure it.
-Coding agents extending their own prior code under an evolving specification
-degrade monotonically where maintained human repositories flatten: structural
-erosion rises across the large majority of trajectories, generated code runs
-roughly twice as verbose as human code, and cost per iteration climbs while
-correctness does not \citep{slopcodebench2026}. Decisively, quality-aware
-prompting lowers the intercept and leaves the slope statistically unchanged ---
-so this is a capacity limit, not a prompting defect. Two further results isolate
-mechanisms behind it. Agentic repair succeeds while the accumulated context
+Coding agents that extend their own prior code under a growing specification
+accumulate structural damage as they go: complexity concentrates in 77\% of
+trajectories, and cost per checkpoint climbs 2.2 times from first to last with no
+matching gain in correctness \citep{slopcodebench2026}. Human maintainers are not
+exempt, which is the more useful half of the result --- 68\% of the repositories
+they are calibrated against also end more verbose than they began, but they
+accumulate verbosity and concentrated complexity some 6.6 and 5.0 times more
+slowly per revision. What separates a maintainer that keeps working from one that
+stalls is the rate at which it builds structure it can no longer place an edit
+into, not whether it builds any. The decay also resists prompting. Quality-aware
+prompts cut initial verbosity by about a third and erosion by more, without
+slowing the rate at which either grows, and they are not free: strict correctness
+falls 2.3 points and cost per checkpoint rises 12.1\%. An intervention that buys a
+better starting point, pays capability for it, and still does not bend the curve
+is the signature of a capacity limit rather than a prompting defect. Two further results isolate mechanisms
+behind it. Agentic repair succeeds while the accumulated context
 stays small and degrades past it, and padding the context while guaranteeing that
 the right files are present makes matters worse rather than better, so the limit
 is not one of retrieval \citep{longcontextbugfix2026}. And given the plan and
@@ -198,12 +223,13 @@ remove \citep{longhorizonexecution2026}. A program under revision is exactly tha
 situation: the artifact is the accumulated context.
 
 The first of those results cuts both ways, and the distinction is what makes our
-loop tractable rather than doomed. Degradation under a long-horizon
-specification is driven by that specification growing: new requirements arrive,
-the program must cover them all, and accumulation is compulsory. A game's rules do not change. The agent is improving
-a policy against a fixed specification, so a better heuristic may \emph{replace}
-a worse one instead of being layered on top of it, and the program is free to get
-shorter. Accumulation is therefore a tendency here rather than an obligation ---
+loop tractable rather than doomed. Its degradation is driven by the
+specification growing --- that is the benchmark's design, requiring architectural
+decisions under requirements that keep arriving, so that the agent's own output
+must accumulate across steps and nothing may be discarded. A game's rules do not
+change. The agent is improving a policy against a fixed specification, so a
+better heuristic may \emph{replace} a worse one instead of being layered on top of
+it, and the program is free to get shorter. Accumulation is therefore a tendency here rather than an obligation ---
 which is why the ceiling is a question worth measuring instead of a foregone
 conclusion, and why we log program size at every revision rather than only Elo.
 

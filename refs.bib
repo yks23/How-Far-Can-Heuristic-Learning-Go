@@ -57,24 +57,53 @@
 % Do not restore "generates code once" -- it is false and it is not needed.
 
 % ---------------------------------------------------------------------------
-% Load-bearing for the upper bound. Agents repeatedly extend their own prior
-% code under an evolving spec: structural erosion rises in 80% of trajectories,
-% verbosity in 89.8%, agent code ~2.2x more verbose than maintained human
-% repos, mean max cyclomatic complexity 27.1 -> 68.2, cost per checkpoint 2.9x
-% with no correctness gain. Human repos flatten where agent curves climb
-% monotonically. Decisive detail: quality-aware prompting moves the intercept
-% (verbosity -34.5%) but the degradation slope is statistically
-% indistinguishable from baseline -- so the ceiling is not a prompting defect.
+% Load-bearing for the upper bound. VERIFIED against the v2 full text
+% 2026-08-18 (arXiv:2603.24755v2, 7 May 2026, 26pp). The annotation here
+% previously carried v1 numbers, every one of which v2 changed; the intro
+% inherited them. Trust only this block, and re-verify if a v3 appears.
+%
+% Scale: 36 problems, 196 checkpoints, 15 coding agents across six providers.
+% (NOT 20/93/11 -- that was v1.) Two-hour wall clock per run, no turn or cost
+% cap, Python only. Best agent passes 14.8% of checkpoints; no configuration
+% passes every checkpoint of any problem.
+%
+% Degradation: structural erosion (concentrated complexity) rises in 77% of
+% agent trajectories, verbosity (redundant code) in 75.5%. Against 473
+% open-source Python repos, agent code is 2.3x more verbose and 2.0x more
+% eroded; per checkpoint, agent verbosity grows 6.6x and erosion 5.0x faster.
+% Cost per checkpoint grows 2.2x first-to-last while relative lines changed
+% fall 97.4% -> 29.5%; RQ1's own wording is that cost "rises without
+% corresponding improvements to correctness".
+%
+% Do NOT write that human repos "flatten". They degrade too: 68% of repos with
+% five or more sampled commits end more verbose (median growth 36%), erosion
+% rises in 53%, per-checkpoint slopes 0.0022 verbosity / 0.0053 erosion against
+% 0.0144 / 0.0264 for agents. The finding is a RATE gap, not exemption, and the
+% rate gap is the comparison the upper bound actually wants.
+%
+% Prompting (their 3.4): anti-slop and plan-first vs a just-solve baseline.
+% Verbosity down 27.5-35.6% and erosion down 34.3-57.6% depending on model, but
+% "little impact on the iterative degradation" -- and it costs 2.4/3.6 pp of
+% strict pass rate (2.3 pp averaged, their contribution list) plus 12.1% cost
+% per checkpoint. Only on one model (GPT 5.4) does quality improve start-to-end
+% at all.
+%
+% Do NOT write "the slope is statistically unchanged" or "statistically
+% indistinguishable". There is no significance test, p-value, CI, or regression
+% on the prompting experiment anywhere in the paper; the words "slope" and
+% "intercept" appear once each, in Appendix D, about the human panel. The
+% defensible claim is that the prompts move the starting level without slowing
+% the growth rate, which is all the capacity-limit argument needs.
 % ---------------------------------------------------------------------------
 @article{slopcodebench2026,
-  title  = {Benchmarking How Coding Agents Degrade Over Long-Horizon Iterative
-            Tasks},
+  title  = {SlopCodeBench: Benchmarking How Coding Agents Degrade Over
+            Long-Horizon Iterative Tasks},
   author = {Orlanski, Gabriel and Roy, Devjeet and Yun, Alexander and
             Shin, Changho and Gu, Alex and Ge, Albert and Adila, Dyah and
             Roberts, Nicholas and Sala, Frederic and Albarghouthi, Aws},
   journal = {arXiv preprint arXiv:2603.24755},
   year   = {2026},
-  note   = {SlopCodeBench; 20 problems, 93 checkpoints, 11 models}
+  note   = {SlopCodeBench; v2: 36 problems, 196 checkpoints, 15 agents}
 }
 
 % ---------------------------------------------------------------------------
