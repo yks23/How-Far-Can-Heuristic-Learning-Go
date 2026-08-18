@@ -36,6 +36,21 @@
 % Anything measured this way is a proxy and must be called one in the text every
 % time the axis is used. Cyclomatic complexity (mccabe1976complexity) is a
 % secondary axis at best -- report it if it agrees, do not lead with it.
+%
+% BASELINE RATIONALE MOVED HERE FROM SECTION 1 on 2026-08-18 under the 2.5-page
+% budget. The intro now says only "model-based RL is our primary baseline"; the
+% reason has to be stated here in full, because without it the baseline choice
+% looks like it was picked to flatter us. Measuring HL against policy gradient
+% alone confounds symbolic-versus-neural with on-policy-versus-off-policy: a
+% maintained program is off-policy AND cross-policy-class, so beating an on-policy
+% method would leave both explanations open. Model-based RL is off-policy, which
+% isolates the representational question; policy gradient stays in as the
+% on-policy reference point rather than being dropped. Also owed here: the honest
+% form of kuang2025generative's efficiency claim, which the intro now calls
+% "directional" without saying why -- one family of tasks, no shared budget
+% accounting, no adversary. See 07-related-work.tex, which makes the same point
+% about their normalization protocol.
 % ---------------------------------------------------------------------------
 
 \section{Methodology}
+\label{sec:methodology}

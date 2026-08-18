@@ -68,6 +68,26 @@
 %     hand-tuned evaluation coefficients count -- because \val{pheur} and
 %     \val{prl} are worth exactly as much as this definition is. Classifying the
 %     winners is also how RQ3 gets answered, so it is not mere bookkeeping.
+%
+% BENCHMARK PROVENANCE ARGUMENT MOVED HERE FROM SECTION 1 on 2026-08-18 under the
+% 2.5-page budget. The intro now asserts both properties in one sentence and
+% forward-references this section by name, so this section is committed to arguing
+% them rather than restating them.
+%   - Contamination resistance. The contrast to draw: livecodebench2024 and
+%     workbuddybench2026 buy it by authoring fresh tasks or collecting them
+%     continuously, which is a cost paid forever; here it falls out of a venue that
+%     predates the benchmark and was never built for evaluation. State the limit of
+%     that argument honestly -- the archive is PUBLIC, so provenance is not proof,
+%     which is why Section 4 runs the contamination check and why neither this
+%     section nor the intro may rest anything on the rules being unseen. That
+%     inference was removed from the intro and from 06-discussion.tex already; do
+%     not reintroduce it here, which is the last place it could plausibly survive.
+%   - A distribution rather than a reference solution. Thousands of independent
+%     attempts at the same games is what licenses percentile placement; mlebench2024
+%     (Kaggle) and olympiad2025percentile are the precedents for reporting a method
+%     as a percentile of a real human field. This is what the human baseline in
+%     contribution 3 rests on, so it needs stating before Section 5 uses it.
 % ---------------------------------------------------------------------------
 
 \section{Background}
+\label{sec:background}
