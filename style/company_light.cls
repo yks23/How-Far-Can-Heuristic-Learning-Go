@@ -38,19 +38,22 @@
 % than inherited \parskip, so the vertical rhythm can be retuned here without
 % reading \mymaketitle. Sizes are font-size commands, not lengths.
 %
-%   \brandtitlesize   title face. \huge (20.7pt on a 10pt body) read as a 2:1
-%                     jump over everything else; \LARGE keeps it dominant
-%                     without swamping the author and abstract.
-%   \brandauthorsize  author/affiliation face, one step over the body text so
-%                     the hierarchy title > author > abstract is legible.
-\newcommand{\brandtitlesize}{\LARGE}
-\newcommand{\brandauthorsize}{\large}
+%   \brandtitlesize   title face. Set explicitly rather than with a size step:
+%                     \huge (20.74pt) was a shade large against the body text,
+%                     but the next step down, \LARGE (17.28pt), overshoots at
+%                     17% smaller and makes the whole header read shrunken.
+%                     19pt is the ~8% trim between them.
+%   \brandauthorsize  author/affiliation face. \normalsize, i.e. the body size,
+%                     as in the upstream design.
+\newcommand{\brandtitlesize}{\fontsize{19}{20.7}\selectfont}
+\newcommand{\brandauthorsize}{\normalsize}
 
 % Baseline-to-baseline distance for the title. Absolute rather than a stretch
-% factor: see the note in \mymaketitle. Roughly 1.19x the glyph size, which is
-% looser than TeX's default for a display face and keeps a 4-line title open.
+% factor: see the note in \mymaketitle. Held at 1.09x the glyph size, the ratio
+% the title was tuned to when it was \huge/22.6pt, so trimming the face does not
+% quietly tighten the leading with it.
 \newlength{\brandtitleleading}
-\setlength{\brandtitleleading}{20.5pt}
+\setlength{\brandtitleleading}{20.7pt}
 
 % Gaps between the header's blocks, top to bottom. They widen going down so
 % each block groups with what it belongs to: the author sits nearer the title
