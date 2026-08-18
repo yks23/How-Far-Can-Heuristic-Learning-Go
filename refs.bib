@@ -204,12 +204,25 @@
 }
 
 % ---------------------------------------------------------------------------
-% Precedent for our headline metric. Model performance reported as a
-% percentile of the actual ranked human field (GPT-5: 81.76th percentile,
-% 2414 Elo), scored into contest points against official standings. Also the
-% template for our contamination section: temporal, familiarity, perturbation,
-% and code-similarity checks, with the honest closing caveat that these make
-% direct copying unlikely but do not rule out exposure to related algorithms.
+% Precedent for our headline metric. The benchmark is LiveOIBench.
+%
+% VERIFIED against the v3 full text 2026-08-18 (ICML 2026 camera ready).
+% 403 expert-curated problems averaging 60 official test cases, from 72
+% contests across 14 Informatics Olympiads, 2023-2025. Percentiles are computed
+% against official contestant rankings, not a reconstructed distribution.
+% GPT-5 is best at the 81.76th percentile with a Codeforces Elo of 2414 and
+% still "lags behind elite human competitors"; GPT-OSS-120B is the strongest
+% open-weight model at the 60th. Note their Elo protocol excludes participants
+% with no official Codeforces rating or a rating below 500, and contests with
+% fewer than 15 participants -- if we ever quote an Elo comparison, that
+% exclusion has to travel with it.
+%
+% Their contamination protocol is the template for Section 4, and it really is
+% four dimensions (their 5.3): temporal effects relative to training cutoffs,
+% familiarity with tasks or solutions, active statement perturbations, and code
+% similarity. The abstract compresses this to three by dropping perturbation,
+% so cite the section, not the abstract. Keep their honest closing caveat:
+% minimal evidence of contamination is not proof of none.
 % ---------------------------------------------------------------------------
 @article{olympiad2025percentile,
   title  = {Can Large Language Models Outperform Human Contestants in
@@ -219,7 +232,8 @@
             Lee, Ayoung and Bhushan, Shitanshu and Wang, Lu},
   journal = {arXiv preprint arXiv:2510.09595},
   year   = {2025},
-  note   = {403 problems, 72 contests, human percentile and Codeforces Elo}
+  note   = {LiveOIBench; ICML 2026. 403 problems, 72 contests; GPT-5 at the
+            81.76th human percentile, 2414 Elo}
 }
 
 % ---------------------------------------------------------------------------
@@ -254,6 +268,14 @@
 % Non-adversarial: single-agent XMiniGrid plus cooperative PeopleJoinQA. The
 % headline "up to 80%" is against vanilla LM agents, not against RL, and the
 % abstract does not name the metric -- do not repeat the number.
+% Re-checked 2026-08-18 and all of the above holds. Confirmed additionally:
+% the mechanism is prompting plus "an update rule that maintains compressed
+% trajectory representations in memory" -- no gradient updates anywhere, which
+% is exactly the property that makes it isolate the channel from the artifact.
+% Its stronger comparisons (Reflexion, AWM) are other agent architectures and
+% appear on XMiniGrid only; NO RL baseline exists in the paper. So it supports
+% "the reader earns the efficiency" and cannot be used for any claim about
+% magnitude relative to RL. That comparison is ours to make.
 % ---------------------------------------------------------------------------
 @article{echo2025hindsight,
   title   = {Sample-Efficient Online Learning in {LM} Agents via Hindsight
