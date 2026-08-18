@@ -43,6 +43,20 @@
 %     contradicts the paragraph's own thesis. The axis is K(pi_good), always.
 %     A game plateaus early because its *winning policy* is long, not because
 %     its rulebook is.
+%
+% LENGTH. Roughly 2,200 words plus 400 of contributions, which is long. It is
+% long because the argument is two-sided, carries external evidence, and answers
+% two objections before the results -- all deliberate. Do not trim it to a target
+% without a venue actually demanding one. When one does, cut in this order:
+%   1. The editability discussion in para 3, from four sentences to two. The
+%      distinction is needed; the elaboration is not.
+%   2. The contamination-resistance contrast, to one sentence. It is positioning
+%      against a literature, and the benchmark section makes the same case.
+%   3. The two objection paragraphs, merged and moved to Limitations. This costs
+%      real credibility -- a reader who meets the pretraining objection first in
+%      Section 6 has already decided we were hiding it -- so it goes last.
+% Never cut: the Go example (it is what kills rule complexity as the axis), the
+% single inequality, or the replacement-vs-accumulation distinction.
 % ---------------------------------------------------------------------------
 
 \section{Introduction}
@@ -261,21 +275,14 @@ and dollars --- including the axes on which HL is the more expensive method.
 
   \item \textbf{A benchmark drawn from a real competition rather than
   constructed for evaluation.} Its games were designed to be played and its
-  submissions were written to win, by contestants under deadline with standings
-  at stake --- not authored as tasks, and not solved by anyone who knew a
-  benchmark would be built from them. The rules are original to the contest and
-  appear in no pretraining corpus, and every match outcome is one that was
-  actually adjudicated. Scale follows from the contest having run continuously
-  since \val{founded}: \val{nsub} submissions and \val{nmatch} evaluated matches,
-  which is what supplies a natural gradient of human skill and lets a method be
-  placed at a percentile of real contestants instead of against a single
-  reference. On top of the archive we add the apparatus a benchmark needs ---
-  classic games as structural controls, three opponent pools (training, frozen
-  test, Elo anchor), a frozen evaluation set, and an Elo protocol comparable
-  across games and editions --- and we classify the submissions by whether they
-  contain a learned component: \val{pheur} of prize-winning programs do not, and
-  RL, present in \val{prl} of submissions, reached the finals in \val{nrlfinal}
-  of \val{editions} editions.
+  submissions written to win, under deadline with standings at stake --- not
+  authored as tasks, and not solved by anyone who knew a benchmark would be built
+  from them. To the archive's \val{nsub} submissions and \val{nmatch} adjudicated
+  matches we add the apparatus a benchmark needs: classic games as structural
+  controls, three opponent pools (training, frozen test, Elo anchor), a frozen
+  evaluation set, and an Elo protocol comparable across games and editions. We
+  also classify every submission by whether it contains a learned component,
+  which is what makes the audit above a measurement rather than an impression.
 
   \item \textbf{A broad comparison of HL and RL, and a mechanism for where HL
   stops.} We compare the paradigms across the benchmark's games, against
