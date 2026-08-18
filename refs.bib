@@ -1,0 +1,368 @@
+% ===========================================================================
+% refs.bib
+%
+% Entries surveyed 2026-08. Two cautions carried from the survey:
+%
+%   - Numbers quoted in annotations below are from the papers' own abstracts or
+%     HTML text. Any figure this paper *asserts* must be re-checked against the
+%     published PDF before it goes in a claim; several were read from search
+%     snippets or from HTML that omitted appendices.
+%   - The RL compute figures (AlphaStar, OpenAI Five) circulate widely in
+%     secondary sources at inconsistent magnitudes. They are load-bearing for
+%     the sample-efficiency argument, so cite the primary papers only, and
+%     quote the figure the primary paper actually states.
+% ===========================================================================
+
+% ---------------------------------------------------------------------------
+% The nearest competitive-setting prior work. LLM-coded agents against human
+% students in a repeated market/routing tournament. Humans took the top five
+% places; the best LLM agent placed 6th; 33 of 40 LLM agents lost to trivial
+% baselines; asking GPT-5 Pro to improve the winning student's code cost it
+% nine places. One-shot generation with prompting strategies -- no iterative
+% loop against an opponent pool, no Elo, no percentile, no RL baseline.
+% This is our motivation, not our counterexample: it is evidence that the
+% model alone does not close the gap, which is what makes the loop the claim.
+% ---------------------------------------------------------------------------
+@article{vibecoding2025tournament,
+  title  = {Can Vibe Coding Beat Graduate {CS} Students? An {LLM} vs.\ Human
+            Coding Tournament on Market-driven Strategic Planning},
+  author = {Danassis, Panayiotis and Goel, Naman},
+  journal = {arXiv preprint arXiv:2511.20613},
+  year   = {2025},
+  note   = {38{,}304 matches, 40 LLM-coded agents vs.\ 17 human-coded agents}
+}
+
+% ---------------------------------------------------------------------------
+% Load-bearing for the upper bound. Agents repeatedly extend their own prior
+% code under an evolving spec: structural erosion rises in 80% of trajectories,
+% verbosity in 89.8%, agent code ~2.2x more verbose than maintained human
+% repos, mean max cyclomatic complexity 27.1 -> 68.2, cost per checkpoint 2.9x
+% with no correctness gain. Human repos flatten where agent curves climb
+% monotonically. Decisive detail: quality-aware prompting moves the intercept
+% (verbosity -34.5%) but the degradation slope is statistically
+% indistinguishable from baseline -- so the ceiling is not a prompting defect.
+% ---------------------------------------------------------------------------
+@article{slopcodebench2026,
+  title  = {Benchmarking How Coding Agents Degrade Over Long-Horizon Iterative
+            Tasks},
+  author = {Orlanski, Gabriel and Roy, Devjeet and Yun, Alexander and
+            Shin, Changho and Gu, Alex and Ge, Albert and Adila, Dyah and
+            Roberts, Nicholas and Sala, Frederic and Albarghouthi, Aws},
+  journal = {arXiv preprint arXiv:2603.24755},
+  year   = {2026},
+  note   = {SlopCodeBench; 20 problems, 93 checkpoints, 11 models}
+}
+
+% ---------------------------------------------------------------------------
+% Precedent for our headline metric. Model performance reported as a
+% percentile of the actual ranked human field (GPT-5: 81.76th percentile,
+% 2414 Elo), scored into contest points against official standings. Also the
+% template for our contamination section: temporal, familiarity, perturbation,
+% and code-similarity checks, with the honest closing caveat that these make
+% direct copying unlikely but do not rule out exposure to related algorithms.
+% ---------------------------------------------------------------------------
+@article{olympiad2025percentile,
+  title  = {Can Large Language Models Outperform Human Contestants in
+            Informatics Olympiads?},
+  author = {Zou, Kaijian and Xiong, Aaron and Zhang, Yunxiang and
+            Zhang, Frederick and Ren, Yueqi and Yang, Jirong and
+            Lee, Ayoung and Bhushan, Shitanshu and Wang, Lu},
+  journal = {arXiv preprint arXiv:2510.09595},
+  year   = {2025},
+  note   = {403 problems, 72 contests, human percentile and Codeforces Elo}
+}
+
+% ---------------------------------------------------------------------------
+% Closest method neighbour: policies as Python programs, revised by an LLM
+% from execution traces and natural-language feedback, competitive with deep
+% RL baselines at far fewer environment interactions. ICML 2025 workshop
+% paper. Differences to state plainly: single-agent Atari rather than
+% adversarial play, no human field, no shared budget ledger, and no ceiling
+% or plateau analysis. Their sample-efficiency claim is directional, with no
+% normalization protocol given.
+% ---------------------------------------------------------------------------
+@inproceedings{kuang2025generative,
+  title     = {Learning Game-Playing Agents with Generative Code Optimization},
+  author    = {Kuang, Zhiyi and Rong, Ryan and Yuan, YuCheng and Nie, Allen},
+  booktitle = {ICML Workshop on Programmatic Representations for Agent Learning},
+  year      = {2025},
+  note      = {arXiv:2508.19506}
+}
+
+% ---------------------------------------------------------------------------
+% Code agents revising programs across iterated tournaments, scored on two
+% metrics to separate initial generation proficiency from improvement realized
+% through iteration. Their finding that the two are not strictly correlated is
+% why our decay analysis must report starting Elo and improvement rate
+% separately rather than only final Elo.
+% ---------------------------------------------------------------------------
+@article{catarena2025,
+  title  = {Evaluating Evolutionary Capabilities of Code Agents via Iterative
+            Tournaments},
+  author = {Fu, Lingyue and others},
+  journal = {arXiv preprint arXiv:2510.26852},
+  year   = {2025},
+  note   = {CATArena}
+}
+
+% ---------------------------------------------------------------------------
+% Nearest neighbour on opponent-pool design: LLM-based best-response oracles
+% over growing strategy pools in a two-player zero-sum game. Must be cited
+% where our three pools are introduced.
+% ---------------------------------------------------------------------------
+@article{asro2026coevolution,
+  title  = {Game-Theoretic Co-Evolution for {LLM}-Based Heuristic Discovery},
+  journal = {arXiv preprint arXiv:2601.22896},
+  year   = {2026},
+  note   = {ASRO}
+}
+
+% ---------------------------------------------------------------------------
+% Survey of 1,250 papers (2024-2026). Two things we use: bounded
+% self-refinement is separated from open-ended recursive self-improvement, and
+% the evaluator design space is ordered into a verification hierarchy from
+% formal verifiers (strongest) to intrinsic self-assessment (weakest), with
+% demonstrated self-improvement correlating with position in that hierarchy.
+% Our loop sits at the strong end -- a game engine adjudicates, and the
+% opponent pool is frozen -- which is the principled reason to expect it to
+% work where research-agent loops stall.
+% ---------------------------------------------------------------------------
+@article{selfimprovement2026survey,
+  title  = {From Bounded Self-Refinement to Autonomous Research Loops},
+  author = {Chen, Mingguang and Wang, Licheng and Qu, Bo},
+  journal = {arXiv preprint arXiv:2607.07663},
+  year   = {2026}
+}
+
+% ---------------------------------------------------------------------------
+% Programmatic RL. The theory entry for policy-as-program representations and
+% their size/expressiveness tradeoff; DiPRL for the current empirical line.
+% Handle with care: DiPRL already describes programmatic policies as
+% "human-readable and -editable". Our claim is not that editability is new but
+% that its role changes -- there it is a property of the delivered artifact
+% for a human reader, here it is a precondition for the optimizer to act at
+% all. State that difference explicitly rather than claiming the word.
+% ---------------------------------------------------------------------------
+@article{programmaticrl2024foundations,
+  title  = {Theoretical Foundations for Programmatic Reinforcement Learning},
+  author = {Shabadi, Guruprerana and Fijalkow, Nathana{\"e}l and
+            Matricon, Th{\'e}o},
+  journal = {arXiv preprint arXiv:2402.11650},
+  year   = {2024}
+}
+
+@article{diprl2026,
+  title  = {{DiPRL}: Learning Discrete Programmatic Policies via Architecture
+            Entropy Regularization},
+  author = {Hu, Chengpeng and Zhang, Yingqian and Baier, Hendrik},
+  journal = {arXiv preprint arXiv:2605.18508},
+  year   = {2026}
+}
+
+% Scheduled for the programmatic-RL paragraph in 07-related-work; not yet cited
+% in the body, so it will not appear in the bibliography until it is.
+@article{llmguidedsearch2024,
+  title  = {Synthesizing Programmatic Reinforcement Learning Policies with
+            Large Language Model Guided Search},
+  author = {Liu, Max and Yu, Chan-Hung and Lee, Wei-Hsu and
+            Hung, Cheng-Wei and Chen, Yen-Chun and Sun, Shao-Hua},
+  journal = {arXiv preprint arXiv:2405.16450},
+  year   = {2024}
+}
+
+% ---------------------------------------------------------------------------
+% AI4AI: agents as symbolic programs that manipulate connectionist training.
+% Cited for the one-sentence observation that the first point of contact in
+% AI4AI is already a symbolic program driving a learned artifact -- which is
+% what makes "go directly to the symbolic policy" the obvious next question.
+% ---------------------------------------------------------------------------
+@article{agent2rlbench2026,
+  title  = {Can {LLM} Agents Engineer Agentic {RL} Post-Training?},
+  journal = {arXiv preprint arXiv:2604.10547},
+  year   = {2026},
+  note   = {Agent2 RL-Bench}
+}
+
+@article{selfimprovingcodingagent2025,
+  title  = {A Self-Improving Coding Agent},
+  journal = {arXiv preprint arXiv:2504.15228},
+  year   = {2025}
+}
+
+@article{alphaevolve2025,
+  title  = {{AlphaEvolve}: A Coding Agent for Scientific and Algorithmic
+            Discovery},
+  journal = {arXiv preprint arXiv:2506.13131},
+  year   = {2025}
+}
+
+% ---------------------------------------------------------------------------
+% Off-policy sample reuse. Used for the precise version of the channel-width
+% argument: policy gradient updates a batch once and discards it, while
+% off-policy methods reuse it -- so a comparison against policy gradient alone
+% confounds "symbolic vs neural" with "on-policy vs off-policy". Model-based
+% RL is therefore the primary baseline and policy gradient the on-policy
+% reference point.
+% ---------------------------------------------------------------------------
+% Cited for the plain fact that LLM RL is largely on-policy: a batch is used for
+% one update, then discarded.
+@article{offpolicyvaluellm2026,
+  title  = {Off-Policy Value-Based Reinforcement Learning for Large Language
+            Models},
+  author = {Wang, Peng-Yuan and Li, Ziniu and Xu, Tian and Yang, Bohan and
+            Liu, Tian-Shuo and Wang, ChenYang and Chen, Xiong-Hui and
+            Li, Yi-Chen and Yang, Tianyun and Chen, Congliang and Yu, Yang},
+  journal = {arXiv preprint arXiv:2603.23355},
+  year   = {2026}
+}
+
+@article{samplereuse2022,
+  title  = {Generalized Policy Improvement Algorithms with Theoretically
+            Supported Sample Reuse},
+  author = {Queeney, James and Paschalidis, Ioannis Ch. and
+            Cassandras, Christos G.},
+  journal = {arXiv preprint arXiv:2206.13714},
+  year   = {2022}
+}
+
+% ---------------------------------------------------------------------------
+% Contamination-resistant benchmark construction. The contrast our benchmark
+% section needs: this line buys contamination resistance by authoring fresh
+% tasks or continuously collecting new ones. Ours comes from a venue that
+% predates the benchmark and was never built for evaluation -- and none of
+% these carry a distribution of human skill.
+% ---------------------------------------------------------------------------
+% Credited to a team rather than an author list on arXiv; 37 named contributors.
+@article{workbuddybench2026,
+  title  = {Tencent {WorkBuddy} Bench: A Multi-Domain Coding-Agent Benchmark
+            with Contamination-Resistant Task Construction},
+  author = {{Tencent WorkBuddy Bench Team}},
+  journal = {arXiv preprint arXiv:2607.20911},
+  year   = {2026}
+}
+
+@article{livecodebench2024,
+  title  = {{LiveCodeBench}: Holistic and Contamination Free Evaluation of
+            Large Language Models for Code},
+  author = {Jain, Naman and Han, King and Gu, Alex and Li, Wen-Ding and
+            Yan, Fanjia and Zhang, Tianjun and Wang, Sida and
+            Solar-Lezama, Armando and Sen, Koushik and Stoica, Ion},
+  journal = {arXiv preprint arXiv:2403.07974},
+  year   = {2024}
+}
+
+% ---------------------------------------------------------------------------
+% MLE-bench and its follow-up. Agents on 75 real Kaggle competitions: the
+% precedent for scoring agents against a real human field, and the closest
+% analogue to our archive-as-benchmark move outside game playing.
+% ---------------------------------------------------------------------------
+@article{mlebench2024,
+  title  = {{MLE}-bench: Evaluating Machine Learning Agents on Machine
+            Learning Engineering},
+  author = {Chan, Jun Shern and Chowdhury, Neil and Jaffe, Oliver and
+            Aung, James and Sherburn, Dane and Mays, Evan and
+            Starace, Giulio and Liu, Kevin and Maksin, Leon and
+            Patwardhan, Tejal and Weng, Lilian and M{\k{a}}dry, Aleksander},
+  journal = {arXiv preprint arXiv:2410.07095},
+  year   = {2024},
+  note   = {ICLR 2025}
+}
+
+% ---------------------------------------------------------------------------
+% Frontier-Eng. Both the strongest external support for the premise and the
+% nearest prior work on the ceiling question: improvement frequency decaying
+% as t^-1, magnitude of the k-th improvement as k^-1, and depth beating width
+% at fixed budget. Three differences to state: no human or RL baselines, budget
+% counted in evaluator interactions only, and a single agent against a frozen
+% evaluator -- so its score is absolute and monotone, where Elo against a
+% drifting pool is neither. Match its fitting procedure so \val{decay} is
+% comparable.
+% ---------------------------------------------------------------------------
+@article{frontiereng2026,
+  title  = {Benchmarking Self-Evolving Agents on Real-World Engineering Tasks
+            with Generative Optimization},
+  journal = {arXiv preprint arXiv:2604.12290},
+  year   = {2026},
+  note   = {Frontier-Eng}
+}
+
+% ---------------------------------------------------------------------------
+% RL on games: the paradigm's home turf, and the source of the compute figures
+% the lower-bound argument leans on. Quote only what the primary papers state.
+% ---------------------------------------------------------------------------
+@article{alphastar2019,
+  title   = {Grandmaster Level in {StarCraft II} Using Multi-Agent
+             Reinforcement Learning},
+  author  = {Vinyals, Oriol and Babuschkin, Igor and Czarnecki, Wojciech M.
+             and others},
+  journal = {Nature},
+  volume  = {575},
+  number  = {7782},
+  pages   = {350--354},
+  year    = {2019}
+}
+
+@article{openaifive2019,
+  title   = {Dota 2 with Large Scale Deep Reinforcement Learning},
+  author  = {Berner, Christopher and Brockman, Greg and Chan, Brooke and
+             others},
+  journal = {arXiv preprint arXiv:1912.06680},
+  year    = {2019}
+}
+
+@article{alphazero2018,
+  title   = {A General Reinforcement Learning Algorithm that Masters Chess,
+             Shogi, and Go through Self-Play},
+  author  = {Silver, David and Hubert, Thomas and Schrittwieser, Julian and
+             others},
+  journal = {Science},
+  volume  = {362},
+  number  = {6419},
+  pages   = {1140--1144},
+  year    = {2018}
+}
+
+@article{muzero2020,
+  title   = {Mastering Atari, Go, Chess and Shogi by Planning with a Learned
+             Model},
+  author  = {Schrittwieser, Julian and Antonoglou, Ioannis and Hubert, Thomas
+             and others},
+  journal = {Nature},
+  volume  = {588},
+  number  = {7839},
+  pages   = {604--609},
+  year    = {2020}
+}
+
+% ---------------------------------------------------------------------------
+% Description length. Kolmogorov complexity is uncomputable, so it enters the
+% paper as motivation for a compression-based proxy, never as a measured
+% quantity. MDL is the practical citation.
+% ---------------------------------------------------------------------------
+@book{lividanyi2019kolmogorov,
+  title     = {An Introduction to Kolmogorov Complexity and Its Applications},
+  author    = {Li, Ming and Vit{\'a}nyi, Paul},
+  edition   = {4},
+  publisher = {Springer},
+  year      = {2019}
+}
+
+@article{rissanen1978mdl,
+  title   = {Modeling by Shortest Data Description},
+  author  = {Rissanen, Jorma},
+  journal = {Automatica},
+  volume  = {14},
+  number  = {5},
+  pages   = {465--471},
+  year    = {1978}
+}
+
+@article{mccabe1976complexity,
+  title   = {A Complexity Measure},
+  author  = {McCabe, Thomas J.},
+  journal = {IEEE Transactions on Software Engineering},
+  volume  = {SE-2},
+  number  = {4},
+  pages   = {308--320},
+  year    = {1976}
+}

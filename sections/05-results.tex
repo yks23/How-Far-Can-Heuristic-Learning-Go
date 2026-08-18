@@ -23,6 +23,30 @@
 %    here is the more interesting outcome, but it needs a mechanism, not just a
 %    curve: rule count growth, rules interfering with each other, or the agent
 %    losing the ability to read its own program.
+%
+%    The mechanism claim is the load-bearing one and needs its own evidence, not
+%    just a plateau. Program description length at the plateau, \val{maintcap},
+%    compared across games: if it converges within \val{maintcapspread} the
+%    ceiling is the agent's, if it tracks game complexity the ceiling is the
+%    game's. State which outcome occurred before interpreting it -- the
+%    convergence result is a prediction here, and reporting it as confirmed when
+%    it is not is the single easiest way to lose the paper. If it fails, the
+%    finding is still worth reporting; the framing changes, not the data.
+%
+%    Two supporting cuts, both cheap given the log: does program size at the
+%    plateau move with model capability (the mechanism predicts it should, since
+%    the bound is the maintainer's), and do the failed revisions near the plateau
+%    fail by regression on already-working behaviour rather than by adding
+%    nothing? The second is the direct signature of a maintenance limit and
+%    distinguishes it from simple diminishing returns.
+%
+% 5. The archive's free experiment, which belongs to the benchmark rather than to
+%    HL: for each Elo band, the shortest human program reaching it. Lower
+%    envelope, not mean -- description length is a minimum. Slope \val{envslope},
+%    knee at \val{envknee}. This is the only place the complexity axis is
+%    measured on humans rather than on the agent, so it is what licenses ordering
+%    games by K(pi_good) instead of by rule length. Same proxy as Section 3, and
+%    say so.
 % ---------------------------------------------------------------------------
 
 \section{Results}

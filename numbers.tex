@@ -109,5 +109,46 @@
 % Prose-valued keys stay English-only: the document is compiled with pdfLaTeX,
 % which cannot typeset CJK without CJKutf8, and \printTBD renders every
 % registered key whether the body cites it or not.
-\defTBD{ceilingcause}{TBD mechanism}
+% Named rather than left blank: the hypothesis is that the plateau is the
+% agent's maintenance capacity, measured as maintcap. Still TBD because it is a
+% hypothesis about a mechanism, not yet a measured result -- and the honest
+% failure mode is that the plateau tracks the game instead of the agent, which
+% maintcapspread is what distinguishes. Reads as a noun phrase so it can follow
+% "approaches" or "we trace the ceiling to".
+\defTBD{ceilingcause}{the agent's maintenance capacity}
 \defTBD{ntransfer}{X}
+
+% ---------------------------------------------------------------------------
+% The mechanism behind the ceiling: maintenance capacity.
+%
+% The hypothesis is that HL plateaus when the program's description length
+% approaches what the agent can still revise without regression -- so the
+% ceiling is a property of the maintainer, not of the paradigm, and moves with
+% model capability. Three quantities make that testable rather than rhetorical.
+%
+% maintcap is the load-bearing one. If it converges to a similar magnitude
+% across games of very different complexity, the ceiling is the agent's; if it
+% tracks the game instead, it is the game's. Either result is publishable, and
+% they are distinguishable, which is the point of measuring it.
+%
+% Units matter: report compressed bytes, not lines. Lines are a style artifact
+% and are not comparable across the languages the archive contains.
+% ---------------------------------------------------------------------------
+\defTBD{maintcap}{$\sim$XX kB}
+\defTBD{maintcapspread}{$\pm$XX\%}
+
+% Kolmogorov complexity is uncomputable. It motivates the axis; it is never
+% measured. What is measured is a compression proxy, and the proxy has to be
+% named in the text every time the axis is used, or a referee will and should
+% object. This key holds the proxy's name so the paper cannot drift between
+% two of them.
+\defTBD{kproxy}{compressed size of a reference implementation}
+
+% The archive's free experiment: for each Elo band, the shortest program that
+% reaches it (lower envelope, not mean -- description length is a minimum).
+% A slope near zero means the paradigm has room at that skill level; a knee
+% means it is running out. Games are ordered on this axis, not on rule length:
+% Go has short rules and an incompressible policy, which is why rule
+% complexity is the wrong x-axis and this is the right one.
+\defTBD{envslope}{$+$XX bytes per 100 Elo}
+\defTBD{envknee}{$\sim$XXXX Elo}

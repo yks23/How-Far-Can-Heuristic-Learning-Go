@@ -18,6 +18,24 @@
 %     Occupancy shift is logged separately and never summed with the KL.
 %   - the discipline: a policy change is not a result. The question is how much
 %     Elo a given behaviour change bought.
+%
+% The description-length protocol lives here, and it has to be stated before any
+% result uses it, because the introduction's upper bound rests on it.
+% K(pi_good) is uncomputable; what is measured is \val{kproxy}. Fix and state:
+%   - compressed bytes, not lines. Lines are a style artifact and the archive
+%     spans several languages. Name the compressor and its settings.
+%   - comments and dead code stripped before compression, with the stripping
+%     tool named. A program's comments are addressed to a human reader and are
+%     not part of the policy.
+%   - cross-language normalization. Without it, a verbose language looks like a
+%     complex policy. State the normalization and show the result survives it.
+%   - program size logged at *every* revision, not only at the plateau. The
+%     upper-bound claim is about a trajectory approaching a capacity, so the
+%     trajectory is the evidence; the endpoint alone cannot distinguish a
+%     plateau from a stall.
+% Anything measured this way is a proxy and must be called one in the text every
+% time the axis is used. Cyclomatic complexity (mccabe1976complexity) is a
+% secondary axis at best -- report it if it agrees, do not lead with it.
 % ---------------------------------------------------------------------------
 
 \section{Methodology}

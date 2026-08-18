@@ -26,6 +26,23 @@
 % parallel restarts at fixed budget, because restarts discard accumulated
 % context -- is the direct evidence for the long-trajectory premise.
 %
+% Programmatic RL is the nearest representational neighbour and needs its own
+% paragraph: programmaticrl2024foundations for the size/expressiveness tradeoff,
+% diprl2026 and llmguidedsearch2024 for the current line, kuang2025generative for
+% the closest method (LLM revises a Python policy from execution traces, beats
+% deep RL baselines at far fewer interactions). What we add over kuang2025generative:
+% adversarial rather than single-agent, a human field to be placed within, a
+% shared budget ledger, and a ceiling analysis. Their efficiency claim is
+% directional with no normalization protocol, which is exactly the gap our
+% ledger fills -- say that without disparaging the work.
+%
+% SlopCodeBench (slopcodebench2026) belongs here as well as in the introduction,
+% and the paragraph has to draw the distinction the introduction draws: its
+% degradation is driven by a *growing specification*, so accumulation is
+% compulsory. A game's rules are fixed, so a better heuristic can replace a worse
+% one and the program may shrink. Without that distinction a referee reads their
+% result as predicting our loop cannot work.
+%
 % Then: RL in games, program synthesis / LLM-driven code search, automated
 % heuristic design, continual learning. The 21-item survey in the earlier
 % proposal (proposal(1)(2).pdf) is the starting list.

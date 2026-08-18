@@ -4,6 +4,16 @@
 % Setup only; findings go in 05-results.
 %
 %   - models and scaffolds under test; which are held fixed across games.
+%   - the baseline choice and *why*, restated here rather than assumed from the
+%     introduction. Comparing HL against policy gradient alone confounds
+%     symbolic-vs-neural with on-policy-vs-off-policy: policy gradient uses a
+%     batch once and discards it, while HL is off-policy and cross-policy-class
+%     (it learns from any opponent's replays and from human source). So
+%     model-based RL is the primary baseline and policy gradient is the
+%     on-policy reference point, not the headline comparison. A referee who
+%     only sees a policy-gradient baseline is right to discount the result.
+%     Cite offpolicyvaluellm2026 and samplereuse2022 where the distinction is
+%     drawn.
 %   - the budget ledger. This table is what answers the selection-effect
 %     objection raised in the introduction, so it needs every denominator:
 %     environment steps, coding_agent_act calls, tokens, dollars, wall-clock.

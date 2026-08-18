@@ -13,6 +13,18 @@
 %     learning-only / evaluation / total and kept separate everywhere; the Elo
 %     protocol (batch vs online); the three opponent pools (training, frozen
 %     test, Elo anchor).
+%   - editability, defined against interpretability, since the introduction turns
+%     on the distinction and asserts it without room to define it. Interpretability
+%     asks whether a human understands the policy; editability asks whether the
+%     optimization loop can act on the artifact at all. Programmatic RL already
+%     calls its policies human-editable (programmaticrl2024foundations, diprl2026)
+%     -- do not claim the term, claim the change in its role: precondition for the
+%     optimizer rather than property of the deliverable.
+%   - K(pi_good), defined here as a concept and measured in Section 3. The one
+%     thing this definition must do is separate K(rules) from K(pi*) from
+%     K(pi_good); Go is the example that forces the separation, since its rules
+%     fit on a page while no compact symbolic policy plays it well. Rule
+%     complexity is the wrong x-axis and this is where that is established.
 %   - the archive audit protocol: what counts as "no learned component". The
 %     criterion has to be decidable -- weight files, training scripts, whether
 %     hand-tuned evaluation coefficients count -- because \val{pheur} and
