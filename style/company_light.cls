@@ -163,7 +163,7 @@
     anchor=south east,
     at= (frame.south east),
     xshift=-0.5cm,
-    yshift=0.5cm] {\includegraphics[width=1.5cm]{assets/logo.pdf}};}}
+    yshift=0.5cm] {\includegraphics[width=1.5cm]{assets/sast-icon.png}};}}
   %
   \begin{tcolorbox}
     \setlength{\parindent}{0cm}
