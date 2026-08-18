@@ -117,10 +117,16 @@ it \citep{samplereuse2022}. A maintained program sits at the far end of the same
 spectrum: it is off-policy and \emph{cross-policy-class}, able to learn from
 replays of any opponent and from human source code that no gradient method can
 consume, and it reads the rules directly --- a prior obtained without spending
-samples at all. This has an immediate consequence for how the comparison must be
-run. Measuring against policy gradient alone confounds symbolic-versus-neural
-with on-policy-versus-off-policy, so model-based RL is our primary baseline and
-policy gradient the on-policy reference point.
+samples at all. The effect has been seen directly: an LLM revising a Python
+policy from execution traces reaches deep-RL performance on single-agent tasks at
+far fewer environment interactions \citep{kuang2025generative}. That result is
+directional --- one family of tasks, no shared budget accounting, no adversary
+--- which is part of what this paper is for.
+
+Channel width also settles how the comparison must be run. Measuring against
+policy gradient alone confounds symbolic-versus-neural with
+on-policy-versus-off-policy, so model-based RL is our primary baseline and policy
+gradient the on-policy reference point.
 
 \paragraph{Why they stop.} What the loop accumulates is what eventually stops it.
 Revisions leave the program larger and more interconnected, and each further
