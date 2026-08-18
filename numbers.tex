@@ -16,9 +16,13 @@
 %   \printTBD             renders the outstanding-measurement list. Put it at
 %                         the end of the document; it disappears with \hldraft.
 %
-% Camera-ready: \togglefalse{hldraft}. Every placeholder then prints as if it
-% were real, which is exactly why \printTBD must read empty before that switch
-% is thrown.
+% Camera-ready: \togglefalse{hldraft}. Any key still declared with \defTBD then
+% raises a hard \PackageError naming the key, and the build fails. This used to
+% be a procedural rule -- "\printTBD must read empty before that switch is
+% thrown" -- which put the paper one forgotten check away from asserting "XX%"
+% as a measured value, since flipping the toggle removes the accent colour and
+% \printTBD in the same stroke. It is now enforced by the macro. To ship, every
+% \defTBD must have become a \defval; there is no override, by design.
 % ===========================================================================
 
 \newtoggle{hldraft}
@@ -30,11 +34,22 @@
 \newcommand{\defTBD}[2]{%
   \csdef{hlnum@#1}{#2}\csdef{hlntbd@#1}{}\listadd{\hlnumtbdlist}{#1}}
 
+% A still-TBD key used with \hldraft off is a hard error, not a silent
+% substitution. Turning the toggle off is the camera-ready action, so this is
+% the moment a leftover placeholder would stop being visible: it loses its
+% accent colour AND \printTBD disappears in the same stroke, taking with it the
+% only list that would have reported it. Erroring here means the build refuses
+% rather than quietly shipping "XX%" as a measured quantity. There is
+% deliberately no override -- if placeholders are wanted, leave \hldraft on.
 \newcommand{\val}[1]{%
   \ifcsdef{hlnum@#1}{%
     \ifcsdef{hlntbd@#1}{%
       \iftoggle{hldraft}{\textcolor{brandaccent}{\bfseries\csuse{hlnum@#1}}}%
-                        {\csuse{hlnum@#1}}%
+        {\PackageError{hlnumbers}{Unmeasured key '#1' used with hldraft off}%
+          {Key '#1' is still \string\defTBD. Measure it and convert it to
+           \string\defval, or re-enable \string\toggletrue{hldraft}. The
+           camera-ready build will not proceed with placeholders in it.}%
+         \csuse{hlnum@#1}}%
     }{\csuse{hlnum@#1}}%
   }{%
     \textcolor{red}{\bfseries[?\,\texttt{#1}]}%

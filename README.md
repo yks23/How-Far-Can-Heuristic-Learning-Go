@@ -31,9 +31,20 @@ three times, and a provisional figure has to stay visibly provisional.
 Use `\val{pct}` in the text. An undefined key prints a red marker and raises a
 LaTeX warning rather than failing silently.
 
-Before submission, set `\togglefalse{hldraft}` in `numbers.tex`. Every
-placeholder then prints as though it were real — which is exactly why the
-outstanding-measurements list at the end of the PDF must read empty first.
+Before submission, set `\togglefalse{hldraft}` in `numbers.tex`. Any key still
+declared with `\defTBD` then raises a hard error naming that key, and the build
+fails — so a leftover placeholder cannot reach a submitted PDF. Convert each one
+to `\defval` as it is measured; there is no override. Check it with:
+
+```bash
+grep -c '^\\defTBD{' numbers.tex
+```
+
+That guard replaced a procedural rule ("the outstanding-measurements list must
+read empty first"), which was unsafe for a non-obvious reason: flipping the
+toggle removes both the accent colour on placeholders and `\printTBD` itself, so
+the single check that would have caught the mistake disappears at the same
+moment the mistake becomes invisible.
 
 Keys hold bare quantities, never connective words. `\defTBD{pct}{XX}`, not
 `XXth`: baking English grammar into a value makes it unusable elsewhere.
