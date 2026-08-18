@@ -34,6 +34,11 @@
 \setlength{\brandlogowidth}{1.2cm}
 \newcommand{\brandlogofile}{assets/sast-icon-transparent.png}
 
+% Baseline-to-baseline distance for the title. Absolute rather than a stretch
+% factor: see the note in \mymaketitle. Raise it to open the title up further.
+\newlength{\brandtitleleading}
+\setlength{\brandtitleleading}{22.6pt}
+
 % Tables %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{booktabs}
@@ -173,9 +178,16 @@
       \raggedright
       \nohyphens
       %
+      % Title leading is set explicitly rather than via \setstretch. Two reasons:
+      % \titlelist carries its own group, so \huge is restored before the \par
+      % that breaks the title into lines and a stretch would scale the *body*
+      % font's baselineskip; and at ~20.5pt the 19.9pt-tall glyphs pushed TeX
+      % onto its \lineskip fallback, which capped any stretch increase. Setting
+      % \baselineskip just before \par is what the line breaker actually reads.
       {
-        \setstretch{1.618}
-        \titlelist\par
+        \titlelist
+        \baselineskip=\brandtitleleading
+        \par
       }
       \vskip 0.2cm
       %
