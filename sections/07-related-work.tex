@@ -13,8 +13,13 @@
 %   2. its budget is evaluator interactions only -- no tokens, dollars, or
 %      wall-clock.
 %   3. it optimizes against a frozen evaluator with no opponent, so its score is
-%      absolute and monotone. Elo against a drifting opponent pool is neither,
-%      which is also why its metrics cannot be adopted directly.
+%      absolute and monotone. Elo is neither, which is why its metrics cannot be
+%      adopted directly: a rating is relative to a population, and a gain can come
+%      from the field weakening. Be precise about which pool is meant -- HL's test
+%      pool is frozen (that is what makes our Elo comparable within a run), while
+%      the *archive's* human population drifts across editions (which is what the
+%      cross-edition anchor exists to absorb). Do not write "drifting opponent
+%      pool" without saying which, and never of the frozen test pool.
 % Cite its numbers as reported: the abstract says eight models and the
 % experiments nine, the power law rests on one model-framework pair, and the
 % depth/width result on a 10-task subset.
