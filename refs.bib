@@ -503,13 +503,33 @@
 
 % ---------------------------------------------------------------------------
 % Frontier-Eng. Both the strongest external support for the premise and the
-% nearest prior work on the ceiling question: improvement frequency decaying
-% as t^-1, magnitude of the k-th improvement as k^-1, and depth beating width
-% at fixed budget. Three differences to state: no human or RL baselines, budget
-% counted in evaluator interactions only, and a single agent against a frozen
-% evaluator -- so its score is absolute and monotone, where Elo against a
-% drifting pool is neither. Match its fitting procedure so \val{decay} is
-% comparable.
+% nearest prior work on the ceiling question.
+%
+% VERIFIED against the v2 full text 2026-08-18 (arXiv:2604.12290v2, 27 Apr 2026).
+% Their 3.3.1: OpenEvolve with GPT-OSS-120B, all 47 tasks, 500 iterations.
+% Improvement frequency decays as t^-1, magnitude of the k-th improvement as
+% k^-1, both fits R^2 > 0.83 at a slope constrained to -1. All 47 tasks record
+% at least one improvement; median 7 per task. Depth beats width at fixed
+% budget (B = n x d <= 256, n in {1,2,4,8,16}, 10-task subset).
+%
+% Do NOT write "flattens within tens of iterations", which the intro did until
+% 2026-08-18. The majority of improvement events fall in the first ~30 steps,
+% but there is a long tail out to iteration 500 and their own summary puts
+% marginal returns near zero "after ~50-100 iterations". "Tens" also picks the
+% wrong shape: what they report is a DOUBLE squeeze -- rarer AND smaller
+% improvements -- not a plateau. Cite the pair of exponents; it is a stronger
+% concession and it gives our own decay a shape to be compared against rather
+% than a single number.
+%
+% Three differences to state in the text: no human or RL baselines, budget
+% counted in evaluator interactions only, and a single agent against a fixed
+% verifier -- so its score is absolute and monotone, where Elo against a pool
+% is neither. (An earlier version of this note said "drifting pool", which
+% contradicts the paper's own frozen-pool invariant. Our test pool is FROZEN;
+% what makes Elo non-monotone is that it is relative to a population, not that
+% the population moves. The archive's human field drifts across editions, which
+% is a different matter entirely -- see 02's scope note.) Match its fitting
+% procedure so \val{decay} is comparable, including the constrained-slope fit.
 % ---------------------------------------------------------------------------
 @article{frontiereng2026,
   title  = {{Frontier-Eng}: Benchmarking Self-Evolving Agents on Real-World

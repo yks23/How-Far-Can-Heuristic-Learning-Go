@@ -67,9 +67,13 @@
 %      agent's maintenance capacity. Go is the counterexample that kills rule
 %      complexity as the x-axis. The LLM boundary falls out of the same axis.
 %   7. Why *this* ceiling has not been measured. Careful: agent self-improvement
-%      decay HAS been measured (frontiereng2026, t^-1, plateau within tens of
-%      iterations). Do not write "never measured" -- concede that result and say
-%      what it lacks: single-agent tasks, no human field, no RL baseline. The
+%      decay HAS been measured (frontiereng2026 -- frequency t^-1 AND magnitude
+%      k^-1, marginal returns near zero after ~50-100 iterations, tail to 500).
+%      Do not compress this to "plateau within tens of iterations", which the
+%      paragraph said until 2026-08-18: it is the wrong number and the wrong
+%      shape. Cite both exponents. Do not write "never measured" -- concede the
+%      result and say what it lacks: single-agent tasks, no human field, no RL
+%      baseline. The
 %      confound we remove is a different one, human iteration cost.
 %   8. The venue.
 %   9. HL, plus the selection-effect concession.
@@ -245,7 +249,7 @@ is the case that cannot be decomposed away: the artifact is the accumulated
 context, and every revision has to hold it whole.
 
 The degradation benchmark cuts both ways, and the distinction is what makes our
-loop tractable rather than doomed. Its degradation is driven by the
+loop tractable rather than doomed. What drives its decay is the
 specification growing --- that is the benchmark's design, requiring architectural
 decisions under requirements that keep arriving, so that the agent's own output
 must accumulate across steps and nothing may be discarded. A game's rules do not
@@ -278,8 +282,10 @@ ceiling is a property of the maintainer rather than of the paradigm, which is wh
 it moves with model capability, and why it can be measured at all.
 
 \paragraph{Why this ceiling has not been measured.} Agent self-improvement is
-already known to decay: on real engineering tasks, improvement frequency falls
-roughly as $t^{-1}$ and flattens within tens of iterations
+already known to decay, and to decay from both directions at once: across 47
+real engineering tasks, the frequency of improvements falls as $t^{-1}$ over
+iterations while the magnitude of the $k$-th improvement falls as $k^{-1}$, a
+double squeeze that drives marginal returns near zero after 50 to 100 iterations
 \citep{frontiereng2026}. What that does not establish is where the symbolic
 paradigm stands against a learned one, because those tasks are single-agent and
 carry neither a human field nor an RL baseline --- the two reference points the
