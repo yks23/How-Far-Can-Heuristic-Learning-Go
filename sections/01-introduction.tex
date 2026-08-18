@@ -192,9 +192,9 @@ roughly as $t^{-1}$ and flattens within tens of iterations
 \citep{frontiereng2026}. What that does not establish is where the symbolic
 paradigm stands against a learned one, because those tasks are single-agent and
 carry neither a human field nor an RL baseline --- the two reference points the
-question requires. Comparisons that do have both have always had a human
-maintainer, and so measured the paradigm and the cost of human iteration
-together, with no way to separate them: a heuristic program that stopped
+question requires. Where both reference points were present, the maintainer was
+always human, so the paradigm and the cost of human iteration were measured
+together with no way to separate them: a heuristic program that stopped
 improving might have exhausted the paradigm or exhausted its author's weekend,
 and the record cannot say which. Replacing the author with an agent holds the
 paradigm fixed and changes the cost of iteration --- the term that was never
@@ -203,15 +203,15 @@ varied.
 \paragraph{Where to measure it.} Answering the question requires a domain where
 the symbolic paradigm was already driven as hard as human authors could drive
 it, with the results recorded. We use the complete archive of a collegiate game
-AI contest running since \val{founded}: original game rules that appear in no
-pretraining corpus, \val{nsub} submissions, and \val{nmatch} adjudicated
-matches, written by contestants under deadline with standings at stake. Contests
+AI contest running since \val{founded}: games invented for the contest,
+\val{nsub} submissions, and \val{nmatch} adjudicated matches, written by
+contestants under deadline with standings at stake. Contests
 of this kind carry their own folk ordering of methods --- rules for beginners,
 search for the intermediate, RL as the approach with the highest ceiling --- and
 it is worth naming, because contestants chose their methods by it. The archive is
 therefore a record of many people attempting that ladder, which is what makes it
-usable as evidence rather than merely large. What it records is the ordering
-describing asymptotic ceilings correctly and failing to predict who wins:
+usable as evidence rather than merely large. And what it records is an ordering
+that gets the asymptotic ceilings right and still fails to predict who wins:
 \val{pheur} of prize-winning programs contain no learned component, and RL,
 present in \val{prl} of submissions, reached the finals in \val{nrlfinal} of
 \val{editions} editions.
