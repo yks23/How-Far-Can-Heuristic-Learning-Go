@@ -30,8 +30,12 @@
 
 % Logo shown at the bottom right of the title box. Override either of these in
 % the preamble to swap the mark or resize it.
+%
+% Note the logo sets the height of the bottom row, since it is far taller than
+% the single line of metadata beside it: every extra cm here adds a cm to the
+% panel. 2.4cm and up starts to overpower that one line.
 \newlength{\brandlogowidth}
-\setlength{\brandlogowidth}{1.2cm}
+\setlength{\brandlogowidth}{1.8cm}
 \newcommand{\brandlogofile}{assets/sast-icon-transparent.png}
 
 % Title block metrics. Every gap in the header is an explicit parameter rather
