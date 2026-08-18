@@ -426,7 +426,15 @@
 % reference point.
 % ---------------------------------------------------------------------------
 % Cited for the plain fact that LLM RL is largely on-policy: a batch is used for
-% one update, then discarded.
+% one update, then discarded. VERIFIED 2026-08-18, and the abstract is almost
+% our sentence: prevailing methods are "largely on-policy", they "update each
+% batch of data only once, discard it, and then collect fresh samples,
+% resulting in poor sample efficiency". Note what the paper itself proposes
+% (ReVal, value-based, replay-buffer-compatible) -- we cite the premise it
+% argues against, which is legitimate but means the paper is evidence that the
+% field is moving off-policy, not that it will stay on-policy. If a referee
+% presses, that is an argument for our choice of a model-based (off-policy)
+% primary baseline, not against it.
 @article{offpolicyvaluellm2026,
   title  = {Off-Policy Value-Based Reinforcement Learning for Large Language
             Models},
@@ -442,13 +450,23 @@
 % far end of the same spectrum rather than off it. Deliberately a theory paper
 % on sample reuse and not a specific algorithm -- the intro's claim is about the
 % spectrum, so citing one algorithm would invite "why that one?".
+%
+% VERIFIED against the full text 2026-08-18. The abstract alone does NOT support
+% our sentence -- it mentions sample reuse only as a property it wants to borrow
+% -- but Section I and Section II-B do, in the words we need: off-policy deep RL
+% "achieve[s] data efficiency through the use of a replay buffer during
+% training, which allows samples to be used for multiple policy updates", by
+% "aggressively reusing samples for many policy updates", while "on-policy deep
+% RL algorithms, on the other hand, only use data collected under the current
+% policy". Cite the paper, not its abstract, if the claim is ever questioned.
 @article{samplereuse2022,
   title  = {Generalized Policy Improvement Algorithms with Theoretically
             Supported Sample Reuse},
   author = {Queeney, James and Paschalidis, Ioannis Ch. and
             Cassandras, Christos G.},
   journal = {arXiv preprint arXiv:2206.13714},
-  year   = {2022}
+  year   = {2022},
+  note   = {IEEE Transactions on Automatic Control}
 }
 
 % ---------------------------------------------------------------------------
