@@ -6,7 +6,13 @@
 %     rules are simple, the state space vast, and simulation cheap.
 %   - the information-channel asymmetry, stated as a finding rather than as a
 %     caveat: rules and replays are a wider channel than a scalar reward, and
-%     that is what the budget-conditional result is evidence for.
+%     that is what the budget-conditional result is evidence for. State the
+%     scope with it, in the same breath rather than in a later caveat: the
+%     channel is what earns the efficiency, so the finding is not that symbolic
+%     policies are informationally privileged. A memory-based agent with no
+%     program gets a comparable gain (echo2025hindsight). What the program buys
+%     is the other bound. Written the loose way, this bullet becomes the
+%     paper's most quotable overclaim and the abstract no longer supports it.
 %   - the two bounds as one claim, which is the paper's thesis and should be
 %     stated here in one paragraph: HL succeeds while K(pi_good) stays under the
 %     agent's maintenance capacity. Both the win and the plateau follow from that
@@ -30,8 +36,16 @@
 %     Pretraining. The efficiency comparison is between an agent carrying a
 %     pretraining corpus and RL starting cold, and no denominator makes that
 %     symmetric. What is defensible: environment steps are the scarce resource
-%     in a new domain, and the contest's rules are original, so pretraining
-%     supplies general coding competence rather than knowledge of these games.
+%     in a new domain, and the games are the venue's own, so what pretraining
+%     plausibly supplies is general coding competence rather than strategy for
+%     these games. Word it as plausibility plus a pointer to the Section 4
+%     contamination results -- NOT as a consequence of the rules being original,
+%     which does not follow (the archive is public) and which the introduction
+%     and Section 2 both stopped asserting. This bullet was the last place the
+%     provenance version survived; if the check comes back showing familiarity
+%     with a game, the honest form here is the conditional one, reporting that
+%     game separately rather than resting the limitation on an assumption the
+%     data contradicts.
 %     Report the figures as conditional on a general-purpose model existing.
 %     Do not attempt to amortize pretraining into a per-task number -- any such
 %     figure is arbitrary and a referee will say so. If a pretraining-inclusive

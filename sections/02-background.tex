@@ -18,6 +18,18 @@
 %     proxy and give the cross-game complexity ordering an external reference
 %     point. Without them, every complexity claim rests on a measurement made by
 %     the same pipeline it is meant to validate.
+%   - the information channel, defined carefully, because the introduction now
+%     concedes a limit on it and this is where the concession has to be precise.
+%     What a maintained program consumes -- rules, its own source, replays of
+%     specific losses -- carries more per sample than a scalar return, but that
+%     is a property of the CHANNEL and of the agent reading it, not of the
+%     symbolic representation. echo2025hindsight is the demonstration: hindsight
+%     rewriting of failed episodes into memory, no program anywhere, same kind of
+%     gain. So define the lower bound over "what the loop can read" and the upper
+%     over "what the loop can edit", and keep the two definitions separate from
+%     the start. Merging them is what produces the unsupportable version of the
+%     claim, and it is the version a reader will supply on their own if this
+%     section leaves the terms loose.
 %   - definitions: heuristic learning; the folk hierarchy; budget, split into
 %     learning-only / evaluation / total and kept separate everywhere; the Elo
 %     protocol (batch vs online); the three opponent pools (training, frozen
@@ -33,6 +45,12 @@
 %     definition is distinguishing editability from.
 %     Do not claim the word, claim the change in its role: precondition for the
 %     optimizer rather than property of the deliverable.
+%     The definition should not rest on stipulation, and it does not have to:
+%     tig2025think is the case where the two properties visibly come apart. It
+%     emits natural-language reasoning for each decision, so it is interpretable
+%     on any ordinary reading, while the artifact its learning loop updates is
+%     still the weights. Use it as the worked example here; the introduction has
+%     room for the citation but not for the anatomy.
 %   - K(pi_good), defined here as a concept and measured in Section 3. The one
 %     thing this definition must do is separate K(rules) from K(pi*) from
 %     K(pi_good); Go is the example that forces the separation, since its rules
