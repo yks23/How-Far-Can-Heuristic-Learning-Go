@@ -82,3 +82,12 @@ pdftotext build/main.pdf - | grep -n "\[?\|TODO"                     # want empt
 
 The last one catches placeholder text that leaked into the rendered body, which
 a clean compile will not.
+
+To confirm every unmeasured key actually reaches the outstanding-measurements
+list, compare declarations against the rendered list. Strip comments first —
+`numbers.tex` documents its own API with a literal `\defTBD{key}{guess}` example,
+which a naive grep counts as a real key:
+
+```bash
+python3 -c "import re,subprocess; d={k for k in re.findall(r'\\\\defTBD\{(\w+)\}', re.sub(r'(?m)^%.*$','',open('numbers.tex').read()))}; t=subprocess.run(['pdftotext','build/main.pdf','-'],capture_output=True,text=True).stdout; b=t[t.find('Outstanding measurements'):]; print('missing:', d-{k for k in d if k in b} or 'none')"
+```

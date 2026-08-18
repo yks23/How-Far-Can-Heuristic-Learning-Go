@@ -131,6 +131,14 @@
 % tracks the game instead, it is the game's. Either result is publishable, and
 % they are distinguishable, which is the point of measuring it.
 %
+% Convergence alone is not enough, though, and reading it as sufficient is the
+% trap here. The mechanism assigns the capacity to the agent and K(pi_good) to the
+% game, so it predicts a *pair*: maintcap converges across games while the Elo
+% reached at that plateau varies with the game. If both converge, the more likely
+% explanation is that the games do not differ much in K(pi_good) -- in which case
+% the cross-game comparison is uninformative rather than confirmatory. Pair this
+% key with Elo-at-plateau on the same games whenever it is reported.
+%
 % Units matter: report compressed bytes, not lines. Lines are a style artifact
 % and are not comparable across the languages the archive contains.
 %
@@ -145,6 +153,13 @@
 % ---------------------------------------------------------------------------
 \defTBD{maintcap}{$\sim$XX kB}
 \defTBD{maintcapspread}{$\pm$XX\%}
+% The second half of that pair, and the reason maintcapspread is interpretable.
+% The spread of Elo reached at the plateau across the same games. The mechanism
+% wants this one WIDE while maintcapspread is narrow: same maintainable size,
+% different strength at that size, because K(pi_good) differs. A narrow value
+% here is the outcome that costs the cross-game argument, so report it even --
+% especially -- if it comes out narrow.
+\defTBD{eloplatspread}{$\pm$XX}
 
 % Kolmogorov complexity is uncomputable. It motivates the axis; it is never
 % measured. What is measured is a compression proxy, and the proxy has to be
