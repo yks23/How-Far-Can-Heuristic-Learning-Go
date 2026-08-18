@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.11)  17 AUG 2026 21:43
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.11)  17 AUG 2026 21:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1091,7 +1091,7 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 File: assets/sast-icon.png Graphic file (type png)
 <use assets/sast-icon.png>
 Package pdftex.def Info: assets/sast-icon.png  used on input line 39.
-(pdftex.def)             Requested size: 42.67912pt x 42.67917pt.
+(pdftex.def)             Requested size: 34.14322pt x 34.14113pt.
  [1
 
 {/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/loc
@@ -1124,7 +1124,7 @@ Here is how much of TeX's memory you used:
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfrm0900.pfb>
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></
 usr/local/texlive/2026/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb>
-Output written on build/main.pdf (1 page, 61052 bytes).
+Output written on build/main.pdf (1 page, 61055 bytes).
 PDF statistics:
  44 PDF objects out of 1000 (max. 8388607)
  33 compressed objects within 1 object stream

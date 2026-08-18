@@ -162,8 +162,8 @@
   \tcbset{overlay={\node[
     anchor=south east,
     at= (frame.south east),
-    xshift=-0.5cm,
-    yshift=0.5cm] {\includegraphics[width=1.5cm]{assets/sast-icon.png}};}}
+    xshift=-0.8cm,
+    yshift=0.8cm] {\includegraphics[width=1.2cm]{assets/sast-icon.png}};}}
   %
   \begin{tcolorbox}
     \setlength{\parindent}{0cm}
