@@ -33,11 +33,19 @@
 %      group's pair. Naming the systems is what disambiguates them for a reader;
 %      do not revert either to "a recent system". Found by reading the rendered
 %      intro end to end -- no mechanical check catches it.
-%   6. Upper bound, in three paragraphs: the mechanism (accumulation defeats
-%      placement); the external evidence for it (SlopCodeBench, plus the two
-%      results isolating context accumulation and self-conditioning); and the
-%      distinction that keeps our loop tractable (their spec grows, a game's
-%      rules do not, so a heuristic can be replaced rather than layered).
+%   6. Upper bound, in four paragraphs: the mechanism (accumulation defeats
+%      placement); the external evidence for it (SlopCodeBench); the two results
+%      isolating the mechanisms underneath, which are about context and
+%      execution rather than code quality (longcontextbugfix2026,
+%      longhorizonexecution2026); and the distinction that keeps our loop
+%      tractable (their spec grows, a game's rules do not, so a heuristic can be
+%      replaced rather than layered). This was three paragraphs until the
+%      citation check expanded the evidence; do not merge them back, the
+%      combined version ran twenty rendered lines and carried three papers.
+%      All three citations were verified against full text 2026-08-18 and all
+%      three needed correction -- see their refs.bib annotations, which are
+%      authoritative, and note in particular that longhorizonexecution2026's
+%      own thesis runs opposite to the use we make of it.
 %      Two claims about SlopCodeBench were drafted wrong and are now fixed
 %      against the v2 full text; both flattered us, which is why they lasted.
 %      (a) Human repos do NOT "flatten". 68% of them end more verbose than they
@@ -211,18 +219,32 @@ prompts cut initial verbosity by about a third and erosion by more, without
 slowing the rate at which either grows, and they are not free: strict correctness
 falls 2.3 points and cost per checkpoint rises 12.1\%. An intervention that buys a
 better starting point, pays capability for it, and still does not bend the curve
-is the signature of a capacity limit rather than a prompting defect. Two further results isolate mechanisms
-behind it. Agentic repair succeeds while the accumulated context
-stays small and degrades past it, and padding the context while guaranteeing that
-the right files are present makes matters worse rather than better, so the limit
-is not one of retrieval \citep{longcontextbugfix2026}. And given the plan and
+is the signature of a capacity limit rather than a prompting defect.
+
+Two further results isolate mechanisms behind that limit, and neither is about
+code quality. Agentic repair succeeds only while the context each step accumulates
+stays small --- successful trajectories on SWE-bench Verified typically stay under
+20--30k tokens, and longer accumulated contexts resolve less often --- which
+locates the harness's advantage in decomposition into short-context steps rather
+than in long-context reasoning. Handed tasks from that same benchmark whole at
+64k tokens with every required file guaranteed present, one model resolves 7\% of
+them and another none, so what defeats them is not retrieval
+\citep{longcontextbugfix2026}. And given the plan and
 knowledge up front, so that reasoning is not the variable under test, per-step
 accuracy still falls as steps accumulate, with models more likely to err once
-their own earlier errors are in context --- an effect parameter scale does not
-remove \citep{longhorizonexecution2026}. A program under revision is exactly that
-situation: the artifact is the accumulated context.
+their own earlier errors are in the context --- an effect that grows with
+parameter count rather than washing out
+\citep{longhorizonexecution2026}. Reasoning before acting does mitigate that
+particular failure, which is a caveat worth stating and also a help: a plateau
+reached by a reasoning agent cannot be attributed to self-conditioning alone.
+The bound itself survives. Benchmarked on how long a task they can execute in a
+single turn, frontier reasoning models separate by more than an order of
+magnitude and each of them stops somewhere --- which is what it means for
+capacity to belong to the agent rather than to the task. A program under revision
+is the case that cannot be decomposed away: the artifact is the accumulated
+context, and every revision has to hold it whole.
 
-The first of those results cuts both ways, and the distinction is what makes our
+The degradation benchmark cuts both ways, and the distinction is what makes our
 loop tractable rather than doomed. Its degradation is driven by the
 specification growing --- that is the benchmark's design, requiring architectural
 decisions under requirements that keep arriving, so that the agent's own output

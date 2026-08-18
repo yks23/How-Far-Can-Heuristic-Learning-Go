@@ -122,6 +122,22 @@
 % converting units, never as though it measured the same thing. If our measured
 % capacity lands near their threshold that is convergent evidence worth naming;
 % if it does not, the difference is a result, not an error.
+%
+% VERIFIED against the v2 full text 2026-08-18. All figures above are correct
+% (v2, 6 Mar 2026; ICLR 2026 ICBINB workshop). One structural caveat the intro
+% had flattened, now fixed: the 64k run is SINGLE-SHOT patch generation, on 100
+% BM25-plus-gold-patch samples from SWE-bench Verified, using two models
+% (Qwen3-Coder-30B-A3B 7%, GPT-5-nano 0) that are not the same set as the
+% agentic run. So it is not a controlled "add context to the agent" comparison
+% -- it confounds long context with the loss of decomposition, and writing it as
+% "padding the context makes matters worse" overstates what they did.
+% Their own framing is the one to use, and it serves us better: agentic success
+% "primarily arises from task decomposition into short-context steps rather than
+% effective long-context reasoning", and failures "persist even under perfect
+% retrieval". That is why the citation supports "not a retrieval limit" -- recall
+% was guaranteed at 100% within the single-shot condition -- and why the useful
+% consequence for us is that a program under revision cannot be decomposed into
+% short-context steps the way a repair trajectory can.
 % ---------------------------------------------------------------------------
 @inproceedings{longcontextbugfix2026,
   title     = {The Limits of Long-Context Reasoning in Automated Bug Fixing},
@@ -141,8 +157,41 @@
 %
 % This is the mechanism our append-only log can test directly: near the plateau,
 % do failed revisions regress already-working behaviour rather than merely add
-% nothing? Cite for the mechanism, not for a number -- the abstract states the
-% decay qualitatively and the figures were not read from the PDF.
+% nothing?
+%
+% VERIFIED against the v3 full text 2026-08-18 (arXiv:2509.09677v3, ICLR 2026),
+% which changed two things we were asserting and added one we should be using.
+%
+% 1. Scaling does not merely fail to remove self-conditioning -- "scaling model
+%    size increases self-conditioning", their Figure 5. Our claim was weaker
+%    than the source for once; it is now stated at full strength.
+% 2. "Thinking fixes self-conditioning" (their Result 5): Qwen3 thinking models
+%    do not self-condition at all, and CoT alone does not substitute (Fig 17).
+%    CONCEDE THIS IN THE TEXT. It is a caveat -- our agent reasons -- but it
+%    cuts our way: if reasoning removes self-conditioning, a plateau we observe
+%    with a reasoning agent cannot be waved away as self-conditioning, so the
+%    concession strengthens the capacity reading rather than weakening it.
+% 3. The claim to lean on instead is their Result 7: benchmarked on task length
+%    executable in a single turn, frontier reasoning models are finite and far
+%    apart -- GPT-5 2176 steps, Claude-4 Sonnet 432, Grok 4 384, Gemini 2.5 Pro
+%    120. A finite, sharply model-dependent horizon IS maintenance capacity as a
+%    property of the agent. Do not convert their steps into our description
+%    length; the units are their synthetic task's, same caution as
+%    longcontextbugfix2026.
+%
+% Also real: self-conditioning appears in realistic agentic benchmarks, roughly
+% 20% of GAIA, 48% of ALFWorld and 33% of WebShop failures resembling it
+% (their Appendix A, on annotated GPT-4o trajectories -- a non-thinking model,
+% so consistent with point 2).
+%
+% REFEREE RISK, and know it before one raises it: this paper's headline argues
+% AGAINST diminishing returns -- marginal per-step gains compound into
+% exponentially longer horizons, and it closes on "the massive benefits of
+% scaling model size and sequential test-time compute". We cite it for a
+% mechanism it establishes, not for its thesis. That is legitimate, but never
+% paraphrase the paper as though it reported a pessimistic result, and if a
+% referee raises the tension the answer is that a growing horizon is still a
+% finite one, which is all the upper bound requires.
 % ---------------------------------------------------------------------------
 @inproceedings{longhorizonexecution2026,
   title     = {The Illusion of Diminishing Returns: Measuring Long Horizon
