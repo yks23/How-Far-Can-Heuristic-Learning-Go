@@ -32,7 +32,7 @@
 % the preamble to swap the mark or resize it.
 \newlength{\brandlogowidth}
 \setlength{\brandlogowidth}{1.2cm}
-\newcommand{\brandlogofile}{assets/sast-icon.png}
+\newcommand{\brandlogofile}{assets/sast-icon-transparent.png}
 
 % Tables %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
