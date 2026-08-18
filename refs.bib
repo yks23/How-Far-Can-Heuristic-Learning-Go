@@ -138,6 +138,54 @@
 }
 
 % ---------------------------------------------------------------------------
+% Load-bearing for a reason that is easy to misread, so read this before
+% moving the citation. ECHO rewrites its own failed trajectories into
+% synthetic successes and keeps them in compressed memory -- no weight
+% updates, and no program. It therefore isolates the lower-bound mechanism
+% from the artifact: an LM extracting more signal per failed episode than a
+% scalar reward carries is enough on its own to improve sample efficiency.
+% Cite it exactly there, as the reason the information-per-sample gain is NOT
+% evidence for symbolic policies specifically, which is the objection a
+% referee raises next ("then why the program at all?"). The answer the intro
+% gives is that the program is what makes the artifact editable, i.e. the
+% upper bound, and that is where HL's contribution sits.
+% Non-adversarial: single-agent XMiniGrid plus cooperative PeopleJoinQA. The
+% headline "up to 80%" is against vanilla LM agents, not against RL, and the
+% abstract does not name the metric -- do not repeat the number.
+% ---------------------------------------------------------------------------
+@article{echo2025hindsight,
+  title   = {Sample-Efficient Online Learning in {LM} Agents via Hindsight
+             Trajectory Rewriting},
+  author  = {Hu, Michael Y. and Van Durme, Benjamin and Andreas, Jacob and
+             Jhamtani, Harsh},
+  journal = {arXiv preprint arXiv:2510.10304},
+  year    = {2025},
+  note    = {v2 January 2026; memory-based, no program and no weight updates}
+}
+
+% ---------------------------------------------------------------------------
+% The existence proof for the intro's editability/interpretability split, and
+% the only citation that carries it, so keep it attached to that sentence.
+% TiG emits step-by-step natural-language explanations of its decisions --
+% interpretable by any reasonable reading -- while the artifact the RL loop
+% actually updates is the weights. Readable output, uneditable policy: the
+% two properties come apart in a single published system, which is what makes
+% the distinction a fact about existing work rather than our terminology.
+% Scope limits: preprint, no venue; games are unnamed in the abstract; the
+% "dramatically lower data and computational demands" claim is against
+% "conventional RL" with no step counts, so cite the mechanism and not the
+% efficiency figure -- our own lower-bound evidence is kuang2025generative.
+% ---------------------------------------------------------------------------
+@article{tig2025think,
+  title   = {Think in Games: Learning to Reason in Games via Reinforcement
+             Learning with Large Language Models},
+  author  = {Liao, Yi and Gu, Yu and Sui, Yuan and Zhu, Zining and Lu, Yifan
+             and Tang, Guohua and Sun, Zhongqian and Yang, Wei},
+  journal = {arXiv preprint arXiv:2508.21365},
+  year    = {2025}
+}
+
+% ---------------------------------------------------------------------------
 % Code agents revising programs across iterated tournaments, scored on two
 % metrics to separate initial generation proficiency from improvement realized
 % through iteration. Their finding that the two are not strictly correlated is

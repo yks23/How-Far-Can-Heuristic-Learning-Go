@@ -17,6 +17,15 @@
 %      policy gradient alone, symbolic-vs-neural is confounded with
 %      on-policy-vs-off-policy. Keep that sentence attached to this link -- it
 %      reads as an unmotivated methods note anywhere else.
+%      This link ends by giving away more than it looks like: the
+%      information-per-sample gain is NOT the symbolic form's doing, since a
+%      memory-based agent holding no program gets it too (echo2025hindsight).
+%      Conceding that is what keeps the two bounds independent, which is the
+%      whole structure of the paper -- the lower bound is about what the loop
+%      can read, the upper about what it can edit, and only the second is the
+%      program's. Deleting the concession to strengthen the lower bound would
+%      collapse them into one claim and hand a referee the objection ("then why
+%      the program at all?") with no answer in the text.
 %   6. Upper bound, in three paragraphs: the mechanism (accumulation defeats
 %      placement); the external evidence for it (SlopCodeBench, plus the two
 %      results isolating context accumulation and self-conditioning); and the
@@ -108,10 +117,13 @@ specific failure traces to a specific parameter. The relevant axis is
 \emph{editability}, not interpretability. Interpretability asks whether a human
 can understand the policy, and a reader may reasonably not care. Editability
 asks whether the optimization loop can act on the artifact at all, which for an
-agent-driven loop is a precondition rather than a virtue. Programmatic RL already
-describes its policies as human-readable and editable \citep{diprl2026}; what
-changes here is the role the property plays --- not a feature of the delivered artifact, but the reason
-an optimizer exists for it.
+agent-driven loop is a precondition rather than a virtue. The two come apart in
+practice: a recent system plays by emitting natural-language reasoning for each
+decision, and is interpretable in any ordinary sense, while the artifact its
+learning loop updates remains the weights \citep{tig2025think}. Programmatic RL
+already describes its policies as human-readable and editable \citep{diprl2026};
+what changes here is the role the property plays --- not a feature of the
+delivered artifact, but the reason an optimizer exists for it.
 
 So the question reopens, and this time it is measurable: \emph{how far does the
 symbolic paradigm go once a machine pays the maintenance cost?} The answer is
@@ -130,16 +142,27 @@ it \citep{samplereuse2022}. A maintained program sits at the far end of the same
 spectrum: it is off-policy and \emph{cross-policy-class}, able to learn from
 replays of any opponent and from human source code that no gradient method can
 consume, and it reads the rules directly --- a prior obtained without spending
-samples at all. The effect has been seen directly: an LLM revising a Python
-policy from execution traces reaches deep-RL performance on single-agent tasks at
-far fewer environment interactions \citep{kuang2025generative}. That result is
-directional --- one family of tasks, no shared budget accounting, no adversary
---- which is part of what this paper is for.
+samples at all. The effect has been reported directly: an LLM revising a Python
+policy from execution traces is competitive with deep-RL baselines on
+single-agent tasks at far fewer environment interactions
+\citep{kuang2025generative}. That result is directional --- one family of tasks,
+no shared budget accounting, no adversary --- which is part of what this paper is
+for.
 
 That spectrum also settles how the comparison must be run. Measuring against
 policy gradient alone confounds symbolic-versus-neural with
 on-policy-versus-off-policy, so model-based RL is our primary baseline and policy
 gradient the on-policy reference point.
+
+The information advantage is narrower than it looks, and the narrower version is
+the one worth defending. An agent that rewrites its own failed episodes into usable
+experience becomes more sample-efficient while holding no program at all
+\citep{echo2025hindsight}: what buys the extra information per sample is the
+reader, not the symbolic form. The program earns its place on the other side of
+the question, as what makes the policy an object the loop can edit --- and
+therefore as what sets where the loop stops. The two bounds are consequently
+measured against different things: the lower against RL's sample budget, the
+upper against the agent's own capacity.
 
 \paragraph{Why they stop.} What the loop accumulates is what eventually stops it.
 Revisions leave the program larger and more interconnected, and each further

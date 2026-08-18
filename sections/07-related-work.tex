@@ -63,6 +63,25 @@
 % heuristic design, continual learning. The 21-item survey in the earlier
 % proposal (proposal(1)(2).pdf) is the starting list.
 %
+% SURVEYED AND DELIBERATELY NOT CITED. Recorded so a later pass does not spend
+% the search again, and so the rejections are reviewable rather than silent.
+%   - arXiv 2604.21896, "Crafting Strategic AI Gaming Agents...": operationalizes
+%     Shannon's classification into an authoring environment, with a
+%     heuristic-games class built on minimax plus crowd-sourced data. Sounds
+%     adjacent and is not: no human baseline, no RL baseline, no step counts, no
+%     ceiling. Systems-and-pedagogy contribution; nothing to compare against.
+%   - arXiv 2602.04254, "Scaling Agentic Verifier for Competitive Coding": no
+%     games and no adversary that adapts. Worth one line ONLY if a referee
+%     argues iterative LLM improvement does not plateau, since it reports clear
+%     test-time scaling with no saturation. The boundary to state if so: their
+%     scaling is over K candidate solutions at test time with a verifier that
+%     grows, whereas our claim is about maintaining ONE artifact across
+%     revisions. Different quantity scaled, so it is not a counterexample --
+%     but do not pretend the tension is absent either.
+% Two hits from that same search were kept: echo2025hindsight and tig2025think,
+% both cited in Section 1 and both load-bearing there. See their refs.bib
+% annotations before moving either.
+%
 % Note the name clash: AgentBench (arXiv 2308.03688) is a different paper, also
 % from Tsinghua, and is the style reference in _reference_paper/. The project
 % name is still undecided.

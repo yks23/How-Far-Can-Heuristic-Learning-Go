@@ -72,6 +72,16 @@ Characterizing Performance Ceilings, Complexity, and Sample Efficiency in Large-
 % on why: measuring against policy gradient alone confounds symbolic-vs-neural
 % with on-policy-vs-off-policy.
 %
+% Sentence 5 says "an agent-maintained policy wins on information per sample",
+% NOT "symbolic policies win". The wording is load-bearing and was corrected
+% once already. A memory-based agent with no program at all gets the same
+% information-per-sample gain (echo2025hindsight), so crediting the symbolic
+% form for the lower bound is an overclaim, and Section 1 concedes exactly this
+% in the paragraph after the kuang2025generative citation. What the program is
+% responsible for is the SECOND half of the sentence -- the artifact the loop
+% can edit, hence where it stops. Restoring "symbolic policies win" would put
+% the abstract back in conflict with its own introduction.
+%
 % One risk to keep in view: the maintcap clause asserts that description length
 % at the plateau converges across games. That is the paper's most falsifiable
 % claim. If it fails -- if the plateau tracks the game rather than the agent --
@@ -83,10 +93,11 @@ have the lower ceiling, on the grounds that a program exhibits only the behaviou
 someone wrote down. The objection is correct, but it describes the author rather
 than the artifact. Coding agents change who the author is, moving the operative
 property from interpretability to editability. How far the symbolic paradigm goes
-once a machine pays the maintenance cost is a two-sided question. Symbolic policies win
-on information per sample --- rules and a replay report which decision lost a
-game, a scalar reward only that one was lost --- then stop, because the program
-outgrows what the agent can revise without breaking it. We characterize both
+once a machine pays the maintenance cost is a two-sided question. An
+agent-maintained policy wins on information per sample --- rules and a replay
+report which decision lost a game, a scalar reward only that one was lost ---
+then stops, because the program outgrows what the agent can revise without
+breaking it. We characterize both
 bounds with \emph{heuristic learning} (HL): an agent revises a program from the
 rules, its own source, and replays of its losses, rescoring against a frozen
 opponent pool. The setting is the complete archive of a collegiate game AI
