@@ -295,10 +295,15 @@
 % actually updates is the weights. Readable output, uneditable policy: the
 % two properties come apart in a single published system, which is what makes
 % the distinction a fact about existing work rather than our terminology.
-% Scope limits: preprint, no venue; games are unnamed in the abstract; the
-% "dramatically lower data and computational demands" claim is against
-% "conventional RL" with no step counts, so cite the mechanism and not the
-% efficiency figure -- our own lower-bound evidence is kuang2025generative.
+% VERIFIED against the full text 2026-08-18. The game is Honor of Kings, a MOBA
+% -- which is better for us than the abstract suggests, because it puts the
+% existence proof inside a competitive adversarial game rather than a toy task,
+% i.e. in our own setting. The loop is SFT (Megatron-LM) plus online RL with
+% GRPO, so "the artifact its learning loop updates is the weights" is exact.
+% Scope limits: preprint, no venue; the "dramatically lower data and
+% computational demands" claim is against "conventional RL" with no step counts,
+% so cite the mechanism and not the efficiency figure -- our own lower-bound
+% evidence is kuang2025generative.
 % ---------------------------------------------------------------------------
 @article{tig2025think,
   title   = {Think in Games: Learning to Reason in Games via Reinforcement
