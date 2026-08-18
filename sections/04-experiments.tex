@@ -26,6 +26,23 @@
 %     ("no crossover within X steps"), never an extrapolation.
 %   - the transfer suite: \val{ntransfer} further benchmarks, no retuning.
 %   - seeds, repeats, and how variance is reported.
+%   - a contamination check, which the introduction currently PROMISES twice and
+%     no section yet delivers. The intro claims the archive is contamination-
+%     resistant because the venue predates the benchmark, and leans on the same
+%     property to answer the pretraining objection ("pretraining supplies general
+%     programming competence rather than knowledge of these games"). That is an
+%     empirical claim about a specific model's training data and cannot be
+%     asserted from the venue's history alone -- the archive is a public web
+%     artifact, so its games and possibly its submissions may well be in a
+%     pretraining corpus.
+%     olympiad2025percentile has the protocol worth copying: temporal splits
+%     (pre- vs post-cutoff editions), familiarity probes (ask the model to state
+%     the rules unprompted), perturbation (change a rule and check the policy
+%     degrades as a fresh solver would rather than as a recalled one), and
+%     code-similarity against archived submissions. Copy their closing caveat
+%     too: these make direct copying unlikely and do not rule out exposure to
+%     related material. If a familiarity probe shows the model already knows a
+%     game, that game is reported separately, not dropped.
 % ---------------------------------------------------------------------------
 
 \section{Experiments}

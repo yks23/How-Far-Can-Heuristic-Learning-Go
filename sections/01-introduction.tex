@@ -230,7 +230,8 @@ present in \val{prl} of submissions, reached the finals in \val{nrlfinal} of
 The archive also supplies something no constructed benchmark has. Contamination
 resistance is usually bought by authoring fresh tasks or by collecting new ones
 continuously \citep{livecodebench2024,workbuddybench2026}; here it comes from a
-venue that predates the benchmark and was never built for evaluation. More
+venue that predates the benchmark and was never built for evaluation --- a
+different provenance, which we still verify rather than assume. More
 importantly, because thousands of people attempted the same games, the archive
 carries a \emph{distribution} of human skill rather than a reference solution ---
 so a method can be placed at a percentile of a real field, as agents have been
@@ -265,10 +266,12 @@ unfair, because the agent arrives with pretraining behind it. This is true, and
 no accounting makes it go away: we report environment steps because they are the
 resource that is scarce in a new domain, not because pretraining was free. What
 can be said is narrower and is the reason the archive was chosen. The contest's
-rules are original to it, so pretraining supplies general programming competence
-rather than knowledge of these games --- the comparison is between an agent that
-knows how to write code and an RL system that knows how to optimize, each
-starting from no experience of the game in question. Readers who prefer to price
+games are its own, so what pretraining plausibly supplies is general programming
+competence rather than strategy for these games --- and because that is a claim
+about a training corpus rather than about the venue, we test it
+(Section~\ref{sec:experiments}) instead of asserting it. Under that condition the
+comparison is between an agent that knows how to write code and an RL system that
+knows how to optimize, each starting without experience of the game in question. Readers who prefer to price
 pretraining in should read our efficiency figures as conditional on a
 general-purpose model already existing, which is the condition under which the
 question is being asked in practice.
