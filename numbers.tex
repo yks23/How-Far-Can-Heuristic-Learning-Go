@@ -93,6 +93,13 @@
 % Sample efficiency against RL. The crossover matters more than the ratio: the
 % claim is budget-conditional, not a claim that HL dominates. loseaxis names
 % the denominator on which HL is the worse method, stated up front on purpose.
+%
+% Both keys are measured against MODEL-BASED RL, the primary baseline, and the
+% text must say so wherever they appear -- policy gradient will cross over
+% somewhere else, and a bare "RL overtakes at crossover" invites the reader to
+% assume whichever baseline is least favourable to us. If the two baselines cross
+% at materially different budgets, that is a result worth reporting and needs its
+% own key rather than a hedge on this one.
 % ---------------------------------------------------------------------------
 \defTBD{effratio}{XX$\times$}
 \defTBD{crossover}{$\sim$XXX k}
