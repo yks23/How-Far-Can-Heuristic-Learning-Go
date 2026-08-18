@@ -202,6 +202,15 @@
   year   = {2024}
 }
 
+% The citation for "programmatic RL already calls its policies human-editable",
+% in the introduction's editability paragraph. Verified 2026-08-18: the abstract
+% says "representing policies as human-readable and -editable programs"
+% verbatim, so the claim is quotable rather than inferred. This is the ONLY
+% entry here that supports it. Two neighbours were tried first and do not:
+% programmaticrl2024foundations is a theory paper on optimal-policy size bounds
+% and uses none of those words, and llmguidedsearch2024 says "interpretability"
+% only -- which is precisely the distinction the paragraph is drawing, so citing
+% it for editability would undercut the sentence it supports.
 @article{diprl2026,
   title  = {{DiPRL}: Learning Discrete Programmatic Policies via Architecture
             Entropy Regularization},
@@ -259,8 +268,8 @@
 }
 
 % ---------------------------------------------------------------------------
-% Off-policy sample reuse. Used for the precise version of the channel-width
-% argument: policy gradient updates a batch once and discards it, while
+% Off-policy sample reuse. Used for the precise version of the information-per-
+% sample argument: policy gradient updates a batch once and discards it, while
 % off-policy methods reuse it -- so a comparison against policy gradient alone
 % confounds "symbolic vs neural" with "on-policy vs off-policy". Model-based
 % RL is therefore the primary baseline and policy gradient the on-policy
@@ -278,6 +287,11 @@
   year   = {2026}
 }
 
+% The other half of that pair: cited for the plain fact that off-policy methods
+% reuse a batch across updates, which is what places a maintained program at the
+% far end of the same spectrum rather than off it. Deliberately a theory paper
+% on sample reuse and not a specific algorithm -- the intro's claim is about the
+% spectrum, so citing one algorithm would invite "why that one?".
 @article{samplereuse2022,
   title  = {Generalized Policy Improvement Algorithms with Theoretically
             Supported Sample Reuse},
