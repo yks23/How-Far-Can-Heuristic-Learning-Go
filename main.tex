@@ -39,7 +39,7 @@ Characterizing Performance Ceilings, Complexity, and Sample Efficiency in Large-
 % -> numbers. Every sentence here is expanded in Section 1, so the abstract may
 % assert what it does not argue.
 %
-% Currently 259 words. 250 was a self-imposed target, not a venue limit -- most
+% Currently 261 words. 250 was a self-imposed target, not a venue limit -- most
 % take 300. Trim further only if the venue says so; the first thing to cut is
 % the closing sentence, which restates the one before it.
 %
@@ -57,12 +57,13 @@ property from interpretability to editability. How far the symbolic paradigm goe
 once a machine pays the maintenance cost is a two-sided question. Symbolic policies win
 on information per sample --- rules and a replay report which decision lost a
 game, a scalar reward only that one was lost --- then stop, because the program
-outgrows what the agent can revise without breaking it. We characterize both bounds with \emph{heuristic learning}
-(HL) --- an agent revises a program from the rules, its own source, and replays of
-its losses, rescoring against a frozen opponent pool --- on the complete archive
-of a collegiate game AI contest running since \val{founded}, built to be played
-rather than evaluated, whose \val{nsub} submissions and \val{nmatch} adjudicated
-matches supply a distribution of human skill rather than one reference solution.
+outgrows what the agent can revise without breaking it. We characterize both
+bounds with \emph{heuristic learning} (HL): an agent revises a program from the
+rules, its own source, and replays of its losses, rescoring against a frozen
+opponent pool. The setting is the complete archive of a collegiate game AI
+contest running since \val{founded} --- built to be played rather than evaluated
+--- whose \val{nsub} submissions and \val{nmatch} adjudicated matches supply a
+distribution of human skill rather than one reference solution.
 HL reaches the \val{pct}th percentile of that field across \val{ngames} games and
 is \val{effratio} more sample-efficient than RL at matched Elo, but RL overtakes
 beyond \val{crossover} environment steps, and improvement halts near
