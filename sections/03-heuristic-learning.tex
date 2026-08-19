@@ -22,6 +22,37 @@
 %     maintenance capacity). The definition is where those two are introduced as
 %     one object; do not let the subsections split them apart.
 %
+% WRITTEN 2026-08-19: 3.1 (four paragraphs + Figure 1) and 3.2's opening (the
+% definition, the two-agent loop, Figure 2, the two costly constraints). What is
+% written is the user's own outline: expressiveness and interpretability, the size
+% figure, the program space as a convenient destination for human experience, the
+% maintenance cost, then the agent-era reversal (input and output space IS program
+% text, so both halves of the loop run in one representation), then the loop itself.
+%
+% TWO JUDGEMENT CALLS in 3.1, both reversible:
+%   - The user's phrasing was that HL is "a robust architecture with very high
+%     information flow". The written version claims the information flow (that is
+%     architectural and follows from the representation argument) but NOT the
+%     robustness, which is \val{robustspread} and unmeasured. Calling the
+%     architecture robust in the motivation is invariant 9 exactly -- the framing
+%     ahead of the number -- and it would be the second time robustness got asserted
+%     before it had a result behind it. When \val{robustspread} exists, this is where
+%     the claim can be made if it holds.
+%   - The maintenance paragraph was rewritten once because its first version
+%     restated 01-introduction.tex's "every new case has to be noticed, encoded, and
+%     reconciled ... at a cost that grows with the program" almost clause for clause.
+%     What this section adds and the intro does not have: the cost is in the
+%     CHECKING, not the writing, which is why it grows rather than staying flat. If
+%     that distinction is ever cut, cut the paragraph -- without it the paragraph is
+%     the intro again.
+%
+% STILL OWED BY THIS SECTION, none of it written yet: everything in the blocks
+% below. The lower-bound argument, the on/off-policy spectrum (offpolicyvaluellm2026,
+% samplereuse2022 -- still cited nowhere in body text), the echo2025hindsight
+% concession in its empirical form, the description-length protocol, the baseline
+% rationale, the budget-commensurability conversion, and the measurement definitions.
+% 3.2 currently stops after the loop; the protocol half of it is absent.
+%
 % MOTIVATION SUBSECTION. The introduction is capped at 2.5 pages and several
 % argued links were deleted from it wholesale rather than compressed; the ones
 % about WHY the paradigm is worth revisiting land here. See the intro's
@@ -176,12 +207,13 @@ archive this paper draws on is thousands of such acts of writing down, which is
 why it can be read as a record of what the paradigm reached rather than only as a
 set of programs.
 
-What the paradigm did not have is a maintainer who could keep paying. Each new
-case has to be reconciled with the rules already present, and the reconciliation
-is where the cost lives: not in writing the new rule but in establishing that it
-does not break the old ones. That cost grows with the program, so revision
-eventually stops being worth its price, and where it stops has always been a fact
-about the person doing it rather than about what a program can express.
+What the paradigm did not have is a maintainer who could keep paying, and it is
+worth being precise about where the payment goes. The expensive part of adding a
+rule is not writing it; it is establishing that it does not break the rules already
+there. That is why the cost grows with the program rather than staying flat: each
+addition has to be checked against a larger body of existing behaviour, so the same
+edit costs more late than early. Where revision stops has therefore always been a
+fact about the person doing it rather than about what a program can express.
 
 In the agent era the constraint changes character, because a coding agent's input
 and output space is program text. It does not need the program translated into
