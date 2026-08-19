@@ -64,5 +64,26 @@
 %   - negative results are in scope and belong here.
 % ---------------------------------------------------------------------------
 
+% PRACTICAL GUIDELINES ARE NOW PROMISED HERE, by contribution 3 of the
+% introduction as of 2026-08-18 ("From that we derive practical guidelines for
+% applying HL -- when to expect it to pay, and when a learned method is the better
+% spend"), which forward-references this section. Nothing in the paper delivers
+% them yet, and a contribution the paper does not keep is worse than one it never
+% claimed. What the guidelines have to be derived FROM, so they are results rather
+% than opinions:
+%   - the K(pi_good) inequality: expect HL to pay while the winning policy's
+%     description length sits below the agent's maintenance capacity. Since
+%     \val{maintcap} is measured and roughly game-independent, that is an
+%     up-front test a practitioner can apply to a new game by compressing a
+%     reference implementation (\val{kproxy}) -- state it that way, as a check
+%     someone can run, not as a restatement of the inequality.
+%   - the crossover: below \val{crossover} environment steps HL is the better
+%     spend, above it model-based RL is. Attach the denominators, because HL costs
+%     more \val{loseaxis} and a guideline that hides that is advertising.
+%   - the plateau: near \val{plateau} revisions the loop stops paying, so budget
+%     for that rather than for indefinite improvement.
+% Each guideline must name the result it comes from. If a number is unmeasured the
+% guideline does not get stated -- see the numbers guard in AGENTS.md.
+
 \section{Discussion}
 \label{sec:discussion}

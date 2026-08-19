@@ -32,9 +32,23 @@
 %      Conceded, never refuted -- "everyone was wrong" is both weaker and less
 %      true than "everyone was measuring the author". Ends by placing the paper on
 %      RL's strongest terrain, which is why the comparison is not rigged.
+%      Do not write that "nothing caps what a program can express", which this
+%      paragraph said until 2026-08-18: the user judged it too absolute, and it is
+%      also a weaker claim than the one available. The claim now made is
+%      comparative and defensible -- per unit of construction the symbolic form is
+%      if anything MORE expressive, since one conditional or one search states a
+%      decision boundary many neurons only approximate. Keep it comparative; an
+%      unbounded-expressiveness claim invites a referee to reach for universal
+%      approximation and win.
 %   3. Coding agents change who the author is. The operative property is
 %      editability, not interpretability. This is the paper's hinge; without it
 %      the paper reads as a defence of a paradigm already judged.
+%      It must END ON THE QUESTION, as of 2026-08-18: the coding agent becomes the
+%      optimizer that drives revision of the symbolic program, in place of the human
+%      whose cost bounded the paradigm, and then the paragraph asks how high the
+%      ceiling is. Before that it ended on the role of the property, which stated a
+%      reframing and never asked anything, so the paper's motivating question was
+%      never posed -- the next paragraph simply began answering it.
 %      Keep the system NAMES here and wherever ECHO reappears. Chengpeng Hu
 %      (diprl2026) and Michael Y. Hu (echo2025hindsight) are different people and
 %      natbib renders both as "Hu et al." with only the year between them, so the
@@ -47,9 +61,15 @@
 %      distinction is what their loop optimized, compilability rather than
 %      standing. Dropping that concession misrepresents the paper we lean on
 %      hardest.
-%   5. Where we test it: the archive, the folk ordering it refutes, and the
-%      classic RL environments. Provenance is one clause pointing at Section 2.
-%   6. What we find, which is now the ONLY place the two bounds appear. It states
+%   5. Where we test it AND what we find, merged into one paragraph on 2026-08-18
+%      at the user's direction (the two ran long as a pair). It carries the
+%      archive, the folk ordering it refutes, the classic RL environments, and then
+%      the results. The join is the sample-efficiency result's last clause --
+%      "largest margins on games whose winning policy is short" -- which is what
+%      makes the axis follow from a finding instead of being announced. Keep that
+%      hinge if the paragraph is ever restructured; without it the description
+%      length arrives unmotivated.
+%      This is also now the ONLY place the two bounds appear. It states
 %      the sample-efficiency result without arguing it (-> Section 3) and the
 %      plateau without arguing it (-> Section 7), then does the one thing that
 %      cannot be delegated: names the axis. Go kills rule complexity as the
@@ -63,13 +83,17 @@
 %      length at the plateau, divergent Elo there, and it is the PAIR that
 %      diagnoses. Convergent length alone proves nothing -- it is equally
 %      consistent with games that never differed in complexity.
-%   7. The two conceded objections (pretraining asymmetry, the archive's RL
+%   6. The two conceded objections (pretraining asymmetry, the archive's RL
 %      scarcity confounded with contestant cost structure). Deliberately kept in
 %      the intro across two rounds of cutting: a reader who first meets the
 %      pretraining objection in Section 6 has already decided we were hiding it.
-%   8. Contributions -- three bullets, stated flat. They were 21 lines of
-%      re-argued motivation before this cut; the motivation is upstream now, so
-%      never let the bullets re-derive it.
+%   7. Contributions -- three bullets, introduced by one sentence rather than a
+%      heading, each opening on "We define / We introduce / We compare" at the
+%      user's direction 2026-08-18. They were 21 lines of re-argued motivation
+%      before the cuts; the motivation is upstream now, so never let the bullets
+%      re-derive it. The third bullet ends on practical guidelines for applying HL,
+%      which is a promise Section 6 has to keep -- when HL pays and when a learned
+%      method is the better spend. Nothing in the paper delivers that yet.
 %
 % NO \paragraph HEADINGS IN THIS SECTION. Links 3-6 carried run-in bold headings
 % ("What coding agents changed.", "Heuristic learning.", "Where we test it.",
@@ -189,9 +213,11 @@ the rules already present, at a cost that grows with the program until further
 revision stops being worth its price. That maintenance cost, and not any limit on
 what a program can express, is what bounded the paradigm.
 
-The cost, though, is a property of the author rather than of the artifact. Nothing in
-the symbolic paradigm caps what a program can represent; the cap is on how much of it
-a human will maintain before the reconciliation cost exceeds what they can pay.
+The cost, though, is a property of the author rather than of the artifact. Per unit of
+construction the symbolic paradigm is if anything the more expressive of the two: a
+search procedure or a conditional test states in one line a decision boundary that
+takes a great many neurons to approximate. What binds is how much of such a program a
+human will maintain before the reconciliation cost exceeds what they can pay.
 Asymptotically the learned policy still wins, and this paper does not dispute that.
 The question is what happens under a budget, where the authoring cost binds --- and
 because that question is about games, this paper stays on the terrain where RL is
@@ -209,11 +235,13 @@ traces to a specific parameter. The two properties do come apart --- a system ca
 reason in natural language about every decision and still hold its policy in weights
 \citep{tig2025think} --- and programmatic RL already calls its policies human-readable
 and editable \citep[DiPRL;][]{diprl2026}. What changes here is the role the property
-plays: not a feature of the delivered artifact, but the reason an optimizer exists
-for it.
+plays: not a feature of the delivered artifact, but the reason an optimizer can exist
+for it at all. Once a coding agent is that optimizer --- the engine driving revision
+of a symbolic program, in place of the human whose cost bounded the paradigm --- the
+question the paradigm was retired on becomes askable again, and quantitatively: how
+high is the ceiling?
 
-So we were curious how the paradigm actually performs on adversarial games once a machine pays the maintenance cost. We study it
-through \emph{heuristic learning} (HL): a coding agent maintains a heuristic program
+We study it through \emph{heuristic learning} (HL): a coding agent maintains a heuristic program
 by reading the rules, its own source, and replays of its losses, then rescores it
 against a frozen opponent pool. The loop is deliberately narrow --- one revision per
 iteration, every version and score kept in an append-only log --- because attribution
@@ -225,40 +253,37 @@ were not one-shot --- most were revised and all debugged over many cycles --- bu
 loop optimized compilability, not tournament standing. The missing term is revisions
 carrying an adversarial signal.
 
-Measuring a ceiling needs a domain where many
-independent authors already pushed the symbolic paradigm as far as a real budget
-allowed, with the results recorded. We use the complete archive of a collegiate game
-AI contest running since \val{founded}: games authored for the contest itself,
-\val{nsub} submissions, and \val{nmatch} adjudicated matches, written under deadline
-with standings at stake. That provenance, rather than any design choice, is what
+Measuring a ceiling needs a domain where many independent authors already pushed the
+symbolic paradigm as far as a real budget allowed, with the results recorded, so we
+use the complete archive of a collegiate game AI contest running since \val{founded}:
+games authored for the contest itself, \val{nsub} submissions, and \val{nmatch}
+adjudicated matches, written under deadline with standings at stake. That provenance
 supplies contamination resistance and a \emph{distribution} of human skill to place a
-method within (Section~\ref{sec:background}). It also carries a folk ordering ---
-rules for beginners, search for the intermediate, RL as the highest ceiling --- which
-gets the asymptotic ceilings right and still fails to predict who wins: \val{pheur}
-of prize-winning programs contain no learned component, and RL, present in \val{prl}
-of submissions, reached the finals in \val{nrlfinal} of \val{editions} editions. We
-run HL in the classic RL game environments as well, so the comparison also happens
-where learned policies are strongest and their baselines are established.
-
-HL is at its strongest exactly where a budget binds. It
-reaches the \val{pct}th percentile of the human field and is \val{effratio} more
-sample-efficient than model-based RL at matched Elo, while its advantage is largest on
-games whose winning policy is short. The axis that predicts this is a description
-length, and not the length of the rules --- Go's rules fit on a page, yet no compact
-symbolic policy plays it well. What governs the outcome is the description length of a
-\emph{symbolic} policy good enough to win, which we write $K(\pi_{\mathrm{good}})$
-after Kolmogorov complexity and estimate by compression, the quantity itself being
-uncomputable \citep{lividanyi2019kolmogorov,rissanen1978mdl}. The prediction is a
-single inequality: HL succeeds while $K(\pi_{\mathrm{good}})$ stays below the agent's
-maintenance capacity, and plateaus as it approaches it. Because that capacity belongs
+method within (Section~\ref{sec:background}), and it records a folk ordering --- rules
+for beginners, search for the intermediate, RL as the highest ceiling --- that gets
+the asymptotic ceilings right and still fails to predict who wins: \val{pheur} of
+prize-winning programs contain no learned component, and RL, present in \val{prl} of
+submissions, reached the finals in \val{nrlfinal} of \val{editions} editions. Running
+HL there and in the classic RL environments, where learned baselines are established,
+we find it strongest exactly where a budget binds --- the \val{pct}th percentile of
+the human field, \val{effratio} the sample efficiency of model-based RL at matched
+Elo, and the largest margins on games whose winning policy is short. That last
+regularity names the axis, which is a description length and not the length of the
+rules: Go's rules fit on a page, yet no compact symbolic policy plays it well. What
+governs the outcome is the description length of a \emph{symbolic} policy good enough
+to win, written $K(\pi_{\mathrm{good}})$ after Kolmogorov complexity and estimated by
+compression, the quantity itself being uncomputable
+\citep{lividanyi2019kolmogorov,rissanen1978mdl}, and the prediction is a single
+inequality: HL succeeds while $K(\pi_{\mathrm{good}})$ stays below the agent's
+maintenance capacity and plateaus as it approaches it. Because that capacity belongs
 to the agent rather than the game, the inequality predicts a signature we then
-observe: description length at the plateau converges across games of differing
-complexity while the Elo reached there does not, and it is that pairing, not either
+observe --- description length at the plateau converges across games of differing
+complexity while the Elo reached there does not, and it is the pairing, not either
 half, that separates a limit of the maintainer from a limit of the game
-(Section~\ref{sec:discussion}). Neither paradigm dominates --- model-based RL
-overtakes HL beyond \val{crossover} environment steps --- so the budget and the
-game's structure decide. The loop itself proves robust across that range: it
-transfers to \val{ntransfer} further benchmarks without retuning.
+(Section~\ref{sec:discussion}). Neither paradigm dominates: model-based RL overtakes
+HL beyond \val{crossover} environment steps, so the budget and the game's structure
+decide, while the loop itself transfers to \val{ntransfer} further benchmarks without
+retuning.
 
 Two objections are conceded here and answered in Section~\ref{sec:discussion}. The
 agent arrives with a pretraining corpus while RL starts cold, and no denominator makes
@@ -268,29 +293,36 @@ scarcity is confounded with its participants' cost structure --- students on a d
 have limited compute, time, and RL expertise --- so it records what wins under contest
 constraints. Every comparison here is budget-conditional.
 
-\subsection*{Contributions}
-
 % Method, benchmark, comparison -- in that order, so the algorithm is the paper's
 % subject and the benchmark is what it is measured on. The archive audit sits
 % under the benchmark: it describes what the archive contains, and is not a
 % result of comparing HL against RL.
+% The \subsection*{Contributions} heading was removed 2026-08-18: the list is
+% introduced in a sentence instead, for the same reason the run-in paragraph
+% headings went. Do not reinstate it.
+Our contributions are threefold.
+
 \begin{itemize}[leftmargin=*]
-  \item \textbf{Heuristic learning}, an agent-maintained symbolic policy under
-  adversarial pressure, instrumented --- one revision per iteration, every version
-  and score logged --- so that a plateau can be diagnosed and not merely observed.
+  \item \textbf{We formally define heuristic learning}, an agent-maintained symbolic
+  policy under adversarial pressure, instrumented --- one revision per iteration,
+  every version and score logged --- so that a plateau can be diagnosed and not
+  merely observed.
 
-  \item \textbf{A benchmark drawn from a real competition rather than built for
-  evaluation}: the archive's \val{nsub} submissions and \val{nmatch} matches, plus
-  the apparatus one needs --- classic games as structural controls, three opponent
-  pools, a frozen evaluation set, a cross-edition Elo protocol, and a per-submission
-  audit of whether it contains a learned component.
+  \item \textbf{We introduce a benchmark drawn from a real competition} rather than
+  built for evaluation: the archive's \val{nsub} submissions and \val{nmatch}
+  matches, plus the apparatus one needs --- classic games as structural controls,
+  three opponent pools, a frozen evaluation set, a cross-edition Elo protocol, and a
+  per-submission audit of whether it contains a learned component.
 
-  \item \textbf{A budget-resolved comparison of HL against model-based RL, policy
-  gradient, and the human field}, reported in every denominator rather than the
-  favourable one: HL beats the strongest recorded human on \val{nbeat} games, but
-  costs more \val{loseaxis}. Improvement frequency decays as \val{decay} and
-  plateaus near \val{plateau} revisions, which we trace to maintenance capacity:
-  description length there converges to \val{maintcap} within \val{maintcapspread}
-  while the Elo reached varies by \val{eloplatspread}.
+  \item \textbf{We compare HL and RL broadly} --- against model-based RL, policy
+  gradient, and the human field, across budgets and in every denominator rather than
+  the favourable one --- and establish which paradigm holds the advantage where. HL
+  beats the strongest recorded human on \val{nbeat} games but costs more
+  \val{loseaxis}, and improvement frequency decays as \val{decay} to a plateau near
+  \val{plateau} revisions, which we trace to maintenance capacity: description length
+  there converges to \val{maintcap} within \val{maintcapspread} while the Elo reached
+  varies by \val{eloplatspread}. From that we derive practical guidelines for
+  applying HL --- when to expect it to pay, and when a learned method is the better
+  spend (Section~\ref{sec:discussion}).
 \end{itemize}
 
