@@ -8,10 +8,53 @@
 % 1. The archive audit. \val{pheur}, \val{prl}, \val{nrlfinal}. Descriptive
 %    shares over the archive; no counterfactual is claimed here.
 %
-% 2. HL within the human field. \val{pct} percentile, surpasses the strongest
-%    recorded human on \val{nbeat}, \val{elogap} Elo. Percentile is the metric
-%    the archive uniquely affords -- a gradient, not a single baseline -- so
-%    lead with it rather than with percentage improvement over a reference.
+% 2. HL against the human state of the art. REORDERED 2026-08-19: the user's
+%    framing is that the main thing HL-Arena is for is testing whether rules an
+%    agent maintains continuously can overtake the human SOTA -- the result of
+%    contestants competing over a season. So \val{nbeat} and \val{elogap} lead
+%    and \val{pct} follows. Percentile is still the metric the archive uniquely
+%    affords (a gradient, not a single baseline) and it stays in the section: it
+%    is the aggregate that stops \val{nbeat} reading as a cherry-pick. What is
+%    dropped is leading with percentage improvement over a reference.
+%
+%    DEFINE HUMAN SOTA HERE, before either key is quoted. Two readings give
+%    different numbers: the strongest submission ever recorded for a game, across
+%    all \val{editions} editions, or the winner of one edition. Use best-ever --
+%    it is the only reading under which "state of the art" is honest, and the bar
+%    it sets rises with every edition. State the reading in the text each time.
+%    Three things the definition has to settle, all of which move the number:
+%      - is the SOTA program the best by final standing, or the best by Elo on our
+%        frozen pool? Standing is the venue's own judgement but was measured
+%        against that edition's field; Elo on our pool is what makes it comparable
+%        to HL. They can disagree, and if they do, report both.
+%      - a program that won its edition may lose to a later edition's entry. The
+%        best-ever bar is cross-edition, so it needs the cross-edition Elo
+%        protocol (Section 4) and inherits that protocol's caveat: the human
+%        population's composition drifts year to year.
+%      - per game, never pooled. \val{nbeat} of \val{ngames} is the only reportable
+%        form; a bare "beats the human SOTA" is the most inflatable claim available
+%        here and must not appear even in the section's own prose.
+%
+%    THE EFFORT ASYMMETRY is what makes this comparison about maintenance rather
+%    than compute, and it is the reason the archive is worth using: the human
+%    program was refined over \val{humanspan} of competition, HL's over
+%    \val{hlspan}. Report both, in the same sentence, wherever \val{nbeat} appears.
+%    Two disciplines come with it. \val{humanspan} is CALENDAR span and is not
+%    labour -- the archive does not record hours worked, so never write
+%    "\val{humanspan} of human effort", and confirm the figure against the venue's
+%    schedule before it enters the body (it is currently the user's recollection
+%    only). And the wall-clock direction REVERSES between comparisons: HL loses
+%    wall-clock to RL (\val{loseaxis}) and wins it against the humans. Never let
+%    one "but costs more" clause cover both -- that error was in contribution 3
+%    until 2026-08-19.
+%
+%    The asymmetry also cuts the other way and the section owes the concession: the
+%    contestants were solving the game for the first time with no reference,
+%    while HL is handed rules a human wrote and, on the older editions, works in a
+%    domain whose archive is public. That is the contamination question
+%    (Section 4), and if a familiarity probe fires on a game where HL beats SOTA,
+%    that game is reported separately -- it is exactly where the objection bites
+%    hardest.
 %
 % 3. Sample efficiency vs RL. \val{effratio} at matched Elo, crossover at
 %    \val{crossover}. Frame as budget-conditional; do not claim HL dominates.

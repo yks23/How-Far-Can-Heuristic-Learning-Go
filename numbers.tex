@@ -97,17 +97,67 @@
 \defTBD{nrlfinal}{X}
 
 % ---------------------------------------------------------------------------
-% Headline result. Percentile of the human field is the metric the archive
-% uniquely affords: a skill gradient rather than one reference solution.
+% Headline result. REORDERED 2026-08-19 at the user's direction: the primary
+% question HL-Arena is put to is whether an agent's continuously maintained rules
+% beat the HUMAN STATE OF THE ART -- the best submission the archive records --
+% not where HL lands in the distribution. So nbeat and elogap lead and pct places
+% the method in the field behind them. Percentile is still the metric the archive
+% uniquely affords and is not demoted out of the paper; it is the aggregate that
+% keeps nbeat from being read as a cherry-pick.
+%
+% nbeat must ALWAYS be reported as "nbeat of ngames", never bare. "Beats the human
+% SOTA" with the denominator omitted is the single most inflatable claim in the
+% paper: on a 9-game suite, winning 3 and reporting "beats the best human" is the
+% version a hostile reader will assume was meant.
+%
+% What "human SOTA" denotes has to be fixed in 05-experiments.tex before either
+% key is quoted, and there are two defensible readings that give different numbers:
+% the strongest submission EVER recorded for a game (across all editions, so the
+% bar rises with every edition and is the harder target), or the winner of a single
+% edition. Pick the best-ever reading -- it is the one that makes "state of the
+% art" honest -- and say so in the text every time.
+%
+% elogap was registered and unused until 2026-08-19; this reframing is what gives
+% it a home. It is the margin over human SOTA, on the games where HL clears it, and
+% it is meaningless without nbeat beside it (a large margin on one game and losses
+% on eight is not a positive result).
 % ---------------------------------------------------------------------------
 \defTBD{pct}{XX}
 \defTBD{nbeat}{X}
 \defTBD{elogap}{$+$XX}
 
+% The effort asymmetry, which is the point of comparing against a contest archive
+% at all: the human submissions were refined over a competition season, HL's over a
+% run. Stating both is what makes "beats the human SOTA" a claim about maintenance
+% rather than about compute.
+%
+% humanspan is NOT MEASURED and is currently the user's recollection ("several
+% months", 2026-08-19). Confirm it against the venue's own schedule before it
+% appears in the body, and keep it CALENDAR span, not human labour hours -- those
+% are unrecorded, and a calendar month is not a month of work. The honest wording
+% is "refined over humanspan of competition", never "humanspan of human effort".
+% This is the same class of unconfirmed venue fact as the contestant population
+% (see 02-preliminary.tex, where "students" is what is defensible).
+%
+% hlspan is HL's wall-clock to reach the Elo it is compared at, and it exists to be
+% stated in the same breath. Note what it does to loseaxis below: against RL, HL
+% loses on wall-clock; against the humans it very likely WINS on it. The two
+% comparisons must never share a denominator clause.
+\defTBD{humanspan}{X months}
+\defTBD{hlspan}{XX hours}
+
 % ---------------------------------------------------------------------------
 % Sample efficiency against RL. The crossover matters more than the ratio: the
 % claim is budget-conditional, not a claim that HL dominates. loseaxis names
 % the denominator on which HL is the worse method, stated up front on purpose.
+%
+% loseaxis BELONGS TO THE RL COMPARISON ONLY. Corrected 2026-08-19: contribution 3
+% had it attached to the human claim ("beats the strongest recorded human ... but
+% costs more per wall-clock hour and per dollar"), which is wrong on the wall-clock
+% half -- the humans worked across \val{humanspan} of competition and HL across
+% \val{hlspan}, so HL wins that axis against them. Keep the human and RL
+% denominators in separate sentences; a shared "but costs more" clause silently
+% asserts a comparison the ledger does not support.
 %
 % Both keys are measured against MODEL-BASED RL, the primary baseline, and the
 % text must say so wherever they appear -- policy gradient will cross over

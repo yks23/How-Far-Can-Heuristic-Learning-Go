@@ -134,8 +134,11 @@ collegiate game AI contest running since \val{founded} --- built to be played
 rather than evaluated --- whose \val{nsub} submissions and \val{nmatch}
 adjudicated matches supply a distribution of human skill rather than one
 reference solution.
-HL reaches the \val{pct}th percentile of that field across \val{ngames} games and
-is \val{effratio} more sample-efficient than model-based RL at matched Elo, but
+On \val{nbeat} of \val{ngames} games an agent maintaining rules across \val{hlspan}
+overtakes the strongest submission the archive records, refined by human
+contestants over \val{humanspan} of competition, by \val{elogap} Elo; across the
+field HL reaches the \val{pct}th percentile. It is
+\val{effratio} more sample-efficient than model-based RL at matched Elo, but
 that baseline overtakes beyond \val{crossover} environment steps, and improvement
 halts near
 \val{plateau} revisions as the program's description length approaches
@@ -145,7 +148,7 @@ differing complexity, while the Elo reached there spreads by
 the ceiling the agent's and not the game's. What bounds the paradigm is the
 description length of a winning program, not the complexity of the rules.}
 
-\date{August 18, 2026}
+\date{August 19, 2026}
 
 \begin{document}
 

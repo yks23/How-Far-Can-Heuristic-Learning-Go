@@ -266,9 +266,13 @@ the asymptotic ceilings right and still fails to predict who wins: \val{pheur} o
 prize-winning programs contain no learned component, and RL, present in \val{prl} of
 submissions, reached the finals in \val{nrlfinal} of \val{editions} editions. Running
 HL there and in the classic RL environments, where learned baselines are established,
-we find it strongest exactly where a budget binds --- the \val{pct}th percentile of
-the human field, \val{effratio} the sample efficiency of model-based RL at matched
-Elo, and the largest margins on games whose winning policy is short. That last
+we find it strongest exactly where a budget binds --- on \val{nbeat} of
+\val{ngames} games it overtakes the strongest submission the archive records, a
+program refined by contestants over \val{humanspan} of competition, which places
+the question of the ceiling above the human field rather than within it; the
+\val{pct}th percentile across the field, \val{effratio} the sample efficiency of
+model-based RL at matched Elo, and the largest margins on games whose winning
+policy is short. That last
 regularity names the axis, which is a description length and not the length of the
 rules: Go's rules fit on a page, yet no compact symbolic policy plays it well. What
 governs the outcome is the description length of a \emph{symbolic} policy good enough
@@ -317,9 +321,12 @@ Our contributions are threefold.
 
   \item \textbf{We compare HL and RL broadly} --- against model-based RL, policy
   gradient, and the human field, across budgets and in every denominator rather than
-  the favourable one --- and establish which paradigm holds the advantage where. HL
-  beats the strongest recorded human on \val{nbeat} games but costs more
-  \val{loseaxis}, and improvement frequency decays as \val{decay} to a plateau near
+  the favourable one --- and establish which paradigm holds the advantage where. The
+  primary comparison is against the human state of the art: on \val{nbeat} of
+  \val{ngames} games HL overtakes the archive's strongest recorded submission,
+  \val{elogap} Elo over a program its authors refined across \val{humanspan} of
+  competition. Against RL it costs more \val{loseaxis}. Improvement frequency
+  decays as \val{decay} to a plateau near
   \val{plateau} revisions, which we trace to maintenance capacity: description length
   there converges to \val{maintcap} within \val{maintcapspread} while the Elo reached
   varies by \val{eloplatspread}. From that we derive practical guidelines for
