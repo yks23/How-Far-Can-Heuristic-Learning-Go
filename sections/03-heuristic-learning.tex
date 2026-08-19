@@ -247,7 +247,13 @@ revises the one in hand. Its output is the next version of the policy agent, whi
 is then rescored against the frozen test pool, and the loop repeats.
 Figure~\ref{fig:loop} shows the arrangement.
 
-\begin{figure}[t]
+% [b] for the same reason as Figure 1: with [t] this landed at the top of page 6,
+% above Section 3.2's own heading and inside the tail of 3.1. Both floats in this
+% section are bottom-placed on purpose. If a third figure is added, check it the
+% same way -- read the rendered page and confirm the figure is below the heading of
+% the subsection that references it, because [t] will do the wrong thing whenever a
+% reference falls late on a page.
+\begin{figure}[b]
 \centering
 % PLACEHOLDER, 2026-08-19. Schematic of the loop; no data, so nothing here needs a
 % \val key. Before submission decide whether this earns its space -- the loop is
