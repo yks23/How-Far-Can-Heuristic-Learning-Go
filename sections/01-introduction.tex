@@ -71,6 +71,17 @@
 %      re-argued motivation before this cut; the motivation is upstream now, so
 %      never let the bullets re-derive it.
 %
+% NO \paragraph HEADINGS IN THIS SECTION. Links 3-6 carried run-in bold headings
+% ("What coding agents changed.", "Heuristic learning.", "Where we test it.",
+% "What we find.") until 2026-08-18, when the user removed them: a summary in
+% front of each paragraph breaks the read. The argument is a single chain and has
+% to run as continuous prose, so each paragraph now opens on its own first
+% sentence. If a heading is ever re-added, link 3's opening breaks -- "They change
+% who the author is" took its antecedent from the deleted heading and now reads
+% "Coding agents change who the author is". 07-related-work.tex keeps its
+% \paragraph headings on purpose; a related-work section is scanned by topic, and
+% that is a different requirement from this one.
+%
 % Do not write "if-else". Characterizing what the winning programs contain is a
 % result, not a punchline. Do not claim editability as our coinage; programmatic
 % RL already calls its policies human-editable, and what changes is the role the
@@ -186,9 +197,9 @@ The question is what happens under a budget, where the authoring cost binds --- 
 because that question is about games, this paper stays on the terrain where RL is
 strongest.
 
-\paragraph{What coding agents changed.} They change who the author is, and the
-property that matters once the author is a machine is not the one usually argued. The
-axis is \emph{editability}, not interpretability: interpretability asks whether a
+Coding agents change who the author is. Once the author is a machine, the property
+that governs whether revision can continue is \emph{editability} rather than
+interpretability: interpretability asks whether a
 human understands the policy, editability whether the optimization loop can act on
 the artifact at all. A symbolic program can be read in full and changed in part, and
 takes the heterogeneous inputs maintenance requires --- rules, its own source,
@@ -201,8 +212,7 @@ and editable \citep[DiPRL;][]{diprl2026}. What changes here is the role the prop
 plays: not a feature of the delivered artifact, but the reason an optimizer exists
 for it.
 
-\paragraph{Heuristic learning.} So we were curious how the paradigm actually
-performs on adversarial games once a machine pays the maintenance cost. We study it
+So we were curious how the paradigm actually performs on adversarial games once a machine pays the maintenance cost. We study it
 through \emph{heuristic learning} (HL): a coding agent maintains a heuristic program
 by reading the rules, its own source, and replays of its losses, then rescores it
 against a frozen opponent pool. The loop is deliberately narrow --- one revision per
@@ -215,7 +225,7 @@ were not one-shot --- most were revised and all debugged over many cycles --- bu
 loop optimized compilability, not tournament standing. The missing term is revisions
 carrying an adversarial signal.
 
-\paragraph{Where we test it.} Measuring a ceiling needs a domain where many
+Measuring a ceiling needs a domain where many
 independent authors already pushed the symbolic paradigm as far as a real budget
 allowed, with the results recorded. We use the complete archive of a collegiate game
 AI contest running since \val{founded}: games authored for the contest itself,
@@ -230,7 +240,7 @@ of submissions, reached the finals in \val{nrlfinal} of \val{editions} editions.
 run HL in the classic RL game environments as well, so the comparison also happens
 where learned policies are strongest and their baselines are established.
 
-\paragraph{What we find.} HL is at its strongest exactly where a budget binds. It
+HL is at its strongest exactly where a budget binds. It
 reaches the \val{pct}th percentile of the human field and is \val{effratio} more
 sample-efficient than model-based RL at matched Elo, while its advantage is largest on
 games whose winning policy is short. The axis that predicts this is a description
