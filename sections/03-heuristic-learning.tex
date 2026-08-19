@@ -245,39 +245,48 @@ interaction traces. A \emph{generative agent} observes those traces, together wi
 the rules and the policy agent's own source, and either generates a policy or
 revises the one in hand. Its output is the next version of the policy agent, which
 is then rescored against the frozen test pool, and the loop repeats.
-Figure~\ref{fig:loop} shows the arrangement.
+Algorithm~\ref{alg:loop} states it in full.
 
-% [b] for the same reason as Figure 1: with [t] this landed at the top of page 6,
-% above Section 3.2's own heading and inside the tail of 3.1. Both floats in this
-% section are bottom-placed on purpose. If a third figure is added, check it the
-% same way -- read the rendered page and confirm the figure is below the heading of
-% the subsection that references it, because [t] will do the wrong thing whenever a
-% reference falls late on a page.
-\begin{figure}[b]
-\centering
-% PLACEHOLDER, 2026-08-19. Schematic of the loop; no data, so nothing here needs a
-% \val key. Before submission decide whether this earns its space -- the loop is
-% three sentences of prose and a figure that only redraws them is decoration. It
-% justifies itself if it carries what the prose cannot: where the budget is spent,
-% which arrows are logged, and the read/edit split on the generative agent's inputs.
-\begin{tikzpicture}[x=1cm,y=1cm,font=\footnotesize,
-    box/.style={draw,rounded corners,inner sep=4pt,align=center},
-    ar/.style={-{Stealth[length=2mm]}}]
-  \node[box] (gen) at (0,0)   {generative\\agent};
-  \node[box] (pol) at (4.4,0) {policy agent\\\emph{(the program)}};
-  \node[box] (env) at (8.8,0) {environment\\\emph{(opponent pool)}};
-  \draw[ar] (gen) -- node[above]{revises} (pol);
-  \draw[ar] (pol) -- node[above]{plays} (env);
-  \draw[ar] (env) to[out=-120,in=-60] node[below]{interaction traces, scores} (gen);
-  \node[align=left,anchor=west] at (-0.9,1.6)
-    {reads: rules, own source, traces \quad edits: the program};
-\end{tikzpicture}
-\caption{The heuristic learning loop. A generative agent observes the interaction
-between the policy agent and its environment, then generates or revises the policy
-agent. One revision per iteration; every version, score, and trace is kept in an
-append-only log.}
-\label{fig:loop}
-\end{figure}
+% REPLACED the tikz block diagram with this algorithm block on 2026-08-19 at the
+% user's direction. The diagram drew three boxes and three arrows, which is what the
+% prose already says; the algorithm carries what the prose cannot -- the order of
+% operations, where the budget is decremented, what is logged, and the fact that the
+% generative agent's two modes are one call site with different inputs.
+%
+% Kept deliberately short, because the user's framing of the loop is "就这么简单".
+% Resist adding the description-length protocol, the KL measurement, or the budget
+% conversion here; those are separate protocols and belong in their own paragraphs
+% later in 3.2. An algorithm that grows past one column stops being the thing that
+% makes the loop look simple.
+%
+% [b] for the same reason as Figure 1: with [t] the float landed above its own
+% subsection heading, inside the tail of 3.1. Check the rendered page after any edit
+% above it.
+\begin{algorithm}[b]
+\caption{Heuristic learning. A generative agent observes the interaction between
+the policy agent and its environment, then generates or revises the policy agent.
+One revision per iteration; every version, score, and trace is appended to the log.}
+\label{alg:loop}
+\begin{algorithmic}[1]
+  \Require game rules $R$, training pool $\mathcal{O}_{\text{train}}$, frozen test
+    pool $\mathcal{O}_{\text{test}}$, budget $B$
+  \State $\pi_0 \gets \Call{Generate}{R}$
+    \Comment{no policy in hand: the agent writes one}
+  \State $\mathcal{L} \gets \langle\,\rangle$
+    \Comment{append-only log}
+  \For{$t = 1$ \textbf{to} $B$}
+    \State $\tau_t \gets \Call{Play}{\pi_{t-1}, \mathcal{O}_{\text{train}}}$
+      \Comment{interaction traces, including the losses}
+    \State $\pi_t \gets \Call{Revise}{\pi_{t-1}, R, \textsc{src}(\pi_{t-1}), \tau_t}$
+      \Comment{reads; then edits}
+    \State $e_t \gets \Call{Score}{\pi_t, \mathcal{O}_{\text{test}}}$
+      \Comment{Elo on the frozen pool}
+    \State append $(\pi_t, e_t, \tau_t)$ to $\mathcal{L}$
+  \EndFor
+  \State \Return $\mathcal{L}$
+    \Comment{the trajectory is the result, not $\pi_B$ alone}
+\end{algorithmic}
+\end{algorithm}
 
 Two constraints on the loop are worth stating because they cost something. One
 revision per iteration, and an append-only log of every version, score, and trace:

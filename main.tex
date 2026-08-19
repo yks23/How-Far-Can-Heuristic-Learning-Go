@@ -21,6 +21,12 @@
 \usepackage{xspace}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta}
+% algorithm (float) + algpseudocode (the body). Loaded 2026-08-19 for the HL loop
+% in Section 3.2. Not algorithm2e: it defines its own float and its own \State-like
+% macros, and mixing the two families in one document is a known conflict. If a
+% second algorithm is ever added, use this same pair.
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \setlength{\emergencystretch}{3em}
 \hbadness=10000
 \ifdefined\pdfsuppresswarningpagegroup\pdfsuppresswarningpagegroup=1\fi
