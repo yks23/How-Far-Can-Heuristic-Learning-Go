@@ -254,6 +254,35 @@
 % two of them.
 \defTBD{kproxy}{compressed size of a reference implementation}
 
+% ---------------------------------------------------------------------------
+% The size comparison in Figure 1 (03-heuristic-learning.tex), registered
+% 2026-08-19. The figure is the motivation subsection's one piece of evidence for
+% the expressiveness claim, so both magnitudes have to be real numbers before it
+% ships, and both are currently placeholders.
+%
+% What each must be measured over, because a careless reading of this figure is
+% the easiest way to overclaim in the whole paper:
+%   progsize -- compressed bytes of a COMPETENT symbolic policy, on the same proxy
+%     and the same stripping protocol as \val{maintcap} (see the description-length
+%     protocol in 03). If the two use different protocols the paper has two
+%     description-length scales and the theory section's inequality is unreadable.
+%     "Competent" needs a stated Elo band, not a vibe: quote it in the caption.
+%   netsize -- parameter count or bytes of a learned policy AT COMPARABLE STRENGTH
+%     on the same game. Not the largest network in the literature, and not a
+%     frontier model: the honest comparison is against a network that plays the
+%     same game about as well, which is the only reading under which the axis means
+%     anything. If no such network exists for our games, say so and use the classic
+%     controls, where AlphaZero-class sizes are documented.
+%
+% The figure does NOT claim smaller is better, and the caption must not drift into
+% that. A learned policy of a given size wins asymptotically (01-introduction.tex
+% concedes this explicitly and it is not in dispute). What the figure shows is that
+% the two paradigms sit at very different points on the description-length axis --
+% which is what makes that axis, and hence \val{maintcap}, the interesting variable.
+% ---------------------------------------------------------------------------
+\defTBD{progsize}{$\sim$XX kB}
+\defTBD{netsize}{$\sim$XXX MB}
+
 % The archive's free experiment: for each Elo band, the shortest program that
 % reaches it (lower envelope, not mean -- description length is a minimum).
 % A slope near zero means the paradigm has room at that skill level; a knee

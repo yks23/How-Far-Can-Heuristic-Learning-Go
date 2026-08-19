@@ -114,5 +114,140 @@
 \subsection{Motivation}
 \label{sec:hl-motivation}
 
+Two properties made the symbolic paradigm attractive and one retired it. A program
+states a decision boundary directly: a conditional test or a search cutoff
+expresses in one line what a network approximates with a great many parameters,
+and the line can be read, argued with, and changed. Figure~\ref{fig:size} places
+the two paradigms on the axis this paper cares about. A symbolic policy competent
+at one of these games occupies \val{progsize}; a learned policy of comparable
+strength occupies \val{netsize}. The figure is not an argument that smaller is
+better --- given enough interaction the learned policy still wins, and this paper
+does not dispute that. It is an argument that the two paradigms sit at points on
+the description-length axis separated by orders of magnitude, which is what makes
+that axis worth measuring rather than assuming.
+
+% PLACEMENT: [b], not [t], and the reason is worth keeping. With [t] this float
+% went to the top of the page its reference falls on, which put it above Section 3's
+% own heading and inside the tail of Section 2 -- a reader met the figure while
+% still reading about K(pi_good). [b] keeps it below the heading. Recheck this
+% whenever text above it grows or shrinks; float placement is a function of the page
+% break, so any edit in Sections 2 or 3 can move it.
+\begin{figure}[b]
+\centering
+% PLACEHOLDER, drawn 2026-08-19 at the user's request to leave a slot. This is a
+% schematic and must be replaced by a measured plot before submission -- it asserts
+% a magnitude gap with no data behind it, which is exactly what the numbers guard
+% exists to prevent, so the two values are \val keys and will fail the
+% camera-ready build until measured. When the real figure lands, keep the axis
+% (description length, log scale) and keep both points annotated with the Elo band
+% they were measured at; a size comparison without a strength condition is
+% meaningless. Consider adding the archive's lower envelope (\val{envslope}) as a
+% third element, since it is the same axis measured on humans.
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \draw[-{Stealth[length=2mm]}] (0,0) -- (10,0);
+  \node[anchor=north east,font=\footnotesize] at (10,-0.55)
+    {description length (log scale)};
+  \node[draw,rounded corners,inner sep=3pt,fill=black!5] (p) at (2,1)
+    {\footnotesize symbolic policy};
+  \node[draw,rounded corners,inner sep=3pt,fill=black!5] (n) at (7.6,1)
+    {\footnotesize learned policy};
+  \draw[dashed] (p) -- (2,0.15);   \draw[dashed] (n) -- (7.6,0.15);
+  \node[below] at (2,0)   {\footnotesize \val{progsize}};
+  \node[below] at (7.6,0) {\footnotesize \val{netsize}};
+  \node[align=center,font=\footnotesize] at (5,2.1)
+    {readable and editable in part \hspace{4mm} $\longrightarrow$ \hspace{4mm}
+     neither};
+\end{tikzpicture}
+\caption{Where the two paradigms sit on the description-length axis, at
+comparable playing strength. \emph{Schematic; both values are placeholders.} The
+comparison is not that one paradigm is smaller but that the difference is one of
+scale, which is what makes description length the variable this paper measures.
+The strength condition is load-bearing: a size comparison between policies of
+different strength says nothing.}
+\label{fig:size}
+\end{figure}
+
+That compactness is what makes the program space a convenient destination for
+human experience. A person who has understood something about a game --- that a
+particular structure is worth material, that an opening line loses --- can write
+it down as a rule and have it take effect immediately, with no training run in
+between and no question of whether the lesson survived the optimization. The
+archive this paper draws on is thousands of such acts of writing down, which is
+why it can be read as a record of what the paradigm reached rather than only as a
+set of programs.
+
+What the paradigm did not have is a maintainer who could keep paying. Each new
+case has to be reconciled with the rules already present, and the reconciliation
+is where the cost lives: not in writing the new rule but in establishing that it
+does not break the old ones. That cost grows with the program, so revision
+eventually stops being worth its price, and where it stops has always been a fact
+about the person doing it rather than about what a program can express.
+
+In the agent era the constraint changes character, because a coding agent's input
+and output space is program text. It does not need the program translated into
+some other representation to act on it: the artifact it reads is the artifact it
+writes. The same holds on the feedback side --- an interaction trace, a replay of
+a lost game, is also text an agent can read directly, against the program that
+produced it. So both halves of the maintenance loop run in a space the agent
+operates in natively, and the loop can carry far more per unit of experience than
+a scalar reward: not that the game was lost, but which decision preceded the
+loss and which rule was responsible. What this buys is a question for
+Section~\ref{sec:experiments} rather than a claim to make here; the architectural
+point is only that the channel is wide and that nothing in the loop has to
+translate between representations for it to close.
+
 \subsection{Introducing heuristic learning}
 \label{sec:hl-method}
+
+\emph{Heuristic learning} is the paradigm in which an agent interprets feedback
+and directly modifies a program, or another interpretable system, in response. The
+definition names no game and no game-specific machinery: adversarial games are
+where this paper measures HL, not the boundary of the paradigm. Its two halves are
+the two properties Section~\ref{sec:preliminary} defined --- what the loop can
+read, and what it can edit --- and they are one object here, because a loop that
+reads without editing is analysis and a loop that edits without reading is search.
+
+The instantiation is a loop between two agents, and it is deliberately simple. A
+\emph{policy agent} is the program under revision; it plays the game and produces
+interaction traces. A \emph{generative agent} observes those traces, together with
+the rules and the policy agent's own source, and either generates a policy or
+revises the one in hand. Its output is the next version of the policy agent, which
+is then rescored against the frozen test pool, and the loop repeats.
+Figure~\ref{fig:loop} shows the arrangement.
+
+\begin{figure}[t]
+\centering
+% PLACEHOLDER, 2026-08-19. Schematic of the loop; no data, so nothing here needs a
+% \val key. Before submission decide whether this earns its space -- the loop is
+% three sentences of prose and a figure that only redraws them is decoration. It
+% justifies itself if it carries what the prose cannot: where the budget is spent,
+% which arrows are logged, and the read/edit split on the generative agent's inputs.
+\begin{tikzpicture}[x=1cm,y=1cm,font=\footnotesize,
+    box/.style={draw,rounded corners,inner sep=4pt,align=center},
+    ar/.style={-{Stealth[length=2mm]}}]
+  \node[box] (gen) at (0,0)   {generative\\agent};
+  \node[box] (pol) at (4.4,0) {policy agent\\\emph{(the program)}};
+  \node[box] (env) at (8.8,0) {environment\\\emph{(opponent pool)}};
+  \draw[ar] (gen) -- node[above]{revises} (pol);
+  \draw[ar] (pol) -- node[above]{plays} (env);
+  \draw[ar] (env) to[out=-120,in=-60] node[below]{interaction traces, scores} (gen);
+  \node[align=left,anchor=west] at (-0.9,1.6)
+    {reads: rules, own source, traces \quad edits: the program};
+\end{tikzpicture}
+\caption{The heuristic learning loop. A generative agent observes the interaction
+between the policy agent and its environment, then generates or revises the policy
+agent. One revision per iteration; every version, score, and trace is kept in an
+append-only log.}
+\label{fig:loop}
+\end{figure}
+
+Two constraints on the loop are worth stating because they cost something. One
+revision per iteration, and an append-only log of every version, score, and trace:
+a faster loop would batch several edits per rescoring, and we give that up to keep
+attribution, because a plateau that cannot be traced to particular revisions can
+be observed but not diagnosed, and diagnosing it is what this paper is for. The
+generative agent's two modes --- generating a policy where there is none, revising
+one that exists --- are also kept distinct in the log, since proficiency at the
+first is not evidence of skill at the second and the two are not strongly
+correlated in existing measurements of code agents on iterated
+tournaments~\citep{catarena2025}.
