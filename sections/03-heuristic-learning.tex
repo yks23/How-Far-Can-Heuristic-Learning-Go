@@ -1,5 +1,32 @@
 % ---------------------------------------------------------------------------
-% Methodology
+% Heuristic Learning
+%
+% RENAMED from "Methodology" on 2026-08-19 and split into two subsections at the
+% user's direction: Motivation, then Introducing HL. The section now carries the
+% DEFINITION, not just the loop.
+%
+% THE DEFINITION, in the user's own words (2026-08-19): heuristic learning is the
+% paradigm of using an agent to understand feedback and directly modify a program
+% or other interpretable system. Two things follow that the rest of the paper does
+% not yet reflect:
+%   - it is NOT game-specific. "Program or other interpretable system" is the
+%     general object; adversarial games are the setting we measure it in, not the
+%     definition's scope. The introduction currently frames HL game-specifically
+%     ("a coding agent maintains a heuristic program ... rescores it against a
+%     frozen opponent pool"), which is the instantiation. State the general form
+%     here first, then narrow to the game instantiation explicitly, so a reader
+%     cannot mistake the benchmark for the boundary of the paradigm.
+%   - "understand feedback" and "directly modify" are the two halves, and they map
+%     onto the two bounds the paper already argues: what the loop can READ (lower
+%     bound, information per sample) and what it can EDIT (upper bound,
+%     maintenance capacity). The definition is where those two are introduced as
+%     one object; do not let the subsections split them apart.
+%
+% MOTIVATION SUBSECTION. The introduction is capped at 2.5 pages and several
+% argued links were deleted from it wholesale rather than compressed; the ones
+% about WHY the paradigm is worth revisiting land here. See the intro's
+% "WHERE THE DELETED MATERIAL WENT" block for the list -- this subsection is the
+% first place with room to argue them at length rather than assert them.
 %
 % The HL loop, one coding_agent_act per policy version: read rules + own source
 % + replays of losses -> hypothesize failure modes -> revise policy -> rescore
@@ -49,7 +76,7 @@
 %     next revision.
 %   - the on-policy/off-policy spectrum, with offpolicyvaluellm2026 (policy
 %     gradient uses a batch once and discards it) and samplereuse2022 (off-policy
-%     reuse). Both keys are cited in 04-experiments.tex's scope comment only, so
+%     reuse). Both keys are cited in 04-benchmark.tex's scope comment only, so
 %     the argument's two supports currently appear nowhere in the body.
 %   - a maintained program sits at the far end: off-policy AND cross-policy-class
 %     -- it learns from replays of any opponent and from human source code no
@@ -61,7 +88,7 @@
 %     rewrites its own failed episodes into experience and gets the same kind of
 %     gain holding no program at all, so what buys it is the reader. The program
 %     earns its place on the other side of the question, as what makes the policy
-%     editable. 02-background.tex's scope comment already carries the definitional
+%     editable. 02-preliminary.tex's scope comment already carries the definitional
 %     half of this (lower bound over what the loop can READ, upper over what it can
 %     EDIT); this section owes the empirical half. Merging the two is what produces
 %     the unsupportable version of the claim.
@@ -81,5 +108,11 @@
 % about their normalization protocol.
 % ---------------------------------------------------------------------------
 
-\section{Methodology}
-\label{sec:methodology}
+\section{Heuristic Learning}
+\label{sec:hl}
+
+\subsection{Motivation}
+\label{sec:hl-motivation}
+
+\subsection{Introducing heuristic learning}
+\label{sec:hl-method}
