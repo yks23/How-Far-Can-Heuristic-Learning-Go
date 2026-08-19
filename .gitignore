@@ -7,6 +7,16 @@ build/
 _reference_paper/*
 !_reference_paper/PROVENANCE.md
 
+# The contest platform's own source, cloned locally on 2026-08-19 to write
+# Section 4 (HL-Arena) from the apparatus rather than from recollection.
+# git@github.com:Aoraku/AgentBench.git -- read-only reference, never a submodule
+# and never committed here: it is a separate project with its own history, and
+# this repo pushes to Overleaf, which would receive the whole tree.
+# NOTE the name collision, already recorded in main.tex: this is NOT the
+# AgentBench of arXiv 2308.03688. Same name, unrelated project. Whenever Section 4
+# cites or describes this platform, say which one it is.
+_platform/
+
 # LaTeX intermediate files
 *.aux
 *.bbl

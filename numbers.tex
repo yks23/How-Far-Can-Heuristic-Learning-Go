@@ -81,6 +81,27 @@
 % ceilingcause) and carry a *zh sibling.
 % 1997 was the first edition, so 2026 is the 30th. The proposal's "27 editions"
 % counted through 2023.
+% !! CONFLICT FOUND 2026-08-19 against the platform's own source (_platform/,
+% git@github.com:Aoraku/AgentBench.git). Full analysis in 04-benchmark.tex's scope
+% comment; the short form, because these keys must not be quoted until resolved:
+%   - editions=30 is the venue's age, NOT our archive's span. Each game belongs to
+%     exactly one edition and the nine span editions 24-30, i.e. SEVEN. The abstract
+%     currently reads "archive ... spanning \val{editions} editions since
+%     \val{founded}", which credits the archive with the venue's whole history.
+%     Needs either a separate key for the archive span or a narrower sentence.
+%   - nsub: the manifests hold 5004 submission VERSIONS (generals 752, snakego 678,
+%     antwar 644, antwar2 631, deepclue 625, miracle 569, aquawar 534, rollman 309,
+%     lostspace 251). ~10,000 is about 2x too high. Left as \defTBD rather than
+%     overwritten because the UNIT is a definitional call: 5004 is versions, from only
+%     ~200 unique user-game pairs, and which of the two "submissions" means changes
+%     both this key and what independence any percentile assumes.
+%   - nmatch HAS NO SOURCE IN THE ARCHIVE. There is no recorded match corpus; matches
+%     are what our evaluator runs. So this is an experimental cost belonging in the
+%     budget ledger, not archive scale, and the abstract currently credits the archive
+%     with it. Resolve by dropping it from the archive sentence or re-homing it.
+%   - ngames=9 CHECKS OUT. But the suite is not uniformly two-player (lostspace is
+%     4-player, deepclue single-player scripted), so no key here licenses calling it
+%     a two-player suite.
 \defval{editions}{30}
 \defval{founded}{1997}
 \defTBD{nsub}{$\sim$10{,}000}
@@ -122,8 +143,30 @@
 % it is meaningless without nbeat beside it (a large margin on one game and losses
 % on eight is not a positive result).
 % ---------------------------------------------------------------------------
+% !! pct's DENOMINATOR IS NOT WHAT THE PAPER SAYS, found 2026-08-19 in _platform/.
+% The pools are FINALS LADDERS (决赛天梯, top_algorithms/corpus/<ed>_<game>_final*),
+% not all entrants: 12-31 unique users per game. Of 5004 versions, 183 carry a rank
+% anchor and 153 an Elo; 3501 are fully anonymous. So "the \val{pct}th percentile of
+% the field" is percentile of a FINALS field of roughly twenty competitors per game --
+% a stronger and much smaller set than the provenance argument's "thousands of
+% independent attempts", which is what was claimed to license percentile placement at
+% all. Say "finals field" every time, and note that mlebench2024 and
+% olympiad2025percentile are precedents for percentile of a FULL field, so they
+% support the method and not this denominator.
+% Independence is the second half of the problem: 5004 versions from ~200 user-game
+% pairs are heavily correlated, so state the unit of independence before computing any
+% percentile over versions.
 \defTBD{pct}{XX}
 \defTBD{nbeat}{X}
+% !! THE ARCHIVE'S ELO COLUMN IS NOT USABLE AS-IS, found 2026-08-19. Only 153 of 5004
+% manifest rows carry a non-zero elo, and the column is not on one scale across games:
+% deepclue's maximum is 28859 and rollman's are all 0, so each ladder recorded
+% whatever its own system produced. Elo anchors must be recomputed with our own
+% evaluator over the frozen pool before elogap or any cross-game Elo is quoted;
+% inheriting the archive's numbers would put three different scales in one table.
+% This also bears on what "the strongest submission the archive records" means: with
+% 183 rank anchors over 5004 versions, the ranking covers a small labelled subset, so
+% human SOTA has to be defined over what we rescore, not over the archive's own rank.
 \defTBD{elogap}{$+$XX}
 
 % The effort asymmetry, which is the point of comparing against a contest archive

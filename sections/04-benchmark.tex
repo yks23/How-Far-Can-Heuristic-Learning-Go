@@ -97,6 +97,90 @@
 % as of 2026-08-19 -- registered in refs.bib, cited nowhere in body text -- and this
 % is the only place they have a home. If this paragraph is cut, cut the keys too.
 %
+% ===========================================================================
+% THE PLATFORM'S OWN SOURCE WAS READ ON 2026-08-19, and it contradicts four numbers
+% this paper already asserts. Cloned to _platform/ (gitignored; see .gitignore for
+% why it is not a submodule): git@github.com:Aoraku/AgentBench.git, 19 commits, last
+% 2026-08-17. NOT the AgentBench of arXiv 2308.03688 -- same name, unrelated project,
+% and Section 4 must say which one it is wherever it names the platform.
+%
+% Counts below are off the nine per-game players/manifest.tsv files. One parsing note
+% that cost a wrong number once already: the manifests are CRLF, so awk on the last
+% field compares against "true\r" and silently returns zero. Strip \r before counting.
+%
+% WHAT THE ARCHIVE ACTUALLY CONTAINS, per game (versions / unique users / rank
+% anchors), summed to 5004 submission versions:
+%   generals 752/31, snakego 678/17, antwar 644/21, antwar2 631/21, deepclue 625/22,
+%   miracle 569/17, aquawar 534/12, rollman 309/20, lostspace 251/17.
+%   train/test split is already fixed in the manifests (871 train / 4215 test).
+%
+% FOUR CONFLICTS, in ascending order of how much they cost:
+%   1. \val{nsub} says ~10,000. The archive holds 5004 submission versions. Roughly
+%      2x too high. Fix the key, and decide what the unit is: 5004 counts VERSIONS,
+%      each kept as an independent testcase, which is the platform's own convention.
+%      "Submissions" in the paper's sense may well mean versions, but say so.
+%   2. \val{nmatch} says ~100,000 matches. THERE IS NO MATCH ARCHIVE IN THIS REPO.
+%      The 712 replay-ish files under players/pool/ are contestants' own local test
+%      leftovers (mini_replay.txt inside submission directories), not recorded contest
+%      games. Matches are something the evaluator RUNS, not something the archive
+%      supplies. So nmatch is either a number we generate ourselves (in which case it
+%      is an experimental cost, belongs in the budget ledger, and must not be quoted
+%      as archive scale) or it must be dropped. As written the abstract credits the
+%      archive with it.
+%   3. \val{editions} says the archive spans 30 editions. Each game belongs to exactly
+%      ONE edition, and the nine span editions 24-30 -- SEVEN editions. 30 is the
+%      latest edition number, not the span, and the venue being 30 editions old
+%      (founded \val{founded}) is a fact about the venue, not about our archive. The
+%      abstract's "archive ... spanning \val{editions} editions since \val{founded}"
+%      is wrong on the archive as we hold it. Either add a key for the archive's span
+%      (7) and keep editions for the venue's age, or restrict the claim.
+%      This also kills the folk-ordering test as 02-preliminary.tex states it: "Section
+%      5 reports what 30 editions of outcomes say" cannot be run across 30 editions
+%      when we hold 7, and with one game per edition, paradigm composition over
+%      editions is confounded with the game changing underneath it.
+%   4. THE PERCENTILE CLAIM IS THE EXPENSIVE ONE. The pools are FINALS LADDERS
+%      (决赛天梯 / top_algorithms/corpus/<ed>_<game>_final*), not all entrants. Per
+%      game there are 12-31 unique users. Of 5004 versions, 183 carry a rank anchor
+%      and 153 carry an Elo; 3501 are fully anonymous, 1320 named but unranked. So
+%      "thousands of independent attempts at the same games", which is what
+%      licenses percentile placement in the provenance argument above, is not what
+%      this is: it is ~20 finalists per game, each with many versions. \val{pct} as
+%      "the XXth percentile of the field" therefore means percentile of a FINALS
+%      field, which is a much stronger opponent set and a much smaller one. That is
+%      arguably a better result and definitely a different claim; it must be stated as
+%      the finals field everywhere, and mlebench2024/olympiad2025percentile are
+%      precedents for percentile-of-a-full-field, so leaning on them needs care.
+%      Versions-as-testcases also means the field is not independent: 5004 versions
+%      from ~200 user-game pairs are heavily correlated, so any percentile or Elo
+%      computed over versions must say what the unit of independence is.
+%   Also: Elo is sparse and NOT on one scale. deepclue's max "elo" is 28859 and
+%   rollman's are all 0, so the column is whatever each ladder recorded. Elo anchors
+%   have to be recomputed by our own evaluator before any cross-game Elo is quoted;
+%   \val{elogap} and the human-SOTA comparison both depend on this.
+%
+% WHAT THE PLATFORM GIVES SECTION 4 FOR FREE, and it is a lot:
+%   - Nine games, each with rules.md, decision_space.yaml, replay_format.md, a
+%     runnable evaluator/, plugin.py, and players/pool/ + manifest.tsv. Games:
+%     antwar2(30), deepclue(30), rollman(29), generals(28), antwar(27), snakego(26),
+%     lostspace(25), aquawar(25), miracle(24). \val{ngames}=9 CHECKS OUT.
+%   - Player counts per match vary (lostspace is 4-player, deepclue single-player
+%     scripted, rest 2-player), and generals has two tracks (popular/advanced).
+%     "Two-player zero-sum" as a blanket description of the suite is false; either
+%     scope the claim or report the exceptions.
+%   - deepclue depends on an external LLM API and returns infra_error without it.
+%     A game whose evaluator needs an LLM to run is a confound for a paper comparing
+%     an LLM-driven method against RL. Report it separately or justify keeping it.
+%   - THE TRACE CONTENTS 3.3 SAYS ARE A DESIGN VARIABLE ARE SPECIFIED HERE:
+%     docs/replay-format-spec.md plus each game's replay_format.md. 3.3 promises
+%     Section 4 states what our tau_t contains, so write it from these.
+%   - docs/evaluator-contract.md and docs/metrics-schema.md are the apparatus
+%     contracts; the three-repo split (A assets / B HL / C RL) means the RL baseline
+%     runs inside the same arena, which is what makes the budget ledger comparable.
+%   - Rules are derived from the official backends in backend_sources/, so rules.md
+%     is a restatement, not the authority. If the paper quotes a rule, cite the
+%     backend as the source of truth.
+% ===========================================================================
+%
 % 01-introduction.tex's "a distribution of human skill to place a method within"
 % still forward-references sec:preliminary, deliberately: that sentence is about
 % what the archive supplies, and the term is defined there. If the paragraph written
