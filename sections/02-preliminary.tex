@@ -93,5 +93,204 @@
 %     contribution 3 rests on, so it needs stating before Section 5 uses it.
 % ---------------------------------------------------------------------------
 
+% TWO BOUNDARY DECISIONS taken 2026-08-19 when this section was first drafted,
+% both stated rather than asked because they are scope calls and reversible.
+%
+% 1. THE PROVENANCE ARGUMENT MOVED ON to 04-benchmark.tex. The block above parks
+%    it here, but that predates 04 becoming \benchname and taking ownership of the
+%    archive. Provenance is an argument about why this venue is worth building a
+%    benchmark on; that argument's home is the section that presents the benchmark.
+%    What stays here is the VOCABULARY the argument needs -- percentile, the human
+%    state of the art, the three pools, the distribution-versus-reference
+%    distinction -- defined and nothing more. Consequence, and it must not be
+%    forgotten: 01-introduction.tex's "a distribution of human skill to place a
+%    method within (Section~\ref{sec:preliminary})" still points here. That pointer
+%    is now HALF right -- the term is defined here, the provenance is argued in 04.
+%    Left pointing here on purpose, because the intro's sentence is about what the
+%    archive supplies rather than about why the venue qualifies. If 04's provenance
+%    paragraph ends up carrying that sentence's weight, repoint it.
+%
+% 2. \paragraph RUN-IN HEADINGS ARE USED HERE, against the ban given for
+%    01-introduction.tex on 2026-08-18 ("每一段的前面不要加这种斜体的小字的总结，
+%    这样读起来不连贯"). The ban's stated reason is continuity of reading, and it
+%    is correct for an introduction, which is read straight through as one
+%    argument. A Preliminary is the one section a reader arrives at sideways, to
+%    look up a term while reading Section 5, and headings are what make that
+%    possible. 07-related-work.tex keeps its \paragraph headings for the same
+%    reason. FLAGGED FOR THE USER rather than assumed: if the answer is that the
+%    ban is global, flatten these to plain prose with the defined term in \emph
+%    at the head of each paragraph -- the paragraph order already carries the
+%    structure, so nothing else has to change.
+%
+% THE FOLK ORDERING WAS DRAFTED IN THE PROHIBITED REGISTER and fixed the same
+% day. The first draft read "Practitioners in this venue have long ordered
+% approaches by expected ceiling", which is exactly the received-opinion framing
+% the user prohibited twice ("不要说什么'一般别人觉得怎么样'，这样写论文不够严谨").
+% Note where it slipped in: the ban was given for 01-introduction.tex's historical
+% paragraph, and this is the second time it has resurfaced in a section the ban was
+% not literally addressed to -- the abstract was the first, on 2026-08-19. Treat the
+% ban as global. Two things make the fixed version defensible where the old one was
+% not: it attributes the ordering to nobody, and it is stated as a hypothesis with a
+% consequence the archive can check, which is what a Preliminary is allowed to do
+% with a belief it intends to test. There is also a factual reason the old wording
+% could not stand -- nothing in this repo establishes what this venue's contestants
+% believe, so "have long ordered" asserted an unmeasured fact about a population.
+%
+% NO ELO CITATION EXISTS. refs.bib has no elo1978rating or equivalent as of
+% 2026-08-19; the rating-system paragraph below therefore defines the protocol
+% without attributing the system. Add the key before submission -- an unattributed
+% Elo is the kind of thing a referee notices -- and the paragraph is written so
+% that the citation drops in without rewording.
+
 \section{Preliminary}
 \label{sec:preliminary}
+
+This section fixes the objects and the vocabulary the rest of the paper uses: the
+setting matches are played in, the two classes of policy it distinguishes, how
+strength is measured against whom, and the three quantities the argument turns
+on --- what a learning loop can read, what it can edit, and how long a program
+has to be to win.
+
+\paragraph{Games and the contest archive.}
+Throughout, a \emph{game} is a two-player adversarial game of perfect
+information, played to a win, loss, or draw under a fixed move budget, and a
+\emph{policy} is a program that reads the game state and returns a move. Nothing
+in the paper needs the state space to be small or the game to be solvable; what
+it needs is that policies can be ranked only by playing them against each other,
+which is what distinguishes this setting from a benchmark with an absolute score.
+The archive we draw on is a collegiate game AI contest founded in
+\val{founded} and run for \val{editions} editions, holding \val{nsub}
+submissions and \val{nmatch} adjudicated matches across \val{ngames} games
+authored for the contest itself. Its entrants are students, writing under
+deadline with contest standings at stake; the archive records their code and
+their results but not their hours, a limit that constrains what the effort
+comparison in Section~\ref{sec:experiments} can claim. Alongside the venue's own
+games we retain a set of classic games --- chess, Go, and others whose strategic
+structure has an independent literature --- as structural controls. They control
+for the risk that our complexity measurements validate only themselves: their
+policy complexity can be argued about on external grounds, so they calibrate the
+proxy defined below and give the cross-game ordering a reference point that our
+own pipeline did not produce.
+
+\paragraph{Symbolic and learned policies.}
+A \emph{symbolic} policy carries its decision logic in source code a reader can
+follow: conditions on the state, an evaluation function over positions, a search
+procedure, or some composition of the three. A \emph{learned} policy carries its
+behaviour in the parameters of a trained function approximator, where no
+individual decision has a locatable cause in the artifact. The two are not
+exclusive and most strong programs are mixtures --- a searcher with a
+hand-written evaluation is symbolic in our sense, a searcher with a trained value
+network is not --- so the paper treats the distinction as a property of where the
+strength is stored rather than as a label on a submission. Classifying the archive
+on that axis requires a decidable criterion, since the shares reported in
+Section~\ref{sec:experiments} are worth no more than the criterion is: a
+submission counts as containing a learned component when the repository ships
+parameters fitted from data, or the code that fits them, for a component that
+affects move selection. Evaluation coefficients a contestant tuned by hand do not
+count, however many matches informed the tuning; the contestant is the optimizer
+in that loop, and treating human iteration as learning would make the category
+include every serious entry and measure nothing.
+
+\paragraph{Strength, the opponent pools, and the human state of the art.}
+Because a policy's strength in a zero-sum game exists only relative to
+opponents, all results are reported as Elo ratings computed from match outcomes,
+never as environment returns. Two protocols appear and the paper distinguishes
+them wherever a number is quoted: \emph{batch} Elo, where a set of policies is
+rated jointly from a round-robin played after the fact, and \emph{online} Elo,
+where a policy under revision is rated as it plays, so that its trajectory can be
+read. Ratings are only comparable within a fixed set of adversaries, so three
+opponent pools are kept apart. The \emph{training pool} is what a method may play
+against while it improves. The \emph{frozen test pool} is fixed before any run
+begins and never updated, which is what makes ratings comparable across
+revisions, across methods, and across the runs of one method under different
+seeds. The \emph{anchor pool}, a stratified set of archived human submissions, is
+what places ratings from different games and different editions on one scale.
+Against that field two distinct quantities are reported and they answer different
+questions. A \emph{percentile} is the fraction of recorded human submissions to a
+game that a policy outranks on the frozen pool: a statement about the
+distribution, and the measurement the archive uniquely affords, since thousands
+of independent attempts at the same games is what a single reference
+implementation cannot supply. The \emph{human state of the art} for a game is the
+single strongest submission the archive records for it, taken across all
+\val{editions} editions rather than within one --- a bar that rises with every
+edition, and the only reading under which the phrase is honest. Beating it is a
+claim about a maximum, placing within the field is a claim about a distribution,
+and Section~\ref{sec:experiments} reports both because neither substitutes for
+the other.
+
+\paragraph{Editability, and how it differs from interpretability.}
+Interpretability asks whether a human can understand why a policy chose what it
+chose. \emph{Editability} asks something else: whether an optimizer can act on
+the artifact at all --- locate the part responsible for a particular failure,
+change that part, and leave the rest standing. The property is not new, and we do
+not claim the word: programmatic reinforcement learning already produces policies
+its authors describe as human-readable and editable~\citep{diprl2026}. What
+changes here is the property's role. Where editability is ordinarily a virtue of
+the deliverable, something the method provides to its eventual reader, in the
+paradigm this paper studies it is a precondition for the optimizer, because the
+optimizer's only move is to rewrite the artifact. The two properties come apart in
+practice rather than merely in principle, which is why the distinction can be
+drawn without stipulating it. A system that emits natural-language reasoning for
+each decision is interpretable on any ordinary reading of the word while the
+artifact its learning loop actually updates remains the
+weights~\citep{tig2025think}: fully interpretable, not editable by its own loop.
+The converse case is a program nobody has read.
+
+\paragraph{The information channel.}
+Editability says what a loop can change. The quantity paired with it throughout
+the paper says what a loop can \emph{read} per unit of experience. A scalar return
+reports that a game was lost. A loop given
+the rules, its own source, and a replay of the specific loss has access to when
+the position turned and which decision preceded it, which is strictly more about
+the same episode. We call this the loop's \emph{information channel}, and the term
+is kept separate from the representation on purpose, because the channel's width
+is a property of what is available and of the agent reading it --- not of the
+program being symbolic. The demonstration is a loop that holds no program at all:
+rewriting failed episodes in hindsight into a memory yields the same kind of
+per-sample gain~\citep{echo2025hindsight}. So the paper states two bounds over two
+different objects and never merges them. The lower bound is over what the loop can
+read, and the symbolic form earns no credit for it. The upper bound is over what
+the loop can edit, and that is where the program is answerable.
+
+\paragraph{Description length and the complexity axis.}
+Games are ordered in this paper by the description length of a symbolic policy
+good enough to win, written $K(\pi_{\text{good}})$, and the choice of that
+quantity over two nearby ones is load-bearing. It is not $K(\text{rules})$, the
+length of the game's specification, and it is not $K(\pi^{*})$, the length of an
+optimal policy. Go separates all three: its rules fit on a page, an optimal
+policy is out of reach, and --- the fact that matters here --- no compact symbolic
+policy plays it well, which is why programs that play it strongly carry their
+strength in weights. A game can therefore be simple to state and expensive to
+play well, so rule length is the wrong axis and $K(\pi_{\text{good}})$ is the
+right one. Kolmogorov complexity is uncomputable and does no measuring here; it
+supplies the axis and nothing else. What is measured is a compression proxy,
+defined with its protocol in Section~\ref{sec:hl} and named wherever it is used,
+and reported in compressed bytes rather than lines, since line counts are a
+style artifact and not comparable across the languages the archive contains.
+
+\paragraph{Budget.}
+Costs are reported in three ledgers, kept separate everywhere. The
+\emph{learning budget} is what a method spends improving. The \emph{evaluation
+budget} is what it spends being scored, which for a method that rescores against
+a frozen pool after every revision is not a rounding error. The \emph{total} is
+their sum, and it is the only one of the three that may be compared across
+paradigms without qualification. Each is reported in whichever units apply to the
+method --- environment steps, agent invocations, tokens, wall-clock time,
+currency --- because no single unit is native to both an RL learner and an agent
+maintaining source code, and quoting one paradigm's favourable denominator is the
+easiest way to make a budget comparison say nothing.
+
+\paragraph{Heuristic learning and the folk ordering.}
+\emph{Heuristic learning} (HL) is the paradigm in which an agent interprets
+feedback and directly modifies a program, or another interpretable system, in
+response; Section~\ref{sec:hl} states it precisely and separates the two halves
+of the loop. Note that the definition names no game: adversarial games are the
+setting in which this paper measures HL, not the scope of the paradigm. One last
+term, needed because the paper tests it. Call the \emph{folk
+ordering} the ranking of the three approaches by the ceiling each is expected to
+reach --- rules lowest, search above them, learned policies highest. We state it
+as a hypothesis rather than as a position anyone holds, and it earns its place
+here by having a consequence the archive can check: if the ordering holds, the
+paradigm composition of winning entries should move up it as budgets and tooling
+improve across editions. Section~\ref{sec:experiments} reports what
+\val{editions} editions of outcomes say.
