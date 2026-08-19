@@ -166,6 +166,20 @@
 % at materially different budgets, that is a result worth reporting and needs its
 % own key rather than a hedge on this one.
 % ---------------------------------------------------------------------------
+% Robustness, registered 2026-08-19. The user's chain names three analysis axes --
+% sample efficiency, robustness, breadth -- and this was the one with no number
+% behind it anywhere in the paper. What it must mean, from the framing it came with
+% (effectiveness AND robustness at low sample counts and low K): the spread of the
+% result when the budget is small, across seeds, games, and models. It is a
+% dispersion, so report it as one (a range or an IQR over runs), never as a mean --
+% a mean is the effectiveness claim again and would make the axis decorative.
+% Two traps. Do not compute it over the games where HL wins; conditioning on
+% success is how a robustness number becomes meaningless. And keep it distinct from
+% \val{maintcapspread}, which is also a spread but of description length at the
+% plateau, and from \val{eloplatspread} -- three spreads in one paper need their
+% referents named every time they appear.
+\defTBD{robustspread}{$\pm$XX}
+
 \defTBD{effratio}{XX$\times$}
 \defTBD{crossover}{$\sim$XXX k}
 \defTBD{loseaxis}{per wall-clock hour and per dollar}

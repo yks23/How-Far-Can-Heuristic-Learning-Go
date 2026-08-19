@@ -10,6 +10,51 @@
 % recorded at the bottom of this comment; every one of them is now owed by
 % another section and appears nowhere in the body until that section is written.
 %
+% THE PAPER'S LOGIC IN FIVE MOVES, as the user stated it 2026-08-19. This is the
+% canonical version; the paragraph chain below is how Section 1 realizes moves 1-2
+% and previews 3-5. If the two ever disagree, this block wins.
+%   1. Background and problem. The symbolic paradigm was hard to maintain; agents
+%      change that; we propose HL.  -> paragraphs 1-3.
+%   2. Purpose. Measure how far an agent can carry a symbolic policy under
+%      continued maintenance.  -> paragraph 3's closing question, "how high is the
+%      ceiling?".
+%   3. Design and result. A venue spanning 30 years, whose policies are
+%      predominantly symbolic; the agent reaches SOTA on essentially all of it.
+%      -> Sections 4 and 5.
+%   4. Comparison and analysis. Against RL, in RL's own environments, on sample
+%      efficiency, ROBUSTNESS, and breadth.  -> Section 5.
+%   5. Theory. The same facts read through Kolmogorov complexity.  -> Section 6.
+%
+% TWO MISMATCHES BETWEEN THAT CHAIN AND THE DRAFT, both open as of 2026-08-19 and
+% neither one resolvable by editing prose:
+%
+%   (a) STRENGTH OF THE SOTA CLAIM. Move 3 says the agent reaches SOTA on
+%       essentially all games. The draft says \val{nbeat} of \val{ngames} and
+%       hedges with "strongest exactly where a budget binds". Those are different
+%       papers. If \val{nbeat} really is at or near \val{ngames}, the hedge is
+%       costing us the headline and the framing should be inverted: the result
+%       becomes "the ceiling is above the human field, and here is the one game
+%       where it is not", with the exceptions carrying the interest. If instead it
+%       is a genuine subset, "基本都能" overstates it and the draft is already
+%       right. DO NOT rewrite the framing until \val{nbeat} is measured -- writing
+%       the strong version first and discovering a subset is how a paper acquires
+%       a claim its own results contradict.
+%       Related and separate: "reaches SOTA" and "overtakes SOTA" are different
+%       claims (matching the best recorded human vs beating them). The draft says
+%       overtakes, in the abstract, paragraph 5, and contribution 3. Keep one verb
+%       across all three; if the result is parity on most games and wins on a few,
+%       that is a third framing again and needs stating as such.
+%
+%   (b) ROBUSTNESS HAS NO HOME. Move 4 names it as one of three analysis axes, and
+%       checked 2026-08-19 the word appears nowhere in the paper -- not in the body,
+%       not in any scope comment, and no \val key measures it. Sample efficiency has
+%       \val{effratio} and \val{crossover}; breadth has \val{ntransfer}; robustness
+%       has nothing. From the user's earlier framing ("低K 和低 sampling 数量时 HL 的
+%       效果和鲁棒性") it means stability of the result when the budget is small and
+%       the policy short -- variance across seeds, games, and models, not a separate
+%       experiment. It needs a key and a place in Section 5 before move 4 is
+%       honestly delivered; \val{robustspread} is registered in numbers.tex for it.
+%
 % The chain as it now stands. Each paragraph exists to make the next necessary:
 %
 %   1. The historical arc, rewritten 2026-08-18 at the user's direction: symbolic
