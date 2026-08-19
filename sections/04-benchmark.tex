@@ -112,7 +112,10 @@
 % anchors), summed to 5004 submission versions:
 %   generals 752/31, snakego 678/17, antwar 644/21, antwar2 631/21, deepclue 625/22,
 %   miracle 569/17, aquawar 534/12, rollman 309/20, lostspace 251/17.
-%   train/test split is already fixed in the manifests (871 train / 4215 test).
+%   train/test split is already fixed in the manifests: 779 train / 4216 test, and
+%   9 rows with an EMPTY split field. Those 9 belong to neither pool and must be
+%   accounted for before the split is described as covering the archive -- either
+%   assign them or report the archive as 4995 split rows out of 5004.
 %
 % FOUR CONFLICTS, in ascending order of how much they cost:
 %   1. \val{nsub} says ~10,000. The archive holds 5004 submission versions. Roughly
@@ -153,6 +156,36 @@
 %      Versions-as-testcases also means the field is not independent: 5004 versions
 %      from ~200 user-game pairs are heavily correlated, so any percentile or Elo
 %      computed over versions must say what the unit of independence is.
+%   5. THE SUITE CONTRADICTS 02-preliminary.tex's OPENING DEFINITION, which is the
+%      most structural conflict of the six. That paragraph reads "a game is a
+%      two-player adversarial game of perfect information". Of the nine:
+%      lostspace is FOUR-player and the platform's own edition table calls it
+%      多人非零和 (multiplayer NON-zero-sum); aquawar is built on 隐匿信息 and
+%      identity assertion, i.e. IMPERFECT information; lostspace is additionally
+%      局部可观测 (partially observable); deepclue is a SINGLE-player scripted
+%      reasoning task driven through an LLM API; rollman is role-ASYMMETRIC
+%      (rollman vs ghost). So the definition covers roughly four of nine games.
+%      "zero-sum", "perfect information" and "two-player" each appear exactly once
+%      in the body, all in that one sentence, so this is cheap to fix and must be:
+%      either narrow the suite actually analysed and say which games are excluded
+%      and why, or widen the definition and drop the perfect-information
+%      assumption. Do NOT leave it as is -- a reader who checks the game list will
+%      find the paper's central definition false of most of its own benchmark.
+%      Note this also touches Section 3.3's trace argument, which says the trace can
+%      only exhibit failures an opponent elicits: under imperfect information the
+%      trace additionally cannot show what the opponent knew, which is a sharper
+%      version of the same bottleneck and worth one clause there once the scope of
+%      the suite is settled.
+%   6. THE EDITION QUESTION IS SETTLED by docs/清华计算机系智能体大赛历届资料表.md,
+%      which is the platform's own edition-level index and should be cited as the
+%      source for any venue-scale claim. It states the venue was founded 1997 with
+%      2023 as the 27th edition, so \val{editions}=30 and \val{founded}=1997 are
+%      both right ABOUT THE VENUE. But it also records that editions 1-22 have
+%      insufficient publicly verifiable material (years inferred from the founding
+%      date alone; no rules, code, standings, or replays) and that edition 23 (2019,
+%      DOTO) survives only as public GitHub repos and is NOT among our nine games.
+%      Verifiable assets therefore begin at edition 24. That is the number the
+%      archive sentence needs, and the table is the citation for it.
 %   Also: Elo is sparse and NOT on one scale. deepclue's max "elo" is 28859 and
 %   rollman's are all 0, so the column is whatever each ladder recorded. Elo anchors
 %   have to be recomputed by our own evaluator before any cross-game Elo is quoted;
