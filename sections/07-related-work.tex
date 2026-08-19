@@ -136,6 +136,13 @@
 %     not the thesis.
 %   - frontiereng2026: t^-1 frequency and k^-1 magnitude, both R^2 > 0.83,
 %     marginal returns near zero after ~50-100 iterations, tail to 500, 47 tasks.
+%     DELIBERATELY NOT IN THE BODY. The user cut this on 2026-08-18: the paragraph
+%     now says only that frequency and magnitude both decay, with no exponents, no
+%     R^2, no iteration counts, and no task count. Do not "restore" them as an
+%     omission -- it was a decision. The figures stay recorded here because the
+%     paragraph above still claims a decay shape and a reviewer may ask for it, and
+%     because 05-results.tex compares our own \val{decay} against theirs; if that
+%     comparison is written, the exponent enters the paper THERE, not here.
 % ---------------------------------------------------------------------------
 
 \section{Related Work}
@@ -241,22 +248,15 @@ not change, so a better heuristic may \emph{replace} a worse one and the program
 free to get shorter. Accumulation is a tendency in our setting rather than an
 obligation, which is why the ceiling is worth measuring instead of assuming.
 
-Most directly, Frontier-Eng measures self-improvement on 47 real engineering tasks
-and finds decay from both directions at once: improvement frequency falls as
-$t^{-1}$ and the magnitude of the $k$-th improvement as $k^{-1}$, both with
-$R^2 > 0.83$, driving marginal returns near zero after 50 to 100 iterations with a
-tail out to 500 \citep{frontiereng2026}. Those tasks are single-agent and carry
-neither a human field nor an RL baseline, and the evaluator is a fixed verifier, so
-the position of the symbolic paradigm against a learned one is left open. Where both
-reference points have been present, the maintainer was always human, which measures
-the paradigm and the cost of human iteration together: a heuristic program that
-stopped improving might have exhausted the paradigm or its author's weekend, and the
-record cannot say which. Replacing the author with an agent holds the paradigm fixed
-while varying the term that never varied. A survey of this literature organizes it
-by how strong a verification signal the loop closes on
-\citep{selfimprovement2026survey}; a game engine with a frozen opponent pool sits at
-the strong end, which is what makes the plateau attributable to the artifact rather
-than to a noisy evaluator. Our contribution is to carry the same longitudinal
-question into adversarial games and test whether the plateau is explained by the
-maintainable description length of the policy rather than by the complexity of the
-game's rules.
+Most directly, Frontier-Eng measures self-improvement on real engineering tasks and
+finds both the frequency and the magnitude of improvements decaying with continued
+iteration \citep{frontiereng2026}; those tasks are single-agent and carry neither a
+human field nor an RL baseline, so the position of the symbolic paradigm against a
+learned one is left open. Where both reference points have been present the
+maintainer was always human, measuring the paradigm and the cost of human iteration
+together, and a survey of this literature organizes it instead by the strength of the
+verification signal the loop closes on \citep{selfimprovement2026survey} --- at whose
+strong end a game engine with a frozen opponent pool sits. Our contribution is to
+carry the same longitudinal question into adversarial games and test whether the
+plateau is explained by the maintainable description length of the policy rather than
+by the complexity of the game's rules.
