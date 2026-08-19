@@ -52,37 +52,76 @@ Characterizing Performance Ceilings, Complexity, and Sample Efficiency in Large-
 
 \author{THU-CST-SAST}
 
-% Nine sentences, tracking Section 1's ten-link chain with two deliberate
-% departures. Sentence -> link:
-%   1 -> 1  RL's home turf
-%   2 -> 2  concede the objection, relocate it to the author
-%   3 -> 3  agents change the author; the axis is editability
-%   4 -> 4  the two-sided question
-%   5 -> 5+6  both bounds compressed into one sentence
-%   6 -> 9  HL
-%   7 -> 8  the venue
-%   8 -> results
-%   9 -> the negative claim about rule complexity
+% RESTRUCTURED 2026-08-19 to the user's five-move logic (recorded in full at the
+% top of sections/01-introduction.tex). The abstract now runs in that order:
+%   move 1, background and problem -> sentences 1-3. The symbolic paradigm was
+%     bounded by maintenance cost, RL displaced it by improving without an author,
+%     agents change who the author is, and HL is named.
+%   move 2, purpose -> sentence 4. How far continued maintenance goes.
+%   move 3, design and result -> sentences 5-6. HL-Arena, then the human SOTA
+%     result, which is now the FIRST number in the abstract.
+%   move 4, comparison and analysis -> sentence 7. Against RL in RL's own
+%     environments: sample efficiency, robustness, breadth, the crossover.
+%   move 5, theory -> sentences 8-10. Kolmogorov complexity, the inequality, the
+%     signature, and the negative claim about rule complexity.
 %
-% The two departures, both intentional:
-%   - Link 7 ("why this ceiling has not been measured") has no sentence here.
-%     Motivation of that kind earns its space in an introduction and not in 250
-%     words; the abstract's job is the claim, not the gap in the literature.
-%   - HL and the venue are swapped relative to Section 1. The abstract has to
-%     define HL before "the setting is" can refer to anything, whereas Section 1
-%     can afford to establish the venue first. Do not "fix" this to match.
+% WHAT MOVED, and why it must not drift back. The two bounds used to sit in the
+% problem statement (old sentences 4-5, "a two-sided question" followed by both
+% bounds compressed into one). In the five-move logic the bounds are ANALYSIS and
+% THEORY, not background: information per sample is now inside the RL comparison
+% where its denominator lives, and maintenance capacity is inside the Kolmogorov
+% sentence where the inequality is stated. Restoring the two-sided framing to the
+% opening would put the abstract back out of order with the paper.
+%
+% The old opening ("RL made its name on adversarial games, and it is there that
+% symbolic methods were judged to have the lower ceiling") is deliberately gone.
+% "Were judged" is the received-opinion framing the user prohibited for the
+% introduction's first paragraph on 2026-08-18; it had survived here because the
+% ban was given for Section 1. The replacement states the mechanism instead, which
+% also makes the abstract parallel to Section 1's historical arc.
+%
+% Two departures from Section 1's order, both intentional and pre-existing:
+%   - "Why this ceiling has not been measured" has no sentence here. Motivation of
+%     that kind earns its space in an introduction, not in 300 words.
+%   - HL is defined BEFORE the venue, the reverse of Section 1, because "the
+%     setting is" needs something to refer to. Do not "fix" this to match.
+%
+% "\val{editions} editions" is deliberate where the user said "30 years". Both are
+% true (founded \val{founded}, so 29 calendar years) but editions is the exact
+% count and the one the archive actually records. Do not write "30-year" as a
+% literal -- it goes stale annually and is not a \val key.
+% "predominantly symbolic" rests on \val{prl} being small, which Section 5 reports.
+% It is a characterization of the archive, not a result, so it stays unnumbered
+% here; if a referee asks, the number is in the body.
 %
 % Every sentence here is expanded in Section 1, so the abstract may assert what
 % it does not argue. If a link is added to that chain, either give it a sentence
 % here or record why it is argument-only -- the two drifting apart without anyone
 % noticing is how the abstract stops being a summary of the paper.
 %
-% Currently 288 words. 250 was a self-imposed target, not a venue limit -- most
-% take 300. Trim only if the venue says so, and not by cutting the last
-% sentence: it carries the negative claim (NOT rule complexity) that appears
-% nowhere else here and is the paper's sharpest point. Cut the venue clause
-% instead -- "built to be played rather than evaluated" is expanded in Section 1
-% and the archive's scale survives without it.
+% LENGTH: 356 rendered words as of 2026-08-19, up from 288 before the five-move
+% restructure. The growth is content, not padding -- the restructure added the
+% human-SOTA result with its effort asymmetry (\val{nbeat}, \val{elogap},
+% \val{humanspan}, \val{hlspan}) and two analysis axes move 4 names but the old
+% abstract omitted (\val{robustspread}, \val{ntransfer}). 250 was a self-imposed
+% target and no venue is fixed yet; most allow 300, so this is over most limits and
+% will need a trim once a venue is chosen.
+%
+% CUT IN THIS ORDER when a real limit arrives, cheapest first:
+%   1. "and transfers to \val{ntransfer} further benchmarks without retuning"
+%      (~9 words). Breadth is a contribution-list item and survives there.
+%   2. "here the rules, its own source, and replays of its losses, rescored
+%      against a frozen opponent pool" (~17 words) -> "from the rules, its source,
+%      and its losses". The frozen pool is apparatus and Section 1 defines it.
+%   3. "estimated after Kolmogorov complexity by compression" (~6 words). The
+%      measurement is a Section 3 protocol; the abstract needs the concept only.
+%   4. The effort asymmetry clause (~11 words). Costly -- it is what makes the SOTA
+%      result about maintenance rather than compute -- so cut it only under a hard
+%      250 and never by dropping \val{humanspan} while keeping \val{hlspan}.
+% DO NOT cut: the last sentence (the negative claim about rule complexity, which
+% appears nowhere else here and is the paper's sharpest point); the
+% \val{eloplatspread} clause (see the note below on why the pair is required);
+% "model-based"; or "an agent-maintained policy" -> "symbolic policies".
 %
 % Do not cut the eloplatspread clause to save words either, though it looks like
 % a redundant second number. maintcapspread ALONE does not support the
@@ -116,34 +155,34 @@ Characterizing Performance Ceilings, Complexity, and Sample Efficiency in Large-
 % claim. If it fails -- if the plateau tracks the game rather than the agent --
 % the finding is still publishable but this sentence has to be rewritten, not
 % just renumbered.
-\abstract{Reinforcement learning (RL) made its name on adversarial games, and it
-is there that symbolic methods --- heuristic rules and search --- were judged to
-have the lower ceiling, on the grounds that a program exhibits only the behaviour
-someone wrote down. The objection is correct, but it describes the author rather
-than the artifact. Coding agents change who the author is, moving the operative
-property from interpretability to editability. How far the symbolic paradigm goes
-once a machine pays the maintenance cost is a two-sided question. An
-agent-maintained policy wins on information per sample --- rules and a replay
-report which decision lost a game, a scalar reward only that one was lost ---
-then stops, because the program outgrows what the agent can revise without
-breaking it. We characterize both
-bounds with \emph{heuristic learning} (HL): an agent revises a program from the
-rules, its own source, and replays of its losses, rescoring against a frozen
-opponent pool. The setting is \benchname, built from the complete archive of a
-collegiate game AI contest running since \val{founded} --- built to be played
-rather than evaluated --- whose \val{nsub} submissions and \val{nmatch}
-adjudicated matches supply a distribution of human skill rather than one
-reference solution.
-On \val{nbeat} of \val{ngames} games an agent maintaining rules across \val{hlspan}
-overtakes the strongest submission the archive records, refined by human
-contestants over \val{humanspan} of competition, by \val{elogap} Elo; across the
-field HL reaches the \val{pct}th percentile. It is
-\val{effratio} more sample-efficient than model-based RL at matched Elo, but
-that baseline overtakes beyond \val{crossover} environment steps, and improvement
-halts near
-\val{plateau} revisions as the program's description length approaches
-\val{ceilingcause}: \val{maintcap}, within \val{maintcapspread} across games of
-differing complexity, while the Elo reached there spreads by
+\abstract{For decades a competitive game program was a symbolic construction,
+bounded not by what it can express but by what a person will maintain: every new
+case has to be reconciled with the rules already there.
+Reinforcement learning (RL) displaced it by improving without an author at all.
+Coding agents change who the author is, moving the operative property from
+interpretability to editability, and we call the resulting paradigm
+\emph{heuristic learning} (HL): an agent reads feedback and directly revises an
+interpretable program --- here the rules, its own source, and replays of its
+losses, rescored against a frozen opponent pool. We ask how far continued
+maintenance goes once a machine pays its cost. The setting is \benchname, built
+from the archive of a collegiate game AI contest spanning \val{editions} editions
+since \val{founded}, whose \val{nsub} predominantly symbolic submissions and
+\val{nmatch} matches supply a distribution of human skill rather than a single
+reference. On
+\val{nbeat} of \val{ngames} games an agent maintaining rules across \val{hlspan}
+overtakes the strongest submission the archive records --- a program its authors
+refined over \val{humanspan} of competition --- by \val{elogap} Elo, reaching the
+\val{pct}th percentile of the field. Against RL in RL's own environments, an
+agent-maintained policy wins on information per sample --- rules and a replay say
+which decision lost a game, a scalar reward only that one was lost: it is \val{effratio} more sample-efficient than model-based RL at matched
+Elo, holds within \val{robustspread} across seeds and games, and transfers to
+\val{ntransfer} further benchmarks without retuning, until that baseline overtakes
+it beyond \val{crossover} environment steps. Improvement then halts near
+\val{plateau} revisions, for a reason that is a complexity one: HL succeeds while
+the description length of a winning symbolic policy stays below the agent's
+maintenance capacity, estimated after Kolmogorov complexity by compression. At the
+plateau that length converges to \val{maintcap} within \val{maintcapspread} across
+games of differing complexity while the Elo there spreads by
 \val{eloplatspread} --- equal maintainable size at unequal strength, which makes
 the ceiling the agent's and not the game's. What bounds the paradigm is the
 description length of a winning program, not the complexity of the rules.}
