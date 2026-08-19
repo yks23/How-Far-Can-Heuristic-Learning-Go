@@ -4,6 +4,18 @@
 % RENAMED from "Experiments" on 2026-08-19. This section is now the benchmark
 % itself -- the archive, the games, the apparatus, the protocol -- and the
 % findings live in 05-experiments.tex. Setup only; no result may be stated here.
+%
+% NAMED \benchname (HL-Arena) on 2026-08-19; the macro is defined in main.tex with
+% the rename rationale. This section is where the name is introduced properly --
+% what it contains, not whose method it serves. Write the contents, because the
+% name says "HL" and the arena is not HL's: human submissions across \val{editions}
+% editions, RL baselines run inside it, classic games as structural controls, three
+% opponent pools. If the section reads as though it were built for HL, the name has
+% made the comparison look pre-decided, which is the one failure mode it carries.
+% Never "our HL benchmark"; never gloss the HL as the thing being measured.
+% The heading stays \section{Benchmark} per the user's structure instruction of
+% 2026-08-19 rather than becoming \section{HL-Arena}, which would also be idiomatic
+% -- change it only if the user asks.
 % Note the label move that came with the rename: sec:experiments now names the
 % RESULTS section, and the introduction's pretraining-objection pointer was
 % repointed to sec:benchmark because the contamination check it promises is

@@ -18,6 +18,7 @@
 \usepackage{amssymb}
 \usepackage{multicol}
 \usepackage{xcolor}
+\usepackage{xspace}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta}
 \setlength{\emergencystretch}{3em}
@@ -27,6 +28,24 @@
 % Every number in the paper is defined there and referenced here as \val{key}.
 % Unmeasured quantities print in accent bold and are listed by \printTBD.
 \input{numbers}
+
+% The benchmark's name, chosen 2026-08-19. Always \benchname, never the literal
+% string, so a rename is one edit: the project has already had one name collision
+% scare (AgentBench, arXiv 2308.03688 -- see 07-related-work.tex), and a benchmark
+% name is exactly the kind of thing a reviewer or a co-author asks to change late.
+% Checked 2026-08-19: no benchmark publishes as HL-Arena or HLArena. The "Arena"
+% suffix is crowded (GameArena, TextArena, PaperArena, MemoryArena, WorldArena,
+% ResearchArena, VLA-Arena, Game Reasoning Arena), so the suffix carries no
+% information and the paper must not lean on it to explain anything.
+% One caveat, raised before the name was chosen and overruled: the arena hosts RL
+% baselines and the human field as well as HL, so naming it after one paradigm can
+% read as though the comparison were settled in advance. Mitigate it in prose --
+% wherever \benchname is introduced, say what it contains (human submissions, RL
+% baselines, classic-game controls) rather than whose method it is. Never write
+% "our HL benchmark" or gloss the HL in the name as the thing being measured.
+% \mbox keeps the hyphen from becoming a line break (a name split across lines
+% reads as two words); \xspace restores the space \benchname would otherwise eat.
+\newcommand{\benchname}{\mbox{HL-Arena}\xspace}
 
 \title{How Far Can Heuristic Learning Go? \\
 Characterizing Performance Ceilings, Complexity, and Sample Efficiency in Large-Scale Real-World Competitive Games}
@@ -110,10 +129,11 @@ then stops, because the program outgrows what the agent can revise without
 breaking it. We characterize both
 bounds with \emph{heuristic learning} (HL): an agent revises a program from the
 rules, its own source, and replays of its losses, rescoring against a frozen
-opponent pool. The setting is the complete archive of a collegiate game AI
-contest running since \val{founded} --- built to be played rather than evaluated
---- whose \val{nsub} submissions and \val{nmatch} adjudicated matches supply a
-distribution of human skill rather than one reference solution.
+opponent pool. The setting is \benchname, built from the complete archive of a
+collegiate game AI contest running since \val{founded} --- built to be played
+rather than evaluated --- whose \val{nsub} submissions and \val{nmatch}
+adjudicated matches supply a distribution of human skill rather than one
+reference solution.
 HL reaches the \val{pct}th percentile of that field across \val{ngames} games and
 is \val{effratio} more sample-efficient than model-based RL at matched Elo, but
 that baseline overtakes beyond \val{crossover} environment steps, and improvement
