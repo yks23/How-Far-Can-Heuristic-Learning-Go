@@ -37,6 +37,35 @@
 % time the axis is used. Cyclomatic complexity (mccabe1976complexity) is a
 % secondary axis at best -- report it if it agrees, do not lead with it.
 %
+% THE WHOLE LOWER-BOUND ARGUMENT MOVED HERE on 2026-08-18 (second cut, to reach
+% 2.5 pages). The introduction now asserts only that HL is more sample-efficient
+% at matched Elo; the reason is gone from it entirely and has to be made here,
+% attached to the budget-commensurability protocol above, because that is where a
+% reader asks why the two units can be compared at all. What this section owes:
+%   - information per sample is the binding constraint. A scalar reward reports
+%     that an episode went badly; the rules plus a replay of the loss report what
+%     happened, when the position turned, and which decision was responsible. The
+%     difference compounds, because it sets how much of a sample survives to the
+%     next revision.
+%   - the on-policy/off-policy spectrum, with offpolicyvaluellm2026 (policy
+%     gradient uses a batch once and discards it) and samplereuse2022 (off-policy
+%     reuse). Both keys are cited in 04-experiments.tex's scope comment only, so
+%     the argument's two supports currently appear nowhere in the body.
+%   - a maintained program sits at the far end: off-policy AND cross-policy-class
+%     -- it learns from replays of any opponent and from human source code no
+%     gradient method can consume, and it reads the rules directly, a prior
+%     costing no samples at all. This is the sentence the baseline rationale below
+%     was written to follow.
+%   - the concession that keeps the claim honest, and it must not be dropped: the
+%     information-per-sample gain is NOT the symbolic form's doing. echo2025hindsight
+%     rewrites its own failed episodes into experience and gets the same kind of
+%     gain holding no program at all, so what buys it is the reader. The program
+%     earns its place on the other side of the question, as what makes the policy
+%     editable. 02-background.tex's scope comment already carries the definitional
+%     half of this (lower bound over what the loop can READ, upper over what it can
+%     EDIT); this section owes the empirical half. Merging the two is what produces
+%     the unsupportable version of the claim.
+%
 % BASELINE RATIONALE MOVED HERE FROM SECTION 1 on 2026-08-18 under the 2.5-page
 % budget. The intro now says only "model-based RL is our primary baseline"; the
 % reason has to be stated here in full, because without it the baseline choice

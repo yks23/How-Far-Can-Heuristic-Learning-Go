@@ -88,6 +88,24 @@
 % from Tsinghua, and is the style reference in _reference_paper/. The project
 % name is still undecided.
 %
+% THE WHOLE UPPER-BOUND ARGUMENT MOVED HERE on 2026-08-18 (second cut, to reach
+% 2.5 pages). The introduction no longer argues why the loop stops -- it states
+% the inequality and its observed signature and nothing else. So this section
+% now owes the MECHANISM, not just the figures: revisions leave the program
+% larger and more interconnected, each further edit has to be placed without
+% disturbing what already works, and past some size that placement fails more
+% often than it succeeds -- an artifact outgrowing what its maintainer can hold,
+% attribute, and change, which is not a limit on what the paradigm can express.
+% The three supporting results below are the external evidence for it, and the
+% replacement-vs-accumulation distinction (already noted above) is what stops a
+% referee reading them as proof our loop cannot work. Without this paragraph the
+% paper asserts a capacity limit and never says what capacity means.
+% Also now cited NOWHERE in the body: selfimprovement2026survey. It was the
+% intro's ground for calling a game engine with a frozen pool the strong end of
+% the verification hierarchy along which self-improvement tracks -- one sentence,
+% and the natural home is this section's self-improvement paragraph. Until it is
+% written, that reference is dead weight in refs.bib.
+%
 % FIGURES MOVED HERE FROM SECTION 1 on 2026-08-18, when the introduction was cut
 % from 4.5 pages to 2.5. The intro now states these results qualitatively and
 % this section owes the numbers. All are verified against full text; the
@@ -126,3 +144,73 @@
 % ---------------------------------------------------------------------------
 
 \section{Related Work}
+
+\paragraph{Programmatic reinforcement learning and heuristic discovery.}
+Programmatic reinforcement learning represents a policy as an executable
+program rather than an opaque neural network, exposing a size--expressiveness
+trade-off that is directly relevant to our description-length proxy
+\citep{programmaticrl2024foundations}. Subsequent work has used language models
+to synthesize such policies \citep{llmguidedsearch2024}, or searched over
+structured domains such as scheduling \citep{diprl2026,prorl2026}. In parallel,
+automatic heuristic-design systems have combined LLM proposals with
+evolutionary selection, uncertainty balancing, diversity preservation, or
+learned teachers \citep{qube2024,hsevo2024,teacherawareheuristic2026,
+heuristicsearch2026,latentheuristicsearch2026,automodsat2025}. These systems
+mostly optimize a fixed combinatorial objective. Our setting instead evaluates
+an editable policy under adversarial play and asks how far repeated maintenance
+can proceed before the artifact becomes difficult to revise.
+
+\paragraph{LLM-guided program search and self-improvement.}
+FunSearch established the now-common pattern of LLM-generated program variants
+combined with an external evaluator \citep{funsearch2024}, followed by systems
+such as AlphaEvolve and agentic variation operators that make proposal,
+mutation, repair, and verification increasingly autonomous
+\citep{alphaevolve2025,avo2026}. Other work studies recursive self-improvement
+of coding agents or comparative evolution across tasks and lineages
+\citep{selfimprovingcodingagent2025,darwingodelmachine2025,mendelgoedel2026}.
+The closest game-specific systems use LLM-controlled program search
+\citep{codetoplay2024,kuang2025generative}. We differ from these lines in
+measuring a single maintained policy across many revisions, recording both its
+performance and its description length, and comparing it against human and RL
+reference points under a shared interaction budget.
+
+\paragraph{Games, tournaments, and adversarial evaluation.}
+Large-scale self-play and model-based planning established games as a demanding
+testbed for learned agents \citep{alphazero2018,muzero2020,alphastar2019,
+openaifive2019}. Recent code-agent evaluations have moved toward tournaments and
+iterative competition \citep{vibecoding2025tournament,catarena2025}, while
+game-theoretic co-evolution has studied LLM-based heuristic discovery against
+growing strategy pools \citep{asro2026coevolution}. Adversarial-instance
+generation provides a complementary direction in which the evaluator is
+improved rather than the policy \citep{adversarialheuristics2026}. Our protocol
+keeps the test opponent pool frozen so that changes in Elo can be attributed to
+policy revisions, while the contest archive supplies a distribution of human
+skill rather than a single reference opponent.
+
+\paragraph{Experience reuse and continual learning in agents.}
+Memory-based agents improve without changing the underlying program or model by
+rewriting failed trajectories, retaining verbal lessons, or distilling
+deployment feedback into reusable rules \citep{echo2025hindsight,reflexion2023,
+learningonthejob2026}. Recent benchmarks emphasize that continual learning must
+measure transfer and interference rather than only long-context retrieval
+\citep{agentcl2026,clbench2026}. These approaches motivate our append-only
+revision log and our separation of learning, evaluation, and total budgets, but
+they do not study the maintenance of an executable heuristic under adversarial
+feedback. In HL, experience is not merely retrieved: it changes the policy
+artifact, which creates both the opportunity for cross-policy reuse and the
+failure mode of regression through misplaced edits.
+
+\paragraph{Long-horizon degradation and maintenance capacity.}
+Several recent studies document degradation in iterative coding and agentic
+execution: code erosion and verbosity increase over long coding trajectories
+\citep{slopcodebench2026}, successful repair relies on decomposed short contexts
+rather than simply retrieving more context \citep{longcontextbugfix2026}, and
+per-step reliability remains finite even for reasoning models
+\citep{longhorizonexecution2026}. Most directly, Frontier-Eng measures
+self-improvement on real engineering tasks and finds that both the frequency and
+the magnitude of improvements decay with continued iterations
+\citep{frontiereng2026}. Frontier-Eng has no human field, RL baseline, or
+relative Elo, and its evaluator is a fixed verifier; our contribution is to
+carry the same longitudinal question into adversarial games and test whether a
+plateau is explained by the maintainable description length of the policy rather
+than by the complexity of the game rules.

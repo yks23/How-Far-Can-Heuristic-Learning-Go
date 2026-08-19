@@ -1,101 +1,65 @@
 % ---------------------------------------------------------------------------
 % Introduction
 %
-% The chain, in order. Each link is one paragraph and each exists to make the
-% next one necessary:
+% STRUCTURE CHANGED 2026-08-18, second cut. The old chain had ten argued links
+% and could not fit 2.5 pages; the user's instruction was to carry the argument
+% only as far as agent-maintainability, then pivot straight to "so we were
+% curious how HL does on adversarial games", the benchmark, the classic RL
+% environments, the low-K / low-sample finding, and the three contributions.
+% Six argued links were therefore DELETED, not compressed. Where each went is
+% recorded at the bottom of this comment; every one of them is now owed by
+% another section and appears nowhere in the body until that section is written.
+%
+% The chain as it now stands. Each paragraph exists to make the next necessary:
 %
 %   1. RL's home turf is adversarial games -- so the comparison happens where
 %      RL is strongest, not where it is weakest.
 %   2. Concede the extensibility objection, then relocate it: it describes the
-%      author, not the artifact.
+%      author, not the artifact. Conceded, never refuted -- "everyone was wrong"
+%      is both weaker and less true than "everyone was measuring the author".
 %   3. Coding agents change who the author is. The operative property is
-%      editability, not interpretability.
-%   4. The question, announced as two-sided.
-%   5. Lower bound: information per sample. The on-policy/off-policy spectrum,
-%      cross-policy-class data reuse, rules as a non-sample prior. The spectrum
-%      is also the reason model-based RL has to be the primary baseline: against
-%      policy gradient alone, symbolic-vs-neural is confounded with
-%      on-policy-vs-off-policy. Keep that sentence attached to this link -- it
-%      reads as an unmotivated methods note anywhere else.
-%      This link ends by giving away more than it looks like: the
-%      information-per-sample gain is NOT the symbolic form's doing, since a
-%      memory-based agent holding no program gets it too (echo2025hindsight).
-%      Conceding that is what keeps the two bounds independent, which is the
-%      whole structure of the paper -- the lower bound is about what the loop
-%      can read, the upper about what it can edit, and only the second is the
-%      program's. Deleting the concession to strengthen the lower bound would
-%      collapse them into one claim and hand a referee the objection ("then why
-%      the program at all?") with no answer in the text.
-%      Keep the system NAMES in both places -- "ECHO" here and "DiPRL" in the
-%      editability paragraph. Chengpeng Hu (diprl2026) and Michael Y. Hu
-%      (echo2025hindsight) are different people, and natbib renders both as
-%      "Hu et al." with only the year to tell them apart, so the two read as one
-%      group's pair. Naming the systems is what disambiguates them for a reader;
-%      do not revert either to "a recent system". Found by reading the rendered
-%      intro end to end -- no mechanical check catches it.
-%   6. Upper bound, now in two paragraphs: the mechanism (accumulation defeats
-%      placement) carrying its external evidence and the two results isolating
-%      the mechanisms underneath, which are about context and execution rather
-%      than code quality (slopcodebench2026, longcontextbugfix2026,
-%      longhorizonexecution2026); then the distinction that keeps our loop
-%      tractable (their spec grows, a game's rules do not, so a heuristic can be
-%      replaced rather than layered). This comment said "do not merge them back"
-%      until 2026-08-18, when the 2.5-page budget forced exactly that merge; the
-%      warning was right that the merged paragraph is long and carries three
-%      papers, so if room is ever recovered, split it first. What must NOT be
-%      lost in that state: all three citations, and the second paragraph's
-%      replacement-vs-accumulation concession, which is what stops a referee
-%      reading this evidence as proof our loop cannot work. The figures that
-%      used to live here are now in 07-related-work.tex's scope comment, which
-%      owes them; the claims here are stated qualitatively on purpose.
-%      All three citations were verified against full text 2026-08-18 and all
-%      three needed correction -- see their refs.bib annotations, which are
-%      authoritative, and note in particular that longhorizonexecution2026's
-%      own thesis runs opposite to the use we make of it.
-%      Two claims about SlopCodeBench were drafted wrong and are now fixed
-%      against the v2 full text; both flattered us, which is why they lasted.
-%      (a) Human repos do NOT "flatten". 68% of them end more verbose than they
-%      began. The finding is a rate gap -- per-checkpoint slope 0.0022 vs 0.0144
-%      for verbosity -- and the rate gap is the better claim anyway, since a
-%      human exemption would make maintenance capacity look like an
-%      agent-specific defect instead of a general limit that agents hit sooner.
-%      (b) Never write that quality-aware prompting leaves the slope
-%      "statistically unchanged". Their paper runs no significance test on that
-%      experiment at all; "slope" and "intercept" appear only in Appendix D,
-%      about the human panel. Say the prompts move the starting level without
-%      slowing the growth -- and keep the price attached (2.3 pp of strict
-%      correctness, 12.1% cost), because an intervention that trades capability
-%      for initial quality and still does not bend the curve is the actual
-%      argument for a capacity limit. All figures live in the refs.bib
-%      annotation, which is authoritative; re-verify if a v3 appears, since
-%      every v1 number changed in v2 and this paragraph inherited the v1 set.
-%      Then the axis: description length of a good-enough policy against the
-%      agent's maintenance capacity. Go is the counterexample that kills rule
-%      complexity as the x-axis. The LLM boundary falls out of the same axis.
-%      The inequality must state its observable signature where it is introduced
-%      -- convergent stall size across games, divergent Elo at that size -- and
-%      must say that it is the PAIR that does the diagnosing. Until 2026-08-18
-%      this paragraph called the plateau "diagnostic" without saying how it could
-%      be observed, and the signature appeared only in the contributions, which
-%      asserted the result with no mechanism attached. Convergent length alone
-%      proves nothing: it is equally consistent with games that never differed in
-%      complexity.
-%   7. Why the question is still open. The heading said "Why this ceiling has not
-%      been measured" until 2026-08-18, which is this link's own prohibition
-%      stated at heading level, and which its first clause then contradicted.
-%      Headings get written early and revised least: check them against these
-%      notes separately from the body. Careful: agent self-improvement
-%      decay HAS been measured (frontiereng2026 -- frequency t^-1 AND magnitude
-%      k^-1, marginal returns near zero after ~50-100 iterations, tail to 500).
-%      Do not compress this to "plateau within tens of iterations", which the
-%      paragraph said until 2026-08-18: it is the wrong number and the wrong
-%      shape. Cite both exponents. Do not write "never measured" -- concede the
-%      result and say what it lacks: single-agent tasks, no human field, no RL
-%      baseline. The
-%      confound we remove is a different one, human iteration cost.
-%   8. The venue.
-%   9. HL, plus the selection-effect concession.
-%  10. Contributions.
+%      editability, not interpretability. This is the paper's hinge; without it
+%      the paper reads as a defence of a paradigm already judged.
+%      Keep the system NAMES here and wherever ECHO reappears. Chengpeng Hu
+%      (diprl2026) and Michael Y. Hu (echo2025hindsight) are different people and
+%      natbib renders both as "Hu et al." with only the year between them, so the
+%      two read as one group's pair. Naming the systems disambiguates them; do not
+%      revert either to "a recent system". Found by reading the rendered intro end
+%      to end -- no mechanical check catches it.
+%   4. HL itself -- the loop, its narrowness, and why attribution is the point.
+%      Carries the vibecoding2025tournament contrast, including the concession
+%      that their agents were NOT one-shot (most revised, all debugged); the
+%      distinction is what their loop optimized, compilability rather than
+%      standing. Dropping that concession misrepresents the paper we lean on
+%      hardest.
+%   5. Where we test it: the archive, the folk ordering it refutes, and the
+%      classic RL environments. Provenance is one clause pointing at Section 2.
+%   6. What we find, which is now the ONLY place the two bounds appear. It states
+%      the sample-efficiency result without arguing it (-> Section 3) and the
+%      plateau without arguing it (-> Section 7), then does the one thing that
+%      cannot be delegated: names the axis. Go kills rule complexity as the
+%      x-axis; K(pi_good) is the axis, always. A game defeats the loop because its
+%      *winning policy* is long, not because its rulebook is. Never write that a
+%      hard game "starts near the capacity" -- the program grows from a naive draft
+%      in every game and the capacity is fixed by the agent; what varies is where
+%      K(pi_good) sits relative to it. Getting that backwards makes the central
+%      inequality read as though the game moved the ceiling.
+%      The signature must stay attached to the inequality: convergent description
+%      length at the plateau, divergent Elo there, and it is the PAIR that
+%      diagnoses. Convergent length alone proves nothing -- it is equally
+%      consistent with games that never differed in complexity.
+%   7. The two conceded objections (pretraining asymmetry, the archive's RL
+%      scarcity confounded with contestant cost structure). Deliberately kept in
+%      the intro across two rounds of cutting: a reader who first meets the
+%      pretraining objection in Section 6 has already decided we were hiding it.
+%   8. Contributions -- three bullets, stated flat. They were 21 lines of
+%      re-argued motivation before this cut; the motivation is upstream now, so
+%      never let the bullets re-derive it.
+%
+% Do not write "if-else". Characterizing what the winning programs contain is a
+% result, not a punchline. Do not claim editability as our coinage; programmatic
+% RL already calls its policies human-editable, and what changes is the role the
+% property plays.
 %
 % Four things to hold onto while editing:
 %   - The objection is conceded, never refuted. "Everyone was wrong" is both
@@ -122,13 +86,15 @@
 %     the paper's central inequality read as though the game moved the ceiling.
 %
 % LENGTH. HARD BUDGET: 2.5 pages, set by the user 2026-08-18 ("introduction
-% 只能写到两页半"). This section was 4.5 pages when that instruction came. All
-% three cuts the old comment listed below have now been made, plus more. Current
-% state: 131 rendered lines = 2.56 pages of text, spanning 2.63 pages physically
-% (page 1 line 26 to page 4 line 16). Still ~6 lines over, and the remaining
-% overage cannot be closed without deleting either the vibecoding contrast or the
-% early concession of the two objections -- both things a reviewer rewards -- so
-% it was left for the user to decide.
+% 只能写到两页半"), reaffirmed the same day as "I want it to END at 2.5 pages".
+% This section was 4.5 pages when the instruction came, 2.63 after the first cut,
+% and is now 76 rendered lines = 1.49 pages of text spanning 2.3 pages physically
+% (page 1 line 26 to page 3 line 13). Comfortably inside the budget with room to
+% restore something if a referee asks for it -- and if room is spent, spend it on
+% the upper-bound mechanism (link 6 of the old chain), which is the deletion that
+% cost the most: the paper now asserts a maintenance-capacity limit in the
+% introduction without ever saying in the introduction what maintenance capacity
+% means. 07-related-work.tex owes that argument.
 %
 % HOW TO MEASURE IT, because getting this wrong wasted most of one session:
 %   - Contributions is a \subsection* of the Introduction and counts INSIDE the
@@ -149,25 +115,31 @@
 % substituted text reflows to the same length. Do not repeat that; if a pass does
 % not change the number, the pass was not a cut.
 %
-% The old cut-order list, all three now executed, kept for the reasoning:
-%   1. The editability discussion in para 3, from four sentences to two. The
-%      distinction is needed; the elaboration is not. DONE.
-%   2. The contamination-resistance contrast, to one sentence. It is positioning
-%      against a literature, and the benchmark section makes the same case. DONE
-%      -- now one clause pointing at Section 2, whose scope comment owes the
-%      argument.
-%   3. The two objection paragraphs, merged and moved to Limitations. This costs
-%      real credibility -- a reader who meets the pretraining objection first in
-%      Section 6 has already decided we were hiding it -- so it goes last. MERGED
-%      into one paragraph but deliberately NOT moved, for that reason.
-% Also moved out under the budget, and each target section's scope comment now
-% says so: all numeric figures for the four upper-bound citations (-> 07), the
-% model-based-RL baseline rationale (-> 03), the benchmark provenance argument
-% (-> 02), and slopcodebench2026's prompting result (-> 07, which is the answer
-% to "the plateau is just a prompting defect" and now lives nowhere else).
-% Never cut: the Go example (it is what kills rule complexity as the axis), the
-% single inequality, the replacement-vs-accumulation distinction, the ECHO
-% concession, or the not-one-shot concession about vibecoding2025tournament.
+% WHERE THE DELETED MATERIAL WENT. Each target section's scope comment now names
+% what it owes, and none of it is in the body yet:
+%   -> 03-methodology.tex: the entire lower-bound argument (information per
+%      sample, the on/off-policy spectrum, cross-policy-class reuse, rules as a
+%      zero-sample prior) and the ECHO concession that the gain belongs to the
+%      reader rather than the symbolic form; plus the model-based-RL baseline
+%      rationale from the first cut. Keys offpolicyvaluellm2026, samplereuse2022,
+%      echo2025hindsight, kuang2025generative live or die there.
+%   -> 07-related-work.tex: the entire upper-bound argument (accumulation defeats
+%      placement), its three supporting results (slopcodebench2026,
+%      longcontextbugfix2026, longhorizonexecution2026) with all their figures,
+%      the replacement-vs-accumulation distinction, frontiereng2026's decay
+%      exponents and the "why still open" argument, and slopcodebench2026's
+%      prompting result. selfimprovement2026survey is now cited NOWHERE and its
+%      home is that section's self-improvement paragraph.
+%   -> 02-background.tex: the benchmark provenance argument, and the definitional
+%      split the ECHO concession rests on -- lower bound over what the loop can
+%      READ, upper over what it can EDIT.
+% Never cut from THIS file: the Go example (it is what kills rule complexity as
+% the axis), the single inequality with its signature, the not-one-shot concession
+% about vibecoding2025tournament, and the two conceded objections.
+%
+% WHAT NOT TO TRY. Rewriting a sentence more tightly does not shorten the render;
+% see the measurement note above. Both times this section came down it was by
+% deleting whole paragraphs.
 % ---------------------------------------------------------------------------
 
 \section{Introduction}
@@ -197,126 +169,61 @@ the artifact at all. A symbolic program can be read in full and changed in part,
 takes the heterogeneous inputs maintenance requires --- rules, its own source,
 replays of losses. A learned policy admits no comparable loop: its behaviour lives in
 weights that cannot be edited locally and offer no handle by which a specific failure
-traces to a specific parameter. The two properties do come apart --- a system
-can reason in natural language about every decision and still hold its policy in
-weights \citep{tig2025think} --- and programmatic RL already calls its policies
-human-readable and editable \citep[DiPRL;][]{diprl2026}. What changes here is the
-role the property plays: not a feature of the delivered artifact, but the reason an
-optimizer exists for it. So the question reopens, and this time it is measurable:
-\emph{how far does the symbolic paradigm go once a machine pays the maintenance
-cost?} The answer is two-sided --- such a program wins for a reason unrelated to
-expressiveness, and stops for a reason belonging to the program rather than the
-paradigm.
+traces to a specific parameter. The two properties do come apart --- a system can
+reason in natural language about every decision and still hold its policy in weights
+\citep{tig2025think} --- and programmatic RL already calls its policies human-readable
+and editable \citep[DiPRL;][]{diprl2026}. What changes here is the role the property
+plays: not a feature of the delivered artifact, but the reason an optimizer exists
+for it.
 
-\paragraph{Why an agent-maintained program wins under a budget.} The binding
-constraint under a budget is information per sample. A scalar reward reports that
-an episode went badly; the rules plus a replay of the loss report what happened,
-when the position turned, and which decision was responsible --- and the
-difference compounds, because it determines how much of the sample survives to the
-next revision. Policy-gradient methods are on-policy, using a batch for one update
-and discarding it \citep{offpolicyvaluellm2026}; off-policy methods reuse it
-\citep{samplereuse2022}. A maintained program sits at the far end of that spectrum:
-off-policy and \emph{cross-policy-class}, able to learn from replays of any opponent
-and from human source code no gradient method can consume, and it reads the rules
-directly --- a prior costing no samples at all. An
-LLM revising a Python policy from execution traces is already competitive with
-deep-RL baselines on single-agent tasks at far fewer environment interactions
-\citep{kuang2025generative}, though only directionally. The spectrum also dictates
-the baseline: model-based RL, not policy gradient
-(Section~\ref{sec:methodology}).
+\paragraph{Heuristic learning.} So we were curious how the paradigm actually
+performs on adversarial games once a machine pays the maintenance cost. We study it
+through \emph{heuristic learning} (HL): a coding agent maintains a heuristic program
+by reading the rules, its own source, and replays of its losses, then rescores it
+against a frozen opponent pool. The loop is deliberately narrow --- one revision per
+iteration, every version and score kept in an append-only log --- because attribution
+is the property we are trying to preserve: without it a plateau can be observed but
+not diagnosed. A stronger model alone does not supply that. In the closest existing
+head-to-head humans took the top five places, and a frontier model handed the winning
+student's program dropped it to tenth \citep{vibecoding2025tournament}; those agents
+were not one-shot --- most were revised and all debugged over many cycles --- but the
+loop optimized compilability, not tournament standing. The missing term is revisions
+carrying an adversarial signal.
 
-The advantage is narrower than it looks, and the narrow version is the one worth
-defending. ECHO rewrites its own failed episodes into usable experience and becomes
-more sample-efficient holding no program at all \citep{echo2025hindsight}: what buys
-the information per sample is the reader, not the symbolic form. The program earns its
-place on the other side of the question, as what makes the policy editable and so what
-sets where the loop stops.
+\paragraph{Where we test it.} Measuring a ceiling needs a domain where many
+independent authors already pushed the symbolic paradigm as far as a real budget
+allowed, with the results recorded. We use the complete archive of a collegiate game
+AI contest running since \val{founded}: games authored for the contest itself,
+\val{nsub} submissions, and \val{nmatch} adjudicated matches, written under deadline
+with standings at stake. That provenance, rather than any design choice, is what
+supplies contamination resistance and a \emph{distribution} of human skill to place a
+method within (Section~\ref{sec:background}). It also carries a folk ordering ---
+rules for beginners, search for the intermediate, RL as the highest ceiling --- which
+gets the asymptotic ceilings right and still fails to predict who wins: \val{pheur}
+of prize-winning programs contain no learned component, and RL, present in \val{prl}
+of submissions, reached the finals in \val{nrlfinal} of \val{editions} editions. We
+run HL in the classic RL game environments as well, so the comparison also happens
+where learned policies are strongest and their baselines are established.
 
-\paragraph{Why it stops.} What the loop accumulates is what eventually stops it.
-Revisions leave the program larger and more interconnected, and each further
-revision has to place an edit without disturbing what already works; past some size
-that placement fails more often than it succeeds --- not because the paradigm ran
-out of expressiveness, but because the artifact outgrew what its maintainer can
-hold, attribute, and change. This is measurable outside our setting: coding agents
-extending their own prior code accumulate structural damage, at rising cost and no
-matching gain in correctness, and human maintainers are not exempt but
-accumulate it several times more slowly per revision, so what separates a maintainer
-that keeps working from one that stalls is a rate rather than an exemption
-\citep{slopcodebench2026}. Two mechanisms underneath are not about code
-quality at all: agentic repair succeeds only while the context each step accumulates
-stays small, locating the advantage in decomposition rather than retrieval
-\citep{longcontextbugfix2026}; and given the plan up front, per-step accuracy still
-falls as steps accumulate \citep{longhorizonexecution2026}. Reasoning removes that
-second failure, which helps us rather than hurts --- a plateau reached by a reasoning
-agent cannot be attributed to self-conditioning --- and what survives is a finite
-execution horizon differing by an order of magnitude between frontier models. A
-program under revision is the case that cannot be decomposed away: the artifact is the
-accumulated context, and every revision must hold it whole.
-
-That evidence cuts both ways, though. The degradation those benchmarks measure is
-driven by a specification that keeps growing, so nothing may be discarded; a game's
-rules do not change, so a better heuristic may \emph{replace} a worse one instead of
-being layered on it, and the program is free to get shorter. Accumulation is a
-tendency here rather than an obligation, which is why the ceiling is worth measuring
-instead of assuming.
-
-The axis this limit falls on is a description length, and not the length of the rules
---- Go's rules fit on a page, yet no compact symbolic policy plays it well. What
-governs the outcome is the description length of a \emph{symbolic} policy good enough
-to win, which we write $K(\pi_{\mathrm{good}})$ after Kolmogorov complexity and
-estimate by compression, the quantity itself being uncomputable
-\citep{lividanyi2019kolmogorov,rissanen1978mdl}. The prediction
-is a single inequality: HL succeeds while $K(\pi_{\mathrm{good}})$ stays below the
-agent's maintenance capacity, and plateaus as it approaches it. Because that
-capacity belongs to the agent rather than the game, the inequality predicts a
-signature: the size at which the loop stalls should be roughly the same from game to
-game while the strength reached there should not, and it is that pairing, not either
-half, that distinguishes a limit of the maintainer from a limit of the game. The
-paradigm's boundary then follows from the same inequality rather than from a separate
-argument (Section~\ref{sec:discussion}).
-
-\paragraph{Why the question is still open.} Agent self-improvement is already known
-to decay from both directions at once: across 47 real engineering tasks, improvement
-frequency falls as $t^{-1}$ while the magnitude of the $k$-th improvement falls as
-$k^{-1}$, driving marginal returns near zero after 50 to 100 iterations
-\citep{frontiereng2026}. Those tasks are single-agent and carry neither a human field
-nor an RL baseline, so where the symbolic paradigm stands against a learned one is
-left open. Where both reference points were present the maintainer was always human,
-measuring the paradigm and the cost of human iteration together: a heuristic program
-that stopped improving might have exhausted the paradigm or its author's weekend, and
-the record cannot say which. Replacing the author with an agent holds the paradigm
-fixed while varying the term that never varied.
-
-\paragraph{Where to measure it.} The question needs a domain where many independent
-authors pushed the symbolic paradigm as far as a real budget allowed, with results
-recorded and that budget the same for every method available to them. We use the
-complete archive of a collegiate game AI contest running since
-\val{founded}: games authored for the contest itself, \val{nsub} submissions, and
-\val{nmatch} adjudicated matches, written under deadline with standings at stake.
-Contests of this kind carry a folk ordering --- rules for beginners, search for the
-intermediate, RL as the highest ceiling --- which gets the asymptotic ceilings right
-and still fails to predict who wins: \val{pheur} of prize-winning programs contain no
-learned component, and RL, present in \val{prl} of submissions, reached the finals in
-\val{nrlfinal} of \val{editions} editions.
-
-That provenance, rather than any design choice, is also what supplies contamination
-resistance and a \emph{distribution} of human skill to sit a method within, both
-argued in Section~\ref{sec:background}
-\citep{livecodebench2024,workbuddybench2026,mlebench2024,olympiad2025percentile}.
-
-\paragraph{Heuristic learning.} We remove the confound with heuristic learning
-(HL): a coding agent maintains a heuristic program by reading the rules, its own
-source, and replays of its losses, then rescores it against a frozen opponent pool.
-The loop is deliberately narrow --- one revision per iteration, every version and
-score kept --- because attribution is the property we are trying to preserve, and a
-game engine with a frozen pool sits at the strong end of the verification hierarchy
-along which self-improvement tracks \citep{selfimprovement2026survey}. A stronger
-model alone does not supply it: in the closest existing head-to-head humans took the
-top five places, and a frontier model handed the winning student's program dropped it
-to tenth \citep{vibecoding2025tournament}. Their agents were not one-shot --- most
-were revised and all debugged over many cycles --- but that loop optimized
-compilability, not tournament standing. The missing term is revisions carrying an
-adversarial signal.
+\paragraph{What we find.} HL is at its strongest exactly where a budget binds. It
+reaches the \val{pct}th percentile of the human field and is \val{effratio} more
+sample-efficient than model-based RL at matched Elo, while its advantage is largest on
+games whose winning policy is short. The axis that predicts this is a description
+length, and not the length of the rules --- Go's rules fit on a page, yet no compact
+symbolic policy plays it well. What governs the outcome is the description length of a
+\emph{symbolic} policy good enough to win, which we write $K(\pi_{\mathrm{good}})$
+after Kolmogorov complexity and estimate by compression, the quantity itself being
+uncomputable \citep{lividanyi2019kolmogorov,rissanen1978mdl}. The prediction is a
+single inequality: HL succeeds while $K(\pi_{\mathrm{good}})$ stays below the agent's
+maintenance capacity, and plateaus as it approaches it. Because that capacity belongs
+to the agent rather than the game, the inequality predicts a signature we then
+observe: description length at the plateau converges across games of differing
+complexity while the Elo reached there does not, and it is that pairing, not either
+half, that separates a limit of the maintainer from a limit of the game
+(Section~\ref{sec:discussion}). Neither paradigm dominates --- model-based RL
+overtakes HL beyond \val{crossover} environment steps --- so the budget and the
+game's structure decide. The loop itself proves robust across that range: it
+transfers to \val{ntransfer} further benchmarks without retuning.
 
 Two objections are conceded here and answered in Section~\ref{sec:discussion}. The
 agent arrives with a pretraining corpus while RL starts cold, and no denominator makes
@@ -333,34 +240,22 @@ constraints. Every comparison here is budget-conditional.
 % under the benchmark: it describes what the archive contains, and is not a
 % result of comparing HL against RL.
 \begin{itemize}[leftmargin=*]
-  \item \textbf{Heuristic learning (HL): agent-maintained symbolic policies under
-  adversarial pressure, instrumented so the ceiling can be located.} Over the
-  established fact that an LLM can revise a program from execution feedback, HL adds
-  the adversary and the discipline --- one revision per iteration, every version and
-  score in an append-only log, so a change in behaviour is attributable to the edit
-  that caused it. Without that attribution a plateau can be observed but not
-  diagnosed.
+  \item \textbf{Heuristic learning}, an agent-maintained symbolic policy under
+  adversarial pressure, instrumented --- one revision per iteration, every version
+  and score logged --- so that a plateau can be diagnosed and not merely observed.
 
-  \item \textbf{A benchmark drawn from a real competition rather than constructed
-  for evaluation.} To the archive's \val{nsub} submissions and \val{nmatch}
-  adjudicated matches we add the apparatus a benchmark needs: classic games as
-  structural controls, three opponent pools (training, frozen test, Elo anchor), a
-  frozen evaluation set, and an Elo protocol comparable across games and editions.
-  We also classify every submission by whether it contains a learned component,
-  which makes the audit above a measurement rather than an impression.
+  \item \textbf{A benchmark drawn from a real competition rather than built for
+  evaluation}: the archive's \val{nsub} submissions and \val{nmatch} matches, plus
+  the apparatus one needs --- classic games as structural controls, three opponent
+  pools, a frozen evaluation set, a cross-edition Elo protocol, and a per-submission
+  audit of whether it contains a learned component.
 
-  \item \textbf{A broad comparison of HL and RL, and a mechanism for where HL
-  stops.} Against model-based RL, policy gradient, and the human field over a range
-  of budgets, in every denominator rather than the favourable one: HL
-  reaches the \val{pct}th percentile of the field, beats the strongest recorded human
-  on \val{nbeat} games, and is \val{effratio} more sample-efficient than model-based
-  RL at matched Elo --- but that baseline overtakes beyond \val{crossover}
-  environment steps and HL costs more \val{loseaxis}. Neither paradigm dominates; the
-  budget and the game's structure decide. Improvement frequency decays as \val{decay}
-  and plateaus near \val{plateau} revisions, which we trace to maintenance capacity
-  on the pair the signature calls for: description length at the plateau converges to
-  \val{maintcap} within \val{maintcapspread} across games of differing complexity,
-  while the Elo reached there varies by \val{eloplatspread}. The loop transfers to
-  \val{ntransfer} further benchmarks without retuning.
+  \item \textbf{A budget-resolved comparison of HL against model-based RL, policy
+  gradient, and the human field}, reported in every denominator rather than the
+  favourable one: HL beats the strongest recorded human on \val{nbeat} games, but
+  costs more \val{loseaxis}. Improvement frequency decays as \val{decay} and
+  plateaus near \val{plateau} revisions, which we trace to maintenance capacity:
+  description length there converges to \val{maintcap} within \val{maintcapspread}
+  while the Elo reached varies by \val{eloplatspread}.
 \end{itemize}
 

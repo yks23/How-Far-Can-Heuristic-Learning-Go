@@ -669,3 +669,308 @@
   pages   = {308--320},
   year    = {1976}
 }
+
+% ---------------------------------------------------------------------------
+% Additional related-work entries added 2026-08-18.
+% These entries are deliberately annotated with the role they should play in
+% Section 7.  The comments are not claims about our results; they are citation
+% routing notes for the eventual Related Work prose.
+% ---------------------------------------------------------------------------
+
+% LLM-controlled evolutionary program search on games. Use as the broadest
+% program-search precedent before the closer Kuang et al. comparison: it shows
+% that LLM-guided mutations can produce executable game programs, but does not
+% study a maintained policy against a human field or an RL baseline.
+@article{codetoplay2024,
+  title   = {From Code to Play: Benchmarking Program Search for Games Using
+             Large Language Models},
+  author  = {Eberhardinger, Manuel and Goodman, James and Dockhorn, Alexander
+             and Perez-Liebana, Diego and Gaina, Raluca D. and Cakmak, Duygu
+             and Maghsudi, Setareh and Lucas, Simon},
+  journal = {arXiv preprint arXiv:2412.04057},
+  year    = {2024},
+  note    = {LLM-controlled evolutionary hill-climbing over game programs}
+}
+
+% Directly adjacent to the HL loop's forward/backward/update decomposition.
+% Cite for structured language-guided heuristic refinement in combinatorial
+% optimization; contrast its fixed optimization tasks with our adversarial
+% games, frozen opponent pool, Elo, and maintenance-ceiling analysis.
+@article{heuristicsearch2026,
+  title   = {Heuristic Search as Language-Guided Program Optimization},
+  author  = {Yu, Mingxin and Yang, Ruixiao and Fan, Chuchu},
+  journal = {arXiv preprint arXiv:2602.16038},
+  year    = {2026},
+  note    = {Modular forward evaluation, backward analysis, and program update}
+}
+
+% Uses a learned optimization policy as a behavioral teacher while producing
+% a static executable heuristic. Cite in the heuristic-discovery paragraph to
+% distinguish teacher-derived local feedback from HL's direct adversarial replay
+% feedback and agent-maintained source edits.
+@article{teacherawareheuristic2026,
+  title   = {Teacher-Aware Evolution of Heuristic Programs from Learned
+             Optimization Policies},
+  author  = {Chen, Minyu and Qin, Song and Wu, Ling-I and Xue, Jianxin
+             and Li, Guoqiang},
+  journal = {arXiv preprint arXiv:2605.10634},
+  year    = {2026},
+  note    = {Behavioral-teacher feedback for static heuristic evolution}
+}
+
+% Moves heuristic search from discrete syntax into a learned continuous latent
+% space. Cite to position HL as direct source-code editing rather than latent
+% program optimization, which matters for the paper's editability and size axis.
+@article{latentheuristicsearch2026,
+  title   = {Latent Heuristic Search: Continuous Optimization for Automated
+             Algorithm Design},
+  author  = {Ahmed, Cheikh and Mostajabdaveh, Mahdi and Zhou, Zirui},
+  journal = {arXiv preprint arXiv:2605.17137},
+  year    = {2026},
+  note    = {Code available at https://github.com/cheikh025/LHS}
+}
+
+% A difficult-solver case study showing LLM-guided evolutionary modification of
+% an existing SAT solver. Cite as evidence that the field is moving from
+% one-shot heuristic generation toward sustained executable-system search.
+@article{automodsat2025,
+  title   = {Discovering Heuristics in a Complex {SAT} Solver with Large
+             Language Models},
+  author  = {Sun, Yiwen and Ye, Furong and Chen, Zhihan and Wei, Ke
+             and Cai, Shaowei},
+  journal = {arXiv preprint arXiv:2507.22876},
+  year    = {2025},
+  note    = {AutoModSAT; LLM-guided modular solver evolution}
+}
+
+% Makes the coding agent itself an evolutionary variation operator rather than
+% only a candidate generator. Cite for the agentic-evolution trend, then state
+% that HL studies long-term maintenance of a game policy rather than GPU kernels.
+@article{avo2026,
+  title   = {{AVO}: Agentic Variation Operators for Autonomous Evolutionary
+             Search},
+  author  = {Chen, Terry and Ye, Zhifan and Xu, Bing and Ye, Zihao and Liu,
+             Timmy and Hassani, Ali and Chen, Tianqi and Kerr, Andrew and Wu,
+             Haicheng and Xu, Yang and Chen, Yu-Jung and Chen, Hanfeng and Kane,
+             Aditya and Krashinsky, Ronny and Liu, Ming-Yu and Ceze, Luis and
+             Bringmann, Roger and Tran, John and Liu, Wei and Xie, Fung and
+             Lightstone, Michael and Shi, Humphrey},
+  journal = {arXiv preprint arXiv:2603.24517},
+  year    = {2026},
+  note    = {Agentic mutation, repair, critique, and verification for kernel evolution}
+}
+
+% Diagnoses what evolutionary coding agents actually change (new structure,
+% retuning, recombination, or evaluator overfitting). Cite to motivate logging
+% edit types and not reporting only the final Elo of an HL run.
+@article{evotrace2026,
+  title   = {What Do Evolutionary Coding Agents Evolve?},
+  author  = {Pelleriti, Nico and Nelaturu, Sree Harsha and Zhou, Zhanke and
+             Li, Zongze and Zimmer, Max and Han, Bo and Pokutta, Sebastian},
+  journal = {arXiv preprint arXiv:2605.20086},
+  year    = {2026},
+  note    = {EvoTrace and EvoReplay; diagnostic analysis of evolutionary edits}
+}
+
+% Studies the execution harness rather than the optimizer alone. Cite when
+% discussing evaluator hacks, parallel execution, and the tradeoff between
+% many shallow generations and fewer deep candidates; these are controls HL's
+% shared-budget ledger and frozen opponent pool must make explicit.
+@article{harnessengineering2026,
+  title   = {Effective Harness Engineering for Algorithm Discovery with
+             Coding Agents},
+  author  = {Ishibashi, Yoichi and Yano, Taro and Oyamada, Masafumi},
+  journal = {arXiv preprint arXiv:2605.15221},
+  year    = {2026},
+  note    = {Vesper; token-budgeted harness design and evaluator-hack analysis}
+}
+
+% Comparative self-modification across tasks and agent lineages. Cite as a
+% recent recursive self-improvement reference, while distinguishing its SWE-
+% bench/Polyglot setting from HL's adversarial game and human-percentile setting.
+@article{mendelgoedel2026,
+  title   = {Mendel {G}{\"o}del Machine: Recursive Self-Improving Coding Agents
+             via Comparative Evolution},
+  author  = {Liu, Changzhi and Liu, Yilun and Yan, Sikuan and Tresp, Volker
+             and Ma, Yunpu},
+  journal = {arXiv preprint arXiv:2608.07645},
+  year    = {2026},
+  note    = {Reaction-norm mutation and cross-lineage hybridization}
+}
+
+% Programmatic RL example with a scheduling DSL, local search, and Bayesian
+% optimization. Cite as the recent applied counterpart to the programmatic-RL
+% theory already in refs.bib; it supports the editability distinction but not
+% the continual-agent maintenance claim.
+@article{prorl2026,
+  title   = {Scheduling That Speaks: An Interpretable Programmatic
+             Reinforcement Learning Framework},
+  author  = {Hu, Chengpeng and Zhang, Yingqian and Baier, Hendrik},
+  journal = {arXiv preprint arXiv:2605.18454},
+  year    = {2026},
+  note    = {ProRL; code at https://github.com/HcPlu/ProRL}
+}
+
+% Frozen-weight agents that learn from deployment verdicts and corrections by
+% distilling episodes into external rules. Cite in the continual-learning
+% paragraph to contrast natural-language memory reuse with HL's executable
+% policy maintenance and its regression/description-length measurements.
+@article{learningonthejob2026,
+  title   = {Learning on the Job: Continual Learning from Deployment Feedback
+             for Frozen-Weights Agents},
+  author  = {Tablan, Valentin and Taylor, Scott and Bernhem, Kristoffer},
+  journal = {arXiv preprint arXiv:2607.22157},
+  year    = {2026},
+  note    = {Harness, protocol, and data released at
+             https://github.com/memcoai/spark-continual-learning-paper-data}
+}
+
+% Controlled benchmark for transfer, interference, and reusable experience in
+% language agents. Cite for the evaluation vocabulary that motivates tracking
+% an entire Elo trajectory rather than only the final policy score.
+@article{agentcl2026,
+  title   = {{AgentCL}: Toward Rigorous Evaluation of Continual Learning in
+             Language Agents},
+  author  = {Shu, Yiheng and Jim{\'e}nez Guti{\'e}rrez, Bernal and
+             Jonnalagedda, Saisri Padmaja and Yao, Yuguang and Sun, Huan
+             and Su, Yu},
+  journal = {arXiv preprint arXiv:2606.02461},
+  year    = {2026},
+  note    = {Controlled task streams, transfer gains, and memory interference}
+}
+
+% Expert-validated stateful benchmark across six real-world domains. Cite as a
+% benchmark-design contrast: CL-Bench isolates online learning from base model
+% capability, whereas HL uses a real contest archive to obtain a human skill
+% distribution and adversarial ranking.
+@article{clbench2026,
+  title   = {Continual Learning Bench: Evaluating Frontier {AI} Systems in
+             Real-World Stateful Environments},
+  author  = {Asawa, Parth and Glaze, Christopher M. and Orlanski, Gabriel and
+             Ramakrishnan, Ramya and Xu, Benji and Biswal, Asim and Chen,
+             Vincent Sunn and Sala, Frederic and Zaharia, Matei and Gonzalez,
+             Joseph E.},
+  journal = {arXiv preprint arXiv:2606.05661},
+  year    = {2026},
+  note    = {Code at https://github.com/Arc-Computer/CL-Bench}
+}
+
+% Foundational evolutionary program-search reference. FunSearch shows how an
+% LLM can propose program mutations while an evaluator selects discoveries;
+% cite it as the ancestor of AlphaEvolve-style algorithm discovery, not as a
+% continual-agent or adversarial-game result.
+@article{funsearch2024,
+  title   = {Mathematical Discoveries from Program Search with Large Language
+             Models},
+  author  = {Romera-Paredes, Bernardino and Barecat, Mohammadamin and
+             Banarse, Dylan and others},
+  journal = {Nature},
+  volume  = {625},
+  pages   = {468--475},
+  year    = {2024},
+  note    = {FunSearch; LLM-guided program search with evaluator selection}
+}
+
+% LLM-written reward functions for RL. Use to separate optimizing the reward
+% or evaluator from directly editing the executable policy, which is central
+% to HL's artifact-level maintenance claim.
+@article{eureka2023,
+  title   = {Eureka: Human-Level Reward Design via Coding Large Language
+             Models},
+  author  = {Ma, Yecheng Jason and Liang, William and Wang, Guanzhi and
+             Huang, De-An and Bastani, Osbert and Jayaraman, Dinesh and Zhu,
+             Yuke and Fan, Linxi and Anandkumar, Anima},
+  journal = {arXiv preprint arXiv:2310.12931},
+  year    = {2023},
+  note    = {LLM-generated reward code; evaluator/reward design rather than policy maintenance}
+}
+
+% Iterative self-feedback baseline for language-agent refinement. Cite to
+% distinguish intrinsic textual critique from HL's executable, adversarially
+% verified revisions.
+@article{selfrefine2023,
+  title   = {Self-Refine: Iterative Refinement with Self-Feedback},
+  author  = {Madaan, Aman and Tandon, Niket and Gupta, Prakhar and Hallinan,
+             Skyler and Gao, Luyu and Wiegreffe, Sarah and Alon, Uri and Dziri,
+             Nouha and Prabhumoye, Shrimai and Yang, Yiming and Gupta, Shashank
+             and Majumder, Bodhisattwa Prasad and Hermann, Katherine and Welleck,
+             Sean and Yazdanbakhsh, Amir and Clark, Peter},
+  journal = {arXiv preprint arXiv:2303.17651},
+  year    = {2023},
+  note    = {General iterative refinement with natural-language self-feedback}
+}
+
+% Verbal-reinforcement learning and episodic reflection. Cite as the memory-
+% based alternative to source-code editing; it improves future decisions by
+% retaining verbal lessons rather than changing an executable policy.
+@article{reflexion2023,
+  title   = {Reflexion: Language Agents with Verbal Reinforcement Learning},
+  author  = {Shinn, Noah and Cassano, Federico and Berman, Edward and
+             Gopinath, Ashwin and Narasimhan, Karthik and Yao, Shunyu},
+  journal = {arXiv preprint arXiv:2303.11366},
+  year    = {2023},
+  note    = {Verbal reflection memory without parameter or program updates}
+}
+
+% Open-ended self-improvement reference. Cite for the general recursive-agent
+% framing, then state that HL supplies a bounded evaluator, a frozen opponent
+% pool, and a measurable program-maintenance ceiling.
+@article{darwingodelmachine2025,
+  title   = {Darwin {G}{\"o}del Machine: Open-Ended Evolution of
+             Self-Improving Agents},
+  author  = {Zhang, Jenny and Hu, Shengran and Lu, Cong and Lange, Robert
+             and Clune, Jeff},
+  journal = {arXiv preprint arXiv:2505.22954},
+  year    = {2025},
+  note    = {Open-ended self-improvement through code and agent evolution}
+}
+
+% Automatic heuristic design with explicit quality/uncertainty balancing. Cite
+% alongside the newer heuristic-search entries to cover evolutionary diversity
+% and evaluator uncertainty, while contrasting HL's game-level adversarial score.
+@article{qube2024,
+  title   = {{QUBE}: Enhancing Automatic Heuristic Design via
+             Quality-Uncertainty Balanced Evolution},
+  author  = {Chen, Zijie and Zhou, Zhanchao and Lu, Yu and Xu, Renjun and
+             Pan, Lili and Lan, Zhenzhong},
+  journal = {arXiv preprint arXiv:2412.20694},
+  year    = {2024},
+  note    = {Quality--uncertainty balanced evolutionary heuristic design}
+}
+
+% Diversity-driven LLM heuristic evolution. Cite as another automated-
+% heuristic-design baseline, not as evidence about continual maintenance.
+@article{hsevo2024,
+  title   = {{HSEvo}: Elevating Automatic Heuristic Design with
+             Diversity-Driven Harmony Search and Genetic Algorithm Using
+             {LLM}s},
+  author  = {Dat, Pham Vu Tuan and Doan, Long and Binh, Huynh Thi Thanh},
+  journal = {arXiv preprint arXiv:2412.14995},
+  year    = {2024},
+  note    = {Diversity-preserving evolutionary heuristic search}
+}
+
+% Adversarial-instance generation for heuristics. Cite to distinguish an agent
+% that searches for difficult test cases from HL, which improves the policy
+% itself against a fixed opponent population.
+@article{adversarialheuristics2026,
+  title   = {The Art of Being Difficult: Combining Human and {AI} Strengths to
+             Find Adversarial Instances for Heuristics},
+  author  = {Nikoleit, Henri and Anand, Ankit and Naredla, Anurag Murty and
+             R{\"o}glin, Heiko},
+  journal = {arXiv preprint arXiv:2601.16849},
+  year    = {2026},
+  note    = {Adversarial test-instance discovery for heuristic evaluation}
+}
+
+% LLM-based reward-design agent. Use only when discussing the boundary between
+% changing an evaluator and changing a policy; it is not a direct HL baseline.
+@article{rewarddesignagent2026,
+  title   = {{RDA}: Reward Design Agent for Reinforcement Learning},
+  author  = {Lee, Hojoon and Subramanian, Ajay and Abbatematteo, Ben and
+             Veerabadran, Vijay and Matias, Pedro and Ridgeway, Karl and
+             Kamra, Nitin},
+  journal = {arXiv preprint arXiv:2606.01672},
+  year    = {2026},
+  note    = {Agentic reward-function design rather than policy-source editing}
+}
