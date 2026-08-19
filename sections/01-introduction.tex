@@ -115,21 +115,23 @@
 % substituted text reflows to the same length. Do not repeat that; if a pass does
 % not change the number, the pass was not a cut.
 %
-% WHERE THE DELETED MATERIAL WENT. Each target section's scope comment now names
-% what it owes, and none of it is in the body yet:
+% WHERE THE DELETED MATERIAL WENT. Each target section's scope comment names what
+% it owes; the upper bound has since been written, the other two have not:
 %   -> 03-methodology.tex: the entire lower-bound argument (information per
 %      sample, the on/off-policy spectrum, cross-policy-class reuse, rules as a
 %      zero-sample prior) and the ECHO concession that the gain belongs to the
 %      reader rather than the symbolic form; plus the model-based-RL baseline
 %      rationale from the first cut. Keys offpolicyvaluellm2026, samplereuse2022,
-%      echo2025hindsight, kuang2025generative live or die there.
-%   -> 07-related-work.tex: the entire upper-bound argument (accumulation defeats
-%      placement), its three supporting results (slopcodebench2026,
-%      longcontextbugfix2026, longhorizonexecution2026) with all their figures,
-%      the replacement-vs-accumulation distinction, frontiereng2026's decay
-%      exponents and the "why still open" argument, and slopcodebench2026's
-%      prompting result. selfimprovement2026survey is now cited NOWHERE and its
-%      home is that section's self-improvement paragraph.
+%      echo2025hindsight, kuang2025generative live or die there. NOT WRITTEN YET.
+%   -> 07-related-work.tex: the entire upper-bound argument. WRITTEN 2026-08-18,
+%      in that section's "Long-horizon degradation and maintenance capacity"
+%      paragraphs, which now carry the mechanism (accumulation defeats placement),
+%      the three supporting results with their figures, the
+%      replacement-vs-accumulation boundary, frontiereng2026's exponents, the "why
+%      still open" argument, and selfimprovement2026survey. That stretch is
+%      load-bearing for THIS file's capacity claim -- if it is ever cut back to a
+%      survey paragraph, the introduction asserts a maintenance-capacity limit that
+%      the paper never defines.
 %   -> 02-background.tex: the benchmark provenance argument, and the definitional
 %      split the ECHO concession rests on -- lower bound over what the loop can
 %      READ, upper over what it can EDIT.
@@ -143,6 +145,7 @@
 % ---------------------------------------------------------------------------
 
 \section{Introduction}
+\label{sec:introduction}
 
 Reinforcement learning (RL) established itself on adversarial games. Chess, Go,
 shogi, StarCraft, and Dota are where learned policies first beat the strongest humans

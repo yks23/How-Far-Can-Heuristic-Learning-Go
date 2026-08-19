@@ -89,36 +89,31 @@
 % name is still undecided.
 %
 % THE WHOLE UPPER-BOUND ARGUMENT MOVED HERE on 2026-08-18 (second cut, to reach
-% 2.5 pages). The introduction no longer argues why the loop stops -- it states
-% the inequality and its observed signature and nothing else. So this section
-% now owes the MECHANISM, not just the figures: revisions leave the program
-% larger and more interconnected, each further edit has to be placed without
-% disturbing what already works, and past some size that placement fails more
-% often than it succeeds -- an artifact outgrowing what its maintainer can hold,
-% attribute, and change, which is not a limit on what the paradigm can express.
-% The three supporting results below are the external evidence for it, and the
-% replacement-vs-accumulation distinction (already noted above) is what stops a
-% referee reading them as proof our loop cannot work. Without this paragraph the
-% paper asserts a capacity limit and never says what capacity means.
-% Also now cited NOWHERE in the body: selfimprovement2026survey. It was the
-% intro's ground for calling a game engine with a frozen pool the strong end of
-% the verification hierarchy along which self-improvement tracks -- one sentence,
-% and the natural home is this section's self-improvement paragraph. Until it is
-% written, that reference is dead weight in refs.bib.
-%
-% FIGURES MOVED HERE FROM SECTION 1 on 2026-08-18, when the introduction was cut
-% from 4.5 pages to 2.5. The intro now states these results qualitatively and
-% this section owes the numbers. All are verified against full text; the
-% refs.bib annotations remain authoritative.
-%   - slopcodebench2026's PROMPTING RESULT was cut from the introduction entirely
-%     on 2026-08-18 and this section now owes the whole argument, not just the
-%     number. It answers a referee who says the plateau is a prompting defect
-%     rather than a capacity limit: quality-aware prompting moves the intercept
-%     down and leaves the growth rate alone, and pays 2.3 pp of strict correctness
-%     plus 12.1% cost to do it. Cutting it was the most defensive sentence lost to
-%     the page budget -- if the objection is raised in review, this is the answer,
-%     and it must be made here or nowhere. Never write "statistically unchanged":
-%     there is no significance test on that experiment.
+% 2.5 pages) and is now WRITTEN, in the three paragraphs under "Long-horizon
+% degradation and maintenance capacity". The introduction no longer argues why the
+% loop stops -- it states the inequality and its observed signature and nothing
+% else -- so those three paragraphs are the only place the paper says what
+% maintenance capacity means. Do not compress them back into a literature-survey
+% paragraph: the mechanism (accumulation defeats placement) has to be argued, not
+% cited, or the intro's central claim is unsupported anywhere in the paper.
+% What that stretch now carries, and must keep carrying:
+%   - the mechanism itself, stated before any citation.
+%   - the RATE-not-exemption form of the human comparison. A human exemption would
+%     make capacity look like an agent-specific defect instead of a general limit
+%     agents reach sooner.
+%   - the prompting result, which answers "the plateau is just a prompting defect".
+%   - the replacement-vs-accumulation boundary, without which these results read as
+%     predicting our loop cannot work.
+%   - the reasoning result's direction, which helps us rather than hurting.
+%   - selfimprovement2026survey, whose only citation in the paper is here.
+% All figures below were verified against full text; refs.bib stays authoritative.
+% Cross-check them against the body if either changes.
+%   - slopcodebench2026's PROMPTING RESULT is in the body as of 2026-08-18 and
+%     answers a referee who says the plateau is a prompting defect rather than a
+%     capacity limit. Never write "statistically unchanged" of it: their paper runs
+%     no significance test on that experiment, and "slope"/"intercept" appear only
+%     in their Appendix D, about the human panel. The body says the intercept moves
+%     while the growth rate is left intact, which is what is supported.
 %   - slopcodebench2026 (v2: 36 problems, 196 checkpoints, 15 agents): erosion
 %     rises in 77% of trajectories, verbosity in 75.5%; cost per checkpoint 2.2x
 %     first-to-last "without corresponding improvements to correctness"; agent
@@ -201,16 +196,67 @@ artifact, which creates both the opportunity for cross-policy reuse and the
 failure mode of regression through misplaced edits.
 
 \paragraph{Long-horizon degradation and maintenance capacity.}
-Several recent studies document degradation in iterative coding and agentic
-execution: code erosion and verbosity increase over long coding trajectories
-\citep{slopcodebench2026}, successful repair relies on decomposed short contexts
-rather than simply retrieving more context \citep{longcontextbugfix2026}, and
-per-step reliability remains finite even for reasoning models
-\citep{longhorizonexecution2026}. Most directly, Frontier-Eng measures
-self-improvement on real engineering tasks and finds that both the frequency and
-the magnitude of improvements decay with continued iterations
-\citep{frontiereng2026}. Frontier-Eng has no human field, RL baseline, or
-relative Elo, and its evaluator is a fixed verifier; our contribution is to
-carry the same longitudinal question into adversarial games and test whether a
-plateau is explained by the maintainable description length of the policy rather
-than by the complexity of the game rules.
+Section~\ref{sec:introduction} asserts that a maintenance capacity, rather than
+the expressiveness of the symbolic paradigm, is what ends the revision loop. The
+mechanism is accumulation: revisions leave the program larger and more
+interconnected, and each further revision has to place an edit without disturbing
+what already works. Past some size that placement fails more often than it
+succeeds --- not because the paradigm ran out of things to express, but because the
+artifact has outgrown what its maintainer can hold, attribute, and change at once.
+Recent measurements outside our setting make each term of that account concrete.
+SlopCodeBench tracks 15 agents across 196 checkpoints of 36 iterative tasks and
+finds erosion rising in 77\% of trajectories and verbosity in 75.5\%, with cost per
+checkpoint 2.2$\times$ higher at the last checkpoint than the first ``without
+corresponding improvements to correctness'' \citep{slopcodebench2026}. Against 473
+open-source Python repositories the agents' code is 2.3$\times$ more verbose and
+2.0$\times$ more eroded, and it accumulates both 6.6$\times$ and 5.0$\times$ faster
+per revision. Human maintainers are not exempt --- 68\% of the human repositories
+end more verbose than they began, median $+36\%$ --- so the distinction is a rate
+(per-checkpoint slopes 0.0022 and 0.0053, against the agents' 0.0144 and 0.0264)
+rather than an exemption, which is the form the claim has to take if maintenance
+capacity is a general limit that agents reach sooner rather than an agent-specific
+defect. That degradation also survives the obvious intervention: quality-aware
+prompting lowers verbosity by 27.5--35.6\% and erosion by 34.3--57.6\% at the
+intercept while leaving the growth rate intact, and pays 2.3\,pp of strict
+correctness and 12.1\% additional cost for it. An intervention that buys a better
+starting point, charges capability for it, and still does not bend the curve is
+evidence for a capacity rather than a prompting artifact.
+
+Two mechanisms underneath are not about code quality at all. Agentic repair
+succeeds while the context each step accumulates stays small --- successful
+trajectories stay under 20--30k tokens --- which locates the advantage in
+decomposition rather than retrieval \citep{longcontextbugfix2026}. And given the
+plan up front, per-step accuracy still falls as steps accumulate, leaving
+single-turn execution horizons that differ by an order of magnitude across frontier
+models \citep{longhorizonexecution2026}; scaling model size increases the
+self-conditioning behind this, while reasoning removes it entirely. We cite that
+mechanism and not its authors' thesis, and the direction of the reasoning result
+helps us: a plateau reached by a reasoning agent cannot be attributed to
+self-conditioning. A program under revision is then the case that cannot be
+decomposed away, because the artifact \emph{is} the accumulated context and every
+revision must hold it whole. One boundary has to be drawn here, or these results
+predict that our loop cannot work at all: the degradation they measure is driven by
+a specification that keeps growing, so nothing may be discarded. A game's rules do
+not change, so a better heuristic may \emph{replace} a worse one and the program is
+free to get shorter. Accumulation is a tendency in our setting rather than an
+obligation, which is why the ceiling is worth measuring instead of assuming.
+
+Most directly, Frontier-Eng measures self-improvement on 47 real engineering tasks
+and finds decay from both directions at once: improvement frequency falls as
+$t^{-1}$ and the magnitude of the $k$-th improvement as $k^{-1}$, both with
+$R^2 > 0.83$, driving marginal returns near zero after 50 to 100 iterations with a
+tail out to 500 \citep{frontiereng2026}. Those tasks are single-agent and carry
+neither a human field nor an RL baseline, and the evaluator is a fixed verifier, so
+the position of the symbolic paradigm against a learned one is left open. Where both
+reference points have been present, the maintainer was always human, which measures
+the paradigm and the cost of human iteration together: a heuristic program that
+stopped improving might have exhausted the paradigm or its author's weekend, and the
+record cannot say which. Replacing the author with an agent holds the paradigm fixed
+while varying the term that never varied. A survey of this literature organizes it
+by how strong a verification signal the loop closes on
+\citep{selfimprovement2026survey}; a game engine with a frozen opponent pool sits at
+the strong end, which is what makes the plateau attributable to the artifact rather
+than to a noisy evaluator. Our contribution is to carry the same longitudinal
+question into adversarial games and test whether the plateau is explained by the
+maintainable description length of the policy rather than by the complexity of the
+game's rules.
