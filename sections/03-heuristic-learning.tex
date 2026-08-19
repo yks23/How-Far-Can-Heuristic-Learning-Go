@@ -124,6 +124,53 @@
 %     EDIT); this section owes the empirical half. Merging the two is what produces
 %     the unsupportable version of the claim.
 %
+% 3.3 BOTTLENECKS, written 2026-08-19 to the user's outline: "observation轨迹（决定
+% 了反馈信息）/ revise规则（决定了迭代的鲁棒性和稳定性）/ 大致说这两点". Two points,
+% broadly, and the subsection is deliberately short.
+%
+% WHY THIS AXIS AND NOT ANOTHER: the two bottlenecks the user named are exactly the
+% two bounds the paper already argues, seen from the implementation side. The
+% observation trace is what the loop can READ (lower bound, information per sample,
+% Play/tau_t in Algorithm 1); the revise step is what it can EDIT (upper bound,
+% maintenance capacity, Revise). So 3.3 is written as the two load-bearing lines of
+% Algorithm 1 and nothing else -- every other line is bookkeeping. Do not let this
+% subsection drift into a general limitations list; the limitations of the STUDY are
+% 06-discussion.tex, and these are constraints of the PARADIGM.
+%
+% INVARIANT 9 APPLIES HERE, and this is the second time in this section. The user
+% attached "鲁棒性和稳定性" to the revise half, and \val{robustspread} is registered
+% but unmeasured. What is written: the MECHANISM by which the revise rule decides
+% whether a trajectory is monotone (scope, acceptance, memory of rejects). What is
+% NOT written: any claim that our loop is stable, any magnitude, any comparison.
+% The last sentence of the revise paragraph points at 05 on purpose. When
+% \val{robustspread} exists, the result attaches there and not here.
+%
+% THE TRADE-OFF PARAGRAPH IS THE POINT OF PUTTING BOTH IN ONE SUBSECTION. Written
+% because two separate bottleneck paragraphs would leave a reader thinking they can
+% be fixed independently, and they cannot: the discipline that stabilizes the loop
+% (rescore, accept or reject) compresses a whole revision's worth of evidence into
+% one number, which is the same scalar-channel problem 3.1 argues RL has. If this
+% paragraph is ever cut, the subsection should be split in two, because the reason
+% they are together is gone.
+%
+% evotrace2026 IS CITED HERE AND WAS ORPHANED UNTIL NOW (registered in refs.bib,
+% cited in no body text as of 2026-08-19). What is used is the one hard number in
+% its abstract: ~30% of code lines added during evolutionary search are
+% byte-identical re-introductions of previously deleted lines, in nearly every run.
+% Checked against the abstract on 2026-08-19 -- what is NOT in the abstract, and so
+% must not be attributed to them: the fraction of edits that are net improvements,
+% whether edits are local or global, and diversity collapse. Their setting is
+% evolutionary search with a population, not our single maintained artifact, so the
+% claim made here is that the failure mode EXISTS and is cheap to induce, not that
+% our loop exhibits it at that rate.
+%
+% ONE THING THIS SUBSECTION OWES 04-benchmark.tex, recorded so it does not fall
+% through: the trace paragraph says the contents of tau_t are a design variable and
+% does not say what OUR tau_t contains. That belongs with the apparatus, and 04's
+% scope comment does not currently list it. If 04 is written without specifying the
+% trace contents, this subsection is left arguing that a choice matters while the
+% paper never states which choice it made.
+%
 % BASELINE RATIONALE MOVED HERE FROM SECTION 1 on 2026-08-18 under the 2.5-page
 % budget. The intro now says only "model-based RL is our primary baseline"; the
 % reason has to be stated here in full, because without it the baseline choice
@@ -298,3 +345,60 @@ one that exists --- are also kept distinct in the log, since proficiency at the
 first is not evidence of skill at the second and the two are not strongly
 correlated in existing measurements of code agents on iterated
 tournaments~\citep{catarena2025}.
+
+\subsection{Where the loop binds}
+\label{sec:hl-bottleneck}
+
+Algorithm~\ref{alg:loop} has two lines that decide what the paradigm can do, and
+the rest is bookkeeping. One is the trace the loop observes; the other is the rule
+under which it revises. They correspond to the paradigm's two halves --- reading
+and editing --- so a limit in either is a limit on the whole loop, and neither is
+fixed by the definition. Both are choices, and both cost something.
+
+\paragraph{The observation trace.}
+What $\tau_t$ contains sets an upper limit on what any revision can be responsible
+for. A trace that reports only outcomes leaves the generative agent to guess which
+part of the program was at fault, and a loop that guesses is doing search with
+extra steps; a trace that carries the sequence of decisions, the opponent's
+replies, and the point at which the position turned lets it attribute a loss to a
+rule. This is the same quantity Section~\ref{sec:hl-motivation} argued the
+representation makes available, seen from the other side: the channel being wide
+in principle does not mean the loop is using it, because the width is a property of
+what the harness records. Two things bound it in practice. The trace competes with
+the program for the agent's attention, since both must be held at once to connect
+a failure to the line that produced it, and traces of full games are long ---
+against which the relevant external evidence is that successful agentic repair
+trajectories stay well under the context limits available to
+them~\citep{longcontextbugfix2026}. And in an adversarial setting the trace can
+only exhibit failures that some opponent elicits, so the pool the policy agent
+plays against determines which parts of the program ever come under scrutiny. What
+our traces contain is stated with the apparatus in Section~\ref{sec:benchmark};
+the point here is that it is a design variable rather than a given.
+
+\paragraph{The revision rule.}
+Reading a trace well does not make a trajectory improve. The difficulty is not
+expressing a fix --- a program can express it, which is
+Section~\ref{sec:hl-motivation}'s first claim --- but that an edit which corrects
+an observed loss may disturb behaviour that was already working, and nothing in
+the loop as stated prevents this. Three properties of the revision rule decide how
+often that happens: how much of the program a single revision may touch, whether a
+revision is accepted on evidence or simply appended, and what the loop remembers
+about revisions it has already tried and abandoned. The third is the one most
+easily left out, and its cost is visible in existing systems: in evolutionary code
+search \val{evotracecycle} of added lines are byte-identical
+re-introductions of previously deleted ones, in nearly every
+run~\citep{evotrace2026}. That setting maintains a population rather than one
+artifact, so the rate is not a prediction for our loop; what it establishes is
+that a loop keeping no record of what it has rejected will spend budget rediscovering
+it. These are the properties on which the stability of the trajectory depends, and
+whether ours is stable is a measurement rather than an argument ---
+Section~\ref{sec:experiments} reports the spread.
+
+The two bottlenecks pull against each other, which is why they are stated
+together. The discipline that keeps revision stable is to rescore each version
+against a fixed reference and keep or discard it on the result, and that reduces a
+whole revision's worth of evidence to a single number --- the same narrow channel
+Section~\ref{sec:hl-motivation} argued the alternative paradigm is limited by,
+reintroduced at the point where the loop decides what to keep. Widening the
+channel and stabilizing the iteration are therefore not independent improvements,
+and a loop that is only good at one of them is either unstable or slow to learn.

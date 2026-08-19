@@ -180,6 +180,27 @@
 % referents named every time they appear.
 \defTBD{robustspread}{$\pm$XX}
 
+% A LITERATURE NUMBER, not ours -- the first one in this file, so the convention it
+% sets matters. \defval, not \defTBD: it is measured and published, and \defTBD means
+% "we still owe a measurement", so filing someone else's result there would make
+% \printTBD unreadable as a to-do list. What makes it safe to declare measured is
+% that it is not ours to measure; what makes it dangerous is that a reader of
+% numbers.tex alone cannot tell whose number it is, hence this block.
+%
+% Source: evotrace2026 (arXiv 2605.20086), abstract, checked 2026-08-19. ~30% of code
+% lines added during evolutionary search are byte-identical re-introductions of
+% previously deleted lines, reported as occurring in nearly every run. Cited in
+% 03-heuristic-learning.tex 3.3 as evidence that a loop with no memory of its
+% rejected revisions re-does them.
+% THE SETTING DIFFERS and the prose must keep saying so: they maintain a population
+% under evolutionary search, we maintain one artifact. So this is evidence the
+% failure mode exists and is cheap to induce, never a rate predicted for our loop.
+% If we ever measure the same quantity on our trajectories, it needs a SEPARATE key
+% -- do not overwrite this one, or the comparison loses its baseline.
+% Only the abstract was available. Do not attribute to them: the fraction of edits
+% that are net improvements, edit locality, or diversity collapse.
+\defval{evotracecycle}{$\sim$30\%}
+
 \defTBD{effratio}{XX$\times$}
 \defTBD{crossover}{$\sim$XXX k}
 \defTBD{loseaxis}{per wall-clock hour and per dollar}
