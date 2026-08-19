@@ -53,10 +53,51 @@
 % reads as two words); \xspace restores the space \benchname would otherwise eat.
 \newcommand{\benchname}{\mbox{HL-Arena}\xspace}
 
-\title{How Far Can Heuristic Learning Go? \\
-Characterizing Performance Ceilings, Complexity, and Sample Efficiency in Large-Scale Real-World Competitive Games}
+% ===========================================================================
+% VENUE FIXED 2026-08-19: CL4FMAgents @ NeurIPS 2026 (Continual Learning in the
+% Era of Foundation Models and Embodied Agents), https://neurips26-cl4fmagents.github.io/
+%   deadline    2026-08-29 23:59 AoE   -- TEN DAYS from the date on this file
+%   format      regular paper, up to 8 pages EXCLUDING references
+%   review      DOUBLE-BLIND, OpenReview (NeurIPS.cc/2026/Workshop/CL4FMAgents)
+%   archival    NON-archival, so AAMAS 2027 remains open for the extended version
+%   notify      2026-09-29; camera-ready 2026-10-10; workshop Dec 11-12, Sydney
+% The CFP page names no style file. Assume the NeurIPS 2026 workshop style and
+% CONFIRM on OpenReview before submitting -- this document is still on
+% style/company_light, which is not it, and every page-budget number below was
+% measured under that class. Switching classes will move all of them.
+%
+% ANONYMITY: double-blind. \author is anonymised and \date removed. Two things
+% still de-anonymise this paper and must be handled before upload:
+%   - \benchname (HL-Arena) is built from one named collegiate contest whose
+%     identity is recoverable from the game names; the venue's own edition table
+%     is a Tsinghua CS document. Describe the venue by properties, not by name.
+%   - the platform repo (Aoraku/AgentBench) must not be cited by URL.
+%
+% POSITIONING, in the user's words (2026-08-19): "Continual self-evolution of an
+% executable policy artifact under a finite maintenance budget". Six things to
+% foreground: base-model weights FROZEN; the agent continually edits an executable
+% heuristic policy; the policy artifact PERSISTS and ACCUMULATES across rounds;
+% self-improvement driven by replay and environment feedback; description length
+% growing toward a maintenance capacity; measurable diminishing marginal returns.
+% Four readings to foreclose, and each needs an explicit sentence somewhere in the
+% paper, not just avoidance:
+%   - pure harness engineering. (The workshop lists harness engineering as a topic,
+%     so this is not a hostile reading -- it is the DEFAULT one. What separates us:
+%     the harness is fixed and the artifact is what changes.)
+%   - prompt optimization. (What is retained across rounds is executable source,
+%     not an instruction.)
+%   - ordinary repeated search. (Each revision is applied to the artifact the last
+%     one produced; there is no candidate population and no resampling from
+%     scratch. Algorithm 1's single-artifact recurrence is the evidence.)
+%   - model-weight continual learning. (No gradient touches the base model; the
+%     thing that carries experience forward is the program.)
+% ===========================================================================
+\title{How Far Can Policy-Level Continual Learning Go? \\
+Continual Self-Evolution of an Executable Policy Artifact under a Finite
+Maintenance Budget}
 
-\author{THU-CST-SAST}
+% Double-blind: no author, no affiliation, no acknowledgements until camera-ready.
+\author{Anonymous submission}
 
 % RESTRUCTURED 2026-08-19 to the user's five-move logic (recorded in full at the
 % top of sections/01-introduction.tex). The abstract now runs in that order:
@@ -161,6 +202,66 @@ Characterizing Performance Ceilings, Complexity, and Sample Efficiency in Large-
 % claim. If it fails -- if the plateau tracks the game rather than the agent --
 % the finding is still publishable but this sentence has to be rewritten, not
 % just renumbered.
+% ===========================================================================
+% ABSTRACT REWRITTEN 2026-08-19 for CL4FMAgents. The five-move logic and the cut
+% order documented below it are the PREVIOUS abstract's, kept because the extended
+% (AAMAS) version returns to that framing; what follows is the workshop version.
+%
+% WHAT CHANGED AND WHY. The old opening was a history of the symbolic paradigm and
+% the old spine was sample efficiency against RL. Neither is the workshop's
+% question. The spine is now the artifact: weights frozen, program edited, program
+% retained, and a ceiling that is a property of the artifact's description length.
+% The RL comparison is DEMOTED to one clause, not deleted -- it is what rules out
+% "you just needed more environment steps" -- but it is no longer the claim.
+%
+% THE FOUR MISREADINGS ARE FORECLOSED EXPLICITLY, one clause each, because the
+% workshop's own topic list includes harness engineering and self-refinement loops,
+% so a reviewer's default prior is that this is one of those:
+%   sentence 2 "not in weights"        -> not model-weight continual learning
+%   sentence 2 "not in a prompt"       -> not prompt optimization
+%   sentence 3 "fixed harness"         -> not harness engineering
+%   sentence 3 "no candidate pool"     -> not repeated search
+% If any of the four clauses is cut for space, the corresponding misreading has to
+% be foreclosed in Section 1 instead. Do not cut all four.
+%
+% NUMBERS: this abstract quotes \val{nsub} and the archive span, both of which are
+% CURRENTLY WRONG OR UNRESOLVED (see 04-benchmark.tex's audit -- nsub is ~2x high,
+% the span is 7 editions not 30, and nmatch has no source). They are written as the
+% resolved versions here (5004 submissions, editions 24-30) because those are
+% measured off the archive; the keys still need updating to match, and until they
+% are, this abstract and numbers.tex disagree. That is deliberate and visible
+% rather than silently averaged.
+%
+% EVERY RESULT CLAUSE IS STILL A PLACEHOLDER and prints in accent bold. This
+% abstract asserts a shape of result that no run has produced yet: no HL run, no RL
+% baseline, and no rescoring of the archive pool exists as of 2026-08-19. With ten
+% days to the deadline that is the binding constraint on the paper, not the prose.
+% ===========================================================================
+\abstract{We study continual learning in which nothing is learned in the weights.
+A coding agent with a frozen base model is given an executable heuristic policy, a
+game's rules, replays of the policy's own losses, and the authority to edit the
+policy's source. What carries experience forward is neither a weight update nor an
+accumulated prompt but the program itself: each revision is applied to the artifact
+the previous revision produced, so the policy persists and accumulates across
+rounds. The harness is fixed and there is no candidate population --- one artifact,
+one revision per round, rescored against a frozen opponent pool --- which makes the
+loop's limit a property of the artifact rather than of the search. We ask what that
+limit is. The setting is \benchname, built from \val{ngames} games of a collegiate
+game AI contest spanning editions \val{edfirst}--\val{edlast}, supplying
+\val{nsubv} archived submission versions as a graded field of human-written
+policies to be placed against. Improvement is not sustained: gains per revision
+decay as \val{decay} and flatten near \val{plateau} revisions, while the program's
+description length grows toward \val{maintcap} --- the size beyond which the agent
+can no longer place an edit without disturbing behaviour that already works. Across
+games of differing complexity that size converges within \val{maintcapspread}
+while the strength reached there spreads by \val{eloplatspread}, so the ceiling
+belongs to the maintainer and not to the game. Under a matched budget the same loop
+also improves faster per unit of experience than model-based RL until
+\val{crossover} environment steps, which locates the paradigm rather than
+recommending it. What bounds policy-level continual learning is how much
+executable structure an agent can keep coherent, not how much the task demands.}
+
+\iffalse
 \abstract{For decades a competitive game program was a symbolic construction,
 bounded not by what it can express but by what a person will maintain: every new
 case has to be reconciled with the rules already there.
@@ -192,8 +293,13 @@ games of differing complexity while the Elo there spreads by
 \val{eloplatspread} --- equal maintainable size at unequal strength, which makes
 the ceiling the agent's and not the game's. What bounds the paradigm is the
 description length of a winning program, not the complexity of the rules.}
+\fi
+% ^ The pre-CL4FMAgents abstract, kept verbatim inside \iffalse for the extended
+% AAMAS version, whose spine IS the RL comparison and the human-SOTA result. Do not
+% delete it and do not let the two drift: if the archive audit changes a number,
+% change it in both.
 
-\date{August 19, 2026}
+% No \date under double-blind review: a dated draft is a fingerprint.
 
 \begin{document}
 

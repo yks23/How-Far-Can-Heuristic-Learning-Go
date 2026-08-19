@@ -104,9 +104,71 @@
 %     a two-player suite.
 \defval{editions}{30}
 \defval{founded}{1997}
+% THE ARCHIVE'S OWN SPAN, added 2026-08-19 to resolve conflict 3 above rather than
+% leave the abstract asserting the venue's age as the archive's reach. Measured off
+% the nine game.yaml edition fields: the games belong to editions 24-30 inclusive,
+% i.e. seven editions. Keep BOTH pairs of keys: editions/founded describe the venue
+% (30 editions since 1997, and that is what makes the archive contamination-
+% resistant), edfirst/edlast describe what we actually hold. Never use editions to
+% describe the archive again -- that was the error.
+% Source for the venue-scale facts and for the 1-23 gap:
+% docs/清华计算机系智能体大赛历届资料表.md in the platform repo, which records that
+% editions 1-22 have no publicly verifiable material and that edition 23 survives
+% only as public repos and is not among our games. Cite it, but NOT by a URL or a
+% name that de-anonymises the venue.
+\defval{edfirst}{24}
+\defval{edlast}{30}
+% Submission VERSIONS, which is the platform's own unit: every version of every
+% submission is kept as an independent testcase. Counted off the nine
+% players/manifest.tsv files, CRLF stripped: generals 752, snakego 678, antwar 644,
+% antwar2 631, deepclue 625, miracle 569, aquawar 534, rollman 309, lostspace 251.
+% This is the key the abstract now uses, and it exists so that \val{nsub} above --
+% "submissions", ~2x too high and of ambiguous unit -- is never the one quoted.
+% ALWAYS say "submission versions", never "submissions": the versions come from only
+% \val{nusers} unique users, so the field is small and heavily correlated, and
+% "4993 submissions" would read as 4993 independent attempts. Whatever percentile or
+% Elo is computed over these must state its unit of independence.
+%
+% CORRECTED 2026-08-19 from 5{,}004 to 4{,}993, same day it was first written. Two
+% errors, both from the same cause: the manifests carry a header line AND a block of
+% "#" comment lines documenting the columns, and `tail -n +2` skips only the header,
+% so the comment lines were counted as submission rows. 5004 was 4993 real rows plus
+% 11 comment lines. The same mistake produced the "9 rows with an EMPTY split field"
+% recorded in 04-benchmark.tex: there are none. The split covers the archive exactly,
+% 778 train / 4215 test = 4993. When counting these files, filter '^#', the header,
+% and blank lines -- not just the first line.
+\defval{nsubv}{4{,}993}
 \defTBD{nsub}{$\sim$10{,}000}
 \defTBD{nmatch}{$\sim$100{,}000}
 \defval{ngames}{9}
+
+% ARCHIVE COMPOSITION, all measured 2026-08-19 off players/manifest.tsv (CRLF
+% stripped, '#'/header/blank filtered) and off the pool directories on disk. Section 4
+% quotes these; the per-game breakdown lives in the table there, not here.
+%
+% nusers is the number that matters for independence and it is the one to quote
+% whenever \val{nsubv} is quoted. 143 unique usernames produced 4993 versions, i.e.
+% ~35 versions per person. Any statistic computed over versions is computed over a
+% field of 143 people. Note 143 is a GLOBAL count of usernames across all nine games,
+% deduplicated -- the per-game counts sum to 169, so ~26 people entered more than one
+% game. Do not sum the table's user column and call it the field size.
+\defval{nusers}{143}
+% Rows whose submission directory actually exists on disk. 52 manifest rows (all
+% anonymous entries) are registered without code and cannot be played, so the usable
+% opponent pool is smaller than the archive. Quote this wherever the pool is described
+% as playable; quote nsubv only for archive scale.
+\defval{nsubcode}{4{,}941}
+% Rank anchors and Elo anchors, both sparse. 182 rows carry a finals rank and 150 an
+% Elo. rollman is the reason these differ: it has 32 rank anchors across its two
+% tracks (rollman and ghost, ranked separately) and its Elo column is all zeros.
+% deepclue's max "elo" is 28859. The column is whatever each ladder recorded, NOT one
+% scale -- see the Elo warning under \val{elogap}. Never quote nelo as a count of
+% comparable ratings.
+\defval{nrank}{182}
+\defval{nelo}{150}
+% The split is already fixed in the manifests and covers the archive exactly.
+\defval{ntrain}{778}
+\defval{ntest}{4{,}215}
 
 % ---------------------------------------------------------------------------
 % The audit: does the folk hierarchy predict who wins? Descriptive shares over
