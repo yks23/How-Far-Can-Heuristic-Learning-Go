@@ -69,6 +69,38 @@
 %     too: these make direct copying unlikely and do not rule out exposure to
 %     related material. If a familiarity probe shows the model already knows a
 %     game, that game is reported separately, not dropped.
+%
+% THE PROVENANCE ARGUMENT LANDED HERE on 2026-08-19, moved out of
+% 02-preliminary.tex when that section was written. It had been parked in 02 since
+% 2026-08-18, which predates 04 becoming \benchname and taking ownership of the
+% archive; provenance argues why this venue is worth building a benchmark on, so it
+% belongs in the section that presents the benchmark. 02 kept only the VOCABULARY
+% (percentile, human state of the art, the three pools, distribution vs reference)
+% and defines each without arguing from it. Two halves to write here, and note that
+% the second half of the first one is already covered above by the contamination
+% check -- what is missing is the positive argument, not the caveat:
+%   - Contamination resistance, as a property this venue has for free. The contrast
+%     is livecodebench2024 and workbuddybench2026, which buy it by authoring fresh
+%     tasks or collecting them continuously -- a cost paid forever, every time the
+%     benchmark is refreshed. Here it falls out of a venue that predates the
+%     benchmark and was never built for evaluation. State the limit in the same
+%     breath: the archive is PUBLIC, so provenance is not proof, which is why the
+%     check above exists. Never write that the rules are absent from pretraining
+%     data; that inference was removed from 01-introduction.tex and from
+%     06-discussion.tex already, and 02 was told not to reintroduce it.
+%   - A distribution rather than a reference solution. Thousands of independent
+%     attempts at the same games is what licenses percentile placement at all;
+%     mlebench2024 (Kaggle) and olympiad2025percentile are the precedents for
+%     reporting a method as a percentile of a real human field. This is what the
+%     human baseline in contribution 3 rests on.
+% All three of livecodebench2024, workbuddybench2026, and mlebench2024 are ORPHANED
+% as of 2026-08-19 -- registered in refs.bib, cited nowhere in body text -- and this
+% is the only place they have a home. If this paragraph is cut, cut the keys too.
+%
+% 01-introduction.tex's "a distribution of human skill to place a method within"
+% still forward-references sec:preliminary, deliberately: that sentence is about
+% what the archive supplies, and the term is defined there. If the paragraph written
+% here ends up carrying that sentence's weight instead, repoint it.
 % ---------------------------------------------------------------------------
 
 \section{\benchname}
