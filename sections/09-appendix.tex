@@ -1,0 +1,216 @@
+% ---------------------------------------------------------------------------
+% Appendices
+%
+% CREATED 2026-08-19 at the user's direction: "HL-Arena这里写太长了，太详细的放到附录去。
+% 附录弄一些比赛case以及人类选手sota出来。" Section 4 was ~2.5 pages and is now ~1.3;
+% what came out of it lives in A and D, and B and C are new content the user asked for.
+%
+% FOUR APPENDICES, and the split is by what each answers:
+%   A app:arena     -- the archive breakdown Section 4.3 summarises, plus the two game
+%                      directories in the platform that are NOT part of the suite.
+%   B app:human     -- HUMAN SOTA in revisions. This is the appendix that carries a
+%                      real measured result, and the only \val key in the paper's
+%                      result vocabulary that the archive can supply without a run.
+%   C app:case      -- one game worked through: rules, decision space, replay frame.
+%   D app:apparatus -- the referee and reporting contracts.
+%
+% PAGE BUDGET: the workshop allows 8 pages excluding references. It does not state
+% whether appendices count. The NeurIPS workshop convention is that they do not, and
+% this file is written on that assumption -- CONFIRM IT ON OPENREVIEW. If appendices
+% do count, this file is the first thing to cut and Section 4 must not be re-expanded
+% to compensate; the body has to lose a section instead.
+%
+% ANONYMITY: same rule as the body. The venue is never named, no URLs, and no entrant
+% identity appears -- Table 4's entries are rank positions, not people. The platform's
+% own anonymised rows are already hashed and we do not reproduce even those.
+%
+% NO RESULT OF OURS APPEARS HERE. Appendix B reports the HUMAN field, which is a
+% property of the archive and not a finding of the method. Nothing in this file may
+% quote an HL or RL number until those runs exist.
+% ---------------------------------------------------------------------------
+
+\appendix
+
+\section{The archive in detail}
+\label{app:arena}
+
+Table~\ref{tab:archive} breaks the archive down per game. Registered counts every
+manifest row; playable counts those with source on disk, the difference being rows
+registered without code, all of them anonymised. Named and anonymised split the rows by
+whether an entrant identity is recorded in plaintext, and only named rows ever carry a
+finals rank or rating. The development and held-out columns are the archive's own split,
+which we adopt unchanged.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lrrrrrrr}
+\toprule
+Game & Registered & Playable & Named & Anon. & Ranked & Dev. & Held out \\
+\midrule
+Miracle   & 569 & 565 & 153 & 416 & 16 &  83 & 486 \\
+AquaWar   & 534 & 528 & 160 & 374 & 11 &  82 & 452 \\
+LostSpace & 251 & 247 &  91 & 160 & 16 &  46 & 205 \\
+SnakeGo   & 678 & 667 & 179 & 499 & 16 &  92 & 586 \\
+AntWar    & 644 & 635 & 213 & 431 & 20 &  93 & 551 \\
+Generals  & 752 & 743 & 383 & 369 & 30 & 119 & 633 \\
+Rollman   & 309 & 304 & 135 & 174 & 32 &  67 & 242 \\
+DeepClue  & 625 & 623 &  63 & 562 & 21 & 100 & 525 \\
+AntWar2   & 631 & 629 & 115 & 516 & 20 &  96 & 535 \\
+\midrule
+Total & \val{nsubv} & \val{nsubcode} & \val{nrownamed} & \val{nrowanon} &
+\val{nrank} & \val{ntrain} & \val{ntest} \\
+\bottomrule
+\end{tabular}
+\caption{The archive per game. Ranked rows are a subset of named rows in every game;
+anonymised rows carry neither rank nor rating. Rollman's 32 ranked versions exceed the
+19 named entrants Table~\ref{tab:games} gives it, because its two roles are ranked on
+separate ladders.}
+\label{tab:archive}
+\end{table}
+
+Distinct entrants cannot be given as one number, and we report the bound rather than
+pick a figure. The \val{nrownamed} named rows come from \val{nusersnamed} distinct
+usernames deduplicated across games. The \val{nrowanon} anonymised rows carry
+\val{nusersanon} distinct identity hashes, but the per-game hash counts sum exactly to
+that total, which is consistent both with no anonymised entrant having entered two games
+and with the hash being salted per game; the two are indistinguishable from the archive,
+so \val{nusersanon} is an upper bound. Named and anonymised identities cannot be linked
+either, so a person may appear in both counts. The field is therefore between
+\val{nusersanon} and \val{nusersanon} plus \val{nusersnamed} people, and every statistic
+computed over versions carries that as its independence limit.
+
+Two directories in the platform hold games that are not part of \benchname, and we name
+them here so that the suite's boundary is not mistaken for an oversight. One is a
+column-layout template with no game behind it. The other is a two-player tactics game
+from an unrelated contest series, present with a runnable referee but with only two
+hand-written baseline strategies and no human field at all --- so it can serve as an
+apparatus check and cannot serve as a human reference, which is what \benchname is for.
+Neither contributes a submission to any pool or a row to any table in this paper.
+
+\section{The human field, in revisions}
+\label{app:human}
+
+The comparison this paper draws against human programs needs human effort in a unit
+commensurable with ours. Wall-clock is not that unit: an entrant's months contain
+coursework and ours contain nothing else. The archive supplies a better one. The
+platform numbers each entrant's resubmissions in order, so the version index attached to
+a submission is the number of times that entrant had already revised the program. A
+placing entry at revision 48 is a program that was rewritten 48 times before it placed.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lrrrrr}
+\toprule
+& \multicolumn{3}{c}{Revision at which it placed} & \multicolumn{2}{c}{Ranked field} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-6}
+Game & 1st & 2nd & 3rd & median & deepest \\
+\midrule
+Miracle   & 11 & 18 &   1 & 15 &  78 \\
+AquaWar   & 12 & 24 & 202 & 64 & 202 \\
+LostSpace &  3 & 23 &  14 &  3 &  23 \\
+SnakeGo   & 10 &  1 &  11 & 14 & 185 \\
+AntWar    & 13 & 74 &  41 & 35 & 232 \\
+Generals  & 48 & 18 & 100 & 26 & 226 \\
+Rollman   &  7 & 19 &  23 &  8 &  74 \\
+DeepClue  &  2 & --- &   4 &  6 &  34 \\
+AntWar2   & 37 &  7 &  24 &  8 &  40 \\
+\midrule
+All ranked versions & & & & \val{humanmedrev} & \val{humanmaxrev} \\
+\bottomrule
+\end{tabular}
+\caption{Human maintenance depth. Each cell is the revision index of the submission
+that took that finals position; median and deepest are over all ranked versions in the
+game. DeepClue records no second place. Over all \val{nrank} ranked versions the
+quartiles are 3, \val{humanmedrev}, and \val{humanq3rev}.}
+\label{tab:human}
+\end{table}
+
+Three features of Table~\ref{tab:human} matter for how the human reference should be
+read. Placing does not require deep revision --- 28 of the \val{nrank} ranked versions
+placed at their first revision --- so the top of a ladder is not uniformly the product
+of long maintenance, and a method that beats a first-revision entry has beaten a strong
+program rather than a well-maintained one. Depth and rank are only loosely related:
+third place in AquaWar arrived at revision 202 while first arrived at 12, and the
+deepest revision in a game is often not a placing one. But sustained maintenance is
+present in the archive at a scale worth measuring against, with \val{humanq3rev}
+revisions at the upper quartile and \val{humanmaxrev} at the deepest, and it is
+concentrated among named entrants: the anonymised bulk of the archive averages under
+five revisions per row where named rows average close to twelve.
+
+Two caveats travel with every number in this appendix. The index counts submissions
+rather than edits, so a resubmission may be a rebuild or a retry and the index is an
+upper bound on how many times the program actually changed. And the archive keeps a
+subset of the versions whose indices it records --- the rank-1 entry in Generals placed
+at revision 48 with 28 of its versions retained --- so kept-count and revision index are
+different quantities and only the index measures effort. Where this paper compares
+\val{hlspan} against human effort, it is against this column and under these caveats.
+
+\section{A worked case}
+\label{app:case}
+
+One game makes the apparatus concrete. AntWar2 is a two-player tower defence on a
+19$\times$19 hex grid: each side holds a base with 50 hit points at a fixed starting
+position, and each round both sides submit an ordered list of operations. Ants are not
+directed by the player. They spawn, path, and attack under the environment's own rules,
+so a policy shapes the battle by building and upgrading towers, spending on economy, and
+timing four super-weapons, rather than by issuing unit commands.
+
+The decision space is small enough to state completely and rich enough to be hard. Ten
+operation codes: build a tower, upgrade one, downgrade or sell one, four super-weapons
+at fixed costs, two base upgrades for spawn rate and ant durability, and hold. Costs
+are the pressure --- the $n$th tower costs $15 \cdot 3^{\lfloor n/2 \rfloor}$, doubled
+when the standing tower count is odd, against a base income of 3 coins every two rounds
+from a starting 50 --- so a policy's real content is which of these it declines to buy.
+Operations are validated in list order against the public state plus the already
+accepted prefix of the same round, which means legality is sequence-dependent and a
+revision that reorders a list can change what is legal rather than only what is chosen.
+
+A replay frame from this game carries the round index, the acting role, the public state
+before the action, the legal operations available in it, the operation submitted, and
+whether it was accepted. The public state here is base hit points, spawn and durability
+levels, coins, live ants, tower deltas, and weapon cooldowns for both sides. So a frame
+answers the three questions the loop needs at every decision: what the policy saw, what
+it was allowed to do, and what it did. A loss traced back through these frames localises
+to the round where the position turned and to the operation the policy chose there,
+which is what lets a revision name a rule rather than guess at one. This is the
+mechanism Section~\ref{sec:hl-bottleneck} argues the paradigm depends on, and the reason
+the trace is a design variable: had the arena recorded only the outcome, every revision
+in every game would have been a guess.
+
+\section{Apparatus contracts}
+\label{app:apparatus}
+
+The referee is a single function of a game, an ordered list of players, the roles they
+occupy, and a seed. It returns a status, the winning role or none, a score per role, the
+round count, and a replay path. Nothing above it carries game semantics; each game
+supplies its own implementation behind the same signature, and a method under test is
+assembled into a player like any archived submission.
+
+The status is three-valued and the distinction is the contract's core. A match either
+completes, fails within the rules, or fails in the infrastructure. Within-rules failure
+--- timeout, illegal move, crash of the submitted program, resource-limit breach --- is
+attributed to the player, adjudicated as a loss under the game's rules, and counted.
+Infrastructure failure --- referee fault, backend that will not start, seed that cannot
+be materialised --- is attributed to nobody, never recorded as a loss, and rerun. When
+attribution is unclear the match is marked as infrastructure failure and held for review
+rather than charged to a player. Non-completing matches carry a diagnostic recording the
+kind of failure, the role responsible where there is one, and the round it occurred in.
+
+Reproducibility is required of the referee, not hoped for: identical game, players,
+roles, and seed must yield identical winner, scores, round count, and frame-by-frame
+replay under a fixed backend, and each replay records the backend commit and referee
+version that produced it. Sources of nondeterminism must be eliminated or declared.
+Player code is isolated with time and memory limits and cannot read an opponent's
+source, the referee's internal state, or any other match's artifacts.
+
+Runs report two files: a per-event log at iteration granularity and one summary per run.
+Events carry the iteration index, the candidate and the reference it is scored against,
+policy change measured as divergence at fixed reference decision points, occupancy shift
+as the change in which states are visited, action disagreement against the reference,
+and the three budgets. Policy change and occupancy shift are reported in separate
+columns and never summed. Summaries carry ratings, win rate, score margin, wall-clock,
+environment steps, the rating history for curves, and the head-to-head matrix. Missing
+values are recorded as missing throughout both files, never as zero, and aggregation
+skips them rather than averaging them in.

@@ -146,13 +146,27 @@
 % stripped, '#'/header/blank filtered) and off the pool directories on disk. Section 4
 % quotes these; the per-game breakdown lives in the table there, not here.
 %
-% nusers is the number that matters for independence and it is the one to quote
-% whenever \val{nsubv} is quoted. 143 unique usernames produced 4993 versions, i.e.
-% ~35 versions per person. Any statistic computed over versions is computed over a
-% field of 143 people. Note 143 is a GLOBAL count of usernames across all nine games,
-% deduplicated -- the per-game counts sum to 169, so ~26 people entered more than one
-% game. Do not sum the table's user column and call it the field size.
-\defval{nusers}{143}
+% CORRECTED 2026-08-19, hours after being written wrong. The first version said "143
+% unique entrants, ~35 versions each" and that was two errors at once:
+%   - 143 counted the empty string as a username. There are 136 real usernames.
+%   - it treated the whole archive as named. It is not: 1492 rows carry a plaintext
+%     username, 3501 are anonymised, and an anonymised row's identity lives in a hash
+%     inside its player_id, NOT in the username field. Reading the username field
+%     alone made 3501 rows look like one person -- the visible symptom was one game
+%     appearing to have a single entrant with 562 versions.
+% So the field size is not one number. 1492 named rows come from 136 named users;
+% 3501 anonymised rows carry 674 distinct user hashes. The per-game hash counts sum to
+% exactly 674, which means either no anonymised entrant appears in two games or the
+% hash is salted per game -- indistinguishable from here, so 674 is an UPPER bound on
+% distinct anonymised people and cannot be deduplicated across games. Named and
+% anonymised identities also cannot be linked, so the same person may be counted in
+% both. The honest statement is a range: between 674 and 810 distinct entrants.
+% Quote nusersnamed with the named rows and nusersanon as a bounded count; never add
+% them and never quote a single "number of entrants".
+\defval{nusersnamed}{136}
+\defval{nusersanon}{674}
+\defval{nrownamed}{1{,}492}
+\defval{nrowanon}{3{,}501}
 % Rows whose submission directory actually exists on disk. 52 manifest rows (all
 % anonymous entries) are registered without code and cannot be played, so the usable
 % opponent pool is smaller than the archive. Quote this wherever the pool is described
@@ -164,8 +178,34 @@
 % deepclue's max "elo" is 28859. The column is whatever each ladder recorded, NOT one
 % scale -- see the Elo warning under \val{elogap}. Never quote nelo as a count of
 % comparable ratings.
+% 182, not 183. The earlier count included the header line of games/_template/, a
+% column-layout stub with a DIFFERENT header ("rank" first, 7 columns) that a filter
+% keyed on '^player_id' does not remove. Filter the template directory explicitly.
+% Every ranked row is a named row: rank anchors are named_rank 183 -> 182 real, and
+% anonymised rows carry no rank and no Elo at all. So the finals field is entirely
+% within the 136 named users, and a percentile against it is a percentile of a named
+% finalist field -- the anonymised bulk of the archive is unranked opponents, not part
+% of the reference field.
 \defval{nrank}{182}
 \defval{nelo}{150}
+
+% HUMAN MAINTENANCE SPAN, measured 2026-08-19, and this is the key result the archive
+% can supply without running anything. The platform numbers each entrant's
+% resubmissions, so a row's version index IS the number of times that person revised
+% their program before that submission. That makes human effort commensurable with our
+% loop in the loop's own unit -- revisions, not months -- which is what \val{humanspan}
+% needed and could not get from wall-clock.
+% Over the 182 ranked rows: min 1, q1 3, MEDIAN 13, q3 32, max 232. 67 of 182 reached
+% v>=20; 28 placed with v1.
+% Caveat that must travel with these: the index counts SUBMISSIONS, not necessarily
+% distinct revisions -- a resubmission may be a rebuild or a retry rather than an edit,
+% so this is an upper bound on the number of times the program was changed. And the
+% archive keeps a subset of the versions whose indices it records (the rank-1 entrant
+% in one game placed at v48 with 28 versions kept), so index and kept-count differ and
+% the index is the one that measures effort.
+\defval{humanmedrev}{13}
+\defval{humanmaxrev}{232}
+\defval{humanq3rev}{32}
 % The split is already fixed in the manifests and covers the archive exactly.
 \defval{ntrain}{778}
 \defval{ntest}{4{,}215}

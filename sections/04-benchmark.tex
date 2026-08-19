@@ -283,47 +283,39 @@ contest, and the rankings it records were produced by that contest rather than b
 What we add is a uniform way to run those programs against each other and against
 methods of our own, described in Section~\ref{sec:arena-eval}.
 
-\subsection{Provenance}
+\subsection{Provenance and the games}
 \label{sec:arena-provenance}
 
 The venue is a computer science department's annual agent contest, founded in
 \val{founded} and in its \val{editions}th edition. Each edition poses one new game,
-publishes its rules and a software development kit, and runs an online ladder over a
-semester in which entrants submit programs, play ranked matches, and resubmit; the
-strongest entrants advance to a final ladder or an offline final. Two properties of
-this arrangement matter for what the archive can be used for. Entrants iterate under
-their own effort budget over months, so a submission history is a record of sustained
-human maintenance rather than a single attempt. And the contest kept every version
-submitted, not only the last, so the archive records the trajectory as well as its
-endpoint.
+publishes its rules and a development kit, and runs an online ladder over a semester in
+which entrants submit, play ranked matches, and resubmit; the strongest advance to a
+final ladder. Two properties of this arrangement are what the archive is for. Entrants
+iterate under their own effort budget over months, so a submission history records
+sustained human maintenance rather than one attempt. And every version submitted was
+kept, not only the last, so the archive holds trajectories and not just endpoints.
 
-Publicly verifiable material does not extend back to the founding. The platform's own
-edition-level index reports that the earliest editions survive only as an inferred list
-of years, with no rules, code, standings, or replays, and that the first edition
-holding a complete asset set is edition~\val{edfirst}. \benchname therefore spans
-editions \val{edfirst}--\val{edlast}: seven consecutive editions, \val{ngames} games,
-because two editions posed two games each. The venue's age is what makes the archive
-what it is, but it is not the archive's reach, and we quote the two separately.
+Verifiable material does not reach back to the founding: the platform's own
+edition-level index reports the earliest editions surviving only as an inferred list of
+years, and the first edition with a complete asset set is edition~\val{edfirst}.
+\benchname therefore spans editions \val{edfirst}--\val{edlast} --- seven editions,
+\val{ngames} games, two editions having posed two each. The venue's age is what makes
+the archive what it is but is not the archive's reach, and we quote the two separately.
+Because the contest predates this benchmark by decades and was never built for
+evaluation, the archive was not assembled with any model's training data in view, where
+benchmarks needing that property otherwise buy it by authoring tasks
+continuously~\citep{livecodebench2024,workbuddybench2026}. Provenance is not proof: the
+archive is a public web artifact, so what it licenses is a contamination check rather
+than an assumption.
 
-One consequence is worth stating before it is relied on. The contest predates this
-benchmark by decades and was never built for evaluation, so the archive was not
-assembled with any model's training data in view. That is a property this venue has
-for free, where benchmarks that need it otherwise buy it by authoring fresh tasks or
-collecting them continuously~\citep{livecodebench2024,workbuddybench2026}. It is not
-proof of anything: the archive is a public web artifact, and provenance alone cannot
-establish that a model has not seen these games. What it licenses is a contamination
-check rather than an assumption, and we specify one below.
-
-\subsection{The games}
-\label{sec:arena-games}
-
-Table~\ref{tab:games} lists the suite. The games are turn-based and adversarial, and
-they are otherwise deliberately unlike each other: a hex-grid tower defence, a
-snake-and-go territory hybrid, a maze pursuit, a resource-and-terrain war game, a
-four-player survival scramble, a hidden-identity card battle, and a scripted
-interrogation. Rules run from a handful of operations to several interacting
-subsystems, which is what makes the suite usable for asking whether a limit belongs to
-the method or to the game.
+Table~\ref{tab:games} lists the suite --- a hex-grid tower defence, a snake-and-go
+territory hybrid, a maze pursuit, a resource-and-terrain war game, a four-player
+survival scramble, a hidden-identity card battle, a scripted interrogation --- with
+rules running from a handful of operations to several interacting subsystems, which is
+what makes it usable for asking whether a limit belongs to the method or to the game.
+Appendix~\ref{app:arena} gives the per-game archive breakdown and the two game
+directories excluded from the suite; Appendix~\ref{app:case} works one game's decision
+space and replay through in full.
 
 % [b], not [t], for the same reason as Section 3's two floats: with [t] this table
 % lands at the top of the page and sits ABOVE the \subsection{The games} heading that
@@ -346,76 +338,77 @@ Rollman    & 29 & 2 & partial   & 309 & 19 \\
 DeepClue   & 30 & 1 & partial   & 625 & 21 \\
 AntWar2    & 30 & 2 & perfect   & 631 & 20 \\
 \midrule
-\multicolumn{4}{l}{Total (\val{nusers} distinct entrants)} & \val{nsubv} & \\
+\multicolumn{4}{l}{Total} & \val{nsubv} & \\
 \bottomrule
 \end{tabular}
 \caption{The \val{ngames} games of \benchname, by contest edition. Versions counts
-archived submission versions and Entrants the distinct people who produced them within
-that game; the \val{nusers} total is deduplicated across games, so it is smaller than
-the column's sum.}
+archived submission versions. Entrants counts the distinct named people who produced
+them within that game, and is deliberately not totalled: most rows in the archive are
+anonymised and their identities cannot be linked across games, so the field size is a
+bound rather than a sum. Appendix~\ref{app:arena} gives it.}
 \label{tab:games}
 \end{table}
 
-The suite is not uniform, and three departures constrain what may be claimed over it.
-LostSpace is four-player and not zero-sum, so a win is not one opponent's loss.
-AquaWar hides each side's roster and turns on identity inference, and LostSpace and
-Rollman are partially observable, so in those games a replay cannot show what the
-opponent knew. Rollman splits into two asymmetric roles ranked on separate ladders.
-DeepClue is a single-player scripted reasoning task whose referee itself calls an
-external language model, which makes it a confound for a comparison between a
-language-model method and reinforcement learning; we report it apart from the rest
-rather than dropping it. Where a claim needs a two-player zero-sum setting we state
-which games it covers.
+The suite is not uniform, and the departures constrain what may be claimed over it.
+LostSpace is four-player and not zero-sum. AquaWar hides each side's roster, and
+LostSpace and Rollman are partially observable, so there a replay cannot show what the
+opponent knew. Rollman splits into two asymmetric roles ranked separately. DeepClue is
+a single-player scripted reasoning task whose referee itself calls an external language
+model, a confound for a comparison between a language-model method and reinforcement
+learning, so we report it apart rather than dropping it. Where a claim needs a
+two-player zero-sum setting we state which games it covers.
 
 \subsection{What the archive records}
 \label{sec:arena-archive}
 
-Every submission version is kept as an independent entry: a directory of the entrant's
-source as submitted, together with a manifest row giving the entrant, the version
-index, the contest track, and the finals rank and rating where the ladder recorded
-them. The unit is the version, not the person. The \val{nsubv} versions come from
-\val{nusers} distinct entrants, about thirty-five versions each, so the field is small
-and strongly correlated and any placement computed over versions has \val{nusers} as
-its effective sample size at most. Of the registered versions, \val{nsubcode} have
-source on disk and are playable; the remainder are registered without code and are
-excluded from every pool. The archive arrives with a fixed split, \val{ntrain}
-versions for development and \val{ntest} held out, which we adopt as given rather than
-resampling.
+Every submission version is kept as an independent entry: the entrant's source as
+submitted, plus a manifest row giving the entrant, the version index, the track, and the
+finals rank and rating where the ladder recorded them. The unit is the version, not the
+person, and the two must not be conflated. \val{nrownamed} versions carry a plaintext
+entrant identity, from \val{nusersnamed} distinct people; the remaining \val{nrowanon}
+are anonymised, and their identities resolve to at most \val{nusersanon} distinct
+hashes which cannot be linked across games or to the named entrants. The field is
+therefore small and strongly correlated relative to its version count, and any placement
+computed over versions must state its unit of independence. Of the registered versions
+\val{nsubcode} have source on disk and are playable; the rest are registered without
+code and excluded from every pool. The archive arrives with a fixed split,
+\val{ntrain} development and \val{ntest} held out, which we adopt as given.
 
-Two limits of the recorded metadata bear directly on the human comparison. First, the
-pools are finals ladders rather than every entrant, so \val{nrank} versions carry a
-rank and the field per game is on the order of twenty finalists with many versions
-each. A percentile against this field is a percentile of a finalist field: a stronger
-opponent set than the full entry list and a much smaller one, and we say so wherever a
-percentile appears. Second, the ratings are not on one scale. \val{nelo} versions
-carry a rating at all, and the values come from whatever each edition's ladder
-computed, with one game's ratings recorded on an unrelated scale and another's absent
-entirely. We therefore treat the archive's ratings as provenance rather than
-measurement, and recompute all ratings used in this paper with our own referee under
-the protocol below.
+The version index is the archive's most useful record, because the platform numbers each
+entrant's resubmissions: a row's index is the number of times that person had revised
+their program. Human effort is thus measurable in the same unit as ours --- revisions,
+not months. Across the \val{nrank} ranked versions the median placing entry is revision
+\val{humanmedrev}, the upper quartile \val{humanq3rev}, and the deepest
+\val{humanmaxrev}. Appendix~\ref{app:human} reports this per game and states the
+caveats; it is the reference \val{hlspan} is set against.
 
-A third caveat concerns the submissions as programs. Entrants ship the contest SDK and
-often third-party libraries inside their submission directory, so a directory's size
-is policy plus scaffolding plus vendored dependencies, and the vendored share differs
-by orders of magnitude across games. Any measurement of a program's size --
-Section~\ref{sec:hl-motivation}'s description length in particular -- must strip these
-before comparing games, and the stripping protocol is part of the measurement rather
-than a preprocessing detail.
+Two limits of the metadata bear on that comparison. The pools are finals ladders rather
+than every entrant, so all \val{nrank} ranked versions fall within the named entrants
+and a percentile against them is a percentile of a finalist field --- a stronger
+opponent set than the full entry list and a much smaller one. And the ratings are not
+one scale: \val{nelo} versions carry a rating, computed by whatever each edition's
+ladder used, one game's on an unrelated scale and another's absent. We treat the
+archive's ratings as provenance and recompute every rating in this paper with our own
+referee. Separately, entrants ship the contest SDK and often third-party libraries
+inside their submission directory, and the vendored share differs across games by
+orders of magnitude, so any measurement of program size ---
+Section~\ref{sec:hl-motivation}'s description length in particular --- must strip these
+first, as part of the measurement rather than as preprocessing.
 
 \subsection{Evaluation logic}
 \label{sec:arena-eval}
 
 The arena exposes one referee interface for all \val{ngames} games. A match is
 requested as a game, an ordered list of players, the roles they occupy, and a seed, and
-it returns the winner, a score per role, the number of rounds, and a path to a replay.
-Games differ in how they adjudicate; nothing above the interface knows how, so a method
-under test is a player and nothing else. Fixing the seed together with the players and
-their roles fixes the match: the same request reproduces the same outcome and the same
-replay, and the replay records the referee and backend versions that produced it. Player
-code runs isolated under time and memory limits and cannot read its opponent's source
-or the referee's internal state. Where the roles are not symmetric -- unequal starting
-positions, or the two sides of an asymmetric game -- every pairing is played in both
-role orders on paired seeds, and only the balanced result is used.
+returns the winner, a score per role, the number of rounds, and a replay. Games differ
+in how they adjudicate and nothing above the interface knows how, so a method under
+test is a player and nothing else. Fixing the seed with the players and their roles
+fixes the match: the same request reproduces the same outcome and the same replay,
+which records the referee and backend versions that produced it. Player code runs
+isolated under time and memory limits and cannot read its opponent's source or the
+referee's internal state. Where roles are not symmetric --- unequal starting positions,
+or the two sides of an asymmetric game --- every pairing is played in both role orders
+on paired seeds and only the balanced result is used.
 
 Outcomes are separated into three states, and the separation is what makes ratings from
 this arena trustworthy. A match either completes, or fails inside the rules, or fails in
@@ -428,28 +421,29 @@ comparison between a compiled human submission and an agent-driven pipeline is n
 neutral error. When attribution is unclear the match is marked infrastructure failure
 and reviewed rather than charged to the player.
 
-A replay is a full per-decision record, not an outcome log, and this is the property
+A replay is a full per-decision record rather than an outcome log, which is the property
 Section~\ref{sec:hl-bottleneck} identified as setting the ceiling on what any revision
 can be held responsible for. Every frame carries the acting role, the public state it
-faced, the set of legal moves available in that state, the move it chose, and whether
-the referee accepted it. So the trace answers, at each decision, what the player could
-see, what it could have done, and what it did. That is what makes a loss attributable
-to a rule in the program rather than to the game as a whole, and it is the input the
-loop of Section~\ref{sec:hl-method} consumes. The record respects the game's own
-information boundary: hidden information never enters a public state, and under
-imperfect information each role's view is recorded separately. Moves the referee
-rejected are recorded but marked, and excluded from the player's decision sequence.
+faced, the legal moves available there, the move it chose, and whether the referee
+accepted it, so the trace answers at each decision what the player could see, what it
+could have done, and what it did. That is what makes a loss attributable to a rule in
+the program rather than to the game as a whole, and it is the $\tau_t$ the loop of
+Section~\ref{sec:hl-method} consumes. The record respects the game's information
+boundary: hidden state never enters a public observation, and under imperfect
+information each role's view is recorded separately. Rejected moves are recorded but
+marked and excluded from the decision sequence. Appendix~\ref{app:case} shows a frame
+in full.
 
-Runs report through one schema so that results from different methods and different
-games are commensurable. Per-iteration events carry the candidate under test, the
-reference it is scored against, behavioural change measured at the decision level, and
-three separate budgets: what the method spent learning, what it spent being evaluated,
-and the total, each in tokens and wall-clock. Reporting learning and evaluation cost
-apart is what makes a sample-efficiency comparison possible at all, since a method that
-learns cheaply by evaluating exhaustively has not saved anything. Two conventions in
-the schema are load-bearing and we follow them throughout. Change in what a policy
-chooses and change in which states it reaches are recorded as separate quantities and
-never summed, because a policy can be edited without changing where it goes and can go
-somewhere new without being edited. And an unmeasured quantity is recorded as missing
-rather than as zero: zero is a measurement, and the distinction is what keeps an
-unevaluated run from averaging into a result.
+Runs report through one schema so results from different methods and games are
+commensurable. Per-iteration events carry the candidate, the reference it is scored
+against, behavioural change measured at the decision level, and three separate budgets:
+what the method spent learning, what it spent being evaluated, and the total, each in
+tokens and wall-clock. Separating learning from evaluation cost is what makes a
+sample-efficiency comparison possible at all, since a method that learns cheaply by
+evaluating exhaustively has saved nothing. Two conventions are load-bearing and we
+follow them throughout. Change in what a policy chooses and change in which states it
+reaches are recorded separately and never summed, because a policy can be edited
+without changing where it goes and can go somewhere new without being edited. And an
+unmeasured quantity is recorded as missing rather than zero, since zero is itself a
+measurement --- the distinction is what keeps an unevaluated run from averaging into a
+result. Appendix~\ref{app:apparatus} gives both contracts.
