@@ -12,11 +12,26 @@
 %
 % The chain as it now stands. Each paragraph exists to make the next necessary:
 %
-%   1. RL's home turf is adversarial games -- so the comparison happens where
-%      RL is strongest, not where it is weakest.
-%   2. Concede the extensibility objection, then relocate it: it describes the
-%      author, not the artifact. Conceded, never refuted -- "everyone was wrong"
-%      is both weaker and less true than "everyone was measuring the author".
+%   1. The historical arc, rewritten 2026-08-18 at the user's direction: symbolic
+%      construction won adversarial games FIRST (deepblue2002), RL then displaced
+%      it on the same terrain, and what separates the paradigms is how each one
+%      improves -- a learned policy by continuing to play, a symbolic one only when
+%      somebody revises it. The paragraph must land on maintenance cost as the
+%      thing that bounded the paradigm, explicitly not a limit on what a program
+%      can express; that is the whole point of the paragraph and the setup for
+%      link 2. Two prohibitions from the same instruction, both violated by the
+%      draft it replaced: do not attribute the displacement to what people
+%      "generally thought" or "judged", and keep the register formal -- no
+%      colloquial framing of the symbolic paradigm as looked down on. State the
+%      historical record and the mechanism, not received opinion.
+%      deepblue2002 is cited for the historical fact ONLY. It is not evidence
+%      about maintenance cost, and its evaluation function was tuned partly from
+%      grandmaster games, so it is not a pure hand-authoring datum either. See its
+%      refs.bib annotation before extending the claim.
+%   2. Relocate the cost: it is a property of the author, not the artifact.
+%      Conceded, never refuted -- "everyone was wrong" is both weaker and less
+%      true than "everyone was measuring the author". Ends by placing the paper on
+%      RL's strongest terrain, which is why the comparison is not rigged.
 %   3. Coding agents change who the author is. The operative property is
 %      editability, not interpretability. This is the paper's hinge; without it
 %      the paper reads as a defence of a paradigm already judged.
@@ -147,22 +162,29 @@
 \section{Introduction}
 \label{sec:introduction}
 
-Reinforcement learning (RL) established itself on adversarial games. Chess, Go,
-shogi, StarCraft, and Dota are where learned policies first beat the strongest humans
-alive, and where the field's characteristic result took shape: a policy trained by
-self-play, given enough interaction, exceeds anything a person wrote by hand
-\citep{alphazero2018,alphastar2019,openaifive2019}. Games are also where the
-symbolic alternative --- rules, an evaluation function, a search procedure --- was
-judged to have the lower ceiling, so this paper stays on that turf.
+Adversarial games were first won by symbolic construction. A hand-authored
+evaluation function over a search procedure is what defeated a reigning world chess
+champion \citep{deepblue2002}, and for decades that construction --- rules, an
+evaluation function, a search --- was how a competitive game program was built.
+Reinforcement learning (RL) then displaced it on the same terrain. Chess, Go, shogi,
+StarCraft, and Dota are where learned policies beat the strongest humans alive, and
+where the field's characteristic result took shape: a policy trained by self-play,
+given enough interaction, exceeds anything a person wrote by hand
+\citep{alphazero2018,alphastar2019,openaifive2019}. What separates the two paradigms
+is how each one improves. A learned policy improves by continuing to play, and the
+adversary supplies the signal indefinitely. A symbolic program improves only when
+somebody revises it: every new case has to be noticed, encoded, and reconciled with
+the rules already present, at a cost that grows with the program until further
+revision stops being worth its price. That maintenance cost, and not any limit on
+what a program can express, is what bounded the paradigm.
 
-The objection is that a program exhibits only the behaviour somebody wrote down:
-every new case has to be noticed, encoded, and reconciled with the rules already
-present, at a cost that grows with the program. This is correct and we do not dispute
-it --- but it is a claim about the author, not the artifact. Nothing in the symbolic
-paradigm caps what a program can express; the cap is on how much of it a human will
-maintain before the reconciliation cost exceeds what they can pay. Asymptotically the
-learned policy still wins; the question is what happens under a budget, where the
-authoring cost binds.
+The cost, though, is a property of the author rather than of the artifact. Nothing in
+the symbolic paradigm caps what a program can represent; the cap is on how much of it
+a human will maintain before the reconciliation cost exceeds what they can pay.
+Asymptotically the learned policy still wins, and this paper does not dispute that.
+The question is what happens under a budget, where the authoring cost binds --- and
+because that question is about games, this paper stays on the terrain where RL is
+strongest.
 
 \paragraph{What coding agents changed.} They change who the author is, and the
 property that matters once the author is a machine is not the one usually argued. The
