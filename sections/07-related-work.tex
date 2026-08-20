@@ -210,8 +210,11 @@ preservation, or learned teachers filter
 \citep{llmguidedsearch2024,qube2024,hsevo2024,diprl2026,prorl2026,teacherawareheuristic2026,
 heuristicsearch2026,latentheuristicsearch2026,automodsat2025}. A parallel branch writes code
 around a learner instead, from reward functions to post-training machinery
-\citep{eureka2023,rewarddesignagent2026,agent2rlbench2026} --- which makes ``then let it
-write the policy'' the next question rather than a contrarian one, taken up by
+\citep{eureka2023,rewarddesignagent2026,agent2rlbench2026,ai4aibench2026}. AI4AI-Bench
+moves this idea up to algorithmic design, asking an agent to rewrite the training
+procedure itself; that is complementary to our question, which asks whether an agent
+can maintain the executable policy being trained. This makes ``then let it write the
+policy'' the next question rather than a contrarian one, taken up by
 model-controlled program search \citep{codetoplay2024,kuang2025generative}. In all of these
 the program is a search output: extracted, sampled, or selected from a population. In ours
 it is a maintained artifact revised in place, which is what makes its description length a
