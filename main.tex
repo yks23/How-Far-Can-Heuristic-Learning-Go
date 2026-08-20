@@ -356,31 +356,27 @@ against a Real-World Human Field}
 % baseline, and no rescoring of the archive pool exists as of 2026-08-19. With ten
 % days to the deadline that is the binding constraint on the paper, not the prose.
 % ===========================================================================
-\abstract{We study continual learning in which nothing is learned in the weights, and we
-study it on adversarial games: every measurement in this paper is taken on a game with
-fixed rules, played against opponents the method does not control.
-A coding agent with a frozen base model is given an executable heuristic policy, a
-game's rules, replays of the policy's own losses, and the authority to edit the
-policy's source. What carries experience forward is neither a weight update nor an
-accumulated prompt but the program itself: each revision is applied to the artifact
-the previous revision produced, so the policy persists and accumulates across
-rounds. The harness is fixed and there is no candidate population --- one artifact,
-one revision per round, rescored against a frozen opponent pool --- which makes the
-loop's limit a property of the artifact rather than of the search. We ask what that
-limit is. The setting is \benchname, built from \val{ngames} games of a collegiate
-game AI contest spanning editions \val{edfirst}--\val{edlast}, supplying
-\val{nsubv} archived submission versions as a graded field of human-written
-policies to be placed against. Improvement is not sustained: gains per revision
-decay as \val{decay} and flatten near \val{plateau} revisions, while the program's
-description length grows toward \val{maintcap} --- the size beyond which the agent
-can no longer place an edit without disturbing behaviour that already works. Across
-games of differing complexity that size converges within \val{maintcapspread}
-while the strength reached there spreads by \val{eloplatspread}, so the ceiling
-belongs to the maintainer and not to the game. Under a matched budget the same loop
-also improves faster per unit of experience than model-based RL until
-\val{crossover} environment steps, which locates the paradigm rather than
-recommending it. On games, what bounds policy-level continual learning is how much
-executable structure an agent can keep coherent, not how much the task demands.}
+\abstract{We study \emph{heuristic learning} in adversarial games: an agent reads
+feedback and directly revises an executable policy rather than updating model weights.
+This setting returns to the terrain on which reinforcement learning first displaced
+rule-based game programs. A coding agent is given a game's rules, its own source, and
+replays of its losses, and each revision is rescored against a frozen opponent pool.
+The program is the persistent object --- not an accumulated prompt, not a population
+of candidates, and not a changing harness. We ask how far that object can be maintained.
+The setting is \benchname, built from \val{ngames} games of a collegiate game AI contest
+spanning editions \val{edfirst}--\val{edlast}, with \val{nsubv} archived submission
+versions supplying a graded field of human-written policies. We compare the maintained
+policy with that field and with model-based RL under matched budgets. The lower-bound
+comparison tests the information available per interaction: rules, source, and a replay
+identify what happened, whereas a scalar reward reports only the outcome. The upper
+bound is a maintenance question. Improvement gains decay as \val{decay} and flatten
+near \val{plateau} revisions while the policy's description length approaches
+\val{maintcap}, the size beyond which the agent can no longer place an edit without
+disturbing behavior that already works. Across games of differing complexity that size
+converges within \val{maintcapspread} while the strength reached there spreads by
+\val{eloplatspread}. The resulting claim is deliberately conditional: on adversarial
+games, HL is useful while a winning policy remains below the maintainer's capacity;
+beyond that budget--complexity boundary, a learned method is the better spend.}
 
 \iffalse
 \abstract{For decades a competitive game program was a symbolic construction,

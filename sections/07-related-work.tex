@@ -1,6 +1,14 @@
 % ---------------------------------------------------------------------------
 % Related work
 %
+% EvoPolicyGym is a protocol precedent, not a comparator. It repeatedly edits a
+% general executable policy under a fixed episode budget and reports hidden-
+% validation-selected held-out scores plus trajectory diagnostics, but it is a
+% single-agent Gym suite with checkpoint selection, no human field, no RL baseline,
+% and no adversarial opponent pool. Cite it for the evaluation protocol only; our
+% claim is about heuristic learning on adversarial games and maintenance of one
+% artifact against a frozen field.
+%
 % Frontier-Eng (arXiv 2604.12290) goes first and gets the most room: its
 % formalization is nearly ours. A task is (C, x0, E) -- read-only context, a
 % feasible-but-naive starting artifact, a frozen evaluator returning a

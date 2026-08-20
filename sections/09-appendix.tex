@@ -13,6 +13,7 @@
 %                      result vocabulary that the archive can supply without a run.
 %   C app:case      -- one game worked through: rules, decision space, replay frame.
 %   D app:apparatus -- the referee and reporting contracts.
+%   E app:games      -- what each of the nine contest games actually requires.
 %
 % PAGE BUDGET: the workshop allows 8 pages excluding references. It does not state
 % whether appendices count. The NeurIPS workshop convention is that they do not, and
@@ -214,3 +215,86 @@ columns and never summed. Summaries carry ratings, win rate, score margin, wall-
 environment steps, the rating history for curves, and the head-to-head matrix. Missing
 values are recorded as missing throughout both files, never as zero, and aggregation
 skips them rather than averaging them in.
+
+\section{The nine games}
+\label{app:games}
+
+The suite is intentionally heterogeneous. The games differ in player count, information
+structure, action granularity, and what a useful heuristic must remember. This appendix
+records the task each name denotes; the referee and replay contracts remain shared, but
+the winning policy is not transferable without adapting to the game's state and action
+semantics.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{p{0.16\linewidth}p{0.25\linewidth}p{0.49\linewidth}}
+\toprule
+Game & Setting & What the policy controls \\
+\midrule
+Miracle & Two-player hex-grid strategy & Drafts creatures and an artifact, then summons, moves, attacks, and uses abilities to destroy the opponent's miracle. \\
+AquaWar & Two-player hidden-information SRPG & Selects four fish, makes hidden-type assertions, and alternates attacks and skills across a best-of-three match. \\
+LostSpace & Four-player 3-D survival & Navigates a shrinking $7\times7\times3$ map, gathers keys and tools, fights or evades opponents, and escapes for rank points. \\
+SnakeGo & Two-player territory game & Moves and grows snakes, claims cells, uses items, fires through walls, and splits snakes to maximize covered territory. \\
+AntWar & Two-player tower defence & Builds and upgrades towers, manages economy and base upgrades, and times super-weapons while ants advance automatically. \\
+Generals & Two-player real-time strategy & Expands territory, moves armies and generals, captures neutral assets, upgrades technology, and uses tactical skills and super-weapons. \\
+Rollman & Asymmetric Pacman game & The rollman collects beans and uses skills while the ghost player controls three ghosts to intercept it across successive mazes. \\
+DeepClue & Single-player investigation & Questions NPCs, presents evidence, advances through case stages, and submits an answer; score combines correctness, progress, achievements, and interaction cost. \\
+AntWar2 & Two-player hex-grid tower defence & Submits ordered build, upgrade, downgrade, economy, and super-weapon operations while the environment simulates ant movement and combat. \\
+\bottomrule
+\end{tabular}
+\caption{The nine contest games in \benchname. The descriptions identify the decision
+problem, not a common game mechanic; in particular, LostSpace, Rollman, and DeepClue are
+not two-player zero-sum games.}
+\label{tab:game-descriptions}
+\end{table}
+
+\paragraph{Miracle.} Miracle is a symmetric two-player, turn-based strategy game on a
+hexagonal map. Each player drafts one artifact and three creature types, then issues
+summon, move, attack, and artifact-use operations. The policy must coordinate resource
+spending, spatial movement, cooldowns, and interactions among heterogeneous units.
+
+\paragraph{AquaWar.} AquaWar is a two-player, hidden-information fish battle played as a
+best-of-three match. A policy chooses four fish from a roster, may assign the imitator's
+copy target, decides when to assert an opponent's hidden fish identity, and then chooses
+ordinary attacks or type-specific skills. The central difficulty is roster selection,
+partial observability, and information-sensitive timing.
+
+\paragraph{LostSpace.} LostSpace is a four-player survival and escape game on a layered
+star map. Players move, collect keys and supplies, deploy traps and tools, attack rivals,
+and attempt to reach the escape capsule while the playable region shrinks. The output is
+a ranking rather than a binary win, so a policy must trade immediate fighting against
+survival and escape timing.
+
+\paragraph{SnakeGo.} SnakeGo is a two-player grid territory game. Snakes move and leave
+territory, collect items, can fire through walls, and can split into multiple bodies. The
+policy therefore plans both local collision-free motion and long-horizon territory growth;
+the score is based on occupied cells and surviving snake coverage at settlement.
+
+\paragraph{AntWar.} AntWar is a two-player tower-defence game. Each side builds, upgrades,
+and dismantles towers, improves ant generation and durability, and deploys timed
+super-weapons. Ants follow environment-controlled pheromone paths, so the policy controls
+the defence and economy rather than individual ant trajectories.
+
+\paragraph{Generals.} Generals is a two-player strategy game on a $15\times15$ map. Players
+expand territory, move armies, capture neutral generals and farmers, upgrade production,
+defence, and mobility, and use tactical skills and super-weapons. The policy must couple
+territorial control, resource production, and combat timing under partial map uncertainty.
+
+\paragraph{Rollman.} Rollman is asymmetric: one policy controls a Pacman-like player and
+the other controls three ghosts. The rollman collects ordinary and special beans and may
+use speed, magnet, shield, freeze, and score-multiplication skills; the ghost policy
+coordinates three simultaneous chasers. The roles are evaluated on the same maze but have
+different action spaces and objectives.
+
+\paragraph{DeepClue.} DeepClue is the suite's single-player investigation task. The policy
+interacts with non-player characters, chooses evidence to present, advances case stages,
+and submits a final explanation across multiple scripts. Its score combines answer
+correctness, progress, achievements, and a token-sensitive efficiency term; the game is
+therefore an information-gathering and reasoning task rather than an adversarial match.
+
+\paragraph{AntWar2.} AntWar2 is a two-player tower-defence game on a $19\times19$ offset
+hex grid. Players submit ordered lists of tower, upgrade, downgrade, economy, and
+super-weapon operations; the environment then advances ants, effects, and damage. Because
+operations are validated against the already accepted prefix of the same round, ordering
+itself is part of the policy and a revision can change both legality and outcome.
