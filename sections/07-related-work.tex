@@ -242,7 +242,13 @@ their degradation is driven by a growing specification, so nothing may be discar
 a game's rules are fixed and a better heuristic may \emph{replace} a worse one. Accumulation
 is a tendency here, not an obligation, which is why the ceiling is worth measuring.
 Improvement frequency and magnitude do decay on engineering tasks \citep{frontiereng2026},
-but those are single-agent with neither a human field nor a learned baseline; a survey
+but those are single-agent with neither a human field nor a learned baseline. EvoPolicyGym
+is closer in protocol: it evaluates repeated executable-policy edits under a fixed episode
+budget, hidden validation selection, held-out generalization, and trajectory-level feedback
+diagnostics \citep{evopolicygym2026}. Its compact single-agent Gym suite and checkpoint-
+selection objective still differ from our adversarial games, frozen opponent pool, and
+one-artifact maintenance question; it therefore supplies a protocol precedent, not a
+human or RL comparison. A survey
 organizes the literature by the strength of the verification signal the loop closes on
 \citep{selfimprovement2026survey}, at whose strong end a game engine with a frozen pool sits.
 We carry that question into adversarial games, asking whether the plateau is explained by the
