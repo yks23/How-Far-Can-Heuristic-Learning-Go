@@ -151,13 +151,59 @@ strength is measured against whom, and the three quantities the argument turns
 on --- what a learning loop can read, what it can edit, and how long a program
 has to be to win.
 
-\paragraph{Games and the contest archive.}
-Throughout, a \emph{game} is a two-player adversarial game of perfect
-information, played to a win, loss, or draw under a fixed move budget, and a
-\emph{policy} is a program that reads the game state and returns a move. Nothing
-in the paper needs the state space to be small or the game to be solvable; what
-it needs is that policies can be ranked only by playing them against each other,
-which is what distinguishes this setting from a benchmark with an absolute score.
+% REPLACED 2026-08-19. The previous text read "a game is a two-player adversarial game
+% of perfect information", which is FALSE of five of the nine games in the suite and had
+% been contradicted in detail by Section 4.2 since that section was written: LostSpace is
+% four-player and not zero-sum, AquaWar hides each side's roster, LostSpace and Rollman
+% are partially observable, Rollman's two roles are asymmetric and separately ranked, and
+% DeepClue is single-player. The definition below is the one the suite actually satisfies.
+%
+% Each of the four conditions is CHECKABLE IN THE PLATFORM, and that is why these four:
+%   (i)   fixed rules        -- each game ships rules.md and a pinned backend commit.
+%   (ii)  machine-checkable  -- every game's decision_space.yaml carries legal_actions,
+%         legality             and policy_interface.legality gives the predicate itself
+%                              (e.g. antwar2: state.can_apply_operation(player, op,
+%                              accepted_prefix)).
+%   (iii) external referee   -- the evaluate() contract in Appendix D, three-valued status.
+%   (iv)  uncontrolled       -- a manifest of opponents the method did not write.
+%         participant
+% What the conditions deliberately DO NOT require: two players, zero sum, perfect
+% information, symmetric roles. Dropping those four is what makes the definition true of
+% the suite instead of true of chess.
+%
+% DeepClue fails (ii) and (iv) -- players: 1, and requires_llm_api: true, so its referee
+% calls a language model and the adjudication is neither fixed nor machine-checkable. Its
+% separate reporting in Section 4 is therefore a CONSEQUENCE of this definition, not an
+% exception granted to it. If anyone later moves DeepClue into the main claim, this
+% definition has to change first.
+\paragraph{Refereed adversarial games.}
+Throughout, the tasks we measure in are \emph{refereed adversarial games}, by which we
+mean four conditions. The rules are fixed and fully specified in advance, so a revision
+never changes what the task is. At each decision the set of legal moves is
+machine-checkable, so an illegal move is detected rather than interpreted. Outcomes are
+adjudicated by an external referee that the policy cannot influence, yielding a win,
+loss, or draw, or a score, under a fixed round budget. And at least one participant's
+behaviour lies outside the policy's control, so strength exists only relative to
+opponents and never as an absolute score. A \emph{policy} is a program that reads the
+state visible to its role and returns a move.
+
+Deliberately absent from this definition are the properties usually bundled with it. It
+does not require two players, a zero-sum payoff, perfect information, or symmetric
+roles; the suite in Section~\ref{sec:benchmark} violates each of these somewhere, and
+Section~\ref{sec:arena-provenance} says where. What the paper needs is only the four
+conditions above, and it needs them because each supplies the learning loop with
+something specific: fixed rules make a past revision still valid, machine-checkable
+legality makes a failure attributable, an external referee makes an improvement claim
+falsifiable, and an uncontrolled opponent supplies signal that does not run out. This is
+also the honest reading of our scope. The four conditions are not incidental to the
+result --- they are what a maintenance loop needs in order to work at all, so the class
+is favourable to it, and Section~\ref{sec:discussion} states what fails outside the class
+rather than claiming the ceiling we measure is the paradigm's everywhere.
+
+% Split out 2026-08-19: this text used to share the "Games and the contest archive"
+% heading with the definition above. The definition grew when it was corrected, and two
+% unrelated things under one heading was no longer readable.
+\paragraph{The contest archive.}
 The archive we draw on is a collegiate game AI contest founded in
 \val{founded} and run for \val{editions} editions, holding \val{nsub}
 submissions and \val{nmatch} adjudicated matches across \val{ngames} games

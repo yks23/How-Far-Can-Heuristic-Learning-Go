@@ -92,7 +92,24 @@
 %   - model-weight continual learning. (No gradient touches the base model; the
 %     thing that carries experience forward is the program.)
 % ===========================================================================
-\title{How Far Can Policy-Level Continual Learning Go? \\
+% SCOPED 2026-08-19 at the user's direction: "我们所有的实验和测试都是在博弈类的任务上面
+% 打的，所以你要最好把这个限定加好，把标题什么的改好。"  Every measurement in this paper
+% is taken inside one task class, and the unscoped title promised a result about
+% policy-level continual learning in general. "in Adversarial Games" is the smallest
+% addition that makes the promise match the evidence.
+%
+% WORDING. "Adversarial games" is the phrase Section 1 already uses and the one a
+% reader of this literature recognises; the PRECISE class is defined in Section 2 as a
+% *refereed adversarial game* under four conditions, and the title is deliberately the
+% informal name of that class rather than a compressed restatement of the conditions.
+% Do not put "refereed" or "zero-sum" in the title: "refereed" is unfamiliar as a term
+% of art and buys nothing on a title line, and "zero-sum" would be FALSE of the suite
+% (LostSpace is four-player and not zero-sum -- see Section 4.2).
+%
+% Do not "restore" the shorter title. The claim it makes is one this paper cannot
+% support, and the limitation is now stated in the abstract, Section 1, Section 2, and
+% Section 6 -- dropping it here would leave the title as the only unscoped statement.
+\title{How Far Can Policy-Level Continual Learning Go in Adversarial Games? \\
 Continual Self-Evolution of an Executable Policy Artifact under a Finite
 Maintenance Budget}
 
@@ -237,7 +254,12 @@ Maintenance Budget}
 % baseline, and no rescoring of the archive pool exists as of 2026-08-19. With ten
 % days to the deadline that is the binding constraint on the paper, not the prose.
 % ===========================================================================
-\abstract{We study continual learning in which nothing is learned in the weights.
+\abstract{We study continual learning in which nothing is learned in the weights,
+in the setting our measurements are taken in: \emph{refereed adversarial games} ---
+tasks whose rules are fixed and fully specified, whose legal moves are machine-checkable
+at each decision, whose outcome is adjudicated by an external referee, and in which at
+least one participant's behaviour the policy does not control, so strength exists only
+relative to opponents.
 A coding agent with a frozen base model is given an executable heuristic policy, a
 game's rules, replays of the policy's own losses, and the authority to edit the
 policy's source. What carries experience forward is neither a weight update nor an
@@ -258,8 +280,10 @@ while the strength reached there spreads by \val{eloplatspread}, so the ceiling
 belongs to the maintainer and not to the game. Under a matched budget the same loop
 also improves faster per unit of experience than model-based RL until
 \val{crossover} environment steps, which locates the paradigm rather than
-recommending it. What bounds policy-level continual learning is how much
-executable structure an agent can keep coherent, not how much the task demands.}
+recommending it. Within this class, what bounds policy-level continual learning is how
+much executable structure an agent can keep coherent, not how much the task demands ---
+and because every condition above supplies the loop with something to read, the class is
+the paradigm's favourable case rather than a neutral sample of tasks.}
 
 \iffalse
 \abstract{For decades a competitive game program was a symbolic construction,
