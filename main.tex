@@ -112,18 +112,59 @@
 Continual Self-Evolution of an Executable Policy Artifact under a Finite
 Maintenance Budget}
 
-% Double-blind: no author, no affiliation, no acknowledgements until camera-ready.
-\author{Anonymous submission}
+% ONE SWITCH FOR EVERY NAME IN THE DOCUMENT. Set \namedtrue and the title page
+% carries the authors and the role legend, and the block after the conclusion
+% renders; set \namedfalse and both revert to "Anonymous submission" together.
+%
+% It is one switch on purpose. The earlier version of this comment told a future
+% editor to remember to change \author by hand whenever the end block was
+% enabled, which is exactly the kind of instruction that gets skipped -- and the
+% failure it invites is silent: a PDF anonymous on page 1 and named on page 9,
+% or the reverse. A procedure that can be forgotten is now a switch that cannot.
+%
+% CURRENTLY TRUE, at the user's direction (2026-08-20): "先不用匿名。作者渲染出来
+% 看看". THE VENUE IS DOUBLE-BLIND (NeurIPS.cc/2026/Workshop/CL4FMAgents, header
+% above) and the deadline is 2026-08-29, so this state is for looking at, not for
+% uploading. Set \namedfalse before submitting, or decide deliberately to give up
+% the anonymity requirement -- once a named PDF is on OpenReview it cannot be
+% withdrawn.
+\newif\ifnamed
+\namedtrue
 
-% CAMERA-READY SWITCH. False for the blind submission; flip to \camerareadytrue
-% only for the camera-ready build (2026-10-10). It gates the named contribution
-% block in sections/08a-contributions.tex, which would otherwise de-anonymise
-% the paper. When flipping it, flip \author above in the same edit -- the two
-% must agree, or the PDF names its authors in one place and hides them in the
-% other. A build with \camerareadytrue and \author{Anonymous submission} is a
-% mistake, not a configuration.
+% Alias, so \ifcameraready at the contribution block keeps working and there is
+% still only one thing to set. Camera-ready is when names go in permanently; this
+% switch is what puts them in.
 \newif\ifcameraready
-\camerareadyfalse
+\ifnamed\camerareadytrue\else\camerareadyfalse\fi
+
+\ifnamed
+  % Roles are superscript symbols, the group's house style -- see the header of
+  % sections/08a-contributions.tex for the reference paper and the full mapping.
+  % \dagger and \ddagger are the math forms, because the class sets every author
+  % marker inside $^{...}$; the legend below is text mode and uses \dag/\ddag.
+  % ORDER IS ALPHABETICAL BY LAST NAME (Liu before Yang), which is what makes it a
+  % convention rather than a ranking. Insert new names at their alphabetical
+  % position; appending one turns the list into a claim its owner never agreed to.
+  % This list and the one in 08a-contributions.tex are the same list and must be
+  % edited together.
+  % TODO(names): Core Contributor and Contributor are still unsupplied. Core takes
+  % [*]; a plain contributor takes no optional argument at all.
+  \author[\dagger]{Qingle Liu}
+  \author[\ddagger]{Kaisen Yang}
+  % NO TRAILING FULL STOPS in these three. The class joins \contribution entries
+  % with ", ", so a period inside each one renders as "Project lead., " -- period
+  % against comma. The reference paper's block ends each line with a period
+  % because it sets them as separate lines with "\\"; here they run on, so the
+  % separator does that work. The end-of-document block keeps its periods.
+  \contribution[*]{Core contribution; names sorted alphabetically by last name}
+  \contribution[\dagger]{Project lead}
+  \contribution[\ddagger]{Corresponding author}
+  % TODO(affiliation): \affiliation and \correspondence are the class's own
+  % macros and belong here once the affiliation and a contact address are settled.
+\else
+  % Double-blind: no author, no affiliation, no acknowledgements.
+  \author{Anonymous submission}
+\fi
 
 % RESTRUCTURED 2026-08-19 to the user's five-move logic (recorded in full at the
 % top of sections/01-introduction.tex). The abstract now runs in that order:
