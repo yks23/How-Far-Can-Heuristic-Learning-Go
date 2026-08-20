@@ -70,6 +70,28 @@
       \forlistloop{\hlnumtbditem}{\hlnumtbdlist}
     \end{itemize}}{}}
 
+% THE SAME LIST, TO THE BUILD LOG ONLY. Added 2026-08-20 at the user's direction:
+% "Outstanding Measurement这个不用正文列出来，就以变量形式存在就行" -- so \printTBD is
+% no longer called from main.tex and the list has left the PDF. The placeholders
+% themselves are untouched: they still print in accent bold inside the body, and
+% \val still raises a hard \PackageError on any \defTBD key once \hldraft goes off,
+% which is what actually prevents shipping "XX%" as a measured value.
+%
+% This exists because removing the page removed the only ENUMERATION of what is
+% still owed. Accent bold shows a reader that some number is provisional, but only
+% at the sites where it happens to be used, and a registered-but-uncited key was
+% visible nowhere else. So the roll-call moves to the log, where it costs no page
+% and cannot be forgotten:
+%   grep -A99 'HL OUTSTANDING' build/main.log
+% Do not restore \printTBD to main.tex to get this back.
+\newcommand{\hlnumtbdlog}[1]{\typeout{  #1 = \csuse{hlnum@#1}}}
+\AtEndDocument{%
+  \iftoggle{hldraft}{%
+    \typeout{^^J===== HL OUTSTANDING MEASUREMENTS (draft mode) =====}%
+    \forlistloop{\hlnumtbdlog}{\hlnumtbdlist}%
+    \typeout{===== end =====^^J}%
+  }{}}
+
 % ---------------------------------------------------------------------------
 % Archive scale. Editions and founding year are documented facts; the
 % submission and match counts were quoted as round approximations in the
