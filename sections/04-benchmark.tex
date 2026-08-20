@@ -283,16 +283,13 @@ contest, and the rankings it records were produced by that contest rather than b
 What we add is a uniform way to run those programs against each other and against
 methods of our own, described in Section~\ref{sec:arena-eval}.
 
-% Added 2026-08-19 with the scope change. Two of the four conditions are checkable in the
-% archive's own files and it is worth saying which, because a definition that cannot be
-% audited is a claim. legal_actions appears in all nine decision_space.yaml files and
-% policy_interface.legality gives the predicate; the referee is the evaluate() contract.
-Each game satisfies the four conditions of Section~\ref{sec:preliminary}, and two of them
-are auditable in the arena's own files rather than asserted: every game ships a legal-move
-specification with the predicate that decides it, and every game is adjudicated by the
-referee contract of Appendix~\ref{app:apparatus}. The other two are properties of the
-contest --- rules were fixed when the edition opened, and the opponents are other people's
-programs.
+% The scope definition is Section 2's job and this section should not restate it. One
+% clause here, because it is the one part that is auditable in the arena's own files
+% rather than asserted: every game ships a legal-move specification with the predicate
+% that decides it (legal_actions plus policy_interface.legality in all nine
+% decision_space.yaml files), and every game is adjudicated by the evaluate() contract.
+% A longer version of this existed on 2026-08-19 and was cut with the rest of the
+% four-condition scaffolding.
 
 \subsection{Provenance and the games}
 \label{sec:arena-provenance}
@@ -360,28 +357,21 @@ bound rather than a sum. Appendix~\ref{app:arena} gives it.}
 \label{tab:games}
 \end{table}
 
-% REWRITTEN 2026-08-19. This paragraph used to present the suite's heterogeneity as a
-% list of awkward departures; under the Section 2 definition most of them are not
-% departures at all, because that definition never required two players, zero sum,
-% perfect information, or symmetric roles. So the paragraph now separates the two kinds:
-% variation WITHIN the class (which is a feature -- it is what stops the scope from
-% collapsing to chess) from the one game that FAILS the class (DeepClue). Do not merge
-% them back into one list; the distinction is the whole point of having a definition.
-The suite varies inside the class, and the variation is deliberate: it is what keeps the
-scope from narrowing to the two-player perfect-information case. LostSpace is four-player
-and not zero-sum. AquaWar hides each side's roster, and LostSpace and Rollman are
-partially observable, so there a replay shows what a role knew rather than what the
-position was. Rollman splits into two asymmetric roles ranked separately. None of this
-weakens a claim over the suite, but each constrains what a claim can say, so where a
-result needs a two-player zero-sum setting we state which games it covers.
-
-One game falls outside the class rather than varying within it. DeepClue is single-player,
-so no participant lies outside the policy's control, and its referee calls an external
-language model, so the adjudication is neither fixed nor machine-checkable --- two of the
-four conditions, and the second is also a confound for a comparison between a
-language-model method and reinforcement learning. We report it apart from the main claim
-rather than dropping it, because a boundary case is more informative at the boundary than
-absent.
+% The suite's spread across these properties is why Section 2's definition does not
+% require two players, zero sum, perfect information, or symmetric roles -- it would be
+% false of five of these nine games. DeepClue is the one that falls outside the definition
+% itself (single-player, and requires_llm_api: true so its referee calls a language
+% model), which is why it is reported apart; that is a consequence of the definition, not
+% an exception to it. Do not let a later edit quietly fold DeepClue into the main claim.
+The suite varies, and the variation both widens what a claim covers and limits what it can
+say. LostSpace is four-player and not zero-sum. AquaWar hides each side's roster, and
+LostSpace and Rollman are partially observable, so there a replay shows what a role knew
+rather than what the position was. Rollman splits into two asymmetric roles ranked
+separately. DeepClue is a single-player scripted reasoning task whose referee itself calls
+an external language model --- so it has no opponent and no fixed adjudication, and the
+latter is also a confound for a comparison between a language-model method and
+reinforcement learning; we report it apart rather than dropping it. Where a claim needs a
+two-player zero-sum setting we state which games it covers.
 
 \subsection{What the archive records}
 \label{sec:arena-archive}

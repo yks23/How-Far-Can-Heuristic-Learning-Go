@@ -85,48 +85,19 @@
 % Each guideline must name the result it comes from. If a number is unmeasured the
 % guideline does not get stated -- see the numbers guard in AGENTS.md.
 
-% SCOPE SUBSECTION, added 2026-08-19 at the user's direction ("我们在衡量的时候……你要
-% 强调并加上一个限定，说明是在这种博弈的情况下"). Section 1 and Section 2 both forward-
-% reference this text for what fails outside the class, so it is owed here.
+% SCOPE. A "What the scope excludes" subsection was written here on 2026-08-19 and cut the
+% same day, at the user's direction: the scope limit is one sentence in Section 1 and one
+% definition in Section 2, not a subsection. Do not reinstate it. If a referee asks what
+% happens off games, the answer is the honest short one -- we did not measure it -- and it
+% goes in the threats-to-validity subsection with the other limits, in a sentence.
 %
-% IT CONTAINS NO RESULT OF OURS, deliberately -- it is an argument about the four
-% conditions in Section 2 and what depends on each, all of which is established before
-% any run. That keeps it writable now, under the numbers guard. Do NOT add a measured
-% claim here later; if the scope argument acquires evidence, the evidence belongs in
-% Section 5 and this text cites it.
-%
-% ONE THING IT MUST NOT BECOME: a general "limitations" list. Threats to validity
-% (single archive, single institution, fixed scaffolding, Elo drift across editions)
-% are a separate subsection per the header notes above, and merging them would bury the
-% scope statement, which is the one a referee checks the title against.
+% What that draft argued, kept here only so the reasoning is not lost: each requirement in
+% the Section 2 definition is something the loop consumes, so tasks without them are
+% harder for it, not merely different -- moving rules invalidate past revisions, an absent
+% referee makes an improvement claim unfalsifiable, a model as judge can be optimised, and
+% with no opponent the signal is exhaustible. That makes games the favourable case, which
+% is why a limit found here is evidence about the agent rather than about the task. The
+% clause in Section 1 carries the conclusion; the argument was the part that did not earn
+% its page.
 \section{Discussion}
 \label{sec:discussion}
-
-\subsection{What the scope excludes}
-\label{sec:scope-limits}
-
-The four conditions of Section~\ref{sec:preliminary} are the loop's requirements, not
-descriptive detail, and each names a way a task outside the class defeats it. When rules
-are not fixed, a revision that was correct becomes wrong for reasons the loop cannot
-distinguish from its own error, and the accumulated program stops being an asset. When
-legality is not machine-checkable, a failure cannot be localised to a decision, and the
-agent's read of its own loss degrades to a guess --- the bound
-Section~\ref{sec:hl-bottleneck} identifies. When the verdict comes from a model or a
-person rather than a referee, an improvement claim is no longer falsifiable at the
-granularity a revision operates on, and the loop can optimise the judge. When no
-participant lies outside the policy's control, the signal is exhaustible: a fixed task is
-solved once and then supplies nothing further, which is precisely the condition under
-which continued maintenance has nothing to continue on.
-
-These are not hypothetical exclusions. The suite itself contains one task that breaks two
-of the conditions --- DeepClue is single-player and its referee calls a language model to
-adjudicate --- which is why Section~\ref{sec:benchmark} reports it apart from the main
-claim rather than dropping it: it is the boundary case, and it is more informative
-standing at the boundary than absent. Much of the work an agent is actually asked to do
-sits further outside. Open-ended software maintenance has no referee, specifications that
-move, and no opponent; a task graded by human preference has a judge that can be
-optimised. Nothing measured here predicts what happens there, and the ceiling this paper
-reports should not be read as a ceiling on policy-level continual learning in general.
-The narrower reading is also the more useful one: because the class is favourable, a
-limit found inside it is evidence about the agent rather than about the task, which is
-what makes the maintenance-capacity account testable at all.

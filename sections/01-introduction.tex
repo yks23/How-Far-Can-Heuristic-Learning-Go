@@ -266,30 +266,17 @@ human will maintain before the reconciliation cost exceeds what they can pay.
 Asymptotically the learned policy still wins, and this paper does not dispute that.
 The question is what happens under a budget, where the authoring cost binds --- and
 because that question is about games, this paper stays on the terrain where RL is
-strongest.
+strongest. Every measurement below is taken on a game: fixed rules, an external referee,
+and opponents the method does not control. That is a real limitation and also a
+favourable case, since a game hands a maintenance loop a verdict it can act on, so the
+ceiling we report is a ceiling on games and we do not extrapolate past them.
 
-% SCOPE, added 2026-08-19 at the user's direction. Everything measured in this paper is
-% measured inside one task class, and the class is stated here rather than left to
-% Section 2 because the claim being scoped is made in THIS section. The four conditions
-% are defined in Section 2; this paragraph gives the name, the reason the class is
-% favourable, and the boundary. Do not compress it into the preceding paragraph: the
-% concession that the class is favourable is the part a referee will look for, and it
-% needs to be visible rather than a clause.
-Everything below is measured inside one class of task, and the limitation is a real one.
-A \emph{refereed adversarial game} has rules fixed in advance, legal moves that are
-machine-checkable at each decision, an external referee that adjudicates the outcome, and
-at least one participant the policy does not control (Section~\ref{sec:preliminary}).
-Each of those conditions hands the maintenance loop something it needs: a fixed rule set
-keeps yesterday's revision valid, checkable legality turns a failure into an attributable
-one, an external verdict makes an improvement claim falsifiable, and an opponent supplies
-signal that does not exhaust. So this class is the paradigm's favourable case, not a
-neutral sample of tasks, and the ceiling we report is a ceiling within it. Tasks whose
-specification is partial, whose success is judged by a model or a person, or which offer
-no opponent, break the conditions the loop is built on, and we do not extrapolate to them
-(Section~\ref{sec:discussion}). What the class does not require is the narrower thing it
-is often confused with: not two players, not zero-sum, not perfect information, not
-symmetric roles --- \benchname violates each somewhere, which is what makes the scope a
-statement about the loop's requirements rather than about chess.
+% SCOPE, added 2026-08-19 at the user's direction, then cut to two sentences the same day
+% ("就说我们在博弈类上面打，就行"). It belongs in this paragraph rather than its own
+% because the scope is a condition on the question, not a topic. Do not re-expand it into
+% an argument about what each requirement supplies the loop -- that draft existed and was
+% cut. The one thing that must survive: games are the paradigm's favourable case, stated
+% plainly. A referee will look for whether we know that, and it costs one clause.
 
 Coding agents change who the author is. Once the author is a machine, the property
 that governs whether revision can continue is \emph{editability} rather than
@@ -379,9 +366,7 @@ Our contributions are threefold.
   \item \textbf{We formally define heuristic learning}, an agent-maintained symbolic
   policy under adversarial pressure, instrumented --- one revision per iteration,
   every version and score logged --- so that a plateau can be diagnosed and not
-  merely observed. We define it over a stated task class, \emph{refereed adversarial
-  games}, and give the four conditions the loop requires of a task rather than assuming
-  a game is two-player, zero-sum, and perfectly observed
+  merely observed, and scoped to games rather than claimed of tasks in general
   (Section~\ref{sec:preliminary}).
 
   \item \textbf{We introduce \benchname}, a benchmark drawn from a real
