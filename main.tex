@@ -159,8 +159,17 @@ Maintenance Budget}
   \contribution[*]{Core contribution; names sorted alphabetically by last name}
   \contribution[\dagger]{Project lead}
   \contribution[\ddagger]{Corresponding author}
-  % TODO(affiliation): \affiliation and \correspondence are the class's own
-  % macros and belong here once the affiliation and a contact address are settled.
+  % AFFILIATION AND CONTACT, supplied 2026-08-20: "aff都写清华大学计算机系。email就行
+  % contact yks23@mails.tsinghua.edu.cn". Rendered in English because the document
+  % is; this is the department's own official English name, not a translation of
+  % convenience. One affiliation covers both authors, so it carries no superscript
+  % marker -- a "1" would imply a second affiliation exists somewhere.
+  % Inside \ifnamed with everything else: an affiliation is as de-anonymising as a
+  % name, and a blind build must not keep it.
+  \affiliation{Department of Computer Science and Technology, Tsinghua University}
+  % \email sets the mailto link; the class supplies it. The address belongs to the
+  % corresponding author, which is what makes it the contact.
+  \correspondence{\email{yks23@mails.tsinghua.edu.cn}}
 \else
   % Double-blind: no author, no affiliation, no acknowledgements.
   \author{Anonymous submission}
