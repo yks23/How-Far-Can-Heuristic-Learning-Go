@@ -164,82 +164,74 @@
 
 \paragraph{Reinforcement learning on adversarial games.}
 Symbolic construction won adversarial games first, by search over a hand-authored
-evaluation \citep{deepblue2002}. Learned value estimation then displaced it: a network
-trained on games and refined by self-play took Go \citep{alphago2016}, the human bootstrap
-was removed \citep{alphagozero2017}, the method generalized across board games
-\citep{alphazero2018}, and the environment model itself was learned rather than given
-\citep{muzero2020,efficientzero2021}, following the demonstration that a single learned
-policy could reach human level from pixels \citep{dqn2015}. The line then extended in the
-directions our suite occupies. Imperfect information was taken by equilibrium computation
-in poker \citep{cfr2007,deepstack2017,libratus2018} and by model-free multiagent learning
-in Stratego \citep{deepnash2022}; multiplayer and non-zero-sum settings followed
-\citep{pluribus2019}, as did games of hidden hands and long horizons
-\citep{suphx2020,douzero2021}, real-time control against champion humans
-\citep{gtsophy2022}, and games whose action spaces defeat enumeration
-\citep{alphastar2019,openaifive2019}. Language models have entered these games as
-negotiators beside a planner rather than as the policy's author \citep{cicero2022}. Two
-results from this line bear directly on how we evaluate. Opponent-pool construction is a
-design variable, not a detail \citep{psro2017,asro2026coevolution}, and superhuman average
-strength can coexist with exploitable holes \citep{adversarialgo2023} --- which is why our
-test pool is frozen and drawn from a human field rather than reduced to one strong
-reference, and why cost as well as strength is a reported axis \citep{katago2019}. A
-complementary direction improves the evaluator instead of the policy
-\citep{adversarialheuristics2026}. Placing a method within a field of real contestants,
-rather than against a single opponent, is also what licenses a percentile as the unit of
-comparison \citep{mlebench2024,olympiad2025percentile}. This
-paradigm's standing is not in question here. What it does not settle is what happens under
-a small interaction budget, which is the regime this paper measures, and against which
-learner: comparing a maintained program against policy gradient alone would confound
-symbolic against neural with on-policy against off-policy, so the primary baseline is
-off-policy and model-based \citep{offpolicyvaluellm2026,samplereuse2022}.
+evaluation \citep{deepblue2002}. Learned value estimation then displaced it, and did so by
+removing one hand-authored component after another --- the evaluation function, then the
+human game record, then the game-specific method, then the environment model itself
+\citep{dqn2015,alphago2016,alphagozero2017,alphazero2018,muzero2020,efficientzero2021}.
+From there the line extended into exactly the settings our suite occupies: imperfect
+information, whether by equilibrium computation or by model-free multiagent learning,
+multiplayer and non-zero-sum payoffs, hidden hands over long horizons, real-time control
+against champion humans, and action spaces that defeat enumeration
+\citep{cfr2007,deepstack2017,libratus2018,pluribus2019,deepnash2022,suphx2020,douzero2021,
+gtsophy2022,alphastar2019,openaifive2019}. Where a language model has entered these games
+it has been a negotiator beside a planner rather than the policy's author
+\citep{cicero2022}.
+Two results from this line bear on how we evaluate rather than on what we build. Opponent
+pools are a design variable and not a detail, and a policy of superhuman average strength
+can still carry holes an adversary finds
+\citep{psro2017,adversarialgo2023,asro2026coevolution,adversarialheuristics2026} --- which
+is why our test pool is frozen and drawn from a whole human field rather than reduced to
+one strong reference, and why cost is reported beside strength
+\citep{katago2019,mlebench2024,olympiad2025percentile}. This paradigm's standing is not in
+question here. What it leaves open is the small-budget regime this paper measures, and
+against which learner: comparing a maintained program against policy gradient alone would
+confound symbolic against neural with on-policy against off-policy, so the primary baseline
+is off-policy and model-based \citep{offpolicyvaluellm2026,samplereuse2022}.
 
 \paragraph{Policies written as programs.}
-A policy can be an executable program instead of an opaque network, and this line began by
-asking a learner to produce one: a program sketch filled by policy search
-\citep{pirl2018}, a decision tree distilled from a trained network so that it can be
-verified \citep{viper2018}, a latent space of programs made searchable
-\citep{leaps2021,inductivegen2020}, and symbolic controllers recovered directly
-\citep{symbolicpolicies2021}. The representation carries a size--expressiveness trade-off
-that has been made formal, bounding the size of an optimal programmatic policy --- the
-relative of the description length this paper measures
-\citep{programmaticrl2024foundations}. Reinforcement learning has also been turned on code
-as the artifact rather than the medium, discovering algorithms that were then adopted
-\citep{alphatensor2022,alphadev2023}. What changed with language models is who writes the
-program: they now synthesize policies directly \citep{llmguidedsearch2024}, search
-structured domains such as scheduling \citep{diprl2026,prorl2026}, and supply proposals
-that evolutionary selection, uncertainty balancing, diversity preservation, or learned
-teachers then filter \citep{qube2024,hsevo2024,teacherawareheuristic2026,
-heuristicsearch2026,latentheuristicsearch2026,automodsat2025}. A parallel branch writes
-code around a learner rather than as the learner --- reward functions
-\citep{eureka2023,rewarddesignagent2026} and the post-training machinery itself
-\citep{agent2rlbench2026} --- which is what makes ``then let it write the policy'' the next
-question rather than a contrarian one. The closest game-specific systems use
-model-controlled program search \citep{codetoplay2024,kuang2025generative}. In all of
-these the program is a search output: extracted, sampled, or selected from a population. In
-ours it is a maintained artifact, revised in place across a long sequence, which is what
-makes its description length a trajectory rather than a hyperparameter.
+A policy can be an executable program rather than an opaque network, and before language
+models the program was obtained by asking a learner for it --- a sketch filled by policy
+search, a decision tree distilled from a trained network so that it can be verified, a
+latent space of programs made searchable, symbolic controllers recovered directly
+\citep{pirl2018,viper2018,inductivegen2020,leaps2021,symbolicpolicies2021}. The
+representation carries a size--expressiveness trade-off that has since been made formal,
+bounding the size of an optimal programmatic policy, which is the relative of the
+description length this paper measures \citep{programmaticrl2024foundations}. Learning has
+also been aimed at code as the artifact rather than as the medium, discovering algorithms
+that were then adopted \citep{alphatensor2022,alphadev2023}. What changed with language
+models is who writes the program: they synthesize policies directly, search structured
+domains, and supply proposals that evolutionary selection, uncertainty balancing, diversity
+preservation, or learned teachers then filter
+\citep{llmguidedsearch2024,qube2024,hsevo2024,diprl2026,prorl2026,teacherawareheuristic2026,
+heuristicsearch2026,latentheuristicsearch2026,automodsat2025}. A parallel branch writes code
+around a learner rather than as the learner, from reward functions to the post-training
+machinery itself \citep{eureka2023,rewarddesignagent2026,agent2rlbench2026} --- which is
+what makes ``then let it write the policy'' the next question rather than a contrarian one,
+and the closest game-specific systems take it up with model-controlled program search
+\citep{codetoplay2024,kuang2025generative}. In all of these the program is a search output:
+extracted, sampled, or selected from a population. In ours it is a maintained artifact,
+revised in place across a long sequence, which is what makes its description length a
+trajectory rather than a hyperparameter.
 
 \paragraph{Self-evolving agents, and what stops them.}
-An agent can improve without any weight update, and the literature differs mainly in what
-it writes the improvement into. Into natural language: rewritten trajectories, retained
-verbal lessons, distilled deployment rules, and refinement from self-generated feedback
-\citep{echo2025hindsight,reflexion2023,learningonthejob2026,expel2024,selfrefine2023}.
-Into the prompt, evolved as a population \citep{promptbreeder2023}, or into a continuous
-text-gradient signal \citep{textgrad2024}. Into the scaffolding, by searching over agentic
-designs \citep{adas2024}. Into code: FunSearch established the pattern of model-generated
-variants filtered by an external evaluator \citep{funsearch2024}, extended by systems that
-make proposal, mutation, repair, and verification autonomous
-\citep{alphaevolve2025,avo2026}, by coding agents that rewrite themselves
-\citep{stop2023,selfimprovingcodingagent2025,darwingodelmachine2025,mendelgoedel2026}, by
-agents that accumulate a library of executable skills \citep{voyager2023}, and by pipelines
-that run the whole research loop \citep{aiscientist2024,generativeagents2023}. Recent
-benchmarks argue such learning must be measured by transfer and interference rather than
-long-context retrieval \citep{agentcl2026,clbench2026}, and how much of a reported gain
-belongs to the harness rather than the method is itself now measured
-\citep{harnessengineering2026} --- which is why ours is held fixed. Our target is the code
-branch with one artifact rather than a population: experience is not retrieved but written
-into the program, which is what creates the failure mode this paper measures. The mechanism
-is accumulation: revisions leave the program larger and more
+An agent can improve with no weight update at all, and this literature divides by what the
+improvement is written into. Into natural language, as rewritten trajectories, retained
+verbal lessons, distilled deployment rules, or refinement from self-generated feedback
+\citep{selfrefine2023,reflexion2023,expel2024,echo2025hindsight,learningonthejob2026}; into
+the prompt or a text-valued gradient over it \citep{promptbreeder2023,textgrad2024}; into
+the scaffolding, by search over agentic designs \citep{adas2024}; and into code, the branch
+this paper belongs to, where model-generated variants filtered by an external evaluator gave
+way to autonomous proposal and repair, to coding agents that rewrite themselves, to
+libraries of executable skills, and to pipelines running a whole research loop
+\citep{funsearch2024,stop2023,generativeagents2023,voyager2023,alphaevolve2025,
+selfimprovingcodingagent2025,darwingodelmachine2025,aiscientist2024,avo2026,
+mendelgoedel2026}. Alongside these, benchmarks now argue that such learning must be
+measured by transfer and interference rather than long-context retrieval, and that a
+reported gain must be separated from the harness that produced it
+\citep{agentcl2026,clbench2026,harnessengineering2026} --- which is why ours is held fixed.
+What distinguishes our case within the code branch is one artifact instead of a population:
+experience is not retrieved but written into the program, which is what creates the failure
+mode this paper measures. The mechanism is accumulation: revisions leave the program larger and more
 interconnected \citep{mccabe1976complexity}, and each further revision must place an edit
 without disturbing what already works, until past some size placement fails more often
 than it succeeds --- not because the paradigm ran out of things to express, but because the
