@@ -1,0 +1,81 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+We asked whether a coding agent can make a reproducible, independently verified improvement to a real
+AI system under a controlled budget, and on ten frozen research repositories the answer is a qualified
+yes: agents exceed the repository's own committed recipe in $62.7\%$ of scored configurations and hold
+that margin against an agent-free replay of it, but on the tasks whose recipe is genuinely tuned they
+rarely win at all. They recover competent defaults far more often than they surpass them. A Claude~5 variant leads every aggregate we report; we decline to read that as a
+model ranking, for reasons the bounds below give.
+
+The sharper findings are about what the agents did and about the instrument, not about who won. The record says that what most distinguishes these systems is not search effort but
+\emph{where each locates the problem} --- a diagnosis fixed in the opening minutes, from reading
+rather than from evidence, which on the two tasks where the frames visibly diverge tracks the artifact
+more closely than the effort setting does. Where a repository admits a route its authors did not
+intend, nearly every run finds it; what separates the artifacts is what each decided that route was
+for. Reasoning effort moves all of this and moves the score not at all: it buys persistence and
+elaboration rather than ideas, and on the one task where it visibly changed a decision it made the
+strongest system \emph{more} committed to the method it was handed. Alongside that, the apparatus
+moves the reported number by more than adjacent mid-table systems differ from one another --- the
+checkpoint rule alone by nearly eight points, and on two tasks the repository's own metric stops
+measuring the intended objective at the top of its range, inherited from the upstream design rather
+than introduced by us and reported because a benchmark built on real repositories will keep meeting it.
+
+Four recommendations follow. Score against a reference that is measured rather than asserted, and report which reference a win is
+read against, because the same artifact can win or lose depending on it. Make validity instrumentation
+per-task, blocking, and calibrated against a reference distribution rather than advisory. State in
+each task contract which methods answer its question, since a scalar metric cannot by itself tell a
+better recipe from a different question answered well. And report how the agents worked, not only whether
+they won. A score cannot show that two systems on the same harness disagreed about what the problem
+was before either ran an experiment, that the winning runs on a task were the ones that changed their
+minds in the first ten minutes, or that a larger reasoning budget bought persistence and code volume
+while buying two more distinct experiments and no additional win rate. Those are properties of the systems under test, they are
+recoverable only from the trajectory record, and they were more stable across our suite than the win
+rates were.
+
+\paragraph{What bounds these claims.}
+\label{sec:limitations}
+\textbf{Neither recipe reference is an expert upper bound}: both are the repository's own committed
+default, so beating one means beating what ships, not matching a tuned human baseline. \textbf{Two of
+ten tasks carry a metric qualification} (\S\ref{sec:validity}); both metrics are the ones the upstream
+repositories optimize, and repairing either mid-experiment would have invalidated every run already
+measured, so both stay in the suite with the qualification attached and an eight-task reading beside
+every aggregate. \textbf{Run-to-run variance is not quantified}: each cell contributes one scored run,
+so we claim no significance for per-task or per-system differences, including the ordering of the
+three GPT-5.6 variants. What we do quantify is the \emph{evaluator's} sampling error, a different and
+smaller quantity (\S\ref{sec:noise}); a replicated cell would bound the first and nothing here does.
+\textbf{The trajectory classification is machine-produced and author-reviewed}: the exploration-unit
+segmentation and the boundary audit come from a language-model pipeline reading the logs, checked by
+us against them but with no measured inter-annotator agreement, so \S\ref{sec:frames} and
+\S\ref{sec:convergent} rest on a different evidential base from the patch census and the scores.
+\textbf{Ten tasks are not a representative sample} of AI research: they are the repositories we could
+freeze, budget and evaluate reproducibly under a half-day single-GPU ceiling, and the suite
+over-represents post-training. \textbf{The grids are not budget-matched across harnesses}, so Kimi~K3's
+ten configurations and any Codex-versus-Claude-Code gap cannot carry a reliability claim on their own.
+\textbf{Training-set contamination is closed structurally on some tasks and by contract on the rest}:
+two packages withhold the deciding asset from exploration and retraining outright, a third forbids and
+halts on hidden-evaluation use, and elsewhere the separation is the one \S\ref{sec:benchmark} states, of
+access and timing. We did not run a decontamination check over agent-written data-generation code,
+which is the residual path we would look at first.
+
+We release every artifact, receipt, and audit
+record so that each number here can be traced to the run that produced it.
+
+
+\section{Contributions and Acknowledgements}
+\label{sec:contributions}
+
+The contributors' names are sorted in alphabetical order of the last name.
+
+\paragraph{Project Lead}
+
+\paragraph{Core Contributors}
+
+\paragraph{Contributors}
+
+\paragraph{Team Management}
+
+\vspace{4pt}
+\noindent Corresponding to \todoitem{corresponding author}.
+
+\paragraph{Acknowledgements.} This project is funded and supported by Navers Lab, Einsia.AI.

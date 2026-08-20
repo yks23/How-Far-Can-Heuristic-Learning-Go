@@ -1,0 +1,37 @@
+\begin{table}[t]
+\centering
+\caption{\textbf{Outcome of all 290 configurations.} A configuration is scored when its formal
+replay produced at least one checkpoint the frozen evaluator accepted; $93.4\%$ did. The three
+unscored outcomes have different sources and only one of them measures an agent.
+\emph{Source-unavailable} is a limit of our patch extraction and concentrates at low reasoning
+effort; \emph{terminal without a usable result} is the agent's own run failing and is flat across
+effort (Table~\ref{tab:effort}); the single \emph{recipe failure} is a candidate configuration
+that exhausted GPU memory. Only the second belongs in a comparison between systems.}
+\label{tab:lifecycle}
+\small
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{llrrl}
+\toprule
+\textbf{\texttt{formal\_state}} & \textbf{Scored?} & \textbf{$n$} & \textbf{share} & \textbf{Meaning} \\
+\midrule
+\texttt{completed}          & yes & 271 & 93.4\% & at least one checkpoint scored; enters all aggregates \\
+\texttt{terminal}           & no  & 10  & 3.4\%  & run reached a terminal state with no scorable checkpoint \\
+\texttt{source-unavailable} & no  & 8   & 2.8\%  & run finished; no source-only patch could be extracted \\
+\texttt{recipe-failure}     & no  & 1   & 0.3\%  & candidate configuration exhausted GPU memory \\
+\midrule
+\textbf{Total}              &     & \textbf{290} & \textbf{100\%} & 792 scored artifacts \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\vspace{2pt}
+{\footnotesize Read outcomes from \texttt{formal\_state} alone. The adjacent
+\texttt{failure\_class} field is populated on every record including the 271 successes, so it
+does not identify failures on its own; Appendix~\ref{app:record} documents this. All 18
+extraction and run failures fall on the Codex grid; the Claude grid contributes the one recipe
+failure and Kimi K3 none. Read that as a difference in pool size rather than in reliability ---
+Kimi K3 has one cell per task, and ten runs cannot support such a claim. Valid
+checkpoints among the scored: three for 256 configurations, two for 9, one for 6. All 271
+scored configurations belong to a task with a shipped recipe reference; 214 belong to one with a
+comparable starting checkpoint and 192 to one with a budget-matched replay, which are the three
+pooled denominators used throughout.}
+\end{table}

@@ -1,0 +1,187 @@
+\section{Results}
+\label{sec:experiments}
+
+The 290 configurations leave three kinds of record, and this section reads each in turn: the scored
+artifacts say what the agents \emph{achieved} (\S\ref{sec:results}), the submitted patches and audited
+trajectories say what they \emph{did} (\S\ref{sec:behavior}), and the apparatus itself leaves a record
+of how far its own conventions move the number (\S\ref{sec:analysis}) --- far enough that no result in
+the first part can be read without the third.
+
+Throughout, a configuration's score is the best of its up to three retained checkpoints under the
+task's own metric direction: a harness convention fixed before any run, though what goes into the
+three slots is the agent's to choose, and one worth $7.8$ points of pooled win rate on its own
+(\S\ref{sec:ckpt}). ``Beat'' means strictly better than the reference, and we never average a raw
+score across tasks because the ten metrics live in different units.
+
+\subsection{What the agents achieve}
+\label{sec:results}
+
+We read the 792 scored artifacts three ways: two \emph{reference-free} aggregates that give the
+standings among systems, a lifecycle reading of how many configurations reach a scored artifact at
+all, and a reading against the recipe each repository ships, which is the one that says whether the
+work is worth adopting.
+
+\subsubsection{Standings: two reference-free aggregates}
+\label{sec:standings}
+
+Because the ten metrics are incommensurable and each reference is contestable, we rank systems by two
+aggregates that read \emph{no} reference at all. On each task, the three best distinct configuration
+scores observed across the six systems set its gold, silver and bronze thresholds; a system earns
+$1.00/0.67/0.33$ for its best configuration reaching one, and its \emph{medal score} is the mean of
+that credit over the ten tasks. Its \emph{average rank} is the mean of its within-task competition
+rank, with a system that scores nothing on a task placed last. Neither construction divides by a start, a recipe, or a published
+number, so both are defined identically on all ten tasks --- which is exactly why they, and not the
+reference-relative rates of \S\ref{sec:pertask}, carry the standings.
+
+Ordering ten tasks this way requires one scalar per artifact, and unlearning does not publish one:
+its evaluation reports two components, and its task package forbids collapsing them into a proxy that
+replaces them. The same package, however, supplies an internal scalar and designates it explicitly
+\emph{for lifecycle ordering}. We follow that division. The aggregates here order artifacts, so they
+use that scalar; the reference-relative rate of \S\ref{sec:pertask} reports an outcome, so it uses the
+two components under dominance and never combines them (Appendix~\ref{app:unlearning}). Where the two
+readings disagree they are answering different questions, and we report both rather than picking one.
+
+Two of the ten tasks carry a qualification worth stating before any aggregate is read. On diffusion
+fine-tuning the reward predictor keeps rising past the range its training labels span, so a higher
+score there need not be a better image; on agentic RL the top scores come from imitating an optimal
+solver the repository itself ships, so a higher score there separates recipe classes rather than
+degrees of training. Both metrics are the repositories' own, and \S\ref{sec:validity} gives the
+evidence. Every aggregate below is therefore reported twice: over all ten tasks, and over the eight
+that remain when these two are removed. Code RL shows what a reference-free aggregate does and does not say. Its
+gold threshold is $0.1328$ --- the best configuration in the field, which lands on exactly the shipped
+recipe's own score of $17/128$ --- so the field tops out level with the repository and never above it.
+Podium credit there records which systems reached that ceiling; the reference-relative rate of
+\S\ref{sec:pertask} records that none cleared it, $0/28$, since ``beat'' means strictly better. Both
+readings are correct because they answer different questions, and this is the task where the
+difference is starkest.
+
+\textbf{Claude Opus~5 leads both aggregates, though not by a separable margin}
+(Table~\ref{tab:medal}): a medal score of $0.833$ and an average rank of $1.40$, a medal on nine of the
+ten tasks and the top score on eight. Comparing Opus~5 against GPT-5.6 Sol task by task on each
+system's best score gives five tasks to Opus, two to Sol and three ties --- a split a sign test cannot
+distinguish from chance (one-sided $p=0.23$), on a design with no replication to set a noise floor
+against. GPT-5.6 Sol is second on half that credit ($0.500$, rank $2.30$) and GPT-5.6 Terra third
+($0.268$, $3.50$); Claude Sonnet~5 and GPT-5.6 Luna are close below them and exchange fourth and fifth
+place depending on which aggregate is read ($0.167$/$0.133$, ranks $4.30$/$4.20$), and Kimi~K3 reaches
+no medal. The eight-task columns leave the ranking intact, though two of Opus~5's eight golds sit on
+the two qualified tasks.
+
+\textbf{The ordering below first place is partly a statement about grid depth.} The three grids expose
+different numbers of reasoning-effort levels --- six on Codex, five on Claude Code, one on Kimi~K3 ---
+so a system with more levels gets more attempts at each podium. Restricting the pool to the single
+\texttt{max} level every system ran leaves Claude Opus~5 first (medal $0.633$) but rearranges the field
+beneath it: Claude Sonnet~5 rises to $0.401$ and Kimi~K3, which takes no medal at all in the full pool,
+reaches $0.333$ --- ahead of GPT-5.6 Terra and Luna, though still behind Sol at $0.433$. Dropping only Codex's extra \texttt{none}
+level, by contrast, leaves every medal score unchanged, so the effect is Kimi's single cell rather than
+Codex's deeper grid. We report the full pool because it is the comparison the suite was run to
+make, and this restriction because the full pool cannot separate a system from the number of attempts
+it was given.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.88\linewidth]{fig_models}
+\caption{\textbf{Model capability at a glance.} Each cell gives a system's rank ($1$--$6$) on a task,
+shaded by the medal credit that rank actually earned
+rather than by the rank itself: thresholds are set by the three best distinct \emph{configuration}
+scores, which one system may hold several of, so a rank of three need not be a bronze and an unshaded
+cell is a rank without a podium. Medal score is the bar at right, and rows are ordered by it. Claude Opus~5 ranks first on eight of the ten tasks and takes a podium on
+nine; the four systems below it are separated mostly by single tasks.}
+\label{fig:models}
+\end{figure*}
+
+\input{Tables/TabMedal}
+
+\subsubsection{Lifecycle survival}
+\label{sec:lifecycle}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.75\linewidth]{fig_lifecycle}
+\caption{\textbf{Outcomes by system, each normalized to $100\%$.} Every bar is one system's full set
+of configurations ($n$ at right), split into those that beat the shipped recipe (dark), produced a
+scored artifact that did not beat it (light), or produced no scored artifact at all (warm grey).
+Normalizing lets the mix be compared across systems of unequal size --- Kimi~K3's ten runs included.
+Between adjacent systems the mix differs by less than the checkpoint
+convention alone is worth (\S\ref{sec:analysis}), though across the whole field it spans $50\%$ to
+$72\%$; no-artifact failures stay in the single digits to
+low teens and fall almost entirely on the Codex grid ($18$ of the $19$).
+Absolute survival is high --- 271 of 290 overall, 792 scored artifacts (\S\ref{sec:lifecycle}).}
+\label{fig:lifecycle}
+\end{figure}
+
+Of the 290 configurations, 282 reach a formal terminal state and 271 produce at least one scored
+artifact, for 792 in total (Figure~\ref{fig:lifecycle}).
+
+\paragraph{What fails, and why.}
+\label{sec:failures}
+Nineteen configurations do not reach a scored artifact, and the failure modes are different in kind.
+Eight are rejected at source extraction: our extractor could not recover a usable source-only patch,
+so no formal run began. These are all on the Codex grid and seven of the eight sit at its two lowest
+effort levels --- \emph{a low reasoning budget mostly produces work the harness cannot carry across
+the visibility boundary, not work that trains and fails}, which is why the completion climb of
+\S\ref{sec:effort} is a property of our tooling rather than of capability. The other eleven retrain
+and terminate but leave no scorable checkpoint. A third failure is visible only inside a task: on
+agentic RL one configuration scores exactly $0.000$ on all 512 evaluation boards at every one of its
+three retained checkpoints, and two further configurations collapse to $0.000$ at their final
+checkpoint. The zero-scoring configuration's logs show a response-format collapse --- the policy
+emits an opening reasoning tag and then stops, so no action decodes and the board never advances ---
+induced by a recipe that rewrote the prompt layer. That zero is a correct measurement of a policy
+which has stopped producing parseable actions, not a training dynamic, and it is the reason a raw
+mean over a task's configurations can be badly misleading.
+
+\paragraph{Survival is high and even across systems.} Every Claude Opus~5 and every Kimi~K3 configuration produces an
+artifact, and the Codex grid ranges from $87\%$ to $97\%$ (Table~\ref{tab:systems});
+Appendix~\ref{app:lifegrid} resolves the outcome mix to each \emph{(model, effort)} cell. Because each
+artifact is retrained from a pinned commit and scored by an evaluator the agent never writes to, a
+surviving configuration is a result another party can reproduce, not a number the agent reports about
+itself.
+
+\input{Tables/TabSystems}
+
+\subsubsection{Reading each task against its own references}
+\label{sec:pertask}
+
+The medal and rank aggregates above cover all ten tasks and read no reference. A different question ---
+is a given artifact worth adopting? --- is asked against the reference the task itself supplies: the repository's
+\emph{shipped recipe} (\S\ref{sec:setup}). Every task has one, so this is the reading that covers the
+whole scored corpus; because the ten metrics live in different units we pool rates rather than average
+scores, and we report the per-task rates beside the pooled one throughout
+(Figure~\ref{fig:capability}).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.78\linewidth]{fig_capability}
+\caption{\textbf{Per-task win rates against both recipe references.} Share of a task's successful
+configurations that beat the shipped recipe $\rshort$ (orange) and the budget-matched twelve-hour
+replay $\rlong$ (green, where it exists), under the task's own metric direction. Unlearning is scored
+by dominance on its two official components rather than on a scalar (Appendix~\ref{app:unlearning}). Read on best checkpoints throughout, the replay is the \emph{harder} reference on three of the six
+tasks that carry both (DDPO, DiGress, OPD) and the easier one on two (DPO, OpenR1), so the pooled rate barely moves --- a net seven configurations out of $164$,
+though $69$ change verdict in one direction or the other --- while which measurement of the recipe one uses changes
+the verdict in both directions (\S\ref{sec:validity}). Beating the shipped recipe is selective: the
+per-task rates run from $0/28$ on code RL to $28/28$ on weight averaging, and the pooled figure is an
+average over that spread rather than a description of any task in it.}
+\label{fig:capability}
+\end{figure}
+
+We score improvement against the reference the question is actually about: the recipe each
+repository itself ships. The frozen starting checkpoint is listed per task in Table~\ref{tab:tasks} but
+carries no pooled rate. Two tasks disclaim it outright --- one-shot pruning requires removing $70\%$ of
+the weights it is handed, so no compliant configuration can match its own start, and graph generation's
+start is recorded by its own task package as an orientation figure measured under a different container
+image --- and elsewhere the start is an undertrained artifact that twelve hours of retraining clears
+almost by construction. A rate against it would measure the gap each task opened, not the agent.
+
+\textbf{Against the shipped recipe, the picture splits by task.} Every task publishes a recipe, so
+this comparison runs over the whole scored corpus: $170$ of $271$ configurations ($62.7\%$) beat it.
+By task the median configuration wins on seven and loses on three, and all three losses are
+tasks whose committed recipe is itself a strong, separately reported configuration: preference
+optimization ($7/29$), code RL ($0/28$) and reward modelling ($9/29$). Two of the wins are softer than the pooled figure makes them appear: weight
+averaging ships as its recipe the naive uniform average of all $72$ ingredients, and one-shot pruning
+ships a reference nearly five times worse in perplexity than the dense artifact it prunes. Together
+those two supply $55$ of the $170$ wins from $56$ configurations; removing them costs $9.2$ points. Two further tasks, diffusion fine-tuning and agentic RL, are the ones whose metric
+\S\ref{sec:validity} flags; removing those instead costs $5.0$ points. A third softness is not visible
+in any count: on on-policy distillation, where the rate reads $14/25$, not one of those wins
+exceeds twice the evaluator's standard error, and on weight averaging $1$ of $28$ does
+(\S\ref{sec:noise}). The reading the artifacts support is therefore narrower than ``agents improve AI systems'':
+under a fixed twelve-hour budget, agents reliably recover a competent default and exceed a strong one
+only on a minority of tasks --- the same story the reference-free standings tell.

@@ -1,0 +1,45 @@
+\begin{table}[t]
+\centering
+\caption{\textbf{Reasoning effort buys a scorable artifact, not a better one.} The GPT grid, 30
+configurations per level (3 variants $\times$ 10 tasks). \textbf{Completion} rises with effort
+and is driven by \texttt{source\_rejected} --- our extractor failing to recover a source-only
+patch --- with 7 of those 8 failures at the two lowest levels. \textbf{Outcome given completion}
+is not ordered by effort on either reading: the win rate against $\rshort$ peaks at
+\texttt{medium} and bottoms at \texttt{high}, and every level's median margin falls in a band
+1.4 points wide. Median formal-replay hours are flat against the 12\,h ceiling, so effort is not
+buying compute either.}
+\label{tab:effort}
+\small
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lrrrrrrr}
+\toprule
+& \multicolumn{4}{c}{\textbf{Completion}} & \multicolumn{3}{c}{\textbf{Outcome, given completion}} \\
+\cmidrule(lr){2-5}\cmidrule(lr){6-8}
+\textbf{Effort} & \textbf{scored} & \textbf{src.\ rej.} & \textbf{behav.} & \textbf{hours} & \textbf{beat $\rshort$} & \textbf{rate} & \textbf{med.\ $\Delta\rshort$} \\
+\midrule
+\texttt{none}   & 24/30 & 4 & 2 & 11.08 & 12/21 & 57.1\% & $+0.8\%$ \\
+\texttt{low}    & 24/30 & 3 & 3 & 11.50 & 12/22 & 54.5\% & $+0.3\%$ \\
+\texttt{medium} & 28/30 & 0 & 2 & 11.58 & 17/25 & \textbf{68.0\%} & $+1.3\%$ \\
+\texttt{high}   & 28/30 & 1 & 1 & 11.52 & 13/25 & \emph{52.0\%} & $+1.1\%$ \\
+\texttt{xhigh}  & 29/30 & 0 & 1 & 11.57 & 17/26 & 65.4\% & $+1.2\%$ \\
+\texttt{max}    & 29/30 & 0 & 1 & 11.56 & 17/26 & 65.4\% & $+1.6\%$ \\
+\midrule
+\texttt{none}+\texttt{low}       & 48/60 & 7 & 5 & --- & 24/43 & 55.8\% & $+0.3\%$ \\
+\texttt{medium}--\texttt{max}    & 114/120 & 1 & 5 & --- & 64/102 & 62.7\% & $+1.2\%$ \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\vspace{2pt}
+{\footnotesize \textbf{med.\ $\Delta\rshort$} is the median per-configuration relative change
+against the short recipe, in units of that recipe's own score, over the nine tasks that publish
+one; this is why its denominator sits below the scored count. One configuration ties the recipe
+exactly (\texttt{medium}, code RL) and is not counted as a win. The outcome columns are a
+survivor subset and the levels are not strictly like-for-like: because a configuration enters
+only if it produced a scorable artifact, the cells hold 21--26 configurations and their task
+mixes differ, the two lowest levels most --- \texttt{none} is short two graph-diffusion
+configurations and one each on weight averaging, pruning and distillation, \texttt{low} short two
+on distillation. The comparison across levels is therefore approximate, which is the second
+reason not to read a single cell as a normalized score. \texttt{behav.} is the \texttt{behavior}
+failure class, flat across levels; the two failure classes together account for all 18 unscored
+configurations.}
+\end{table}

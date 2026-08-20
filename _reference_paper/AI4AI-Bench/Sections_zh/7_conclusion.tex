@@ -1,0 +1,17 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+Recursive self-improvement compounds through the algorithmic link, and \ai{} is built to measure that
+link on its own: ten frozen research repositories, each asking an agent to improve the training
+algorithm it already applies to its own model, with four hours to write code, twelve to run what was
+written, and an evaluation the agent never sees. Across 29 configurations of six systems on all ten
+tasks the mean score is $0.166$ on a scale where the algorithm the repository already ships is $0.1$
+and the task optimum is $1.0$, and the best system reaches $0.250$. The submissions say where the
+rest of that distance went: of the 263 that changed anything, 141 never touch how the model learns at
+all, and the 122 that do average $0.226$ against $0.126$ for the rest --- the algorithmic layer is
+where the distance is closed, and most submissions never go to it. More reasoning effort mostly buys
+the willingness to go, taking that minority from $8\%$ of submissions to $64\%$ and the mean score
+from $0.094$ to $0.196$, which still leaves the strongest setting a tenth of the way past the
+algorithm it started from. What today's agents do at the algorithmic link, then, is recover a competent default
+rather than design past one; whether that changes is the measurement this benchmark exists to keep
+taking.

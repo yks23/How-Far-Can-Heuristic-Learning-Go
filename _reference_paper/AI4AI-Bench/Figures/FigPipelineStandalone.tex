@@ -1,0 +1,29 @@
+% Standalone one-page preview for the live FigPipeline figure.
+% Build from the paper root on lj-gpu1:
+%   pdflatex -interaction=nonstopmode -halt-on-error \
+%     -jobname=FigPipelineStandalone Figures/FigPipelineStandalone.tex
+\PassOptionsToPackage{table,dvipsnames}{xcolor}
+\documentclass[]{style/company_light}
+
+\geometry{paperwidth=17.51cm,paperheight=9.40cm,
+  left=0.50cm,right=0.50cm,top=0.50cm,bottom=0.50cm,noheadfoot}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+
+% Keep the figure source unchanged while suppressing float placement. Caption
+% handling still sees a figure environment through \@captype.
+\makeatletter
+\renewenvironment{figure*}[1][]{%
+  \par\noindent\begin{minipage}{\textwidth}\def\@captype{figure}%
+}{%
+  \end{minipage}\par
+}
+\makeatother
+
+\begin{document}
+\input{Figures/FigPipeline}
+\end{document}

@@ -1,0 +1,36 @@
+% The main task table for the rewritten Section 2. Starting models come from
+% results/ai4ai_results.json (tasks[*].starting_artifact); metrics and directions
+% from the final experiment sheet (build/lark/final_table.csv, rows 2-4). No
+% reference column: baselines are defined in \S\ref{sec:baselines} and reported
+% with the results, not here.
+\begin{table}[t]
+\centering
+\caption{\textbf{The ten \ai{} tasks.} Each freezes a research repository and asks an agent to
+improve the training algorithm that repository applies to its own model. \textbf{Starting model} is
+the model $a_0$ the procedure begins with, and \textbf{Evaluation metric} the quantity a fixed
+evaluator computes afterwards, with its direction. Between them the ten cover ten families of
+training algorithm rather than ten instances of one, and their metrics are incommensurable.
+$^{\dagger}$Weight averaging and one-shot pruning
+do no training, and are executed once rather than trained to a horizon.}
+\label{tab:tasks}
+\small
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{llll}
+\toprule
+\textbf{Task} & \textbf{Algorithm family} & \textbf{Starting model} & \textbf{Evaluation metric} \\
+\midrule
+OpenR1     & supervised fine-tuning        & Qwen2.5-Coder-1.5B-Instruct   & LiveCodeBench $\uparrow$ \\
+RAGEN      & multi-turn agentic RL         & Qwen2.5-3B-Instruct           & held-out solve rate $\uparrow$ \\
+OPD        & on-policy distillation        & R1-Distill-Qwen-1.5B          & AIME 24/25 $\uparrow$ \\
+BTRM       & Bradley--Terry reward model   & Mistral-7B-Instruct-v0.2      & RewardBench $\uparrow$ \\
+DPO        & preference optimization       & merged Zephyr/Mistral-7B      & IFEval strict $\uparrow$ \\
+DDPO       & diffusion RL                  & Stable Diffusion v1.5         & aesthetic score $\uparrow$ \\
+NPO        & machine unlearning            & Llama-3.2-1B-Instruct         & balanced score $\uparrow$ \\
+DiGress    & discrete graph diffusion      & QM9 graph diffusion model     & test NLL $\downarrow$ \\
+\midrule
+Model Soup$^{\dagger}$ & weight averaging  & 72 CLIP checkpoints           & ImageNet-V2 top-1 $\uparrow$ \\
+OWL$^{\dagger}$        & one-shot pruning  & OPT-6.7B dense                & WikiText-2 perplexity $\downarrow$ \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

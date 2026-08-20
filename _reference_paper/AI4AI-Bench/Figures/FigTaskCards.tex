@@ -1,0 +1,26 @@
+% FigTaskCards.tex -- the ten task cards, one per AI4AI-Bench task.
+%
+% Cards are generated at 3.2x2.4in (make_task_cards.py). Laid out 5-across in two
+% rows: a wide banner (~2in tall) that sits in the body without taking a full
+% page. At 0.188\linewidth each card is ~1.22in wide, so the body text renders
+% small -- the cards work as a task-suite gestalt (titles + schematics legible),
+% with Table~\ref{tab:tasks} carrying the precise references and metrics.
+% Card order matches Table~\ref{tab:tasks}.
+\newcommand{\aicard}[1]{%
+  \includegraphics[width=0.188\linewidth]{Figures/cards/fig_card_#1.pdf}}
+
+\begin{figure*}[t]
+  \centering
+  \aicard{ddpo}\hfill\aicard{digress}\hfill\aicard{dpo}\hfill\aicard{soup}\hfill\aicard{opd}\\[4pt]
+  \aicard{openr1}\hfill\aicard{npo}\hfill\aicard{owl}\hfill\aicard{ragen}\hfill\aicard{btrm}
+  \caption{\textbf{The ten \ai{} tasks}, in the order of Table~\ref{tab:tasks}. Each card names the
+  repository's object of study, the artifact the agent is handed, and the final metric with its
+  direction on the \textsc{eval} ribbon --- the metric a frozen evaluator computes after the
+  twelve-hour replay, which the agent never sees during exploration. The suite is ten \emph{distinct}
+  research problems --- generative fine-tuning, language-model post-training, reward modeling, machine
+  unlearning, pruning, weight averaging and agentic RL --- rather than ten variants of one, which is
+  why the ten metrics cannot be averaged in their own units (\S\ref{sec:results}); two of the ten
+  minimize, so no card carries a shared direction arrow. Precise references and sample counts are in
+  Table~\ref{tab:tasks}.}
+  \label{fig:task_cards}
+\end{figure*}

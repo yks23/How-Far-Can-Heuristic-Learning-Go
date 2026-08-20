@@ -1,0 +1,269 @@
+\subsection{What the agents do}
+\label{sec:behavior}
+
+The reading so far describes outcomes. This one describes the work behind them, which is the part of
+an AI-improvement benchmark that does not depend on which reference one divides by. Every
+configuration leaves four things the apparatus records without the agent's cooperation: the directories it created while probing the fast metric, the
+turns and shell commands its harness took, the source-only patch it finally submitted, and the audited
+trajectory the pipeline segments into separately motivated exploration units. Because every configuration is backed by exactly one patch,
+the corpus is a \emph{census} of submitted recipes rather than a sample, and the reading below is a
+count rather than an estimate.
+
+\subsubsection{What 272 submitted recipes change}
+\label{sec:patches}
+
+The census covers the two complete grids for which we hold the submitted diffs: the $180$ Codex and
+$100$ Claude Code configurations. Eight of those submitted an empty patch and are excluded here (they
+are the source-extraction failures of \S\ref{sec:failures}), leaving $272$ classified patches; Kimi~K3's
+ten are outside the classified corpus. We swept each patch's \emph{added} lines for method terms
+grouped into eight families, ordered by how much of the training procedure each family replaces
+(Table~\ref{tab:behaviors}). The sweep was written to over-generate: it includes terms expected to be
+absent, and two such controls return nothing across all $272$ patches, which is what makes the
+positive counts readable. Unchanged upstream code never contributes a match, and a term is counted
+once per patch however often it recurs.
+
+\textbf{Across the corpus most patches manage the run --- but that split is a property of the
+budget, not of the suite.} Budget, checkpointing or logging changes appear in $253$ of $272$ patches
+and an optimization knob in $195$, with selection or averaging in $105$ and a capacity or
+adapter change in $73$, while $87$ operate on the objective, $66$ add a source of supervision the
+recipe did not have, $23$ substitute the learning rule outright and $21$ touch the
+data. Taking those four method-level families together, $122$ of $272$ patches ($44.9\%$) change something about how learning
+happens. Of the rest, $141$ change only how the run is managed; the remaining $9$ match no family the
+sweep detects at all. \emph{That pooled
+ratio should not be read as a general statement about coding agents}: it is an average over regimes
+that differ by an order of magnitude. At the two lowest Codex effort levels only $3$ of $53$ patches
+reach the method level; at \texttt{xhigh} and \texttt{max} $36$ of $60$ do, and $46$ of Claude
+Opus~5's $50$ configurations do at every level that harness exposes. The pooled census describes this
+corpus; \S\ref{sec:effort} describes what actually drives it. The families are not exclusive --- the median patch matches
+$3.03$ of them on average and edits three files --- so a patch that adds a distillation phase also raises the
+learning rate for it.
+
+\textbf{The rare families are task-conditioned rather than thinly spread.} All $23$ learning-rule
+substitutions fall on four tasks, and added supervision concentrates on the tasks that expose a
+stronger signal to learn from. This is the strongest evidence in the corpus that agents read each
+repository rather than apply a template: a template would spread the ambitious families evenly and
+it does not. \textbf{And no patch touches the scoring path}: across all $272$, not one modifies a file
+whose name matches an evaluator, scorer, grader or judge module, so the provenance boundary of
+\S\ref{sec:benchmark} is a measured property of this corpus and not only a design intent.
+
+A per-run audit says the same from the other side, with the caveat that it is
+machine-produced and author-reviewed rather than independently adjudicated (\S\ref{sec:frames}). Every
+configuration is classified on nine fixed scopes, and on the three that decide whether a result is
+attributable to the recipe at all the corpus is unanimous: \textbf{across all $290$ configurations, not
+one fetched external data, reached the network, or introduced a model the task did not supply.} Reads of the fixed
+dataset and of the starting weights are clean but for a handful the audit marks \emph{suspected} or
+\emph{inconclusive} rather than violating, and no configuration is found to have carried trained state
+forward from exploration into its submission. On the scopes that govern provenance, then, nothing in this corpus supports a
+picture of agents carrying trained state across the visibility boundary.
+
+\input{Tables/TabBehaviors}
+
+\subsubsection{Reasoning effort buys exploration and ambition, not score}
+\label{sec:effort}
+
+Holding the task suite and the harness fixed and sweeping the Codex reasoning-effort budget isolates
+what effort actually changes (Figure~\ref{fig:effort}). It changes a great deal, and almost none of
+it is the result.
+
+\textbf{First, effort buys persistence.} The single largest effect is not on any measure of quality
+but on whether the agent keeps working at all: the median configuration at \texttt{none} submits with
+$88\%$ of its four-hour window unspent --- it stops after roughly half an hour --- while at
+\texttt{max} it uses $96\%$ of the window. Budget consumed rises monotonically across the six levels
+($12\%$ to $96\%$), and over the whole suite $61$ of $290$ configurations hand in with more than half
+the window unused.
+
+\textbf{Second, effort buys elaboration --- but barely more ideas.} Over the same sweep the median
+configuration goes from $4$ to $16.5$ evaluation directories left behind ($4.1\times$), from $153$ to
+$733$ agent turns ($4.8\times$), and from a patch that adds $11.5$ lines to one that adds $228$
+($19.8\times$), while exploration cost rises $26$-fold and output tokens about ten-fold. Yet the number
+of \emph{distinct} experiments barely moves. Reading the audited trajectory record, which segments each
+run into separately motivated exploration units, the median Codex configuration runs $5$ of them at
+\texttt{none} and $7$ at \texttt{max} --- a factor of $1.4$ against the $4.1$ and $19.8$ above. A
+twenty-fold larger patch is not twenty times more hypotheses; it is a comparable number of hypotheses
+carrying far more machinery.
+
+\textbf{Ambition scales with it.} Reading the four method-level families as one class gives a single
+number per cell, and it rises from $2$ of the $26$ non-empty Codex patches at \texttt{none} to $18$ of $30$ at
+\texttt{xhigh} and \texttt{max} --- a $7.8$-fold rise on matched denominators, visible inside GPT-5.6 Sol and
+Terra separately and not only in the pool (Table~\ref{tab:behaviors}, lower panel). More reasoning budget does not merely make an agent try more configurations of the same
+kind; it makes it attempt a different kind of change.
+
+\textbf{And the score does not move.} Across the sweep the win rate over the
+shipped recipe stays inside a narrow band --- $57\%$ at \texttt{none}, a peak of $68\%$ at \texttt{medium}, a trough of
+$52\%$ at \texttt{high}, and $65\%$ at the top --- with no trend, and the formal replay is fixed at
+$\sim$$11.5$ hours at every level so the compute behind each artifact is constant. Task completion
+does rise, from $24/30$ to $29/30$, but for an extraction reason rather than a capability one
+(\S\ref{sec:failures}). \textbf{Eight times the time at the desk, nineteen-fold more edited lines and nearly eight times as many
+method-level attempts buy nothing measurable in the artifact.} Nor does the persistence pay off on its
+own terms: configurations that consume more than three quarters of their window beat the recipe
+$62\%$ of the time and those that hand in with over a quarter unspent beat it $64\%$. This is the paper's sharpest behavioural finding,
+and it is not a statement about one model: it holds across all three GPT-5.6 variants.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig_effort}
+\caption{\textbf{What reasoning effort buys, on the Codex grid (30 configurations per level).} Every
+quantity is a median shown relative to the lowest effort. As the reasoning budget rises from
+\texttt{none} to \texttt{max}, the agent's exploration cost climbs about $26\times$, the number of
+probe experiments it runs about $4\times$, and the lines its patch adds about $20\times$ --- while the
+win rate over the shipped recipe (bold) never leaves a narrow band around its starting value and
+peaks at \texttt{medium}, not at the top. Task completion also rises over the same sweep
+($80\%\!\rightarrow\!97\%$), but for an extraction reason (\S\ref{sec:failures}) rather than
+capability, and formal retraining is fixed at $\sim$$11.5$ hours per level. Effort buys activity and
+ambition, not a better result.}
+\label{fig:effort}
+\end{figure}
+
+\subsubsection{The harness shapes the search}
+\label{sec:footprints}
+
+The two harnesses produce recognisably different work from comparable models, which is the clearest
+reason a cross-harness comparison mixes model with scaffold (\S\ref{sec:standings}).
+
+\textbf{Claude Code starts where Codex ends.} Claude Opus~5 reaches the method level in $46$ of its
+$50$ configurations, and it is already at $10$ of $10$ at \texttt{low}, the lowest effort that
+harness exposes --- the ceiling the Codex grid needs its top two effort levels to approach. Claude
+Sonnet~5 sits at $23$ of $50$ and shows no trend in effort either. Across the Codex grid the same
+count is $23$ of $60$ for Sol, $17$ for Terra and $13$ for Luna.
+
+\textbf{The gap holds on every task, and narrows only where the task hands out a method.} Comparing
+the two harnesses task by task, Claude Code intervenes at the method level more often on \emph{all
+ten}, by margins from $18$ to $54$ points. The two narrowest gaps sit at opposite ends of the range and are narrow for
+opposite reasons: on graph generation both stay low ($30\%$ against $12\%$), and on agentic RL both run
+high ($80\%$ against $61\%$) because the task itself supplies a method-level route
+(\S\ref{sec:convergent}). A harness therefore sets a system's default level of intervention, and the
+task pulls Codex up to Claude Code's level only when the method is lying in the repository waiting to
+be picked up.
+
+\textbf{And the four hours are spent differently.} Counting shell commands across all $290$
+exploration logs, Codex spends its window on sheer volume of short actions: its median run issues $48$
+commands at \texttt{none} and $507$ at \texttt{max}, a tenfold climb driven entirely by the effort
+setting. A Claude Code run issues between $128$ and $170$ at every level, with no
+trend, and Kimi~K3 issues $77$. The split is the scaffold's rather than the model's --- per-model
+medians run $137$ and $168$ on Claude Code against $128$, $238$ and $321$ on Codex, and only the latter
+move with effort. The same four hours buy many cheap actions on one harness and fewer, heavier ones on
+the other, which is the mechanism behind the breadth-versus-depth signature below.
+
+\textbf{Breadth versus depth.} The Codex systems run many short probes and submit compact patches:
+GPT-5.6 Sol leaves a median $16.5$ evaluation directories, the most of any system, but its median
+patch adds $130$ lines, and Terra's and Luna's add $33$ and $25$. The Claude Code systems run fewer,
+heavier iterations and submit far larger patches: Claude Opus~5's median patch adds $980$ lines from
+a median $14$ evaluation directories. The grids exaggerate the gap: pooled over every level it is roughly eight
+times Sol's median and thirty times Terra's, and over the five levels both harnesses expose, five and
+twenty times. Kimi~K3, on the
+same harness, adds $271$. A larger patch is not a better one --- Sonnet~5 adds $147$ lines and sits fourth
+in the standings while Opus~5 leads --- but the gap is consistent, and it says the scaffold decides
+\emph{how} a system searches, not only how well.
+
+\subsubsection{Where a system locates the problem}
+\label{sec:frames}
+
+The counts so far say how much a system intervenes. The audited trajectories say something the counts
+cannot: \emph{where} it decides the problem lies. Each run is segmented into separately motivated exploration units,
+$1{,}607$ of them across the corpus, and the first one or two carry the diagnosis everything downstream
+serves. That segmentation, and the boundary audit of \S\ref{sec:patches},
+come from a language-model pipeline reading each exploration log against a fixed template and reviewed
+by the authors against those logs; with no inter-annotator agreement statistic, the unit counts and
+frame assignments here are a reviewed machine reading rather than adjudicated labels. The patch census
+and the scores below do not depend on them. Sixty-four per cent of runs open with a baseline or diagnostic unit and
+$51\%$ close with a delivery unit --- wall-clock stopping, checkpoint retention, export --- so the
+canonical shape of a four-hour run is diagnose, intervene, make it survive the replay, with $16\%$ of
+all units spent on that last phase alone.
+
+What differs is the diagnosis. Diffusion fine-tuning is the clearest case, because all three families
+attack the same repository and reach different conclusions in their first unit.
+
+\begin{itemize}[leftmargin=*,itemsep=2pt,topsep=3pt]
+\item \textbf{Claude Opus~5 locates the problem in the update rule.} Its opening units are literally
+``Can a differentiable reward replace DDPO/PPO?'' and ``Can direct reward gradients replace the
+high-variance DDPO update?''. The hypothesis arrives before any baseline has been shown to
+underperform: the agent reads the shipped code, judges the score-function estimator of DDPO
+\citep{black2023ddpo} too noisy, and spends its remaining units tuning the replacement --- adapter
+capacity, learning rate, truncation depth, safeguards for unattended training. It does this in
+\emph{all five} of its configurations. The move it converges on is the one the literature calls direct
+reward fine-tuning, in the truncated form that back-propagates through only the last $K$ steps of
+sampling \citep{clark2024draft} --- and it inherits that method's documented failure mode, in which the
+fine-tuned model collapses onto a single high-reward image \citep{clark2024draft,black2023ddpo}. No
+agent cites this literature; each arrives at the method from the repository.
+\item \textbf{Claude Sonnet~5, on the same harness, locates it in the schedule.} Its opening units
+ask whether the baseline ``is limited by its short schedule rather than its per-epoch recipe'' and
+proceed to longer unchanged runs, fused attention kernels, sparse saves and export reliability. It
+never questions the update rule in any of its five configurations.
+\item \textbf{The Codex systems locate it in the hyperparameters and the train/evaluate mismatch.}
+GPT-5.6 Sol establishes a matched baseline, then works through trajectory length, PPO trust region
+against optimizer step size, update frequency and advantage normalization, and matches the
+evaluator's 20-step sampler. Only at \texttt{max} effort, and only at its fifth unit, does it reach
+``directly refine LoRA through a short differentiable aesthetic path''.
+\end{itemize}
+
+These are three coherent research programmes, not three levels of competence, and they are chosen
+early and from reading rather than from evidence. They also account for the artifacts: Opus~5's five
+runs score $8.42$ to $17.67$, Sonnet~5's five sit between $4.49$ and $6.15$ around a recipe at $5.53$,
+and Sol crosses $8$ only in the one configuration where its frame finally shifts. \textbf{On this task
+a system's default framing separates the artifacts more cleanly than its effort setting does.} We
+state that as an observation about the two tasks where the framings diverge visibly --- diffusion
+fine-tuning here and agentic RL in \S\ref{sec:convergent} --- and not as a suite-wide effect: on the
+remaining eight the diagnoses are closer together, one run per cell gives no noise floor, and we have
+not tested whether framing predicts the score where it is not this legible.
+
+\subsubsection{When the frame shifts, and what that is worth}
+\label{sec:convergent}
+
+Agentic RL supplies the natural experiment, because the repository ships a breadth-first optimal
+Sokoban solver in its own utilities --- on no path the evaluator uses, but readable --- so an
+alternative frame is available to any agent that looks. Fourteen of the $29$ submitted patches make some use of it,
+across every system but Kimi~K3. The decisive fact is that finding it is not what separates them:
+sweeping the exploration logs rather than the patches, \textbf{$27$ of the $29$ runs encounter the
+solver, and almost all within the first tenth of their trajectory} --- Claude Opus~5 reads it $18$ to
+$34$ lines into logs $773$ to $1{,}017$ lines long, at every effort level, including the two where it
+never appears in the patch. Nearly every system saw the same object. \textbf{What separates the
+artifacts is what each decided the object was for}, and that decision is legible in when it is taken:
+
+\begin{itemize}[leftmargin=*,itemsep=2pt,topsep=3pt]
+\item \textbf{Pivot in the first unit ($7$ configurations): every one that scored reached $0.998$ or
+above.} These runs find the solver \emph{during cold-start diagnosis}, not after a failed training
+attempt --- Claude Opus~5's opening units are ``Cold-start diagnosis, solver feasibility, and input
+format'' and ``Establishing the weak baseline and an available supervised signal'', and the
+substitution follows in the next unit.
+\item \textbf{Pivot in the second unit ($5$): scores land between $0.27$ and $0.90$}, the frame having
+shifted after one round of evidence rather than before it.
+\item \textbf{Pivot late or never ($17$, of which two reach the solver only after several failed
+repairs): none of the fourteen that scored exceeds $0.27$.} These runs stay inside the shipped
+method and try to repair it --- potential-based reward shaping, KL anchors against format drift,
+hard-case curricula. The repairs are competent and they do not work.
+\end{itemize}
+
+Timing is what the record makes visible, not the mechanism behind it. On this
+task the decision and its content are one event --- every patch that builds the training signal on the
+solver scores at or above $0.8945$, every patch that keeps the shipped update rule at or below
+$0.2656$, nothing between --- and no run decides late and still submits the substitution, so
+\emph{when} and \emph{what} cannot be separated here. The negative is what the corpus establishes:
+discovery is not the discriminator, so the difference is one of judgement rather than of search.
+
+\textbf{What separates them is the role the agent assigns to the same object.} Opus~5's four
+solver-reading runs use it three different ways. At \texttt{low} and \texttt{medium} it becomes a
+source of \emph{training labels}: the agent writes a generator whose docstring reads ``build
+supervised multi-turn Sokoban trajectories from the in-container solver \dots\ plans come from the
+RAGEN BFS shortest-path solver'', and the shipped update rule is gone. At \texttt{xhigh} it becomes a
+\emph{shaping signal} for the update rule that stays: the agent builds an exact solve-distance table
+and annotates it in its own source as ``training-time only \dots\ it changes the \emph{reward} the
+trainer sees, not the environment's success flag or its observations''. At \texttt{max} it becomes an
+\emph{instrument}: a prober that establishes ``all 256 public-bank boards solvable in $\le 9$ moves
+\dots\ the 10-action cap is not the ceiling'', after which the run returns to repairing the
+reinforcement-learning recipe. Three uses, one artifact, scores of $1.000$, $0.211$ and $0.234$.
+
+Reasoning effort moves this dial monotonically. On the Codex grid it shows as
+attention --- solver mentions per log climb from $1$ at \texttt{none} to $29$ at \texttt{max} for
+GPT-5.6 Sol, and from $1$ to $13$ and $3$ to $16$ for Terra and Luna --- while on Claude Code, where
+engagement is already high at every level, it shifts the object's role away from replacement and
+toward support. In neither family does an agent explicitly weigh the substitution and reject it; the
+record shows something quieter, an agent that has read the same code arriving at a more conservative
+use of it as it deliberates longer.
+
+This rests on the one task that supplies a legible alternative route and so makes
+the choice observable at all, and we report it as a mechanism we can document rather than an effect we
+have estimated. On this task effort did not make a system more willing to abandon the method it was
+given; if anything it made a strong system more committed to it, and more inventive about supporting
+it. What effort changes is how thoroughly the chosen frame gets executed, which is what
+\S\ref{sec:effort} finds across the whole suite.
+

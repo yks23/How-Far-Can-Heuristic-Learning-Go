@@ -1,0 +1,46 @@
+\begin{table}[t]
+\centering
+\caption{\textbf{The long reference depends on how its checkpoint sequence is reduced, and on
+two tasks that dependence is larger than the effect being measured.} Each row is one 12-hour
+replay of the committed recipe, scored at every checkpoint by the frozen evaluator, reduced five
+ways; the right block gives the resulting win rate. \emph{Mean} is the mean over every triple the
+run admits and is the rule used throughout the paper, because it is the analogue of the
+best-of-three convention the agents are scored under. \emph{Median} is the median over the same
+triples, \emph{cadence} takes the three checkpoints an agent's save cadence would have kept,
+\emph{oracle} takes the single best checkpoint, and \emph{last} takes the final one. Diffusion
+fine-tuning is insensitive; distillation and unlearning are not.}
+\label{tab:reduction}
+\small
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{llrrrrr rrrrr}
+\toprule
+& & \multicolumn{5}{c}{\textbf{$\rlong$ under each rule}}
+& \multicolumn{5}{c}{\textbf{configurations beating it}} \\
+\cmidrule(lr){3-7}\cmidrule(lr){8-12}
+\textbf{Task} & \textbf{Dir.} & \textbf{mean} & \textbf{med.} & \textbf{cad.} & \textbf{oracle}
+& \textbf{last} & \textbf{mean} & \textbf{med.} & \textbf{cad.} & \textbf{oracle} & \textbf{last} \\
+\midrule
+DDPO    & max & 5.8296 & 5.8314 & 5.8314 & 5.8375 & 5.8314 & 17/28 & 17/28 & 17/28 & 17/28 & 17/28 \\
+DiGress & min & 66.16 & 66.19 & 66.41 & 65.79 & 66.85 & 15/25 & 17/25 & 18/25 & 11/25 & 20/25 \\
+DPO     & max & 0.4101 & 0.4092 & 0.4019 & 0.4237 & 0.4019 & 24/29 & 24/29 & 26/29 & 22/29 & 26/29 \\
+OPD     & max & 0.4237 & 0.4203 & 0.4359 & 0.4359 & 0.4359 & 20/25 & 22/25 & \textbf{5/25} & \textbf{5/25} & \textbf{5/25} \\
+OpenR1  & max & 0.1008 & 0.1016 & 0.1016 & 0.1016 & 0.1016 & 26/28 & 23/28 & 23/28 & 23/28 & 23/28 \\
+NPO     & max & 0.9520 & 0.9614 & 0.9614 & 0.9862 & 0.7528 & 18/28 & 16/28 & 16/28 & \textbf{9/28} & \textbf{24/28} \\
+BTRM    & max & 73.49 & 73.06 & 73.06 & 74.86 & 72.64 & 20/29 & 20/29 & 20/29 & \textbf{9/29} & 21/29 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\vspace{2pt}
+{\footnotesize The number of triples a run admits is set by its checkpoint count: 220 from 12
+checkpoints on four tasks, 364 from 14, and 3654 from distillation's 29. The two sensitive rows
+are sensitive for opposite reasons. On on-policy distillation the replay's \emph{final}
+checkpoint is also its best, so cadence, oracle and last all return the same high value
+($0.4359$) and the win rate falls to $5/25$, while any rule that averages over triples returns a
+lower reference and it rises to $20$--$22$. On unlearning the final checkpoint is far the worst
+($0.7528$ against an oracle $0.9862$), so \emph{last} is the most generous rule and \emph{oracle}
+the harshest, spanning $9$ to $24$ of 28. Where a row is flat the run's checkpoints are close
+together, which is the case on diffusion fine-tuning at every rule. Any single-number summary of
+a multi-checkpoint reference inherits this sensitivity; reporting the rule alongside the number is
+the minimum, and the seven-task pooled rate quoted in \S\ref{sec:refchoice} should be read as one
+rule's answer rather than as the answer.}
+\end{table}

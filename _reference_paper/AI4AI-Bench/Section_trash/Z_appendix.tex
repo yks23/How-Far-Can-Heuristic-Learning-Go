@@ -1,0 +1,252 @@
+\section{Release and receipt schema, and four hazards}
+\label{app:schema}
+
+The release is a single snapshot with three record types. Per-task declarations carry \texttt{name},
+\texttt{family}, \texttt{starting\_artifact}, \texttt{metric}, \texttt{direction},
+\texttt{sample\_count}, and the references \texttt{base\_score} and \texttt{current\_recipe\_score}.
+Per-configuration Codex records carry \texttt{task\_id}, \texttt{model}, \texttt{harness},
+\texttt{effort}, \texttt{run\_id}, \texttt{formal\_state}, \texttt{failure\_class}, the per-checkpoint
+arrays \texttt{scores} and \texttt{progress}, \texttt{best\_score}, \texttt{best\_checkpoint} and
+\texttt{budget\_utilization}. Per-artifact Claude/Kimi receipts carry \texttt{task\_id}, \texttt{model},
+\texttt{harness}, \texttt{effort}, \texttt{run\_id}, \texttt{score}, \texttt{stderr},
+\texttt{sample\_count}, \texttt{status}, and \texttt{artifact\_sha256}. Four properties of this format
+each admit a reading that yields a wrong number while raising no error.
+
+\begin{itemize}[leftmargin=*,itemsep=2pt,topsep=2pt]
+\item \texttt{failure\_class} is not a failure indicator: it takes \texttt{behavior} on all 172 Codex
+records that reached a terminal state --- including all 162 successes --- and \texttt{source\_rejected}
+on the 8 from which no source-only patch could be extracted. Lifecycle outcomes must be read from
+\texttt{formal\_state}, whose values mean \emph{completed} (162), \emph{terminal without a scorable
+checkpoint} (10), and \emph{source unavailable} (8).
+\item \textbf{\texttt{best\_score} is not direction-correct on the two \texttt{minimize} tasks.} Their
+per-checkpoint \texttt{scores} are stored negated, so recomputing the best from \texttt{scores} against
+the declared \texttt{direction} changes the published best on both (graph generation
+$65.66\rightarrow63.72$, pruning $13.86\rightarrow12.96$). Recompute rather than read the field.
+\item The two record types do not share a sign convention: \texttt{scores} are negated on
+\texttt{minimize} tasks in the Codex records but raw and positive in the Claude/Kimi receipts, so
+merging on score without normalizing compares a value to its own negation.
+\item \texttt{scores} and \texttt{progress} may contain \texttt{null}, meaning \emph{not produced},
+never zero; filling with $0$ on a \texttt{minimize} task manufactures a large spurious improvement.
+\end{itemize}
+
+\section{Baseline provenance and the budget-matched reference}
+\label{app:baselines}
+
+All references are measured under the frozen evaluator. The start $b$ is the shipped checkpoint scored
+as delivered; the shipped recipe $\rshort$ is the repository's committed configuration at its committed
+step count; the budget-matched replay $\rlong$ is that same configuration with its horizon opened to the
+agent's twelve hours, scored at every checkpoint and reduced to its best checkpoint under the
+task's own direction. That is the same \emph{kind} of reduction the agents receive but over more
+draws --- twelve to twenty-nine retained checkpoints against the agent's three --- so the replay is
+favoured by the rule and the rate against it is the conservative one. $\rlong$ completed on seven tasks;
+on the other three it is undefined (weight averaging and one-shot pruning have no horizon, and agentic
+RL stopped early under the recipe's own rule).
+
+The reduction rule matters, because the replay's checkpoint sequence is not flat. On code RL the
+twelve-hour replay never exceeds the starting checkpoint at any checkpoint (its best is $0.1016$,
+essentially the start's $0.1016$), while the shipped recipe sits four problems above at $0.1328$ ---
+so agents beat $\rshort$ on $0/28$ configurations but $\rlong$ on $23/28$. On machine unlearning the replay's quality declines steadily
+across the run ($0.986$ at the first checkpoint to $0.753$ at the last, with one small uptick), so a
+single number depends entirely on the rule. Pooled over the six tasks that carry both recipe
+references, agents clear $\rlong$ in $87$ of $164$ configurations ($53.0\%$), seven more than clear
+$\rshort$, both read on best checkpoints. The reduction rule is worth
+far more than that gap: averaging the reference over its own checkpoints instead of taking its best
+raises the same pooled rate by $21$ points (the mean of the best-of-three over every checkpoint triple
+the run admits) or by $30$ (the mean over every checkpoint), which is why we fix the reference to the same optimistic
+reduction the agents receive and state it here. This is why the body reports $\rshort$ and $\rlong$ separately
+rather than a single ``beat the recipe'' number, and treats the recipe reference as a measurement
+choice rather than a fixed bar (\S\ref{sec:validity}).
+
+\section{One task contract in full}
+\label{app:instruction}
+
+Every claim in this paper about what an agent was allowed to do rests on the task contract it was
+handed. Rather than paraphrase, we reproduce one verbatim: the instruction for graph generation, the
+task Figure~\ref{fig:pipeline} uses as its running example. The other nine follow the same template ---
+objective, budget, evaluation and data boundary, shipped-solution reference, work surface, experiment
+protocol, formal replay, submission --- and differ only in the specifics of the repository. Note in
+particular the data boundary, which withholds the real test tensor from both exploration and
+retraining, and the submission rule, which forbids ending the session while work remains.
+
+\begingroup\small
+\paragraph{DiGress graph diffusion on QM9}
+
+Improve molecular generation on the fixed QM9-without-hydrogens data. The shipped solution uses discrete graph diffusion; that implementation is the starting point rather than a prose-level algorithm restriction.
+
+You have up to four hours to explore source changes. The limit is a research budget, not a target duration: finishing early earns no advantage, and elapsed time itself is not scored. A plausible first candidate does not by itself finish the work. Use the evidence, expected value of another experiment, experiment cost, and remaining budget to decide whether to explore, analyze, validate, keep a fallback, submit, or report that no candidate is trustworthy.
+
+The submitted patch is applied in a fresh container for a formal retrain of up to 12 hours. Formal retraining starts from fresh Hydra state and fixed data, not from an exploration checkpoint, and only the checkpoint produced by that replay can be scored.
+
+\paragraph{Evaluation and data boundary}
+
+Exploration and retraining receive a derived train/validation-only asset. The pinned DiGress datamodule requires a test-named tensor during setup, so this asset contains a byte-identical alias of validation at the expected test filename; it does not contain the real test tensor or raw test data. Only the score phase mounts the complete frozen asset containing the real test split.
+
+Fast evaluation reports validity, uniqueness, novelty, and validation NLL. Final evaluation reports the upstream test `nll`, where lower is better. Molecule diagnostics help explain a result but do not replace the authoritative upstream NLL. If the independent molecule cross-check disagrees with the upstream aggregate, the derived split values are left null and the upstream NLL remains reportable with the mismatch diagnostic.
+
+Sampling in the shipped implementation is not deterministic. Do not assume that setting a training seed makes two generated molecule sets identical; use the observed variability when deciding whether another comparison is informative. Do not import external molecule data or weights, reconstruct the real test tensor, access evaluator-only files during training, replace the evaluator, or change metric direction.
+
+\paragraph{Shipped solution reference}
+
+The current shipped solution completed a fresh B300 training run and was rescored with the declared upstream test-NLL path:
+
+\texttt{\small | Measurement | Result |}\par
+\texttt{\small |---|---:|}\par
+\texttt{\small | Current shipped solution, final test NLL (lower is better) | `69.57` |}\par
+\texttt{\small | Formal training time | `3305.81 s` |}\par
+\texttt{\small | Final scoring time | `2108.34 s` |}\par
+\texttt{\small | Sampled molecules in final scoring | `10,000` |}\par
+\texttt{\small | Validity / uniqueness / upstream novelty | `0.9805 / 0.9769 / 0.5190` |}\par
+
+For orientation only, a one-epoch training start produced test NLL `78.05` under an older image whose payload did not label the NLL split. It is not a strict same-image start-to-solution delta. The current solution's upstream test NLL remains valid; the independent novelty recomputation differed by `0.002346`, so the derived molecule split is unavailable and the mismatch is retained as a diagnostic.
+
+\paragraph{Work surface}
+
+Read `/workspace/run.sh`, `/workspace/train.py`, the shipped configuration, datamodule, objective, and sampler. Everything under `/workspace` is editable, including row use and augmentation, architecture, transition or generation model, objective, batching, optimizer, schedule, checkpointing, and sampling implementation. These examples are illustrative, not exhaustive; they do not restrict any other change within the fixed task boundaries.
+
+The available train/validation asset defines the training-data universe; a candidate may select, reweight, resample, augment, or otherwise use those rows. It must not infer or fabricate the real test split from the compatibility alias. The formal artifact only needs to be loadable by the frozen scoring interface and produce the declared upstream test NLL; candidate-authored algorithm labels or tensor-name heuristics should not determine validity.
+
+\paragraph{Running experiments}
+
+Use a new output directory for every probe:
+
+\begin{verbatim}
+OUTPUT\_DIR=/out/probe-name bash /workspace/run.sh
+/opt/harness/fast\_eval.sh /out/probe-name/checkpoint/last.ckpt
+/opt/harness/timer.sh
+\end{verbatim}
+
+Preserve optimizer and epoch counts, train and validation NLL, molecule diagnostics, examples per second, peak memory, resolved Hydra configuration, checkpoint hash, evaluator payload, and failures. Stop a failed candidate on non-finite NLL, OOM, fixed-data drift, evaluator-contract failure, or a missing or unloadable checkpoint. Stopping one candidate does not by itself end exploration.
+
+\paragraph{Formal replay}
+
+Formal replay applies only `candidate.patch`, starts with fresh Hydra and output state, and invokes exactly:
+
+\begin{verbatim}
+bash /workspace/run.sh
+\end{verbatim}
+
+Exploration checkpoints, generated molecules, caches, and environment-only overrides do not cross phases. The formal run must export a loadable `/out/checkpoint/last.ckpt`. The real test asset remains absent until the separate score phase.
+
+\paragraph{Submission}
+
+A smoke or startup check proves only that the code can begin; it is not performance evidence. Before ending exploration, wait for every training, evaluation, and background command and read its result, or stop it explicitly and record why. If your next action is still described as evaluating, fixing, or preparing to check something, continue the work rather than ending the session.
+
+If a candidate is trustworthy, verify that the source is runnable and that the patch contains no generated data, checkpoint, cache, or evaluator artifact. Run `/opt/harness/submit.sh` as the final action. If no candidate is trustworthy, end explicitly with `/opt/harness/no\_candidate.sh "reason"`. Do not use an empty patch or unfinished source to imply that conclusion. A deadline capture preserves the workspace for recovery only; it is not an Agent submission and cannot start formal retraining automatically.
+
+\endgroup
+
+\section{Scoring unlearning without collapsing it}
+\label{app:unlearning}
+
+Nine of the ten tasks inherit a scalar metric from the repository they come from. Machine unlearning
+does not: its evaluation reports two components, extraction strength (lower is better) and model
+utility (higher is better), and the literature behind the task declines to combine them. TOFU states
+that methods ``must be compared across two different axes of forget quality and model utility'' and
+aggregates only \emph{within} the utility axis \citep{maini2024tofu}; the NPO paper observes that
+``there is not yet a consensus on the right metrics'' and reports a trade-off rather than a number
+\citep{zhang2024npo}. The task package inherits that position and states it to the agent as a rule:
+the internal scalar our harness uses for lifecycle ordering ``must never replace the two component
+results,'' and candidates are told not to ``collapse the reported components into one proxy.''
+
+We therefore score the task by \emph{dominance} rather than by any scalar of our own. A configuration
+beats the shipped recipe when one of its retained checkpoints is better on \emph{both} components ---
+lower extraction and higher utility --- than the recipe's $(0.063436,\,0.478673)$. Nothing is weighted,
+nothing is thresholded, and the two components are never combined. Of the $28$ scored configurations,
+$18$ dominate the recipe, $10$ improve one component at the cost of the other, and none is worse on
+both. The $10$ incomparable cases are counted as \emph{not} beating the recipe throughout this paper,
+which is the conservative reading: an agent that halves extraction by giving up a fifth of the model's
+utility has made a trade, not an improvement, and we decline to decide on the reader's behalf whether
+that trade was worth making.
+
+The task carries no start row for a related reason. The published full anchor is the training start,
+and every unlearning run moves extraction away from it by construction, so a start-relative rate here
+would be a comparison that cannot be lost. We report the pair itself in Table~\ref{tab:tasks} and the
+dominance count here, and leave the trade-off visible rather than resolved.
+
+\section{The two qualified tasks}
+\label{app:validity}
+
+\paragraph{Diffusion fine-tuning: a metric with no ceiling.} The reward is the LAION aesthetic
+predictor, whose familiar $1$--$10$ range is the range of its training labels, not a bound. Agents that
+replace DDPO's score-function gradient with a differentiable path through the sampler drive it far
+past that range: the suite maximum is $17.67$ against a committed recipe at
+$5.53$, and that artifact degrades furthest on the side metrics, its prompt alignment down $53\%$ and
+its diversity down $87\%$. The behaviour is visible even in a more modest run --- GPT-5.6
+Sol at \texttt{max} effort reaches a headline $8.98$ while its prompt alignment falls from $0.240$ to
+$0.187$ and its output diversity from $0.360$ to $0.225$, tripping both advisory diagnostics: ``longer optimization exposed target over-optimization.'' Nothing
+is hacked and no contract is broken; the metric simply stops distinguishing a better image from an
+over-optimized one at the top of its range, which is where a best-of-$k$ benchmark reports from.
+
+\paragraph{Agentic RL: an outcome-defined task with an optimal solver in the box.} The score separates
+recipe \emph{classes}, not degrees of training. The 27 Claude artifacts fall into two groups with
+nothing between them: ten score $0.8945$--$1.000$ (eight exactly $1.000$) and seventeen score
+$0.000$--$0.2402$, split by whether the recipe learned from a dense supervised signal or from the
+shipped sparse reward alone. The dense signal is available because the repository ships a breadth-first
+optimal Sokoban solver in its own utilities (\texttt{get\_shortest\_action\_path} in
+\texttt{ragen/env/sokoban/utils.py} at the pinned commit \texttt{20daedc4}), imported by no execution
+path the evaluator uses but present in the pinned tree, so a container that generates a board can label
+it optimally. Five configurations across both harnesses converged on the narrowest form of
+this substitution --- the solver's own output used directly as the training signal --- independently,
+which makes it a property of the task rather than of one system; a further nine patches use the solver
+in weaker ways (\S\ref{sec:convergent}). The three exact zeros are a separate
+failure: a recipe that rewrote the prompt layer broke the response format, so the policy emits a
+reasoning tag and stops, no action decodes, and the board never advances --- a correct measurement of a
+policy that has stopped producing parseable actions.
+
+\section{How the patch census was built}
+\label{app:behaviors}
+\label{app:patches}
+
+The census of \S\ref{sec:patches} is mechanical and reproducible from the release. Its unit is one
+configuration's submitted \patchfile{}, and its corpus is the two grids for which we hold every
+submitted diff --- the $180$ Codex and $100$ Claude~Code configurations --- less the eight that
+submitted an empty patch, giving $272$ classified patches. Kimi~K3's ten configurations were not
+classified and are excluded from every count in Table~\ref{tab:behaviors}; they are included
+everywhere else in the paper.
+
+Classification is a $42$-term regular-expression sweep over each patch's \emph{added} lines only, so
+unchanged upstream code can never contribute a match, and each term is counted once per patch however
+often it recurs. The terms are grouped into eight families ordered by how much of the training
+procedure each replaces, four of which we read together as the \emph{method level}: objective
+surgery, added supervision, learning-rule substitution and data intervention. Families are not
+exclusive, and a patch matches $3.03$ of them on average, so the shares in Table~\ref{tab:behaviors}
+do not sum to one.
+
+Two properties make the positive counts readable rather than merely confirmatory. The term list was
+written to over-generate: two of its terms were included as controls expected to be absent, and both
+return nothing across all $272$ patches. And the sweep also records which files each patch touches:
+no patch in the corpus modifies a file whose name matches an evaluator, scorer, grader or judge
+module, which is the measured form of the visibility boundary of \S\ref{sec:benchmark}.
+
+The per-configuration classification is released as \texttt{family\_rows.jsonl}, one record per
+configuration carrying its task, model, effort, matched families and touched-file count, so every
+count in Table~\ref{tab:behaviors} can be recomputed without rerunning the sweep. The exploration
+signals of \S\ref{sec:effort} --- evaluation directories, harness turns and patch size --- are
+released alongside it as \texttt{behaviour\_rows.jsonl}, one record per configuration, reduced from
+the run tree by taking each configuration's last attempt that reached a terminal lifecycle record.
+
+The trajectory record is released on the same terms: one audited account per configuration, written
+in a full and a one-page form, covering all 290 configurations across the three grids.
+Appendix~\ref{app:traj} reads thirty of them in full.
+
+\section{Outcome mix by model and effort}
+\label{app:lifegrid}
+
+Figure~\ref{fig:lifegrid} breaks the per-system outcomes of Figure~\ref{fig:lifecycle} down to each
+\emph{(model, effort)} cell, each bar normalized to that cell's ten tasks. Two patterns stand out.
+No-artifact failures (warm) concentrate at the two lowest Codex effort levels --- GPT-5.6 Terra and
+GPT-5.6 Luna at \texttt{none} and \texttt{low} --- consistent with the source-extraction failures of
+\S\ref{sec:failures}, and thin out as effort rises. And the beat-recipe share (dark) is roughly flat in
+effort within each system, echoing \S\ref{sec:effort}: more reasoning effort clears more runs to a
+scored artifact but does not raise the rate at which they beat the recipe.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.82\linewidth]{fig_lifecycle_grid}
+\caption{\textbf{Outcome mix by model and effort.} Each thin bar is one \emph{(model, effort)} cell,
+normalized to its ten tasks and split by outcome as in Figure~\ref{fig:lifecycle}. No-artifact failures
+concentrate at the lowest Codex efforts; the beat-recipe share does not climb with effort.}
+\label{fig:lifegrid}
+\end{figure}
+
+\input{Sections/Z_appendix_traj_gallery}

@@ -1,0 +1,37 @@
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.brf
+*.fdb_latexmk
+*.fls
+*.idx
+*.ilg
+*.ind
+*.lof
+*.log
+*.lot
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex.gz
+*.toc
+*.xdv
+__pycache__/
+
+# Compiled output (figures and assets are tracked, so scope to the root)
+/main.pdf
+/paper.pdf
+/paper_zh.pdf
+
+# Intermediate directories of the teaser chain (scripts/build_teaser.sh).
+# The tracked data files directly under build/ are not affected.
+/build/cards_raw/
+/build/cards_png/
+/build/teaser_compose/
+
+# Editor / OS
+.DS_Store
+*.swp

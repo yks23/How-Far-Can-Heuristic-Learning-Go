@@ -1,0 +1,81 @@
+% PARKED CONTENT -- not \input by main.tex.
+% Cut from the results section when it was cleared; kept here because Sections_zh
+% is not under version control and this text is not recoverable from git.
+
+% ---------------------------------------------------------------- per-task panels
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{fig_per_task}
+  \caption{\textbf{Every configuration, every task, against that task's baseline.}
+  One panel per task; each point is one of the 29 (model, effort) configurations,
+  coloured by model, and the dashed line is the task's baseline. The ten tasks
+  share neither scale nor direction --- two are minimised, the metrics run from a
+  perplexity in the tens to a pass rate in $[0,1]$ --- so each panel carries its
+  own axis, and what is comparable across panels is only which side of the line a
+  configuration lands on. Missing points are configurations that returned no
+  trainable model; they count against the system rather than being dropped.}
+  \label{fig:per_task}
+\end{figure}
+
+% ---------------------------------------------------------------- patch families
+\subsection{What a submission changes}
+\label{sec:families}
+
+A score says whether a submission worked. It does not say whether the agent designed an algorithm or
+tuned one, and those are the two outcomes this paper needs to tell apart. Nor does the size of the
+change settle it: a one-line diff can replace a learning rule, and a thousand-line refactor can leave
+the training procedure exactly as it was. So the distinction has to be read off the submitted code
+rather than off the score, and we read it by classifying every submission according to which part of
+the training procedure it modifies.
+
+Eight families cover what the submissions do, and they fall on two sides of that line. Four change
+\emph{how the run is executed}: budget, checkpointing and logging; optimisation knobs; selection and
+averaging over checkpoints; and capacity or adapter placement. Four change \emph{how the model
+learns}: surgery on the objective; added supervision; substitution of the learning rule; and
+intervention in the data the procedure trains on. The families are not exclusive --- a submission
+matches three of them on average, since changing an objective usually drags a knob along with it ---
+so we report how many submissions reach a side rather than partitioning them into one family each.
+
+Of the 280 submissions, 17 changed nothing that could be classified. Among the 263 that did, 122
+reach the learning side and 141 stay entirely on the run side. That split is the instrument behind
+\S\ref{sec:results}, and it is worth being clear about what it can and cannot support: it records
+which part of the procedure a submission touched, not whether the touch was a good idea. A submission
+that rewrites an objective badly and one that rewrites it well are both on the learning side. That is
+the point --- it lets us ask, separately from whether an agent won, whether it was even working on
+the part of the system where the compounding lives.
+
+% ---------------------------------------------------------------- cut from the analysis section
+\subsection{Agents optimize the scoring, not the intent}
+\label{sec:hacking}
+
+None of the ten metrics is ours: freezing a real repository means inheriting the objective it was
+already optimising. An objective that behaves well over the range its own authors worked in need not
+survive an agent pushing deliberately on it, and two places in this suite show what that looks
+like.
+
+\textbf{Agents bypass reinforcement learning and learn from the solver.} The agentic-RL repository
+ships an optimal solver inside its environment tooling. It sits on no path the evaluator uses, but it
+is readable, and four of the five configurations that scored perfectly used it to generate
+supervision; 11 of the 29 submissions call it directly. This breaks no rule: what the task forbids is
+importing external boards, demonstrations, trajectories or weights, and training on the final seeds,
+and the solver is inside the training container. The fifth perfect configuration is the control ---
+it opened the same file, did not read as far as the section holding that function, wrote its own
+breadth-first solver instead, and reached the same perfect score. A perfect score in this column
+therefore certifies that a system recognised the task as one for imitation learning, not that it
+trained reinforcement learning better, which also explains the column's shape: five cells at the
+ceiling and a median still at $0.144$.
+
+\textbf{Agents hedge with the three checkpoint slots.} A cell is scored on the best of three retained
+checkpoints, and three slots can be used to hedge. On one-shot pruning, one submission gave its three
+slots to three finished products rather than three moments: pure pruning with no training at all,
+perplexity $21.8$; a fine-tune stopped halfway, $14.6$; and the full decay schedule, $14.3$. It
+completed and published the first in about ten minutes, spent the remaining time on the other two,
+and left retries in the script. This is a fully compliant and rather sophisticated submission ---
+bank a deliverable that is certain to exist, then gamble the rest of the budget on something better.
+It also means the three checkpoints of a configuration need not be three points on one training
+curve: best-of-three permits choosing among methods as much as choosing along a curve.
+
+What both have in common is that the agent treats the task as an object to be optimized rather
+than as an intent to be served. That is the capability we want it to have; the same capability finds
+the seams in whatever is being scored. Validity checks therefore have to be written per task, and
+they have to block rather than advise.

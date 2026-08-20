@@ -1,0 +1,46 @@
+\begin{table*}[t]
+\centering
+\caption{The three measured references. $b$ is the starting checkpoint scored as handed to the
+agent; $\rshort$ is the repository's committed configuration run for the number of steps it
+commits to, which is the receipt the agent is shown; $\rlong$ is that same configuration with
+only horizon and checkpoint cadence opened up to fill the agent's own 12\,h allowance, reduced
+best-of-three over every triple the run admits. \textbf{Interval} is the range $\rlong$ spans
+across those triples (5th--95th percentile) and $k$ the number of scored checkpoints behind it.
+\textbf{Harder} names which recipe reference is harder to beat under the task's own direction ---
+it is not the same one twice, which is the finding of \S\ref{sec:refchoice}. The six tasks with
+both are the set every comparison between the two references is computed on.}
+\label{tab:baselines}
+\small
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{llrrrlrl}
+\toprule
+\textbf{Task} & \textbf{Dir.} & \textbf{Start $b$} & \textbf{Short $\rshort$} & \textbf{Long $\rlong$} & \textbf{Interval} & \textbf{$k$} & \textbf{Harder} \\
+\midrule
+\multicolumn{8}{l}{\emph{Both recipe references defined}} \\
+DDPO    & max & 5.39731  & 5.52637  & 5.82958  & [5.8174, 5.8375]   & 12 & $\rlong$ \\
+DiGress & min & 78.05    & 69.57    & 66.16496 & [65.79, 66.46]     & 12 & $\rlong$ \\
+DPO     & max & 0.39709  & 0.50847  & 0.41009  & [0.3971, 0.4237]   & 29 & $\rshort$ \\
+OPD     & max & 0.25208  & 0.42708  & 0.42373$^\ast$ & [0.4156, 0.4359] & 12 & $\rshort$ \\
+OpenR1  & max & 0.10156  & 0.13281  & 0.10081  & [0.0938, 0.1016]   & 14 & $\rshort$ \\
+BTRM    & max & \na{}    & 74.56894 & 73.49258 & [72.5067, 74.8641] & 14 & $\rshort$ \\
+\midrule
+\multicolumn{8}{l}{\emph{One recipe reference only}} \\
+Model Soup & max & 0.6874   & 0.6859   & \na{} & \na{} & 0 & \na{} \\
+OWL        & min & 10.86046 & 53.35899 & \na{} & \na{} & 0 & \na{} \\
+RAGEN      & max & 0.11719  & 0.16992  & \na{} & \na{} & 0 & \na{} \\
+NPO        & max & \na{}    & \na{}    & 0.95201 & [0.8933, 0.9862] & 12 & \na{} \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\vspace{2pt}
+{\footnotesize Why a cell is empty. BTRM ships no starting checkpoint. NPO's shipped references
+are a pair of objectives rather than a scalar (extraction $0.0634$, model utility $0.4787$), so
+it carries no $b$ and no $\rshort$; its $\rlong$ comes from a run finalized manually after the
+wall-clock stop. Model Soup averages 72 given checkpoints and OWL prunes once, so neither is a
+training run whose horizon can be extended; RAGEN's long run was invalidated by an intrinsic
+reward-variance collapse with its retries exhausted. $^\ast$ OPD's $\rlong$ is provisional: the
+completed attempt passed with a warning (a data-loader worker was killed) rather than strictly
+clean, and a replacement attempt is running. OPD is also the one task whose committed recipe
+already fills the allowance at 11.5\,h, which is why its two references differ by $0.003$ ---
+the control for the comparison of \S\ref{sec:refchoice}.}
+\end{table*}

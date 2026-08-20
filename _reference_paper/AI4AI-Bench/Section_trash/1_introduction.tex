@@ -1,0 +1,84 @@
+\section{Introduction}
+\label{sec:intro}
+
+\input{Figures/FigTeaser}
+
+The premise that AI systems will soon do AI research is no longer a forecast held at a distance: it is
+the stated direction of frontier laboratories and the organizing question of a fast-growing literature
+on recursive self-improvement, which takes machine-learning engineering as its executable testbed
+\citep{yang2026frontis,meng2026rsibench,lu2026metaagent}. The evidence base under that premise is
+thinner than the attention it receives, and it is thin in a particular way. Coding agents can now open
+a real repository, edit it and satisfy an executable test \citep{jimenez2024swebench}, and the
+benchmarks that extend this to research measure almost exclusively whether an agent can raise a fixed,
+narrow, automatically verifiable metric --- Kaggle competitions scored against public leaderboards
+\citep{chan2024mlebench,qiang2025mledojo}, ML research competitions scored by the fraction of a
+baseline-to-human gap they close \citep{zhang2025mlrcbench}, post-training runs scored against a
+released instruction-tuned checkpoint \citep{rank2026posttrainbench}, and research-engineering
+environments scored against expert attempts \citep{wijk2024rebench}. The sharpest criticism of that
+literature is that the parts of research which actually decide whether a programme succeeds are not of
+that form \citep{kirgis2026openended}: choosing which hypothesis to commit to,
+deciding what evidence would settle it, and recognising that an approach has failed and the right move
+is to start over. Those are judgements, and a leaderboard does not contain them.
+
+This paper argues that they are nonetheless measurable, and that measuring them does not require
+abandoning verifiable tasks --- it requires keeping the record of how each one was attempted. We build
+an apparatus in which a coding agent is asked to improve a real research repository's \emph{own}
+training recipe, and in which the resulting claim is hard to fake: the improvement is extracted as a
+source-only patch, retrained from a pinned commit in a container that carries nothing forward from
+exploration, and scored by an evaluator the agent cannot run. That gives an operational form of the
+narrow question --- \emph{can a coding agent make a reproducible, independently verified improvement to
+an existing AI system under a controlled research budget?} --- and, because every configuration also
+leaves a complete audited trajectory, it gives the wider one: \emph{when an agent does this work, what
+decides how it goes?}
+
+The narrow question is worth stating carefully because it is harder to answer than it looks. A software
+task has a test that defines correctness; an AI-improvement task has a metric that only \emph{proxies}
+for it, and raising a proxy is not the same as doing the work the proxy stands for --- a gap that
+agents are already documented to exploit, by training on the evaluation set, by substituting a
+downloaded checkpoint for one they trained \citep{rank2026posttrainbench}, or by building to whatever
+oracle is in the loop \citep{ma2026buildingtotest,gabor2025evilgenie}. Whether a change
+counts as an improvement also depends on what it is compared against, and a research repository supplies
+more than one defensible reference: the checkpoint it ships, the recipe it commits to, and that recipe
+run under a different budget.
+
+\ai{} makes that question answerable. It freezes ten research repositories, spanning generative
+modelling, language-model post-training, reward modelling, compression and agentic RL, and asks an
+agent to improve each repository's \emph{own} training recipe rather than to beat a synthetic target.
+One apparatus serves every task and is the paper's central object (Figure~\ref{fig:pipeline}): four
+hours on one GPU to read, edit, train and query a fast proxy; then a \emph{source-only} patch, a fresh
+twelve-hour replay from a pinned commit, and a score from an evaluator the agent cannot run
+(\S\ref{sec:benchmark}). That lifecycle is what makes a reported gain something another party can
+reproduce rather than a number the agent asserts. We run it over six systems --- treating each
+\emph{(model, native harness, reasoning effort)} triple as the unit under test, since a model is
+inseparable from the harness that runs it --- for 290 configurations and 792 independently scored
+artifacts (\S\ref{sec:setup}).
+
+The capability result is real but modest (Figure~\ref{fig:teaser}). Agents beat the recipe the
+repository itself commits to in $62.7\%$ of scored configurations, and on the three tasks whose
+committed recipe is a separately tuned configuration they rarely win at all; replaying that recipe at
+the agent's own budget --- an agent-free control --- leaves the rate where it was, so the margin is not
+bought by budget alone (\S\ref{sec:results}). Agents reliably
+\emph{recover} a competent default and only occasionally \emph{exceed} one. Claude Opus~5 leads on these runs, which we report as a standing rather than a
+proven ranking: the systems below it are separated by a task or two, every cell is a single run, and
+each model is inseparable from the harness that drives it.
+
+Two things turn out to be as much of the contribution as the capability number.
+The first is what the agents did with their four hours. Read as a record of behaviour rather than of
+outcomes, the runs separate on something a score cannot show: \emph{where each decides the problem
+lies} --- a diagnosis taken in the opening minutes from reading the repository, which on the two tasks
+where the frames visibly diverge tracks the artifact more closely than the effort setting does. Where
+a repository admits an unintended route, nearly every run finds it, and what separates the artifacts
+is what each decided that route was for. Reasoning effort moves all of this and moves the score not at
+all (\S\ref{sec:behavior}). The second is the apparatus: a best-of-three checkpoint rule alone is
+worth $7.8$ points of the pooled win rate, fewer than half the resolvable wins clear twice the
+evaluator's own error, and on two tasks the metric changes which artifact a benchmark would report
+(\S\ref{sec:analysis}).
+
+Five things follow: a benchmark in which every reference is measured under one frozen evaluator and
+the object of improvement is a repository's own recipe (\S\ref{sec:benchmark}); a capability result
+over 290 configurations, bounded by what the artifacts support (\S\ref{sec:results}); a reading of the
+same runs as a record of behaviour (\S\ref{sec:behavior}); an account of how far the apparatus itself
+moves the number (\S\ref{sec:analysis}); and the release of that record, one audited account per
+configuration alongside every artifact and receipt (Appendix~\ref{app:traj} reads thirty in full).
+
+\input{Figures/FigPipeline}

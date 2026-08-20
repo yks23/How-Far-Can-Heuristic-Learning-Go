@@ -1,0 +1,79 @@
+\section{Related work}
+\label{sec:related}
+
+% The first two paragraphs cover non-algorithmic links in the RSI loop.  The
+% third covers automated-ML-research benchmarks and positions our benchmark as
+% the first to isolate the algorithmic-design link.
+
+\textbf{Systems engineering for self-improving AI.}
+Systems work accelerates a fixed learning procedure by changing how its computation is mapped onto
+hardware.  At the kernel layer, IO-aware tiling and fusion reduce data movement while preserving the
+exact operator, as in FlashAttention \citep{dao2022flashattention}.  At the distributed layer,
+Megatron-LM partitions operators across devices, ZeRO shards training state, and Alpa automatically
+combines intra- and inter-operator parallelism
+\citep{shoeybi2019megatron,rajbhandari2020zero,zheng2022alpa}.  Communication systems instead
+schedule and partition tensor transfers so that synchronization overlaps computation
+\citep{peng2019bytescheduler}.  Recent agent work makes one part of this systems space directly
+executable: agents generate, profile, verify, and optimize GPU kernels, from isolated PyTorch
+operators \citep{ouyang2025kernelbench,chen2025cudallm} to hardware-feedback loops
+\citep{zhang2025cudaforge}, robust verification \citep{lange2025robustkbench}, production traces
+\citep{yang2026atrex}, and agents trained specifically for kernel generation
+\citep{dai2026cudaagent}.  These systems methods can process more examples or larger models under a
+fixed budget, but their gains are bounded by the target machine: kernel throughput cannot exceed its
+compute or memory-bandwidth roofline \citep{williams2009roofline}, and distributed execution is
+likewise capped by device memory and interconnect bandwidth.  Once a fixed computation reaches
+those ceilings, systems tuning has no remaining headroom.  Unlike this line, \ai{} targets the
+learning procedure and classifies kernel, parallelization, or communication edits as systems changes
+rather than evidence that an agent discovered a better training algorithm.
+
+\textbf{Data engineering for self-improving AI.}
+Data-centric methods make the corpus the object of optimization \citep{zha2023datacentric}: domain
+mixtures are reweighted \citep{xie2023doremi,fan2024doge}, instruction data is filtered, selected, or
+repaired \citep{chen2023alpagasus,liu2023deita,xia2024less,chen2024clear}, and instruction or
+preference supervision is synthesized outright \citep{wang2022selfinstruct,xu2023wizardlm,
+cui2023ultrafeedback}.  Several of these use gradients or optimization internally, yet their output
+is a selected, corrected, reweighted, or generated dataset that an otherwise unchanged trainer
+consumes; what the successor inherits is data, not a learning rule.  Recent systems move these
+decisions inside an agent loop: a student is retrained and its weaknesses steer the next round of
+generation \citep{khan2024dataenvgym}, an agent assembles a specialization curriculum
+\citep{luo2026dataagent}, or the post-training stack is frozen outright so that only data-centric
+decisions vary, as in RSIBench-Data \citep{meng2026rsibench}.  PostTrainBench opens post-training end
+to end, yet data assembly and initialization remain among its largest levers
+\citep{rank2026posttrainbench}.  In a recursive loop, this lever is further constrained by the finite
+stock of human-generated text \citep{villalobos2022rundata} and by degradation when generated data is
+recursively reused \citep{shumailov2023curse}.  Unlike these data-centric settings, \ai{} asks
+whether an agent can improve \emph{how} a successor learns, rather than selecting or generating
+\emph{what} it learns from.
+
+\textbf{Benchmarks for automated ML research.}
+Automated ML research has long meant searching a researcher-specified space: random search,
+automated pipeline selection, multi-fidelity optimization, and population-based training choose
+values within predefined configuration or schedule families \citep{bergstra2012random,
+feurer2015autosklearn,li2018hyperband,falkner2018bohb,jaderberg2017pbt}.  A smaller line searches over
+the rule itself: learned optimizers parameterize the update procedure
+\citep{andrychowicz2016learning}, optimizer search generates update equations
+\citep{bello2017optimizersearch}, AutoML-Zero evolves learning algorithms from primitive operations
+\citep{real2020automlzero}, and symbolic program search discovered Lion
+\citep{chen2023symbolic}.  These works establish that algorithmic design can be automated, but each
+demonstrates a method inside a compact search space and short proxy tasks; none is a benchmark of
+whether a general research agent can diagnose and improve the learning algorithm in an existing
+repository.  Existing agent benchmarks instead score broader outcomes.  MLE-Bench and MLE-Dojo
+reward competition submissions, while ML-Bench exercises repository-level ML tasks
+\citep{chan2024mlebench,qiang2025mledojo,tang2023mlbench}; they mix data and feature engineering with
+model selection, hyperparameter tuning, debugging, and ensembling.  Research-agent systems and
+benchmarks further cover idea generation, experimentation, paper writing, replication, and
+open-ended workshop problems \citep{lu2024aiscientist,yamada2025aiscientistv2,jiang2025aide,
+chen2026mars,jin2026arbor,starace2025paperbench,kon2025expbench,chen2025mlrbench}, and Frontier-Eng
+extends executable, verifier-driven improvement to real-world engineering designs
+\citep{einsia2026frontiereng}.  The closest benchmarks begin with an AI system and ask an agent to
+improve it \citep{huang2024mlagentbench,nathani2025mlgym,zhang2025mlrcbench,wijk2024rebench,
+lyu2026mlsbench,chen2026agent2rlbench}, but their scores aggregate gains from execution, data,
+capacity, hyperparameters, and learning rules; accordingly, they find tuning and engineering easier
+than method invention.  Even \texttt{autoresearch}, which opens architecture, optimizer, and
+training-loop code \citep{karpathy2026autoresearch}, yields edits that behave largely as
+hyperparameter optimization in controlled comparison \citep{ferreira2026autoresearch}.  These
+benchmarks therefore test whether an agent can produce a better artifact, not whether it improved
+the learning rule that produces its successor---the algorithmic-design step at the core of AI4AI.
+To our knowledge, \ai{} is the first benchmark to make that step the object of evaluation: it removes
+the agent, reruns the submitted source from a clean start, and classifies the patch to verify whether
+the gain came from execution, data, or a change to the training algorithm itself.

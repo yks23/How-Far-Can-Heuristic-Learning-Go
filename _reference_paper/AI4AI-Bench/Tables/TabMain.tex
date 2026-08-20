@@ -1,0 +1,63 @@
+\begin{table*}[t]
+\centering
+\caption{\textbf{Every task under all three references.} $n$ counts configurations with at least one
+valid checkpoint, scored at the best of at most three; \textbf{beat} counts those strictly better than
+the reference under the task's direction, and \textbf{med.\ $\Delta$} is the median configuration's
+relative change against it, signed so positive is better. Agents improve the artifact they were handed
+almost everywhere and split against the committed recipe: six of the nine tasks publishing one are won,
+three lost. Rows group by the verdict against $\rshort$; \textbf{bold} marks the three tasks whose
+verdict reverses under $\rlong$, which are exactly the three losses (\S\ref{sec:refchoice}). DDPO and
+RAGEN are italicised because the top of each one's range means something different from the middle
+(\S\ref{sec:instrument}).}
+\label{tab:main}
+\small
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{llrrrrrrrrr}
+\toprule
+& & & \multicolumn{2}{c}{\textbf{configurations}}
+& \multicolumn{2}{c}{\textbf{vs.\ start $b$}}
+& \multicolumn{2}{c}{\textbf{vs.\ short $\rshort$}}
+& \multicolumn{2}{c}{\textbf{vs.\ long $\rlong$}} \\
+\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}\cmidrule(lr){10-11}
+\textbf{Task} & \textbf{Dir.} & \textbf{$n$} & \textbf{best} & \textbf{median}
+& \textbf{beat} & \textbf{med.\ $\Delta$} & \textbf{beat} & \textbf{med.\ $\Delta$}
+& \textbf{beat} & \textbf{med.\ $\Delta$} \\
+\midrule
+\multicolumn{11}{l}{\emph{Agents beat $\rshort$, the recipe the repository publishes}} \\
+DiGress          & min & 25 & 63.72 & 65.84 & 25/25 & $+15.6\%$ & 24/25 & $+5.4\%$ & 15/25 & $+0.5\%$ \\
+OWL              & min & 28 & 12.962 & 16.158 & 0/28 & $-48.8\%$ & 27/28 & $+69.7\%$ & \na{} & \na{} \\
+Model Soup       & max & 28 & 0.7006 & 0.6939 & 28/28 & $+0.9\%$ & 28/28 & $+1.2\%$ & \na{} & \na{} \\
+OPD              & max & 25 & 0.44896 & 0.42917 & 25/25 & $+70.2\%$ & 14/25 & $+0.5\%$ & 20/25 & $+1.3\%$ \\
+DDPO\,\emph{$^\ddagger$} & max & 28 & \emph{17.668} & \emph{5.940} & 26/28 & $+10.1\%$ & 26/28 & $+7.5\%$ & 17/28 & $+1.9\%$ \\
+RAGEN\,\emph{$^\ddagger$} & max & 23 & \emph{1.000} & \emph{0.23438} & 19/23 & $+100.0\%^\S$ & 17/23 & $+37.9\%^\S$ & \na{} & \na{} \\
+\midrule
+\multicolumn{11}{l}{\emph{Agents lose to $\rshort$ --- and beat $\rlong$, the same recipe given their budget}} \\
+\textbf{DPO}     & max & 29 & 0.62228 & 0.46731 & 29/29 & $+17.7\%$ & \textbf{7/29} & $-8.1\%$ & \textbf{24/29} & $+14.0\%$ \\
+\textbf{OpenR1}  & max & 28 & 0.13281 & 0.11719 & 23/28 & $+15.4\%$ & \textbf{0/28} & $-11.8\%$ & \textbf{26/28} & $+16.2\%$ \\
+\textbf{BTRM}    & max & 29 & 77.093 & 73.987 & \na{} & \na{} & \textbf{9/29} & $-0.8\%$ & \textbf{20/29} & $+0.7\%$ \\
+\midrule
+\multicolumn{11}{l}{\emph{No published recipe receipt}} \\
+NPO              & max$^\dagger$ & 28 & 1.000 & 0.96720 & \na{} & \na{} & \na{} & \na{} & 18/28 & $+1.6\%$ \\
+\midrule
+\multicolumn{5}{r}{\textbf{Pooled, each over the tasks that define its reference}}
+& \textbf{175/214} & & \textbf{152/243} & & \textbf{140/192} & \\
+\multicolumn{5}{r}{}
+& \textbf{(81.8\%)} & & \textbf{(62.6\%)} & & \textbf{(72.9\%)} & \\
+\multicolumn{5}{r}{\emph{Pooled, restricted to the six tasks both recipe references cover}}
+& \emph{128/135} & & \emph{80/164} & & \emph{122/164} & \\
+\multicolumn{5}{r}{}
+& \emph{(94.8\%)} & & \emph{(48.8\%)} & & \emph{(74.4\%)} & \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\vspace{2pt}
+{\footnotesize The three pooled rates are computed on different task sets, since a configuration enters
+a denominator only where its reference is defined: nine tasks have $\rshort$, eight have $b$, seven have
+$\rlong$, six have both. The restricted rows are the only ones on which the two recipe references may be
+compared directly. Parity is not counted as a win. $^\dagger$ NPO is reported on the task's own
+composite of two objectives, defined on candidates rather than on the shipped reference pair, so it has
+no $b$ and no $\rshort$. $^\ddagger$ metric qualified in \S\ref{sec:instrument}. $^\S$ RAGEN's
+percentages are an artifact of its resolution --- every score is a multiple of $1/512$, and the median
+configuration solving 120 boards against the start's 60 is what the $+100.0\%$ records, so read the
+counts on that row.}
+\end{table*}

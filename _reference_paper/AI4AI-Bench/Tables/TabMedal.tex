@@ -1,0 +1,51 @@
+\begin{table*}[t]
+\centering
+\caption{\textbf{The standings, by two reference-free aggregates.} On each task the three best
+\emph{distinct} configuration scores across the six systems set its gold\,/\,silver\,/\,bronze
+thresholds, and a system is credited $1.00/0.67/0.33$ for its best configuration reaching one. No
+reference enters the construction, so both aggregates are defined on all ten tasks; the \textbf{8\,tk}
+columns drop the two tasks \S\ref{sec:validity} qualifies, and the \textbf{\texttt{max}} columns
+recompute the whole construction --- thresholds included --- on the single reasoning-effort level all
+six systems ran, which is the only pool in which the grids are matched. \textbf{Claude Opus~5 leads every reading},
+taking a medal on nine of ten tasks and ranking first on eight. Below it the ordering is not stable:
+in the matched \texttt{max} pool Claude Sonnet~5 and Kimi~K3 rise (italic), the latter from no medal
+at all to $0.333$, because the full pool gives Kimi one attempt per task against the others' five or
+six. This podium is set by the six systems measured here and does not read any external
+reference. Unlearning's thresholds are set on the internal scalar its task package designates for
+lifecycle ordering; its reference-relative rate is scored by dominance on the two official components
+instead (\S\ref{sec:standings}).}
+\label{tab:medal}
+\small
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lcccccccccc rrr rrr}
+\toprule
+& \multicolumn{10}{c}{\textbf{medal credit per task}}
+& \multicolumn{3}{c}{\textbf{medal} $\uparrow$}
+& \multicolumn{3}{c}{\textbf{avg.\ rank} $\downarrow$} \\
+\cmidrule(lr){2-11}\cmidrule(lr){12-14}\cmidrule(lr){15-17}
+\textbf{System} & DDPO & DiGress & DPO & Soup & OPD & OpenR1 & NPO & OWL & RAGEN & BTRM
+& 10\,tk & 8\,tk & \texttt{max} & 10\,tk & 8\,tk & \texttt{max} \\
+\midrule
+Claude Opus 5 & 1.00 & 0.33 & 1.00 & 0.00 & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 & \textbf{0.833} & \textbf{0.791} & \textbf{0.633} & \textbf{1.40} & \textbf{1.50} & \textbf{2.60} \\
+GPT-5.6 Sol & 0.00 & 1.00 & 0.00 & 1.00 & 0.00 & 1.00 & 1.00 & 0.00 & 1.00 & 0.00 & 0.500 & 0.500 & 0.433 & 2.30 & 2.38 & 3.10 \\
+GPT-5.6 Terra & 0.00 & 0.67 & 0.00 & 0.00 & 0.67 & 0.67 & 0.00 & 0.00 & 0.67 & 0.00 & 0.268 & 0.251 & 0.267 & 3.50 & 3.50 & 3.90 \\
+Claude Sonnet 5 & 0.00 & 0.00 & 0.00 & 0.67 & 0.00 & 0.67 & 0.00 & 0.00 & 0.33 & 0.00 & 0.167 & 0.168 & \emph{0.401} & 4.30 & 4.12 & \emph{3.10} \\
+GPT-5.6 Luna & 0.00 & 0.00 & 0.33 & 0.00 & 0.00 & 0.33 & 0.00 & 0.00 & 0.00 & 0.67 & 0.133 & 0.166 & 0.300 & 4.20 & 3.88 & 4.00 \\
+Kimi K3 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.000 & 0.000 & \emph{0.333} & 4.70 & 5.00 & \emph{3.70} \\
+\midrule
+\multicolumn{17}{l}{\emph{podium thresholds, in each task's own units and direction}} \\
+\footnotesize gold & \footnotesize 17.67 & \footnotesize 63.72 & \footnotesize .6223 & \footnotesize .7006 & \footnotesize .4490 & \footnotesize .1328 & \footnotesize 1.00 & \footnotesize 12.96 & \footnotesize 1.00 & \footnotesize 77.09 & & & & & & \\
+\footnotesize silver & \footnotesize 14.45 & \footnotesize 64.33 & \footnotesize .6150 & \footnotesize .6985 & \footnotesize .4427 & \footnotesize .1250 & \footnotesize .9960 & \footnotesize 13.04 & \footnotesize .9980 & \footnotesize 75.84 & & & & & & \\
+\footnotesize bronze & \footnotesize 12.13 & \footnotesize 64.85 & \footnotesize .5642 & \footnotesize .6983 & \footnotesize .4401 & \footnotesize .1172 & \footnotesize .9929 & \footnotesize 13.25 & \footnotesize .8945 & \footnotesize 75.75 & & & & & & \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\vspace{2pt}
+{\footnotesize Average rank uses competition ranking within a task; a system with no scored
+configuration takes last place ($6$). Thresholds are rounded here and released at full evaluator
+precision. Three restrictions bound what these columns may be compared to --- the podium is pool-defined; per-task credit is not constant, paying
+$1.00$ where one system holds all three thresholds and up to $3.67$ where systems tie at them, so the
+ten tasks do not weigh equally in the mean; and attempts per cell are unequal --- Kimi~K3 contributes one configuration per task where the others
+contribute five or six, and at the single \texttt{max} level all six systems ran it reaches a medal
+score of $0.333$ rather than $0.000$ (\S\ref{sec:standings}).}
+\end{table*}

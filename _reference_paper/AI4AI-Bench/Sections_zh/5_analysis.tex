@@ -1,0 +1,127 @@
+\section{Analysis}
+\label{sec:analysis}
+
+\subsection{Most submissions change how the run goes, not how the model learns}
+\label{sec:families}
+
+Everything so far has been a score, and a score says only whether a submission worked. It does not
+say whether the agent designed an algorithm or tuned one that was already there, and those are the
+two outcomes this paper exists to separate. Counting lines does not separate them either: a one-line
+diff can replace a learning rule, and a thousand-line refactor can leave the training procedure
+exactly as it was. The distinction has to be read off the submitted code, by asking which part of the
+training procedure it modifies.
+
+\input{Tables/TabFamilies}
+
+We group every change into eight families on two sides of that line (Table~\ref{tab:families}). The
+grouping is assigned by a separate language model reading each submitted diff against the definitions
+that follow. Four
+change \emph{how this run goes}: how long it trains and how often it saves; the training
+hyperparameters, such as the learning rate or the batch size; which of the checkpoints it produced to
+keep; and how much trainable capacity to attach and where, such as the rank and
+placement of an adapter. Four change \emph{how the model learns}: the loss it optimizes, by adding,
+removing or reweighting a term; the supervision it learns from, by introducing a signal the procedure
+did not have before; the update rule itself, replaced by a different one; and the data the procedure
+trains on. The families are not exclusive --- a submission matches $3.13$ of them on
+average, since changing a loss usually drags a hyperparameter along with it --- so we report how many
+submissions reach a side rather than assigning each to a single family.
+
+Of the 280 submissions, 17 made no change that could be classified. Of the remaining 263, 141 stay
+entirely on the run side and only 122 touch how the model learns. Four hours, a whole repository, and
+a task statement that says in as many words to improve this training algorithm, and more than half of
+the submissions never reach that layer.
+
+% All figures here are means of the mapped score of \S\ref{sec:scoring}, computed
+% from build/lark/mapped_table.csv joined to build/family_rows.jsonl. Reported as
+% means rather than as win rates: over ten tasks a win rate is too unstable to
+% carry a comparison, and it discards the margin, which is the quantity at issue.
+Do the submissions that reached it do better? On the scale of \S\ref{sec:scoring} they do, and by a
+wide margin: submissions that touch the learning procedure average $0.226$ against $0.126$ for those
+that stay on the run side, a gap of $0.100$ against a standard error of $0.022$. It is not the
+artifact of a single task --- dropping agentic RL, where imitation learning lifts the whole column,
+still leaves $0.182$ against $0.128$ --- nor of a single system, since the ordering holds within four
+of the five models in this corpus. It is also not a randomized comparison: the systems that reach the
+learning procedure more often are the stronger ones to begin with, so the gap is the difference
+between the submissions that go there and the submissions that do not, rather than the effect of
+going there.
+
+Read together, the two numbers say that the algorithmic layer is where the distance actually gets
+closed, and that most submissions never go to it. What separates a submission that reaches that layer
+from one that does not is not effort spent but a step taken first: reading the training dynamics as a
+specific failure mechanism, and then addressing that mechanism.
+
+\subsection{Reasoning effort buys nerve, and nerve is what pays}
+\label{sec:effort}
+
+Is there anything that pushes agents down to that layer? The setup has exactly one knob that can be
+turned on its own, the reasoning-effort level, and taking it from the lowest setting to the highest
+shows clearly what it buys and what it does not.
+
+It buys nerve. The share of submissions that touch the learning algorithm rises from $8.0\%$ to
+$64.0\%$. At low effort the submissions move
+budgets, logging and optimization knobs; at high effort they operate on objectives, replace learning
+rules, and add supervision to the procedure.
+
+It buys attempts. Within the Codex grid, the only one that exposes the lowest setting, the median
+configuration goes from 4 evaluations inside its four hours to 16, from
+18 edited lines to 246, and from $11$k output tokens to $109$k. Cost follows: the median exploration
+cost per task rises from \$1.69 to \$34.60. The exploration stage of the whole
+evaluation consumed \$5{,}334 of API calls, with Kimi~K3 converted from Chinese yuan and with neither
+the GPU hours of the twelve-hour runs nor the evaluator's compute included.
+
+It buys completion. Of the 19 cells that score zero, 8 ended their four hours without a usable patch
+--- four of them workspaces the host found empty after the agent exited early --- and 11 submitted a
+complete patch that started its twelve-hour run but finished with nothing satisfying the contract,
+most often no loadable merged model written to disk. All 19 terminated normally: the failure is in what
+the agent submitted. They concentrate at low effort, with 12 of the 19 at the two lowest levels and
+one each at the two highest.
+
+% Means of the mapped score from build/lark/mapped_table.csv. The Codex figures
+% hold the harness fixed, which is why they are quoted beside the pooled ones.
+And it does buy a result, though a small one in absolute terms. On the scale of \S\ref{sec:scoring}
+the mean rises from $0.094$ at the lowest level to $0.196$ at the highest, a gap of $0.102$ against a
+standard error of $0.027$; within the Codex grid, where the harness is held fixed, it rises at every
+step, $0.094$ to $0.204$. Set beside the eightfold rise in submissions that reach the learning
+procedure, the score roughly doubles, and $0.196$ is still only a tenth of the way from the shipped
+algorithm to the optimum. Reasoning effort works, then, by making an agent attempt the thing that
+pays rather than by making the attempt itself better: it brings more agents to the loop that
+matters --- reading the training dynamics, naming the mechanism that is failing, changing it --- and
+what they gain is about what arriving there is worth.
+
+\subsection{What the submissions that reached the algorithmic layer did}
+\label{sec:reached}
+
+Among the 122 submissions that touched how the model learns, a few changed not one step of the
+procedure but what the task was taken to be. Three are worth reading in full, and they come from
+three different tasks.
+
+\textbf{Turning a task that does no training into one that does.} One-shot pruning is defined to do
+exactly one thing: score which weights to remove, remove them once, stop. The repository's own
+procedure leaves a perplexity of $53.4$. One submission replaced it with a three-stage pipeline ---
+a different rule for selecting and updating the surviving weights, then a round of layerwise
+distillation, then a masked knowledge-distillation fine-tune of the whole model (AdamW, 666 steps,
+cosine decay) --- and brought the perplexity to just over $13$. Its notes record a diagnosis along
+the way: a first attempt scored $572$, absurdly bad, because the weight-allocation step propagated
+activations forward through the network and overwrote layer 0's input in place, so the pruning step
+was reading layer 31's activations.
+
+\textbf{Turning a closed form into an optimization problem.} Weight averaging ships a uniform mean
+over 72 candidate models. One submission first built itself an instrument: the relevant tensors of
+all 72 models packed into a single matrix resident in GPU memory and the proxy images preprocessed
+and held, so that loading a coefficient vector and scoring it became one matrix multiplication and
+one forward pass --- $0.38$ seconds, against roughly $190$ before. On that instrument it ranked five
+methods, all measured on its own rig: best single model $0.6935$, uniform average $0.6880$, top-$k$
+by accuracy $0.6945$, greedy soup $0.7025$, and coefficients learned directly by cross-entropy with
+Adam $0.7020$, the last two tied. It also recorded two routes that did not work: extrapolating along
+a single direction collapses accuracy, and a logit-ensemble proxy does not rank candidates reliably.
+
+\textbf{Replacing reinforcement learning with imitation learning.} Multi-turn agentic RL ships GRPO. The
+submissions that reached a perfect score judged that on this task it pays to learn from the optimal
+solution first: generate boards in quantity, label every step with its optimal move, and fine-tune on
+that supervision; one went further with \textsc{dagger}, letting the policy walk and adding the
+correct answer wherever it went.
+
+The three have one thing in common. Each built something measurable before acting: a solver to
+establish the task's ceiling, an evaluation rig five hundred times faster than the one it was given,
+a localisation of which layer's activations were being overwritten. This is exactly the capability
+\S\ref{sec:families} finds missing --- and among 263 submissions it is the exception.

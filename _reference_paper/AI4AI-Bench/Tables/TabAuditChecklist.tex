@@ -1,0 +1,31 @@
+\begin{table*}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\caption{Minimum audit checklist for a published run record. Checks are binary or explicitly
+enumerated; a missing value is not converted to success. The last four rows are additions this
+paper's own findings forced: the original checklist had no entry that would have caught an
+out-of-range score (\S\ref{sec:instrument}), a side metric collapsing on a task we had not instrumented,
+a patch that changed nothing the training loop reads, or a reference published without the rule
+that reduced it to one number (Table~\ref{tab:reduction}). Each of the four corresponds to a
+finding we actually made, not to a hypothetical one.}
+\label{tab:audit}
+\begin{tabular}{p{2.25cm}p{5.9cm}p{2.4cm}p{2.4cm}}
+\toprule
+Object & Required evidence & Decision & Field \\
+\midrule
+Task declaration & task id, metric direction, data visibility, loader and budget hash & frozen / reject & task\_id \\
+Exploration & trace, elapsed time, tool/token log and candidate.patch hash & present / fail & explore\_elapsed \\
+Fresh formal replay & clean-start marker, patch application and container identity & replayed / fail & source\_run\_id \\
+Checkpoint & standard path, progress and cryptographic hash & candidate / exclude & checkpoint\_hash \\
+Validation & task-specific load, completeness and contract receipt & valid / invalid & validation\_status \\
+Final evaluation & hidden/disjoint asset, metric, direction, sample count and receipt & scored / fail & final\_metric \\
+Terminal state & one of completed / terminal / source-unavailable, with lineage evidence & classified & formal\_state \\
+\midrule
+Metric range \emph{(new)} & declared valid range for the metric, and a check that the score lies inside it & in range / \textbf{block} & metric\_range\_ok \\
+Side-metric guard \emph{(new)} & per-task diagnostic metrics with thresholds, evaluated for \emph{every} task & pass / \textbf{block} & diagnostics.blocking \\
+No-op detector \emph{(new)} & comparison of the score triple against the stock recipe within evaluator noise & distinct / \textbf{flag} & noop\_suspected \\
+Reference receipt \emph{(new)} & every reference recorded with its own evaluator receipt, budget, and the rule reducing its checkpoints to one number & recorded / \textbf{block} & reference\_receipt \\
+\bottomrule
+\end{tabular}
+\end{table*}

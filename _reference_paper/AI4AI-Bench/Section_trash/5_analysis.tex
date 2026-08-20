@@ -1,0 +1,141 @@
+\subsection{What the apparatus does}
+\label{sec:analysis}
+
+Both the standings of \S\ref{sec:results} and the behaviour of \S\ref{sec:behavior} are read
+against a fixed apparatus, and several properties of that apparatus move the
+reported number by more than adjacent mid-table systems differ from one another. Four of those properties are worth making explicit: how the
+checkpoint rule changes the headline without touching an agent, how many of the resulting wins the
+evaluator can actually resolve, what a unit of exploration costs, and the two tasks on which the
+repository's own metric stops measuring what it was chosen to stand for.
+A fourth --- what fails and why --- belongs with the population it removes and was given in
+\S\ref{sec:lifecycle}.
+
+\subsubsection{The checkpoint rule decides which artifact is reported}
+\label{sec:ckpt}
+
+Each configuration keeps up to three checkpoints and is scored on the best of them under the task's
+direction. It changes the reported artifact for most of the suite and the
+per-artifact scores very little, yet it moves the headline. Best
+differs from final in $145$ of $271$ scored configurations ($53.5\%$), and the winning checkpoint is
+the first about as often as the last, so this is not a late-training effect. The mechanism is
+threshold-straddling: most configurations land within a fraction of a percent of the recipe, so a
+per-artifact change too small to matter on its own flips the binary win or loss for many of them. Its consequence for the
+aggregate is large: reading the nine scalar-metric tasks on final rather than best-of-three
+checkpoints moves $19$ of $243$ configurations across the line, a swing of $7.8$ points --- more than separates
+adjacent mid-table systems. A benchmark reporting best-of-$k$ and one reporting final checkpoints would agree
+about the typical configuration on these runs and disagree about the headline, which is why we report
+the rule alongside the number. One further property of the rule is worth stating because it is not
+symmetric: the harness fixes \emph{how many} checkpoints are reduced, but not \emph{what occupies}
+them. The gallery records agents filling the three slots with a portfolio of distinct recipes rather
+than three points on one training curve --- a three-member sweep over the preference temperature,
+three pruning calibration seeds, the best three of eleven restarts chosen by a candidate-owned
+validator. Selection over a curve and selection over a portfolio are different things, and the rule
+permits both.
+
+\subsubsection{How many wins survive the evaluator's own noise}
+\label{sec:noise}
+
+The same threshold-straddling has a second consequence the win rate hides. Seven of the ten metrics are
+means over a countable evaluation set --- images, prompts, problems, boards, preference pairs --- and
+the frozen evaluator records a standard error for each artifact alongside its score. On the other three
+it does not, and cannot: a perplexity and a test NLL are deterministic functions of a model and a fixed
+corpus rather than sample means. So of the $152$ configurations that beat the shipped recipe on the
+nine scalar-metric tasks, $101$ carry a testable margin and $51$ (graph generation and one-shot
+pruning) do not.
+
+Of those $101$, \textbf{$42\%$ beat the recipe by more than twice the evaluator's
+standard error} and $74\%$ by more than one. We do not hold a standard error for the reference itself;
+inflating the artifact's own by a factor of $1.41$ as a stand-in for the error of the difference, a
+deliberately strict substitute, leaves $38\%$ above two. The rest are wins the count records and the measurement
+cannot separate from noise. The concentration matters more than the pooled figure: on diffusion
+fine-tuning $22$ of $26$ testable wins clear two standard errors and on agentic RL $15$ of $17$ do,
+while on weight averaging only $1$ of $28$ does and on on-policy distillation \emph{none} of $14$ does.
+Weight averaging is one of the two tasks whose recipe \S\ref{sec:results} already
+calls a soft reference, and this is the same softness measured a second way. On-policy distillation is
+not on that list: the win rate reports it at $14/25$, yet its result rests entirely on differences the
+evaluator cannot resolve. Its own task package is the only one
+of the ten to publish an uncertainty on the reference, $\pm0.0516$ against a recipe of $0.4271$, which
+is the same fact seen from the other side.
+
+We report this rather than filter on it. A margin inside the standard error is not a demonstration that
+the recipe was not improved, and the $51$ untestable wins are untestable, not failed; applying a
+significance filter to the headline would trade one arbitrary convention for another. But a benchmark
+whose pooled rate is carried by tasks where most margins sit inside the evaluator's own resolution is
+reporting something weaker than the rate suggests, and the per-artifact errors are released so that a
+reader can apply whatever threshold they prefer.
+
+\subsubsection{What a unit of exploration costs}
+\label{sec:cost}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig_cost}
+\caption{\textbf{Cost buys almost no score --- across systems as well as within one.} Each point is one
+\emph{(model, effort)} cell --- median exploration cost per configuration (log $x$, colour = system,
+size = effort) against win rate over the shipped recipe ($y$). The complement to
+Figure~\ref{fig:effort}, which sweeps effort inside one harness: here the whole field is on one axis.
+The strongest system, Claude Opus~5, is neither the cheapest nor the most expensive: median cost per
+configuration ranges roughly tenfold across the six systems while capability barely tracks it. The ordinary-least-squares fit (with
+its $95\%$ band) has a slope of only $+4.5$ win-rate points per tenfold increase in cost, and the
+correlation explains about $5\%$ of the variance across the $28$ cells that carry a cost (Pearson
+$r=0.21$): the cheapest third of cells (median \$3/cfg, $55\%$ win) reaches
+nearly the same score as the priciest (\$35/cfg, $60\%$). Cost is read per configuration so grid depth
+does not inflate it; Kimi~K3 is a single max-effort cell.}
+\label{fig:cost}
+\end{figure}
+
+Aggregated over configurations --- grids of unequal depth, so not a per-system-comparable total --- the
+whole evaluation cost about \$5{,}200 in exploration API calls at each provider's official rates, kept
+distinct from formal GPU training and the hidden evaluator's compute (Table~\ref{tab:systems}). Two facts stand out (Figure~\ref{fig:cost}). Within the Codex
+harness, cost per configuration climbs steeply with effort while the win rate does not
+(\S\ref{sec:effort}), so the marginal dollar buys tokens and probes, not wins. Across systems, the
+median cost of one configuration ranges roughly ten-fold --- \$45 for GPT-5.6 Sol down to \$4 for
+GPT-5.6 Luna --- while medal scores and win rates vary far less, and the strongest system (Claude
+Opus~5, \$18 per configuration) is neither the cheapest nor the most expensive. We compare per
+configuration rather than per system because the grids differ in depth: the totals span a wider range
+still (\$2{,}692 for Sol against \$59 for Kimi~K3's single-effort grid), but that range is mostly a
+statement about how many configurations each grid contains. That cross-system comparison is descriptive rather than causal,
+since the systems differ in harness as well as in spend; but the weak coupling between cost and
+capability is itself the point, and makes cost a first-class axis for an AI-improvement benchmark.
+
+\subsubsection{The reference you divide by, and the metrics that stop measuring}
+\label{sec:validity}
+
+Two further caveats bound every number above. First, ``beating the recipe'' depends on which
+measurement of the recipe one uses: the shipped recipe run at its committed step count, or that same
+configuration replayed under the agent's own twelve-hour budget. The two disagree by task and neither
+is uniformly harder. The replay does two things at once. It corrects the reduction asymmetry, and
+overcorrects it: the committed run is too short to yield three checkpoints, so $\rshort$ meets the
+agent's best of three with a single point, while the replay is reduced to its own best over the twelve
+to twenty-nine checkpoints it retains --- more draws than the agent gets. Neither reference is matched
+to the agent exactly; between them the agent is bracketed, and the rate against the replay is the
+conservative one. And it is the closest thing the suite has to an
+\emph{agent-free control}: it opens exactly the two things the patches most often change --- the
+training horizon and the checkpoint cadence --- and changes nothing else, so if the wins were bought by
+budget and selection rather than by the agent's edits, they should not survive it. They largely do,
+and they do so on a pool that excludes both tasks whose committed recipe is a deliberately naive one.
+Read on best checkpoints on both sides, agents clear the budget-matched replay in $87$ of $164$
+configurations ($53.0\%$) against $80$ of the same $164$ for the recipe as
+committed --- seven more, not fewer --- and that near-tie hides
+two opposite movements. On three tasks the longer run is the better artifact and therefore the harder
+reference, and the win rate falls --- $93\%\!\to\!61\%$ on diffusion fine-tuning, $96\%\!\to\!44\%$ on
+graph generation, $56\%\!\to\!20\%$ on on-policy distillation. On two the recipe degrades once its
+horizon is opened, so the reference becomes easier and two tasks agents lose on reverse to wins
+($24\%\!\to\!76\%$ and $0\%\!\to\!82\%$); reward modelling does not move. A comparison against a single recipe reference is therefore a comparison against
+one measurement choice rather than against a fixed bar, which is why we report the committed recipe and its budget-matched replay
+separately rather than collapsing them into one ``beat the recipe'' number
+(Appendix~\ref{app:baselines}).
+
+Second, on two of the ten tasks the metric each repository chose for itself stops measuring the
+intended objective at the top of its range, which is where a best-of-$k$ benchmark reports from.
+Neither metric is ours: freezing real repositories means inheriting the objective
+each one already optimizes, and an objective that behaves well in its own paper's operating range need
+not behave well once an agent is paid to push it. On diffusion fine-tuning the reward is an aesthetic
+predictor whose familiar $1$--$10$ range is the span of its training labels rather than a bound, and
+the top artifact reaches $17.67$ against a recipe at $5.53$ while its prompt alignment falls $53\%$ and
+its output diversity $87\%$. On agentic RL the top scores come from imitating an optimal solver the
+repository ships in its own utilities, so the metric separates recipe classes rather than degrees of
+training. Appendix~\ref{app:validity} gives both in full. Neither is an evaluator malfunction and
+neither breaks a task contract; both stay in the suite with the qualification attached, and together
+they are the strongest evidence that validity instrumentation for this kind of benchmark should be
+per-task and blocking rather than advisory.

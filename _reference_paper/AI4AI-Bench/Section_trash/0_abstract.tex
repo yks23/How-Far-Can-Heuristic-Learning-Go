@@ -1,0 +1,28 @@
+% Single paragraph: the class typesets \abstract inside the title block with
+% parskip active, so blank lines become visible paragraph spacing on page 1.
+\abstract{%
+The case for recursive self-improvement (RSI) rests on agents doing AI research, yet the evidence for it
+measures almost only whether they can raise a fixed verifiable metric --- leaving out the judgements
+that decide whether a research programme succeeds: which hypothesis to commit to, and when to abandon
+it. We argue those judgements are measurable \emph{inside} verifiable tasks, provided the record of how
+each was attempted is kept, and we build a benchmark that keeps it. On ten frozen research repositories,
+each asking an agent to improve the repository's \emph{own} training recipe within a four-hour window on
+one GPU, every submission is extracted as a source-only patch, retrained for up to twelve hours from a pinned
+commit in a fresh container, and scored by an evaluator the agent cannot run --- and every configuration
+leaves a complete audited trajectory beside its score. Across 290 configurations of six
+systems --- three GPT-5.6 variants under Codex, two Claude~5 variants under Claude Code, and Kimi~K3 ---
+agents beat the recipe the repository itself ships in $170$ of $271$ scored
+configurations ($62.7\%$). Replaying that recipe under the agent's own twelve-hour budget --- an agent-free
+control for exactly the budget and checkpoint cadence the patches most often change --- leaves the rate
+where it was, so the margin is not bought by budget. They recover a competent default and seldom
+surpass one.
+That is the narrow reading; the trajectories support a wider one. The systems differ less in how hard
+they search than in
+\emph{where they decide the problem lies} --- a judgement made in the opening minutes from reading the
+repository rather than from evidence, which on the two tasks where it visibly diverges tracks the
+artifact more closely than the reasoning-effort setting does. Effort itself buys persistence and code volume, taking the median run
+from $12\%$ of its window to $96\%$, but only two more distinct experiments and no win rate. Throughout we also report how far the apparatus itself --- the checkpoint convention, the choice
+of reference, the range over which a metric keeps meaning what it should --- moves these numbers, which on this suite is further than adjacent
+mid-table systems differ from one another. We release every artifact, receipt,
+and audited trajectory.%
+}

@@ -1,0 +1,97 @@
+% Per-task reference for Section 2. The main table (Table~\ref{tab:tasks}) carries the
+% family, the starting model and the final metric; what it cannot hold is what each
+% repository actually does, which quantity the agent can query while it works, and
+% where the line between the two is drawn. Every number here is from the task's own
+% instruction.md and the baseline row of Table~\ref{tab:grid}.
+\section{The ten tasks}
+\label{app:tasks}
+
+Each task freezes one research repository and asks for the same thing: improve the training
+algorithm that repository applies to its own model. What differs between them is the algorithm, the
+asset the agent is given, and the pair of metrics either side of the evaluation boundary --- a cheap
+one it may query as often as it likes during its four hours, and the one that decides its result,
+computed afterwards by an evaluator it never sees. The two are related differently on different
+tasks, and the relation matters when reading a column: on some the proxy is a subsample of the final
+protocol, on others it is a different benchmark entirely.
+
+\paragraph{OpenR1 --- supervised fine-tuning.}
+Qwen2.5-Coder-1.5B-Instruct is fine-tuned on a decontaminated 8,005-row Python CodeForces
+projection; the shipped recipe is completion-only supervised fine-tuning with the prompt tokens
+masked. A candidate may select, reweight, pack, transform or synthesise training signal from those
+rows, and may change the masking or the objective. The proxy is
+\texttt{livecodebench\_public\_pass\_at\_1}; the final metric is the whole LiveCodeBench v6 release
+slice, 175 problems under the benchmark's own sampling protocol --- ten samples per problem at
+temperature $0.2$ and top-$p$ $0.95$, capped at 2,048 new tokens, scored as the mean over problems
+of the fraction of samples that pass every official test.
+
+\paragraph{RAGEN --- multi-turn agentic RL.}
+A Qwen2.5-3B-Instruct policy is trained on Sokoban with multi-turn on-policy GRPO, generating its
+own boards and trajectories online. Board construction, curriculum, rollout collection, reward
+shaping and the update rule are all open; the scoring engine, the action decoding and the final
+seeds are not. The proxy is a four-bank solve rate, the final metric a held-out 512-board solve
+rate, and the two use different fixed environment-seed protocols.
+
+\paragraph{OPD --- on-policy distillation.}
+A 1.5B student is distilled from a mounted teacher by sampled-token on-policy distillation. The
+proxy and the final metric are different benchmarks rather than two views of one: the proxy is
+MATH-500 at four samples per question with a 12,288-token cap, and the final metric is AIME 2024 and
+2025, 60 questions at 32 samples with a 31,744-token cap. MATH-500 is mounted during exploration;
+the AIME inputs are not.
+
+\paragraph{BTRM --- Bradley--Terry reward modelling.}
+A scalar reward model is trained from a fixed Mistral-7B start on decontaminated UltraFeedback
+preference pairs under a Bradley--Terry objective. The artifact must remain loadable as a scalar
+reward model on that architecture, and any overlap between a training row and RewardBench
+invalidates the run. Here the proxy is a strict subsample of the final: 512 of the 2,985 pairs are
+visible, and the remaining 2,473 are held out until scoring.
+
+\paragraph{DPO --- preference optimization.}
+A merged Zephyr/Mistral-7B model is aligned with direct preference optimization. The final metric is
+IFEval prompt-level strict accuracy over 413 held-out prompts.
+
+\paragraph{DDPO --- diffusion RL.}
+Stable Diffusion v1.5 is fine-tuned with on-policy DDPO and a LoRA adapter against a frozen CLIP
+aesthetic reward. Prompt construction and sampling, reward shaping and normalization, auxiliary
+losses, the update rule and the trainable parameters are all open; the reward assets and the final
+prompt/latent stream are fixed, the latter mounted only at scoring. The proxy scores 64 generated
+images, the final metric 256. CLIP alignment and mean pairwise image distance are reported alongside it.
+
+\paragraph{NPO --- machine unlearning.}
+Llama-3.2-1B-Instruct is unlearned on the TOFU \texttt{forget10} protocol with the official
+OpenUnlearning NPO recipe. Final evaluation reports two pinned components, an extraction strength
+that is better lower and a model utility that is better higher; the scalar we compare on is the
+balanced score of Table~\ref{tab:tasks}, their harmonic mean after normalising each against the
+training start and a retain-90 reference. During
+exploration only the published anchor and the train-role projection are mounted --- the retain-90
+anchor and the final-role data appear only in the separate score phase.
+
+\paragraph{DiGress --- discrete graph diffusion.}
+A discrete graph diffusion model is trained on QM9 without hydrogens. The fast metric is the
+product of validity, uniqueness and novelty rates, higher better; the final metric is the upstream
+test negative log-likelihood, lower better, and the repository's validation NLL is what connects
+them. The real test split is mounted only at scoring.
+
+\paragraph{Model Soup --- weight averaging.}
+Seventy-two fixed CLIP ViT-B/32 checkpoints are combined into one model; the shipped construction is
+a uniform mean. What the submitted code decides is which ingredients to use and with what
+coefficients, and those coefficients may be negative or extrapolative. The proxy is 2,000
+ImageNet-V2 images and the final metric the full 10,000.
+
+\paragraph{OWL --- one-shot pruning.}
+Unstructured sparsity is imposed on a dense OPT-6.7B in a single pass by activation-aware OWL/Wanda
+pruning, with no fine-tuning in the shipped recipe. The hard artifact gate is decoder sparsity
+within $[0.699, 0.701]$; within that window the pruning criterion, the search, the use of the
+mounted C4 calibration shard, and any training a candidate cares to add are open. The proxy is
+WikiText-2 validation perplexity and the final metric WikiText-2 test perplexity, the test text
+mounted only at scoring.
+
+\paragraph{}
+Two of the ten ship a procedure that trains nothing: weight averaging combines checkpoints handed
+over as data, and one-shot pruning removes weights from a released model in a single pass. Nothing
+in the contract requires a submission to leave it that way, and on both tasks some did not --- the
+submissions read in \S\ref{sec:reached} add a distillation fine-tune to the pruning pipeline and a
+gradient-based search to the soup, and use the twelve hours accordingly. The two are kept because
+the algorithmic question is as real in them as anywhere else: which checkpoints to combine and how,
+which weights to remove and by what criterion.
+
+\input{Sections_zh/Z_task_contract}

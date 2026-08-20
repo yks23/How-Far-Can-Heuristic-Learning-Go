@@ -1,0 +1,72 @@
+\begin{table}[t]
+\centering
+\caption{DDPO: the official score against the two side metrics the evaluator records but does
+not act on, for all 72 artifacts. The Claude grid is listed per artifact; the GPT grid, which
+contains no artifact above the aesthetic predictor's training-label range, is summarized by
+system. The alert flag is informative but coarse --- 50 of 72 artifacts raise at least one and
+22 raise none --- while its sign structure separates two different behaviors: within Opus~5
+score rises as diversity collapses ($\rho=-0.917$), whereas within Sonnet~5 the least diverse
+artifacts are also the lowest scoring ($\rho=+0.476$), which is ordinary underfitting.
+$\Delta$ is against the starting checkpoint, whose values are the table's last row.}
+\label{tab:ddpo}
+\small
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{llrrrrrrc}
+\toprule
+\textbf{Model} & \textbf{Effort} & \textbf{ckpt} & \textbf{score} & \textbf{align.} & \textbf{$\Delta$} & \textbf{divers.} & \textbf{$\Delta$} & \textbf{alerts / status} \\
+\midrule
+\multicolumn{9}{l}{\emph{Opus 5, 9 artifacts: $\rho(\text{score},\text{diversity})=-0.917$ --- score rises as the model collapses}} \\
+Opus 5   & \texttt{max}    & 5060 & \emph{17.668} & 0.1085 & $-53.2\%$ & 0.0471 & $-87.0\%$ & 2 / passed \\
+Opus 5   & \texttt{max}    & 4920 & \emph{17.627} & 0.1043 & $-55.0\%$ & 0.0478 & $-86.8\%$ & 2 / passed \\
+Opus 5   & \texttt{max}    & 4780 & \emph{17.519} & 0.1136 & $-51.0\%$ & 0.0414 & $-88.5\%$ & 2 / passed \\
+Opus 5   & \texttt{xhigh}  & 4372 & \emph{14.446} & 0.1128 & $-51.4\%$ & 0.0714 & $-80.2\%$ & 2 / passed \\
+Opus 5   & \texttt{xhigh}  & 4371 & \emph{14.377} & 0.1133 & $-51.2\%$ & 0.0705 & $-80.5\%$ & 2 / passed \\
+Opus 5   & \texttt{xhigh}  & 4370 & \emph{14.370} & 0.1135 & $-51.1\%$ & 0.0753 & $-79.1\%$ & 2 / passed \\
+Opus 5   & \texttt{high}   &  268 & 8.418  & 0.1513 & $-34.8\%$ & 0.0841 & $-76.7\%$ & 2 / passed \\
+Opus 5   & \texttt{high}   &  132 & 7.875  & 0.2028 & $-12.6\%$ & 0.2200 & $-39.1\%$ & 2 / passed \\
+Opus 5   & \texttt{high}   &  676 & 7.238  & 0.1597 & $-31.2\%$ & 0.1100 & $-69.5\%$ & 2 / passed \\
+\midrule
+\multicolumn{9}{l}{\emph{Sonnet 5, 12 artifacts: $\rho=+0.476$ --- its best artifacts keep their diversity, its worst lose it}} \\
+Sonnet 5 & \texttt{max}    &   36 & 6.154 & 0.2354 & $+1.4\%$  & 0.3064 & $-15.1\%$ & 1 / passed \\
+Sonnet 5 & \texttt{max}    &   35 & 6.127 & 0.2356 & $+1.5\%$  & 0.3128 & $-13.3\%$ & 1 / passed \\
+Sonnet 5 & \texttt{max}    &   34 & 6.110 & 0.2371 & $+2.2\%$  & 0.3170 & $-12.2\%$ & 1 / passed \\
+Sonnet 5 & \texttt{medium} &   40 & 5.864 & 0.2386 & $+2.8\%$  & 0.3319 & $-8.0\%$  & 1 / passed \\
+Sonnet 5 & \texttt{medium} &   39 & 5.859 & 0.2386 & $+2.8\%$  & 0.3325 & $-7.9\%$  & 1 / passed \\
+Sonnet 5 & \texttt{high}   &  173 & 5.823 & 0.2336 & $+0.7\%$  & 0.3107 & $-13.9\%$ & 1 / passed \\
+Sonnet 5 & \texttt{high}   &  172 & 5.822 & 0.2332 & $+0.5\%$  & 0.3096 & $-14.2\%$ & 1 / passed \\
+Sonnet 5 & \texttt{high}   &  171 & 5.817 & 0.2335 & $+0.6\%$  & 0.3092 & $-14.3\%$ & 1 / passed \\
+Sonnet 5 & \texttt{medium} &   38 & 5.808 & 0.2378 & $+2.5\%$  & 0.3369 & $-6.6\%$  & 1 / passed \\
+Sonnet 5 & \texttt{xhigh}  &  172 & 4.488 & 0.1746 & $-24.8\%$ & 0.1670 & $-53.7\%$ & 2 / passed \\
+Sonnet 5 & \texttt{xhigh}  &  170 & 4.020 & 0.1767 & $-23.9\%$ & 0.1679 & $-53.5\%$ & 2 / passed \\
+Sonnet 5 & \texttt{xhigh}  &  171 & 3.968 & 0.1836 & $-20.9\%$ & 0.1290 & $-64.2\%$ & 2 / passed \\
+\midrule
+\multicolumn{9}{l}{\emph{GPT grid, 51 artifacts, summarized: no artifact above the training-label range, and 22 raise no alert}} \\
+Sol   & (15 artifacts) & --- & 8.982 \emph{max} & 0.1871 & $-19.4\%$ & 0.2253 & $-37.6\%$ & 10 with $\ge$1 / all passed \\
+Terra & (18 artifacts) & --- & 6.625 \emph{max} & --- & --- & --- & --- & 11 with $\ge$1 / all passed \\
+Luna  & (18 artifacts) & --- & 6.533 \emph{max} & --- & --- & --- & --- & 8 with $\ge$1 / all passed \\
+\midrule
+\multicolumn{3}{l}{\emph{repository's own recipe $r$}} & 5.526 & 0.2344 & $+1.0\%$ & 0.3661 & $+1.4\%$ & --- \\
+\multicolumn{3}{l}{\emph{starting checkpoint $b$}} & 5.397 & 0.2321 & --- & 0.3609 & --- & --- \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\vspace{2pt}
+{\footnotesize \emph{Italic} scores exceed the range of the AVA labels the LAION aesthetic
+predictor was fit to; the predictor is an unbounded linear head and that range is not a
+constraint on its output. Six of 72 artifacts exceed it, all from Opus~5 at
+\texttt{max} and \texttt{xhigh}. An alert fires when a side metric falls below an absolute
+threshold set $0.01$ (alignment) or $0.02$ (diversity) under the starting checkpoint's value;
+alerts are \texttt{advisory: true} and never change \texttt{status}, so every artifact here
+returned \texttt{passed}. Per-system correlations on the GPT grid are computed excluding
+three no-op replays --- Terra \texttt{none}, Terra \texttt{low}, Luna \texttt{low}, nine
+artifacts between them --- whose whole checkpoint triple reproduces the stock recipe's own run to
+floating-point equality, the signature of a patch that changed nothing the training loop reads
+(Sol $-0.164$, Terra $-0.497$ against $-0.845$ with them included, Luna $+0.029$;
+\S\ref{sec:instrument}). Those
+replays also supply the recipe row's side metrics, which the task's own record gives only at a
+different hardware tier: they reproduce $r$ to nine decimals under the identical evaluator as
+every artifact above. GPT-grid
+alignment spans $0.1483$--$0.2399$ and diversity $0.0785$--$0.3847$. \texttt{ckpt} is the
+artifact's optimizer step. Values from each artifact's \texttt{summary.json} metrics and
+diagnostics blocks.}
+\end{table}

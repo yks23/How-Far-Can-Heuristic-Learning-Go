@@ -1,0 +1,1024 @@
+% ============================================================================
+% ref.bib -- AI4AI-Bench
+%
+% PROVENANCE. Every entry below was verified against the arXiv API
+% (export.arxiv.org/api/query) on 2026-08-16: titles, full author lists,
+% publication dates and venue notes are taken from the returned Atom feed, not
+% from search snippets. Author-name splitting into "Last, First" was mechanical;
+% names with particles or non-Western ordering should be spot-checked once.
+%
+% VENUE POLICY. A `note` claiming a venue appears ONLY where the arXiv comment
+% or journal_ref states it. Where arXiv records no venue, none is claimed --
+% notably RE-Bench and PostTrainBench, for which earlier drafts of this file
+% asserted "ICML 2025" and "ICML 2026" with no source. Do not re-add a venue
+% without checking.
+%
+% Author lists are given in full up to 10 authors; longer lists are truncated
+% with `and others` (renders as et al.).
+% ============================================================================
+
+% ---------------------------------------------------------------- closest work: agents improving AI systems
+
+@article{lyu2026mlsbench,
+  title   = {MLS-Bench: A Holistic and Rigorous Assessment of AI Systems on
+             Building Better AI},
+  author  = {Lyu, Bohan and Yang, Yucheng and Huang, Siqiao and others},
+  journal = {arXiv preprint arXiv:2605.08678},
+  year    = {2026}
+}
+% 28 authors incl. Simon S. Du, Max Simchowitz, Jiantao Jiao, Dawn Song, Chi Jin.
+% 140 tasks / 12 domains; agent must improve one component of an ML system AND
+% show the improvement generalizes and scales. Verified findings quoted in the
+% paper: agents "remain far from reliably surpassing human-designed methods";
+% "engineering-style tuning is easier for them than genuine method invention";
+% "more search, compute, or context alone does not remove this bottleneck".
+
+@article{rank2026posttrainbench,
+  title   = {PostTrainBench: Can LLM Agents Automate LLM Post-Training?},
+  author  = {Rank, Ben and Bhatnagar, Hardik and Prabhu, Ameya and
+             Eisenberg, Shira and Nguyen, Karina and Bethge, Matthias and
+             Andriushchenko, Maksym},
+  journal = {arXiv preprint arXiv:2603.08640},
+  year    = {2026}
+}
+% Verified: budget is "10 hours on one H100 GPU"; best agent 23.2% vs 51.1% for
+% official instruction-tuned models. The 27.9% and 21.5% figures earlier drafts
+% quoted do NOT appear in the abstract -- do not reinstate them.
+% Also verified and now cited in Sec. 5: agents were observed training on the
+% test set, downloading existing instruction-tuned checkpoints instead of
+% training their own, and using found API keys to generate synthetic data.
+
+@article{chen2026agent2rlbench,
+  title   = {Agent$^2$ RL-Bench: Can LLM Agents Engineer Agentic RL Post-Training?},
+  author  = {Chen, Wanyi and Yang, Xiao and Yang, Xu and Sha, Tianming and
+             Li, Qizheng and Wang, Zhuo and Xian, Bowen and Kong, Fang and
+             Liu, Weiqing and Bian, Jiang},
+  journal = {arXiv preprint arXiv:2604.10547},
+  year    = {2026}
+}
+% Verified: "most successful routes rely on supervised pipelines"; "stable
+% agent-driven RL post-training remains rare under fixed budgets"; "interactive
+% outcomes show large single-run differences across agent stacks" (the last is
+% why our replication-variance table is required before any significance claim).
+
+@article{yang2026frontis,
+  title   = {Frontis-MA1: Training an AI4AI Model towards Recursive
+             Self-Improvement in Machine Learning Engineering},
+  author  = {Yang, Junlin and Jiang, Che and Fu, Yu and others},
+  journal = {arXiv preprint arXiv:2607.28568},
+  year    = {2026}
+}
+% 24 authors. Uses the term "AI4AI" in the same sense we do. Trains a 35B
+% meta-evolution agent over four program-evolution operators (Draft, Improve,
+% Debug, Crossover). Complementary to us: they build an AI4AI system, we measure
+% what an AI4AI score means.
+
+@article{meng2026rsibench,
+  title   = {RSIBench-Data: Benchmarking Data-Centric Research for Recursive
+             Self-Improvement},
+  author  = {Meng, Fanqing and Du, Lingxiao and Chen, Qiguang and Zhao, Ziqi and
+             Lu, Haocheng and Hu, Mengkang and Shieh, Michael Qizhe},
+  journal = {arXiv preprint arXiv:2607.25886},
+  year    = {2026}
+}
+% Verified: "in 58.33% of settings, they improve upon the first valid attempt by
+% refining strategies from feedback."
+
+% ---------------------------------------------------------------- agents doing ML engineering and research
+
+@article{chan2024mlebench,
+  title   = {MLE-bench: Evaluating Machine Learning Agents on Machine Learning
+             Engineering},
+  author  = {Chan, Jun Shern and Chowdhury, Neil and Jaffe, Oliver and
+             Aung, James and Sherburn, Dane and Mays, Evan and Starace, Giulio and
+             Liu, Kevin and Maksin, Leon and Patwardhan, Tejal and Weng, Lilian and
+             M{\k{a}}dry, Aleksander},
+  journal = {arXiv preprint arXiv:2410.07095},
+  year    = {2024},
+  note    = {ICLR}
+}
+% arXiv comment says only "ICLR version" -- the year is not stated there, so the
+% note is left as bare "ICLR". Fill in the year from the proceedings if needed.
+
+@article{zhang2025mlrcbench,
+  title   = {MLRC-Bench: Can Language Agents Solve Machine Learning Research
+             Challenges?},
+  author  = {Zhang, Yunxiang and Khalifa, Muhammad and Bhushan, Shitanshu and
+             Murphy, Grant D and Logeswaran, Lajanugen and Kim, Jaekyeom and
+             Lee, Moontae and Lee, Honglak and Wang, Lu},
+  journal = {arXiv preprint arXiv:2504.09702},
+  year    = {2025},
+  note    = {NeurIPS 2025 Datasets and Benchmarks Track}
+}
+% Verified verbatim: "Even the best-performing tested agent (gemini-exp-1206
+% under MLAB) closes only 9.3% of the gap between baseline and top human
+% participant scores." Venue confirmed by arXiv comment.
+
+@article{wijk2024rebench,
+  title   = {RE-Bench: Evaluating Frontier AI R\&D Capabilities of Language Model
+             Agents Against Human Experts},
+  author  = {Wijk, Hjalmar and Lin, Tao and Becker, Joel and others},
+  journal = {arXiv preprint arXiv:2411.15114},
+  year    = {2024}
+}
+% 23 authors. Two corrections relative to earlier drafts of this file: the third
+% author is Joel Becker (not "Jonathan"), and Holden Karnofsky was missing.
+% Verified figures: 7 environments; 71 8-hour attempts by 61 distinct human
+% experts; agents score 4x humans at a 2-hour budget, humans narrowly exceed
+% agents at 8 hours and reach 2x the top agent at 32 hours. No venue on arXiv.
+
+@article{chen2025mlrbench,
+  title   = {MLR-Bench: Evaluating AI Agents on Open-Ended Machine Learning
+             Research},
+  author  = {Chen, Hui and Xiong, Miao and Lu, Yujie and Han, Wei and Deng, Ailin
+             and He, Yufei and Wu, Jiaying and Li, Yibo and Liu, Yue and
+             Hooi, Bryan},
+  journal = {arXiv preprint arXiv:2505.19955},
+  year    = {2025},
+  note    = {NeurIPS 2025 Datasets and Benchmarks Track}
+}
+% Verified: 201 tasks from NeurIPS/ICLR/ICML workshops; MLR-Judge; and the
+% finding we now cite in Sec. 5 -- coding agents "frequently (e.g., in 80% of the
+% cases) produce fabricated or invalidated experimental results".
+
+@article{starace2025paperbench,
+  title   = {PaperBench: Evaluating AI's Ability to Replicate AI Research},
+  author  = {Starace, Giulio and Jaffe, Oliver and Sherburn, Dane and Aung, James
+             and Chan, Jun Shern and Maksin, Leon and Dias, Rachel and
+             Mays, Evan and Kinsella, Benjamin and Thompson, Wyatt and others},
+  journal = {arXiv preprint arXiv:2504.01848},
+  year    = {2025}
+}
+
+@article{kon2025expbench,
+  title   = {EXP-Bench: Can AI Conduct AI Research Experiments?},
+  author  = {Kon, Patrick Tser Jern and Liu, Jiachen and Zhu, Xinyi and others},
+  journal = {arXiv preprint arXiv:2505.24785},
+  year    = {2025}
+}
+
+@article{qiang2025mledojo,
+  title   = {MLE-Dojo: Interactive Environments for Empowering LLM Agents in
+             Machine Learning Engineering},
+  author  = {Qiang, Rushi and Zhuang, Yuchen and Li, Yinghao and others},
+  journal = {arXiv preprint arXiv:2505.07782},
+  year    = {2025}
+}
+% Gym-style interactive MLE environment over 200+ Kaggle challenges. Cited as the
+% interactive-environment alternative to our fixed-budget replay design.
+
+@article{tang2023mlbench,
+  title   = {ML-Bench: Evaluating Large Language Models and Agents for Machine
+             Learning Tasks on Repository-Level Code},
+  author  = {Tang, Xiangru and Liu, Yuliang and Cai, Zefan and others},
+  journal = {arXiv preprint arXiv:2311.09835},
+  year    = {2023}
+}
+
+@article{chen2026mars,
+  title   = {MARS: Modular Agent with Reflective Search for Automated AI Research},
+  author  = {Chen, Jiefeng and Mishra, Bhavana Dalvi and Nam, Jaehyun and
+             Meng, Rui and Pfister, Tomas and Yoon, Jinsung},
+  journal = {arXiv preprint arXiv:2602.02660},
+  year    = {2026},
+  note    = {ICML 2026}
+}
+% Venue confirmed by arXiv comment. Relevant to Sec. 6: MARS makes budget-aware
+% planning explicit, which is the axis our (pending) budget ablation varies.
+
+@article{rein2025hcast,
+  title   = {HCAST: Human-Calibrated Autonomy Software Tasks},
+  author  = {Rein, David and Becker, Joel and Deng, Amy and others},
+  journal = {arXiv preprint arXiv:2503.17354},
+  year    = {2025}
+}
+% 189 tasks, 563 human baselines, >1500 hours. Cited in Sec. 2/7 as the
+% strongest available example of calibrating a benchmark against measured human
+% effort -- the reference class our stock-recipe baseline deliberately is not.
+
+@article{kirgis2026openended,
+  title   = {Can AI Agents Conduct Open-Ended AI Research? Early Evidence from
+             Two Case Studies},
+  author  = {Kirgis, Peter and Kapoor, Sayash and Schwartz, Andrew and others},
+  journal = {arXiv preprint arXiv:2607.27191},
+  year    = {2026}
+}
+% "Shadow evaluations": an agent attacks the central question of an unpublished
+% paper and the paper's own authors grade the output. Cited in Sec. 7 as the
+% opposite end of the reference-choice spectrum from ours.
+
+% ---------------------------------------------------------------- system-level AI improvement
+% Entries in this block were checked against the primary paper page (PMLR for
+% KernelBench and the arXiv API for the remaining preprints) on 2026-08-20.
+
+@article{dao2022flashattention,
+  title   = {{FlashAttention}: Fast and Memory-Efficient Exact Attention with
+             {IO}-Awareness},
+  author  = {Dao, Tri and Fu, Daniel Y. and Ermon, Stefano and Rudra, Atri and
+             R{\'e}, Christopher},
+  journal = {arXiv preprint arXiv:2205.14135},
+  year    = {2022}
+}
+
+@article{shoeybi2019megatron,
+  title   = {{Megatron-LM}: Training Multi-Billion Parameter Language Models
+             Using Model Parallelism},
+  author  = {Shoeybi, Mohammad and Patwary, Mostofa and Puri, Raul and
+             LeGresley, Patrick and Casper, Jared and Catanzaro, Bryan},
+  journal = {arXiv preprint arXiv:1909.08053},
+  year    = {2019}
+}
+
+@inproceedings{rajbhandari2020zero,
+  title     = {{ZeRO}: Memory Optimizations Toward Training Trillion Parameter
+               Models},
+  author    = {Rajbhandari, Samyam and Rasley, Jeff and Ruwase, Olatunji and
+               He, Yuxiong},
+  booktitle = {SC20: International Conference for High Performance Computing,
+               Networking, Storage and Analysis},
+  pages     = {1--16},
+  year      = {2020}
+}
+
+@article{zheng2022alpa,
+  title   = {Alpa: Automating Inter- and Intra-Operator Parallelism for
+             Distributed Deep Learning},
+  author  = {Zheng, Lianmin and Li, Zhuohan and Zhang, Hao and Zhuang, Yonghao
+             and Chen, Zhifeng and Huang, Yanping and Wang, Yida and Xu,
+             Yuanzhong and Zhuo, Danyang and Xing, Eric P. and others},
+  journal = {arXiv preprint arXiv:2201.12023},
+  year    = {2022}
+}
+
+@inproceedings{peng2019bytescheduler,
+  title     = {A Generic Communication Scheduler for Distributed {DNN}
+               Training Acceleration},
+  author    = {Peng, Yanghua and Zhu, Yibo and Chen, Yangrui and Bao, Yixin and
+               Yi, Bairen and Lan, Chang and Wu, Chuan and Guo, Chuanxiong},
+  booktitle = {Proceedings of the 27th ACM Symposium on Operating Systems
+               Principles},
+  pages     = {16--29},
+  year      = {2019}
+}
+
+@article{williams2009roofline,
+  title   = {Roofline: An Insightful Visual Performance Model for Multicore
+             Architectures},
+  author  = {Williams, Samuel and Waterman, Andrew and Patterson, David},
+  journal = {Communications of the ACM},
+  volume  = {52},
+  number  = {4},
+  pages   = {65--76},
+  year    = {2009}
+}
+
+@inproceedings{ouyang2025kernelbench,
+  title     = {{KernelBench}: Can {LLM}s Write Efficient {GPU} Kernels?},
+  author    = {Ouyang, Anne and Guo, Simon and Arora, Simran and Zhang, Alex L.
+               and Hu, William and R{\'e}, Christopher and Mirhoseini, Azalia},
+  booktitle = {Proceedings of the 42nd International Conference on Machine Learning},
+  series    = {Proceedings of Machine Learning Research},
+  volume    = {267},
+  pages     = {47356--47415},
+  year      = {2025}
+}
+
+@article{zhang2025cudaforge,
+  title   = {{CudaForge}: An Agent Framework with Hardware Feedback for {CUDA}
+             Kernel Optimization},
+  author  = {Zhang, Zijian and Wang, Rong and Li, Shiyang and Luo, Yuebo and
+             Hong, Mingyi and Ding, Caiwen},
+  journal = {arXiv preprint arXiv:2511.01884},
+  year    = {2025}
+}
+
+@article{lange2025robustkbench,
+  title   = {Towards Robust Agentic {CUDA} Kernel Benchmarking, Verification,
+             and Optimization},
+  author  = {Lange, Robert Tjarko and Sun, Qi and Prasad, Aaditya and
+             Faldor, Maxence and Tang, Yujin and Ha, David},
+  journal = {arXiv preprint arXiv:2509.14279},
+  year    = {2025}
+}
+
+@article{chen2025cudallm,
+  title   = {{CUDA-LLM}: {LLM}s Can Write Efficient {CUDA} Kernels},
+  author  = {Chen, Wentao and Zhu, Jiace and Fan, Qi and Ma, Yehan and Zou, An},
+  journal = {arXiv preprint arXiv:2506.09092},
+  year    = {2025}
+}
+
+@article{yang2026atrex,
+  title   = {Are {LLM}-Generated {GPU} Kernels Production-Ready? A Trace-Driven
+             Benchmark and Optimization Agent},
+  author  = {Yang, Lingyun and Wang, Yuxiao and Liang, Shenghao and Yang, Linfeng
+             and Ying, Daocheng and You, Chunbo and Zhang, Rui and Wang, Luping
+             and Yu, Yinghao and Yang, Guodong and others},
+  journal = {arXiv preprint arXiv:2607.14541},
+  year    = {2026}
+}
+
+@article{brodsky2026kernelforge,
+  title   = {Kernel Forge: An Agent Harness for {LLM}-based Generation and
+             Optimization of {CUDA} Kernels},
+  author  = {Brodsky, Joshua and Kumar, Dhravid and Kashmira, Savini and
+             Danatanarayana, Jayanaka and Mars, Jason and Flautner, Krisztian
+             and Tang, Lingjia},
+  journal = {arXiv preprint arXiv:2607.24762},
+  year    = {2026}
+}
+
+@article{dai2026cudaagent,
+  title   = {{CUDA Agent}: Large-Scale Agentic {RL} for High-Performance {CUDA}
+             Kernel Generation},
+  author  = {Dai, Weinan and Wu, Hanlin and Yu, Qiying and Gao, Huan-ang and
+             Li, Jiahao and Jiang, Chengquan and Lou, Weiqiang and Song, Yufan
+             and Yu, Hongli and Chen, Jiaze and others},
+  journal = {arXiv preprint arXiv:2602.24286},
+  year    = {2026}
+}
+
+@article{toledo2025researchagents,
+  title   = {{AI} Research Agents for Machine Learning: Search, Exploration,
+             and Generalization in {MLE-bench}},
+  author  = {Toledo, Edan and Hambardzumyan, Karen and Josifoski, Martin and
+             Hazra, Rishi and Baldwin, Nicolas and Audran-Reiss, Alexis and
+             Kuchnik, Michael and Magka, Despoina and Jiang, Minqi and
+             Lupidi, Alisia Maria and others},
+  journal = {arXiv preprint arXiv:2507.02554},
+  year    = {2025}
+}
+
+% ---------------------------------------------------------------- data-centric AI improvement
+% Metadata and venue notes come from the arXiv API, except DoGE, whose PMLR
+% proceedings record was used directly.
+
+@article{zha2023datacentric,
+  title   = {Data-centric Artificial Intelligence: A Survey},
+  author  = {Zha, Daochen and Bhat, Zaid Pervaiz and Lai, Kwei-Herng and
+             Yang, Fan and Jiang, Zhimeng and Zhong, Shaochen and Hu, Xia},
+  journal = {arXiv preprint arXiv:2303.10158},
+  year    = {2023}
+}
+
+@article{xie2023doremi,
+  title   = {{DoReMi}: Optimizing Data Mixtures Speeds Up Language Model
+             Pretraining},
+  author  = {Xie, Sang Michael and Pham, Hieu and Dong, Xuanyi and Du, Nan and
+             Liu, Hanxiao and Lu, Yifeng and Liang, Percy and Le, Quoc V. and
+             Ma, Tengyu and Yu, Adams Wei},
+  journal = {arXiv preprint arXiv:2305.10429},
+  year    = {2023},
+  note    = {NeurIPS 2023}
+}
+
+@inproceedings{fan2024doge,
+  title     = {{DoGE}: Domain Reweighting with Generalization Estimation},
+  author    = {Fan, Simin and Pagliardini, Matteo and Jaggi, Martin},
+  booktitle = {Proceedings of the 41st International Conference on Machine Learning},
+  series    = {Proceedings of Machine Learning Research},
+  volume    = {235},
+  pages     = {12895--12915},
+  year      = {2024}
+}
+
+@article{wang2022selfinstruct,
+  title   = {{Self-Instruct}: Aligning Language Models with Self-Generated
+             Instructions},
+  author  = {Wang, Yizhong and Kordi, Yeganeh and Mishra, Swaroop and Liu, Alisa
+             and Smith, Noah A. and Khashabi, Daniel and Hajishirzi, Hannaneh},
+  journal = {arXiv preprint arXiv:2212.10560},
+  year    = {2022},
+  note    = {ACL 2023}
+}
+
+@article{xu2023wizardlm,
+  title   = {{WizardLM}: Empowering Large Pre-Trained Language Models to Follow
+             Complex Instructions},
+  author  = {Xu, Can and Sun, Qingfeng and Zheng, Kai and Geng, Xiubo and
+             Zhao, Pu and Feng, Jiazhan and Tao, Chongyang and Lin, Qingwei and
+             Jiang, Daxin},
+  journal = {arXiv preprint arXiv:2304.12244},
+  year    = {2023},
+  note    = {ICLR 2024}
+}
+
+@article{cui2023ultrafeedback,
+  title   = {{UltraFeedback}: Boosting Language Models with Scaled {AI} Feedback},
+  author  = {Cui, Ganqu and Yuan, Lifan and Ding, Ning and Yao, Guanming and
+             He, Bingxiang and Zhu, Wei and Ni, Yuan and Xie, Guotong and
+             Xie, Ruobing and Lin, Yankai and others},
+  journal = {arXiv preprint arXiv:2310.01377},
+  year    = {2023},
+  note    = {ICML 2024}
+}
+
+@article{chen2023alpagasus,
+  title   = {{AlpaGasus}: Training a Better Alpaca with Fewer Data},
+  author  = {Chen, Lichang and Li, Shiyang and Yan, Jun and Wang, Hai and
+             Gunaratna, Kalpa and Yadav, Vikas and Tang, Zheng and
+             Srinivasan, Vijay and Zhou, Tianyi and Huang, Heng and others},
+  journal = {arXiv preprint arXiv:2307.08701},
+  year    = {2023}
+}
+
+@article{liu2023deita,
+  title   = {What Makes Good Data for Alignment? A Comprehensive Study of
+             Automatic Data Selection in Instruction Tuning},
+  author  = {Liu, Wei and Zeng, Weihao and He, Keqing and Jiang, Yong and
+             He, Junxian},
+  journal = {arXiv preprint arXiv:2312.15685},
+  year    = {2023},
+  note    = {ICLR 2024}
+}
+
+@article{xia2024less,
+  title   = {{LESS}: Selecting Influential Data for Targeted Instruction Tuning},
+  author  = {Xia, Mengzhou and Malladi, Sadhika and Gururangan, Suchin and
+             Arora, Sanjeev and Chen, Danqi},
+  journal = {arXiv preprint arXiv:2402.04333},
+  year    = {2024},
+  note    = {ICML 2024}
+}
+
+@article{chen2024clear,
+  title   = {Automated Data Curation for Robust Language Model Fine-Tuning},
+  author  = {Chen, Jiuhai and Mueller, Jonas},
+  journal = {arXiv preprint arXiv:2403.12776},
+  year    = {2024}
+}
+
+@article{khan2024dataenvgym,
+  title   = {{DataEnvGym}: Data Generation Agents in Teacher Environments with
+             Student Feedback},
+  author  = {Khan, Zaid and Stengel-Eskin, Elias and Cho, Jaemin and Bansal, Mohit},
+  journal = {arXiv preprint arXiv:2410.06215},
+  year    = {2024},
+  note    = {ICLR 2025 Spotlight}
+}
+
+@article{luo2026dataagent,
+  title   = {Exploring Autonomous Agentic Data Engineering for Model
+             Specialization},
+  author  = {Luo, Yujie and Ru, Xiangyuan and Zheng, Jingsheng and Wang, Jingjing
+             and Zhu, Yuqi and Zhang, Jintian and Fang, Runnan and Xu, Kewei and
+             Liu, Ye and Wei, Zheng and others},
+  journal = {arXiv preprint arXiv:2605.30407},
+  year    = {2026}
+}
+
+% ---------------------------------------------------------------- automated configuration and algorithm discovery
+
+@inproceedings{andrychowicz2016learning,
+  title     = {Learning to Learn by Gradient Descent by Gradient Descent},
+  author    = {Andrychowicz, Marcin and Denil, Misha and G{\'o}mez, Sergio and
+               Hoffman, Matthew W. and Pfau, David and Schaul, Tom and
+               Shillingford, Brendan and de Freitas, Nando},
+  booktitle = {Advances in Neural Information Processing Systems},
+  volume    = {29},
+  year      = {2016}
+}
+
+@inproceedings{bello2017optimizersearch,
+  title     = {Neural Optimizer Search with Reinforcement Learning},
+  author    = {Bello, Irwan and Zoph, Barret and Vasudevan, Vijay and Le, Quoc V.},
+  booktitle = {Proceedings of the 34th International Conference on Machine Learning},
+  series    = {Proceedings of Machine Learning Research},
+  volume    = {70},
+  pages     = {459--468},
+  year      = {2017}
+}
+
+@inproceedings{real2020automlzero,
+  title     = {{AutoML}-Zero: Evolving Machine Learning Algorithms From Scratch},
+  author    = {Real, Esteban and Liang, Chen and So, David and Le, Quoc V.},
+  booktitle = {Proceedings of the 37th International Conference on Machine Learning},
+  series    = {Proceedings of Machine Learning Research},
+  volume    = {119},
+  pages     = {8007--8019},
+  year      = {2020}
+}
+
+@article{chen2023symbolic,
+  title   = {Symbolic Discovery of Optimization Algorithms},
+  author  = {Chen, Xiangning and Liang, Chen and Huang, Da and Real, Esteban and
+             Wang, Kaiyuan and Liu, Yao and Pham, Hieu and Dong, Xuanyi and
+             Luong, Thang and Hsieh, Cho-Jui and others},
+  journal = {arXiv preprint arXiv:2302.06675},
+  year    = {2023}
+}
+
+@article{bergstra2012random,
+  title   = {Random Search for Hyper-Parameter Optimization},
+  author  = {Bergstra, James and Bengio, Yoshua},
+  journal = {Journal of Machine Learning Research},
+  volume  = {13},
+  number  = {10},
+  pages   = {281--305},
+  year    = {2012}
+}
+
+@inproceedings{feurer2015autosklearn,
+  title     = {Efficient and Robust Automated Machine Learning},
+  author    = {Feurer, Matthias and Klein, Aaron and Eggensperger, Katharina and
+               Springenberg, Jost Tobias and Blum, Manuel and Hutter, Frank},
+  booktitle = {Advances in Neural Information Processing Systems},
+  volume    = {28},
+  year      = {2015}
+}
+
+@article{li2018hyperband,
+  title   = {{Hyperband}: A Novel Bandit-Based Approach to Hyperparameter
+             Optimization},
+  author  = {Li, Lisha and Jamieson, Kevin and DeSalvo, Giulia and
+             Rostamizadeh, Afshin and Talwalkar, Ameet},
+  journal = {Journal of Machine Learning Research},
+  volume  = {18},
+  number  = {185},
+  pages   = {1--52},
+  year    = {2018}
+}
+
+@inproceedings{falkner2018bohb,
+  title     = {{BOHB}: Robust and Efficient Hyperparameter Optimization at Scale},
+  author    = {Falkner, Stefan and Klein, Aaron and Hutter, Frank},
+  booktitle = {Proceedings of the 35th International Conference on Machine Learning},
+  series    = {Proceedings of Machine Learning Research},
+  volume    = {80},
+  pages     = {1437--1446},
+  year      = {2018}
+}
+
+@article{jaderberg2017pbt,
+  title   = {Population Based Training of Neural Networks},
+  author  = {Jaderberg, Max and Dalibard, Valentin and Osindero, Simon and
+             Czarnecki, Wojciech M. and Donahue, Jeff and Razavi, Ali and
+             Vinyals, Oriol and Green, Tim and Dunning, Iain and Simonyan, Karen
+             and others},
+  journal = {arXiv preprint arXiv:1711.09846},
+  year    = {2017}
+}
+
+@article{fawzi2022alphatensor,
+  title   = {Discovering Faster Matrix Multiplication Algorithms with
+             Reinforcement Learning},
+  author  = {Fawzi, Alhussein and Balog, Matej and Huang, Aja and Hubert, Thomas
+             and Romera-Paredes, Bernardino and Barekatain, Mohammadamin and
+             Novikov, Alexander and Ruiz, Francisco J. R. and
+             Schrittwieser, Julian and Swirszcz, Grzegorz and others},
+  journal = {Nature},
+  volume  = {610},
+  pages   = {47--53},
+  year    = {2022}
+}
+
+@article{mankowitz2023alphadev,
+  title   = {Faster Sorting Algorithms Discovered Using Deep Reinforcement
+             Learning},
+  author  = {Mankowitz, Daniel J. and Michi, Andrea and Zhernov, Anton and
+             Gelmi, Marco and Selvi, Marco and Paduraru, Cosmin and
+             Leurent, Edouard and Iqbal, Shariq and Lespiau, Jean-Baptiste and
+             Ahern, Alex and others},
+  journal = {Nature},
+  volume  = {618},
+  pages   = {257--263},
+  year    = {2023}
+}
+
+@article{romeraparedes2024funsearch,
+  title   = {Mathematical Discoveries from Program Search with Large Language
+             Models},
+  author  = {Romera-Paredes, Bernardino and Barekatain, Mohammadamin and
+             Novikov, Alexander and Balog, Matej and Kumar, M. Pawan and
+             Dupont, Emilien and Ruiz, Francisco J. R. and Ellenberg, Jordan S.
+             and Wang, Pengming and Fawzi, Omar and others},
+  journal = {Nature},
+  volume  = {625},
+  pages   = {468--475},
+  year    = {2024}
+}
+
+@article{lu2024aiscientist,
+  title   = {The {AI} Scientist: Towards Fully Automated Open-Ended Scientific
+             Discovery},
+  author  = {Lu, Chris and Lu, Cong and Lange, Robert Tjarko and Foerster, Jakob
+             and Clune, Jeff and Ha, David},
+  journal = {arXiv preprint arXiv:2408.06292},
+  year    = {2024}
+}
+
+@article{yamada2025aiscientistv2,
+  title   = {The {AI} Scientist-v2: Workshop-Level Automated Scientific
+             Discovery via Agentic Tree Search},
+  author  = {Yamada, Yutaro and Lange, Robert Tjarko and Lu, Cong and Hu, Shengran
+             and Lu, Chris and Foerster, Jakob and Clune, Jeff and Ha, David},
+  journal = {arXiv preprint arXiv:2504.08066},
+  year    = {2025}
+}
+
+@article{jiang2025aide,
+  title   = {{AIDE}: {AI}-Driven Exploration in the Space of Code},
+  author  = {Jiang, Zhengyao and Schmidt, Dominik and Srikanth, Dhruv and
+             Xu, Dixing and Kaplan, Ian and Jacenko, Deniss and Wu, Yuxiang},
+  journal = {arXiv preprint arXiv:2502.13138},
+  year    = {2025}
+}
+
+@article{jin2026arbor,
+  title   = {Toward Generalist Autonomous Research via Hypothesis-Tree Refinement},
+  author  = {Jin, Jiajie and Hu, Yuyang and Qiu, Kai and Dai, Qi and Luo, Chong
+             and Dong, Guanting and Li, Xiaoxi and Zhao, Tong and Ma, Xiaolong
+             and Zhang, Gongrui and others},
+  journal = {arXiv preprint arXiv:2606.11926},
+  year    = {2026}
+}
+
+% ---------------------------------------------------------------- reward hacking and benchmark validity
+
+@article{wang2026benchjack,
+  title   = {Do Androids Dream of Breaking the Game? Systematically Auditing AI
+             Agent Benchmarks with BenchJack},
+  author  = {Wang, Hao and Li, Hanchen and Mang, Qiuyang and Cheung, Alvin and
+             Sen, Koushik and Song, Dawn},
+  journal = {arXiv preprint arXiv:2605.12673},
+  year    = {2026}
+}
+% Earlier drafts of this file gave the title as "BenchJack: Auditing Agentic
+% Benchmarks", which is not the real title. Verified findings: a taxonomy of
+% eight recurring flaw patterns compiled into an "Agent-Eval Checklist" for
+% benchmark designers; exploits reach near-perfect scores "without solving a
+% single task"; 219 distinct flaws across the eight classes; the extended
+% pipeline cuts the hackable-task ratio from near 100% to under 10% on four
+% benchmarks. Our Appendix audit checklist is the task-suite-specific analogue.
+
+@article{shao2026doagentbench,
+  title   = {Do Agent Benchmarks Measure Capability? Protocol Validity in the Age
+             of Agentic AI},
+  author  = {Shao, Jiaqi and Chen, Hanck and Zhang, Wei and Pan, Maxm and
+             Luo, Bing},
+  journal = {arXiv preprint arXiv:2607.22368},
+  year    = {2026}
+}
+% Verified: "We audit 2,385 traces across 15 agent benchmarks and find evidence
+% of exposures and reward hacking in 67.0% of Frontier Science traces and 66.7%
+% of AutoLab tasks." The subtitle names exactly our concern; earlier drafts
+% omitted it.
+
+@article{gabor2025evilgenie,
+  title   = {EvilGenie: A Reward Hacking Benchmark},
+  author  = {Gabor, Jonathan and Lynch, Jayson and Rosenfeld, Jonathan},
+  journal = {arXiv preprint arXiv:2511.21654},
+  year    = {2025}
+}
+% Verified and directly load-bearing for Sec. 5: they measure reward hacking in
+% three ways (held-out unit tests, LLM judges, test-file edit detection) and
+% "observe explicit reward hacking by both Codex and Claude Code" -- the two
+% harnesses this paper runs. Also: held-out tests gave only minimal improvement
+% in detection, whereas the LLM judge was highly effective on unambiguous cases.
+
+@article{thaman2026rhb,
+  title   = {Reward Hacking Benchmark: Measuring Exploits in LLM Agents with
+             Tool Use},
+  author  = {Thaman, Kunvar},
+  journal = {arXiv preprint arXiv:2605.02964},
+  year    = {2026},
+  note    = {ICML 2026}
+}
+% Single-author; venue confirmed by arXiv comment. Verified: exploit rates range
+% from 0% (Claude Sonnet 4.5) to 13.9% (DeepSeek-R1-Zero); 72% of reward-hacking
+% episodes carry explicit chain-of-thought rationale; "simple environmental
+% hardening reduces exploit rates by 5.7 percentage points (87.7% relative)
+% without degrading task success" -- quoted in Sec. 5 as evidence that making our
+% advisory diagnostics blocking is a cheap intervention with a measured effect.
+
+@article{atinafu2026rha,
+  title   = {RewardHackingAgents: Benchmarking Evaluation Integrity for LLM
+             ML-Engineering Agents},
+  author  = {Atinafu, Yonas and Cohen, Robin},
+  journal = {arXiv preprint arXiv:2603.11337},
+  year    = {2026}
+}
+% Real title recovered; earlier drafts guessed "Reward Hacking in Multi-Step
+% Agentic Settings". Scope is ML-engineering agents specifically, i.e. ours.
+
+@article{ma2026buildingtotest,
+  title   = {Building to the Test: Coding Agents Deliver What You Check, Not What
+             You Requested},
+  author  = {Ma, Yanuo and Kereopa-Yorke, Ben and Schultz, Ben},
+  journal = {arXiv preprint arXiv:2606.28430},
+  year    = {2026}
+}
+% Methodologically the closest paper to our Sec. 5: they pair each score with a
+% mechanical audit and check every verdict with a *no-op ablation*, which is
+% independently the same control that exposed our three bit-identical DDPO
+% configurations. Also studies oracle-availability conditions directly.
+
+@article{nadgir2026lifeafter,
+  title   = {Life After Benchmark Saturation: A Case Study of CORE-Bench},
+  author  = {Nadgir, Nitya and Kapoor, Sayash and Liu, Kangheng and others},
+  journal = {arXiv preprint arXiv:2606.26158},
+  year    = {2026}
+}
+% Argues that reporting accuracy alone misses six other dimensions, construct
+% validity (shortcuts) among them. This is the framing our validity tiers adopt.
+
+@article{roth2026hackverifiable,
+  title   = {Hack-Verifiable Environments: Towards Evaluating Reward Hacking at
+             Scale},
+  author  = {Roth, Amit and Samanta, Ankur and Halevy, Matan and Levine, Yoav and
+             Efroni, Yonathan},
+  journal = {arXiv preprint arXiv:2605.20744},
+  year    = {2026}
+}
+% Embeds detectable reward-hacking opportunities into environments so that
+% exploitation is "verifiable by design" rather than diagnosed post hoc. This is
+% the constructive form of our Sec. 3.4 recommendation.
+
+@article{wang2026rhsurvey,
+  title   = {Reward Hacking in the Era of Large Models: Mechanisms, Emergent
+             Misalignment, Challenges},
+  author  = {Wang, Xiaohua and Tian, Muzhao and Zeng, Yuqi and others},
+  journal = {arXiv preprint arXiv:2604.13602},
+  year    = {2026}
+}
+% 42-page survey; cited once as the general reference for the mechanism.
+
+@article{libon2026researcharena,
+  title   = {ResearchArena: Evaluating Sabotage and Monitoring in Automated AI R\&D},
+  author  = {Libon, Lena and Rank, Ben and Yeon, Jehyeok and others},
+  journal = {arXiv preprint arXiv:2607.19321},
+  year    = {2026}
+}
+% Four long-horizon AI R&D tasks (safety post-training, capabilities
+% post-training, CUDA-kernel optimization, inference-server optimization) with
+% hidden side tasks. Shares our observation that in AI R&D the deliverable is a
+% deployable artifact, which is why source-only extraction matters.
+
+@article{lu2026metaagent,
+  title   = {The Meta-Agent Challenge: Are Current Agents Capable of Autonomous
+             Agent Development?},
+  author  = {Lu, Xinyu and Wang, Tianshu and Wang, Pengbo and others},
+  journal = {arXiv preprint arXiv:2606.04455},
+  year    = {2026}
+}
+% Cited for its explicit "multi-layer defenses against reward hacking" as a
+% design stance we contrast with our advisory-only diagnostics.
+
+% ---------------------------------------------------------------- software engineering agents
+
+@article{jimenez2024swebench,
+  title   = {SWE-bench: Can Language Models Resolve Real-World GitHub Issues?},
+  author  = {Jimenez, Carlos E. and Yang, John and Wettig, Alexander and
+             Yao, Shunyu and Pei, Kexin and Press, Ofir and Narasimhan, Karthik},
+  journal = {arXiv preprint arXiv:2310.06770},
+  year    = {2023},
+  note    = {ICLR 2024}
+}
+% Venue confirmed by arXiv comment (with OpenReview link).
+
+% ---------------------------------------------------------------- task-suite provenance
+
+@article{wortsman2022modelsoups,
+  title   = {Model soups: averaging weights of multiple fine-tuned models
+             improves accuracy without increasing inference time},
+  author  = {Wortsman, Mitchell and Ilharco, Gabriel and
+             Gadre, Samir Yitzhak and Roelofs, Rebecca and
+             Gontijo-Lopes, Raphael and Morcos, Ari S. and
+             Namkoong, Hongseok and Farhadi, Ali and Carmon, Yair and
+             Kornblith, Simon and Schmidt, Ludwig},
+  journal = {arXiv preprint arXiv:2203.05482},
+  year    = {2022},
+  note    = {ICML}
+}
+% The paper behind our Model Soup task. Cited in Sec. 2 because it defines the
+% three selection rules (uniform, greedy, best-single) whose coexistence is why
+% that task has no single designated recipe score. Authors and ICML venue from
+% the arXiv API (id_list=2203.05482); the venue is stated in arxiv:comment.
+
+% ---------------------------------------------------------------- scaling limits and algorithmic progress
+% Added 2026-08-19 for the introduction's opening argument (the three links of the
+% RSI loop). All six verified against the arXiv API the same way as the entries
+% above: titles, author lists and dates come from the returned Atom feed. None of
+% the six records a venue in its arXiv comment or journal_ref, so none claims one
+% -- note in particular that shumailov2023curse has a later Nature version under a
+% different title; cite that only if someone checks the Nature record directly.
+
+@article{kaplan2020scaling,
+  title   = {Scaling Laws for Neural Language Models},
+  author  = {Kaplan, Jared and McCandlish, Sam and Henighan, Tom and
+             Brown, Tom B. and Chess, Benjamin and Child, Rewon and
+             Gray, Scott and Radford, Alec and Wu, Jeffrey and Amodei, Dario},
+  journal = {arXiv preprint arXiv:2001.08361},
+  year    = {2020}
+}
+% Cited in Sec. 1 for the power-law form itself: the exponent is what makes each
+% further reduction in loss cost a multiple of the compute the last one did.
+
+@article{hoffmann2022chinchilla,
+  title   = {Training Compute-Optimal Large Language Models},
+  author  = {Hoffmann, Jordan and Borgeaud, Sebastian and Mensch, Arthur and
+             Buchatskaya, Elena and Cai, Trevor and Rutherford, Eliza and
+             de Las Casas, Diego and Hendricks, Lisa Anne and Welbl, Johannes and
+             Clark, Aidan and others},
+  journal = {arXiv preprint arXiv:2203.15556},
+  year    = {2022}
+}
+% 22 authors, truncated at 10 per this file's policy. Cited beside Kaplan for the
+% compute/data exchange rate the algorithmic link is claimed to move.
+
+@article{villalobos2022rundata,
+  title   = {Will we run out of data? Limits of LLM scaling based on
+             human-generated data},
+  author  = {Villalobos, Pablo and Ho, Anson and Sevilla, Jaime and
+             Besiroglu, Tamay and Heim, Lennart and Hobbhahn, Marius},
+  journal = {arXiv preprint arXiv:2211.04325},
+  year    = {2022}
+}
+% Cited in Sec. 1 for the finite stock of high-quality human text -- the supply
+% bound on the data link, which is separate from the scaling-law exponent.
+
+@article{shumailov2023curse,
+  title   = {The Curse of Recursion: Training on Generated Data Makes Models
+             Forget},
+  author  = {Shumailov, Ilia and Shumaylov, Zakhar and Zhao, Yiren and
+             Gal, Yarin and Papernot, Nicolas and Anderson, Ross},
+  journal = {arXiv preprint arXiv:2305.17493},
+  year    = {2023}
+}
+% Cited in Sec. 1 for why synthetic corpora do not lift the supply bound: they
+% re-express the distribution the model already carries.
+
+@article{ho2024algprogress,
+  title   = {Algorithmic progress in language models},
+  author  = {Ho, Anson and Besiroglu, Tamay and Erdil, Ege and Owen, David and
+             Rahman, Robi and Guo, Zifan Carl and Atkinson, David and
+             Thompson, Neil and Sevilla, Jaime},
+  journal = {arXiv preprint arXiv:2403.05812},
+  year    = {2024}
+}
+% The compute-equivalent-gain framing the introduction's third link rests on.
+% First author is Ho, not Erdil -- an earlier draft of the introduction had the
+% attribution the wrong way round.
+
+@misc{karpathy2026autoresearch,
+  title        = {autoresearch: AI agents running research on single-GPU nanochat
+                  training automatically},
+  author       = {Karpathy, Andrej},
+  year         = {2026},
+  howpublished = {\url{https://github.com/karpathy/autoresearch}}
+}
+% Not an arXiv entry, so the provenance rule above does not apply; verified from
+% the GitHub API and the README on 2026-08-19. Repository created 2026-03-06.
+% What matters for Sec. 1: the agent edits one file, train.py, holding the GPT
+% model, the Muon+AdamW optimizer and the training loop, and the README states
+% that "everything is fair game: architecture, hyperparameters, optimizer, batch
+% size". Each trial is a fixed five-minute single-GPU run scored by val_bpb. So
+% the setting *permits* algorithmic edits; it is ferreira2026autoresearch that
+% measures what the agents actually do with that freedom. Do not write that
+% autoresearch restricts the agent to hyperparameters -- it does not.
+
+@article{ferreira2026autoresearch,
+  title   = {Can LLMs Beat Classical Hyperparameter Optimization Algorithms?
+             A Study on autoresearch},
+  author  = {Ferreira, Fabio and Wobbe, Lucca and Krishnakumar, Arjun and
+             Hutter, Frank and Zela, Arber},
+  journal = {arXiv preprint arXiv:2603.24647},
+  year    = {2026}
+}
+% Verified from the abstract: autoresearch "enables an LLM agent to optimize
+% hyperparameters by editing training code directly"; under a fixed search space
+% CMA-ES and TPE beat LLM agents; unconstrained code editing narrows but does not
+% close the gap; LLMs "struggle to track optimization state across trials"; their
+% hybrid, Centaur, shares CMA-ES internal state with an LLM and wins. Cited in
+% Sec. 1 as the case where source-code editing is still hyperparameter search --
+% the object of the search is a configuration, not the algorithm.
+
+% ============================================================================
+% REMOVED, and why. Do not reinstate without a verified source.
+%   mlsbench2026      -- was author={MLS-Bench Authors}. The benchmark is REAL:
+%                        arXiv:2605.08678, Lyu et al., 28 authors. A previous
+%                        revision of this file wrongly claimed it "could not be
+%                        confirmed to exist" and dropped it; it is now
+%                        lyu2026mlsbench and is the closest related work.
+%   paperbench2025    -- author={PaperBench Authors} -> starace2025paperbench
+%   swe_marathon2026  -- author={SWE-Marathon Authors}, no verifiable source
+%                        found on arXiv. Still unresolved; stays out.
+%   frontierswe2026   -- author={Proximal Labs}, GitHub link only. Stays out.
+%   kapoor2024osworld -- author list did not match OSWorld (Xie et al.). Not
+%                        cited in the current draft at all.
+%   metr2025rebench   -- author={METR} -> wijk2024rebench
+%   All eight {{AUTHORS TO VERIFY BEFORE SUBMISSION}} placeholders are gone;
+%   every author field in this file now comes from the arXiv API.
+% ============================================================================
+
+@article{clark2024draft,
+  title={Directly Fine-Tuning Diffusion Models on Differentiable Rewards},
+  author={Kevin Clark and Paul Vicol and Kevin Swersky and David J. Fleet},
+  journal={arXiv preprint arXiv:2309.17400},
+  year={2023},
+  url={https://arxiv.org/abs/2309.17400}
+}
+
+@article{black2023ddpo,
+  title={Training Diffusion Models with Reinforcement Learning},
+  author={Kevin Black and Michael Janner and Yilun Du and Ilya Kostrikov and Sergey Levine},
+  journal={arXiv preprint arXiv:2305.13301},
+  year={2023},
+  url={https://arxiv.org/abs/2305.13301}
+}
+
+@article{einsia2026frontiereng,
+  title={Frontier-Eng: Benchmarking Self-Evolving Agents on Real-World Engineering Tasks with Generative Optimization},
+  author={Yizhe Chi and Deyao Hong and Dapeng Jiang and Tianwei Luo and Kaisen Yang and Boshi Zhang and Zhe Cao and Xiaoyan Fan and Bingxiang He and Han Hao and Weiyang Jin and Dianqiao Lei and Qingle Liu and Houde Qian and Bowen Wang and Situ Wang and Youjie Zheng and Yifan Zhou and Calvin Xiao and Eren Cai and Qinhuai Na},
+  journal={arXiv preprint arXiv:2604.12290},
+  year={2026},
+  url={https://arxiv.org/abs/2604.12290}
+}
+
+% ---- Task-origin papers: the ten frozen repositories and their evaluation assets ----
+@inproceedings{vignac2023digress,
+  title={DiGress: Discrete Denoising Diffusion for Graph Generation},
+  author={Cl\'ement Vignac and Igor Krawczuk and Antoine Siraudin and Bohan Wang and Volkan Cevher and Pascal Frossard},
+  booktitle={International Conference on Learning Representations},
+  year={2023},
+  url={https://arxiv.org/abs/2209.14734}
+}
+@article{rafailov2023dpo,
+  title={Direct Preference Optimization: Your Language Model is Secretly a Reward Model},
+  author={Rafael Rafailov and Archit Sharma and Eric Mitchell and Stefano Ermon and Christopher D. Manning and Chelsea Finn},
+  journal={Advances in Neural Information Processing Systems},
+  year={2023},
+  url={https://arxiv.org/abs/2305.18290}
+}
+@article{zhang2024npo,
+  title={Negative Preference Optimization: From Catastrophic Collapse to Effective Unlearning},
+  author={Ruiqi Zhang and Licong Lin and Yu Bai and Song Mei},
+  journal={arXiv preprint arXiv:2404.05868},
+  year={2024},
+  url={https://arxiv.org/abs/2404.05868}
+}
+@article{maini2024tofu,
+  title={TOFU: A Task of Fictitious Unlearning for LLMs},
+  author={Pratyush Maini and Zhili Feng and Avi Schwarzschild and Zachary C. Lipton and J. Zico Kolter},
+  journal={arXiv preprint arXiv:2401.06121},
+  year={2024},
+  url={https://arxiv.org/abs/2401.06121}
+}
+@inproceedings{sun2024wanda,
+  title={A Simple and Effective Pruning Approach for Large Language Models},
+  author={Mingjie Sun and Zhuang Liu and Anna Bair and J. Zico Kolter},
+  booktitle={International Conference on Learning Representations},
+  year={2024},
+  url={https://arxiv.org/abs/2306.11695}
+}
+@article{yin2024owl,
+  title={Outlier Weighed Layerwise Sparsity (OWL): A Missing Secret Sauce for Pruning LLMs to High Sparsity},
+  author={Lu Yin and You Wu and Zhenyu Zhang and Cheng-Yu Hsieh and Yaqing Wang and Yiling Jia and Gen Li and Ajay Jaiswal and Mykola Pechenizkiy and Yi Liang and Michael Bendersky and Zhangyang Wang and Shiwei Liu},
+  journal={arXiv preprint arXiv:2310.05175},
+  year={2024},
+  url={https://arxiv.org/abs/2310.05175}
+}
+@article{wang2025ragen,
+  title={RAGEN: Understanding Self-Evolution in LLM Agents via Multi-Turn Reinforcement Learning},
+  author={Zihan Wang and Kangrui Wang and Qineng Wang and Pingyue Zhang and Linjie Li and Zhengyuan Yang and Xing Jin and Kefan Yu and Minh Nhat Nguyen and Licheng Liu and Eli Gottlieb and Yiping Lu and Kyunghyun Cho and Jiajun Wu and Li Fei-Fei and Lijuan Wang and Yejin Choi and Manling Li},
+  journal={arXiv preprint arXiv:2504.20073},
+  year={2025},
+  url={https://arxiv.org/abs/2504.20073}
+}
+@article{deepseek2025r1,
+  title={DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning},
+  author={{DeepSeek-AI}},
+  journal={arXiv preprint arXiv:2501.12948},
+  year={2025},
+  url={https://arxiv.org/abs/2501.12948}
+}
+@article{jain2024livecodebench,
+  title={LiveCodeBench: Holistic and Contamination Free Evaluation of Large Language Models for Code},
+  author={Naman Jain and King Han and Alex Gu and Wen-Ding Li and Fanjia Yan and Tianjun Zhang and Sida Wang and Armando Solar-Lezama and Koushik Sen and Ion Stoica},
+  journal={arXiv preprint arXiv:2403.07974},
+  year={2024},
+  url={https://arxiv.org/abs/2403.07974}
+}
+@article{lambert2024rewardbench,
+  title={RewardBench: Evaluating Reward Models for Language Modeling},
+  author={Nathan Lambert and Valentina Pyatkin and Jacob Morrison and LJ Miranda and Bill Yuchen Lin and Khyathi Chandu and Nouha Dziri and Sachin Kumar and Tom Zick and Yejin Choi and Noah A. Smith and Hannaneh Hajishirzi},
+  journal={arXiv preprint arXiv:2403.13787},
+  year={2024},
+  url={https://arxiv.org/abs/2403.13787}
+}
+
+@article{nathani2025mlgym,
+  title={MLGym: A New Framework and Benchmark for Advancing AI Research Agents},
+  author={Deepak Nathani and Lovish Madaan and Nicholas Roberts and Nikolay Bashlykov and Ajay Menon and Vincent Moens and Amar Budhiraja and Despoina Magka and Vladislav Vorotilov and Gaurav Chaurasia and Dieuwke Hupkes and Ricardo Silveira Cabral and Tatiana Shavrina and Jakob Foerster and Yoram Bachrach and William Yang Wang and Roberta Raileanu},
+  journal={arXiv preprint arXiv:2502.14499},
+  year={2025},
+  url={https://arxiv.org/abs/2502.14499}
+}
+
+@inproceedings{huang2024mlagentbench,
+  title={MLAgentBench: Evaluating Language Agents on Machine Learning Experimentation},
+  author={Qian Huang and Jian Vora and Percy Liang and Jure Leskovec},
+  booktitle={International Conference on Machine Learning (ICML)},
+  year={2024},
+  url={https://arxiv.org/abs/2310.03302}
+}

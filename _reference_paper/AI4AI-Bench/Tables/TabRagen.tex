@@ -1,0 +1,62 @@
+\begin{table}[t]
+\centering
+\caption{RAGEN: the Claude grid's 21 artifacts, grouped by what the submitted recipe learns
+from. The groups do not overlap and nothing falls between them. Every recipe that added
+search-derived supervision scores at least $0.8945$; every recipe that used GRPO's scalar
+reward alone scores at most $0.2402$. Substituting the objective is inside the task contract,
+which fixes the evaluator, the environment and the measured reward and mandates no training
+method (\S\ref{sec:instrument}). The GPT grid's 33 artifacts separate the same way --- four at
+exactly $1.000$, nine at $0.89$ or above, all from recipes that imitate an exact solver ---
+so the split is a property of the task and not of one harness. The same frozen evaluator, pinned by a single environment
+fingerprint, produced every row in both grids.}
+\label{tab:ragen}
+\small
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{llrrrrl}
+\toprule
+\textbf{Model} & \textbf{Effort} & \textbf{prog.} & \textbf{solved} & \textbf{solve rate} & \textbf{stderr} & \textbf{what the recipe added} \\
+\midrule
+\multicolumn{7}{l}{\emph{Search-derived supervision (10 artifacts, $0.8945$--$1.000$)}} \\
+Opus 5   & \texttt{high}   &    19 & 512 & \emph{1.0000} & 0.0000 & own BFS expert, distil + DAgger rounds \\
+Opus 5   & \texttt{high}   &    20 & 512 & \emph{1.0000} & 0.0000 & \quad'' \\
+Opus 5   & \texttt{high}   &    22 & 512 & \emph{1.0000} & 0.0000 & \quad'' \\
+Opus 5   & \texttt{low}    &  6865 & 512 & \emph{1.0000} & 0.0000 & cold-start SFT phase, then GRPO \\
+Opus 5   & \texttt{low}    &  8666 & 512 & \emph{1.0000} & 0.0000 & \quad'' \\
+Opus 5   & \texttt{low}    & 10570 & 512 & \emph{1.0000} & 0.0000 & \quad'' \\
+Opus 5   & \texttt{medium} &  6596 & 512 & \emph{1.0000} & 0.0000 & expert-demo module, then GRPO \\
+Opus 5   & \texttt{medium} &  6597 & 512 & \emph{1.0000} & 0.0000 & \quad'' \\
+Opus 5   & \texttt{medium} &  3628 & 508 & 0.9922 & 0.0039 & \quad'' \\
+Sonnet 5 & \texttt{high}   &     0 & 458 & 0.8945 & 0.0136 & SFT bootstrap on upstream's own solver \\
+\midrule
+\multicolumn{7}{l}{\emph{GRPO's scalar reward only (11 artifacts, $0.000$--$0.2402$)}} \\
+Sonnet 5 & \texttt{xhigh}  &    80 & 123 & 0.2402 & 0.0189 & trainer + config changes \\
+Opus 5   & \texttt{xhigh}  &   100 & 108 & 0.2109 & 0.0180 & board generator + env changes \\
+Sonnet 5 & \texttt{xhigh}  &    40 &  92 & 0.1797 & 0.0170 & trainer + config changes \\
+Opus 5   & \texttt{xhigh}  &   200 &  84 & 0.1641 & 0.0164 & board generator + env changes \\
+Opus 5   & \texttt{xhigh}  &   300 &  22 & 0.0430 & 0.0090 & \quad'' \\
+Sonnet 5 & \texttt{low}    &   360 &  22 & 0.0430 & 0.0090 & \texttt{run.sh} only \\
+Sonnet 5 & \texttt{low}    &   330 &  21 & 0.0410 & 0.0088 & \quad'' \\
+Sonnet 5 & \texttt{low}    &   300 &  16 & 0.0312 & 0.0077 & \quad'' \\
+Sonnet 5 & \texttt{medium} &  2760 &   0 & \emph{0.0000} & 0.0000 & expert hints at the proxy layer \\
+Sonnet 5 & \texttt{medium} &  2800 &   0 & \emph{0.0000} & 0.0000 & \quad'' \\
+Sonnet 5 & \texttt{medium} &  2840 &   0 & \emph{0.0000} & 0.0000 & \quad'' \\
+\midrule
+\multicolumn{4}{l}{\emph{repository's own recipe $r$}} & 0.1699 & --- & multi-turn on-policy GRPO \\
+\multicolumn{4}{l}{\emph{starting checkpoint $b$}}    & 0.1172 & --- & --- \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\vspace{2pt}
+{\footnotesize Metric: \texttt{held\_out\_512\_board\_solve\_rate}; \texttt{solved} is out of 512
+and reproduces the rate exactly on all 21 artifacts. \texttt{prog.} is the recipe-defined
+\texttt{progress} counter, which the instruction requires only to be numeric and increasing;
+it counts distillation rounds in one recipe and optimizer steps in another, so it is not
+comparable across rows and the $0$ is a recipe that published one checkpoint after its
+supervised phase. The evaluator generates 640 environments and scores the 512 held-out boards
+the metric names, so the score is quantized at $1/512$. Every artifact returned
+\texttt{status: passed} and passed a checkpoint audit with no code files, executable
+configuration keys or symlinks. The three exact zeros are a response-format collapse: the
+policy emits \texttt{<think>} and stops, so no action decodes and the board never advances.
+$0.8945$ and above is the saturated region --- the task supplies no ordering among the eight
+artifacts at exactly $1.000$.}
+\end{table}

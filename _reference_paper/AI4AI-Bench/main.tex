@@ -1,0 +1,133 @@
+\pdfminorversion=7
+\PassOptionsToPackage{numbers,sort&compress}{natbib}
+\PassOptionsToPackage{table,dvipsnames}{xcolor}
+\documentclass[]{style/company_light}
+
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{adjustbox}
+\usepackage{array}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage{xcolor}
+% Figures/FigPipeline.tex needs exactly these two and nothing else: it uses no
+% calc-library coordinate arithmetic, so do not assume `calc' is loaded.
+\usepackage{listings}
+% Verbatim style for the task contract in Appendix~\ref{app:contract}: the file is plain
+% Markdown with prose lines far wider than the column, so breaklines is mandatory.
+\lstdefinestyle{contract}{
+  basicstyle=\ttfamily\scriptsize,
+  breaklines=true,
+  breakindent=0pt,
+  breakautoindent=false,
+  postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$}\space},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  frame=leftline,
+  framesep=6pt,
+  rulecolor=\color{gray!40},
+  xleftmargin=8pt,
+  aboveskip=8pt,
+  belowskip=8pt,
+}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\setlength{\emergencystretch}{3em}
+\hbadness=10000
+\ifdefined\pdfsuppresswarningpagegroup\pdfsuppresswarningpagegroup=1\fi
+
+% Generated result figures live in Figures/generated; task cards in Figures/.
+\graphicspath{{Figures/generated/}{Figures/}}
+
+\newcommand{\yes}{\textcolor{ForestGreen}{$\checkmark$}}
+\newcommand{\no}{\textcolor{red}{$\times$}}
+\newcommand{\ai}{AI4AI\mbox{-}Bench}
+\newcommand{\patchfile}{\texttt{candidate.patch}}
+\newcommand{\runrecord}{\texttt{run.json}}
+\newcommand{\na}{\textcolor{gray}{--}}
+
+% Score bands used by the experiment tables: below the shipped recipe, above it,
+% and more than a third of the way to the task optimum.
+\definecolor{bandlow}{RGB}{250,224,224}
+\definecolor{bandmid}{RGB}{253,242,205}
+\definecolor{bandhigh}{RGB}{222,241,222}
+
+% The two recipe references. They are distinct quantities, not two estimates of
+% one: the short recipe is the configuration as committed, run for the number of
+% steps it commits to; the long recipe is that same configuration with only its
+% horizon and checkpoint cadence opened up to fill the agent's own allowance.
+\newcommand{\rshort}{r_{\mathrm{short}}}
+\newcommand{\rlong}{r_{\mathrm{long}}}
+
+% An open question, marked rather than hedged.
+\newcommand{\todoitem}[1]{\textcolor{red}{[TODO: #1]}}
+
+% The class sets the title in \huge and the author line in \normalsize. The title
+% is stepped down one size so it breaks in two lines; the author line needs two
+% steps, since nine names plus their markers do not fit on one line at \small.
+\title{{\LARGE \ai{}: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement}}
+\author{
+    \footnotesize Yizhe Chi$^{\dagger}$, Wenyi Li, Deyao Hong, Xiaoqiu Wang, Mingju Gao, Kaisen Yang, Bingxiang He, Youjie Zheng, Calvin Xiao, Qinhuai Na$^{\ddagger}$
+}
+% The affiliations carry no per-author markers, so the class's numbered format is
+% replaced by one centred line: \makebox does the centring because the title box
+% sets \raggedright for this whole block. \small matches the contribution line;
+% the class default \normalsize would outsize the \footnotesize author line.
+\renewcommand\affiliationformat[2][]{\makebox[\linewidth][c]{\small\bfseries #2}}
+\affiliation{Navers Lab, Einsia.AI\quad Tsinghua University}
+% Same centring trick as the affiliations, plus the vertical gap the class does
+% not leave between the two lines. One size below the affiliations, in grey, so
+% the marker legend reads as a footnote to the author block rather than part of it.
+\renewcommand\contributionformat[2][]{%
+  \vskip 0.15cm
+  \makebox[\linewidth][c]{\footnotesize\color{gray}#2}%
+}
+\contribution{$^{\dagger}$Project Lead\quad$^{\ddagger}$Corresponding Author}
+\input{Sections_zh/0_abstract}
+
+\date{\today}
+
+\metadata[Homepage]{\url{https://lab.einsia.ai/ai4ai}}
+\correspondence{\email{nana@einsia.ai}}
+
+% Float fractions raised so a page may be mostly float when the floats are wide.
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.5}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.75}
+
+\begin{document}
+\maketitle
+
+\input{Figures/FigTeaser}
+
+\input{Sections_zh/1_introduction}
+\input{Sections_zh/2_benchmark}
+\input{Sections_zh/4_results}
+\input{Sections_zh/5_analysis}
+% \input{Sections/5_behavior}
+\input{Sections_zh/6_related}
+\input{Sections_zh/7_conclusion}
+
+\clearpage
+\bibliographystyle{assets/plainnat}
+\bibliography{ref}
+
+\clearpage
+\appendix
+% Old appendix parked: it is the superseded draft and its cross-references point at
+% sections that no longer exist (sec:validity, sec:patches, sec:convergent,
+% sec:failures, fig:pipeline, fig:lifecycle, tab:behaviors).
+% \input{Sections/Z_appendix}
+\input{Sections_zh/Z_appendix}
+
+\end{document}

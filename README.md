@@ -61,7 +61,8 @@ Keys hold bare quantities, never connective words. `\defTBD{pct}{XX}`, not
 - `style/company_light.cls` — the active document class
 - `assets/`, `scripts/` — figures, and the helpers that generated the title-block
   measurements
-- `_reference_paper/` — a formatting reference, not part of the build
+- `_reference_paper/` — formatting references, including the cloned
+  `_reference_paper/AI4AI-Bench/` LaTeX source; none are part of the build
 
 `kexiearticle.sty` is not loaded by anything. It is the original SAST template,
 requires XeLaTeX, and is kept only for reference.

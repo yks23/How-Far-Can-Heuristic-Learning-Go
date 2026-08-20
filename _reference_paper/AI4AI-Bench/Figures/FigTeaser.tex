@@ -1,0 +1,20 @@
+% FigTeaser.tex -- Figure 1 (the teaser): the apparatus on top, the ten repositories below.
+% Source: fig_teaser_editable_2026-08-20.pdf, cropped to its ink box.
+% MUST stay the first float so it numbers as Figure 1.
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\linewidth]{fig_teaser}
+  \caption{\textbf{\ai{} at a glance.} \emph{Top:} the lifecycle every task runs through, drawn here
+  with discrete graph diffusion as the running example. The repository, the model it starts from and
+  the cheap proxy metric are frozen; the agent then has four hours on one B300 to read the code,
+  change it, and test each idea against that proxy. What it leaves behind is a source-code patch and
+  nothing else --- no weights it trained, no cached state. The patch is applied in a fresh container
+  and run from initialization for up to twelve hours, and at most the three most recent checkpoints
+  are kept. An evaluator fixed before the first run, with no access to the agent's workspace, scores
+  them, and the cell takes the best of the three under the task's direction; for the two tasks that
+  do not train, the twelve hours are only a ceiling on the verification stage
+  (\S\ref{sec:protocol}). \emph{Bottom:} the ten frozen repositories, chosen so that between them
+  they cover ten distinct families of training algorithm, each shown with the final metric its own
+  evaluator computes and the asset that metric reads (Table~\ref{tab:tasks}).}
+  \label{fig:teaser}
+\end{figure*}

@@ -1,0 +1,114 @@
+\section{Related work}
+\label{sec:related}
+
+\textbf{Recursive self-improvement is the reason this question is asked at all.} The premise that AI
+systems will soon carry out AI research is explicit in forecasts and in laboratory practice, and it has
+produced a line of work that treats machine-learning engineering as its executable testbed --- what
+Frontis-MA1 calls AI4AI, post-training a meta-evolution model whose search is composed from atomic
+program-evolution operators \citep{yang2026frontis}; RSIBench-Data, which fixes the post-training stack
+so that only the agent's \emph{research} decisions vary, and finds that agents improve on their first valid
+attempt in $58.3\%$ of settings by refining training-data strategies from feedback, yet that among
+searches continuing past their peak, $78.3\%$ finish below it \citep{meng2026rsibench}; and the Meta-Agent Challenge, which asks a model to
+build an agent rather than a recipe and reports that meta-agents rarely match human-engineered
+baselines \citep{lu2026metaagent}. Around it sits a broader effort to make AI research itself an evaluable
+activity: PaperBench asks agents to replicate twenty ICML papers from scratch against author-built
+rubrics, where the best tested agent reaches a $21.0\%$ replication score \citep{starace2025paperbench};
+EXP-Bench extracts $461$ experimental tasks from $51$ papers and finds agents able to design procedures
+far more often than to execute them correctly \citep{kon2025expbench}; MLR-Bench scores $201$
+workshop-derived research tasks and reports that coding agents fabricate or fail to validate
+experimental results in around $80\%$ of cases \citep{chen2025mlrbench}; and MARS attacks the same
+bottleneck from the systems side, arguing that machine-learning engineering is distinctive because
+evaluation is expensive and performance attribution opaque \citep{chen2026mars}. Agent$^2$RL-Bench is
+closest to our agentic-RL task, testing whether agents can close an interactive RL loop rather than
+emit a training script \citep{chen2026agent2rlbench}. We share this line's object of study and its
+motivation. What we add is an apparatus in which the improvement is a source-only patch replayed from
+a pinned commit, so that a reported gain is an artifact a third party can rebuild rather than a number
+produced inside the agent's own workspace.
+
+\textbf{The critique of verifiable-metric benchmarks is the one we take most seriously.}
+\citet{kirgis2026openended} argue that the evidence base for autonomous AI R\&D is thin and that what
+unifies it --- from Kaggle-derived engineering suites \citep{chan2024mlebench,qiang2025mledojo} to
+repository-scale ML tasks \citep{tang2023mlbench} and human-calibrated task batteries
+\citep{rein2025hcast} --- is a focus on verifiable tasks with a fixed narrow metric, which cannot reach the parts of
+research that matter --- choosing candidate hypotheses, deciding what evidence would settle a question,
+and recognising that an approach has failed and that the right move is to start over --- and answer it
+by shadow-evaluating open-ended questions against their original authors. Our tasks are verifiable-metric
+tasks and inherit that limitation at the level of the \emph{score}. Our response is different from
+theirs and complementary to it: because every configuration also leaves an audited trajectory, the same
+runs can be read for exactly those judgements without changing the task format
+(\S\ref{sec:behavior}) --- which hypothesis a system commits to and when, and whether it ever abandons
+the method it was handed. On the tasks where that choice is legible, it separates the artifacts more
+cleanly than the reasoning-effort budget does. We read this as evidence that the judgement gap
+\citet{kirgis2026openended} identify is measurable inside verifiable tasks, provided the trajectory is
+retained and audited, rather than only outside them.
+
+Three further lines of work bear directly on what this paper measures.
+
+\textbf{Benchmarks where agents improve AI systems} give us our closest points of comparison. Two earlier suites already put agents in front of an existing
+baseline and asked them to raise it: MLAgentBench, whose thirteen tasks run from CIFAR-10 to BabyLM and
+whose best agent averages a $37.5\%$ success rate \citep{huang2024mlagentbench}, and MLGym, whose
+thirteen open-ended research tasks yield the finding closest to our own --- frontier models ``improve on
+the given baselines, usually by finding better hyperparameters, but do not generate novel'' ideas or
+algorithms \citep{nathani2025mlgym}. Our capability result reproduces that shape under a lifecycle that
+makes each improvement independently replayable. MLS-Bench is the closest in aim, with 140 tasks in
+which an agent improves one component of an ML system and then shows the improvement generalizes
+\citep{lyu2026mlsbench}; its findings are ones our data support from a
+narrower base --- agents remain far from reliably surpassing human-designed methods, tuning is easier
+for them than method invention, and more search does not remove the bottleneck. PostTrainBench is the
+closest in protocol, giving ten hours on one H100 to post-train a base model against a released
+instruction-tuned checkpoint, where the best agent reaches $23.2\%$ of the official release's $51.1\%$
+\citep{rank2026posttrainbench}. That is a score ratio rather than a win rate, so it is not directly
+comparable with ours; the point of contact is the reference, not the number. A repository's stock
+configuration is a weaker bar than an official release, which is exactly why we also score against a
+budget-matched replay of that configuration (\S\ref{sec:validity}). Outside AI systems, Frontier-Eng poses
+the same shape of problem --- an existing feasible design, an executable verifier, a fixed interaction
+budget --- across 47 industrial engineering tasks, and reports that improvements decay as a dual power law in both frequency and
+magnitude, and that search depth matters more than width under a fixed budget
+\citep{einsia2026frontiereng}. The decay is the part our data speaks to: buying more search per
+configuration lengthens the trajectory without moving the win rate (\S\ref{sec:effort}). The
+depth-versus-width finding is about allocating a fixed budget, which our sweep does not vary --- we
+change the total, not its distribution --- so we take it as a neighbouring question rather than a
+confirmation.
+
+\textbf{Reference-normalized scoring} is what we considered and rejected. MLRC-Bench scores the fraction
+of the baseline-to-human gap an agent closes, with its best agent closing $9.3\%$
+\citep{zhang2025mlrcbench}. That construction needs a reference distance that is stable and comparable
+across tasks, and on this suite it is neither: the distance is missing on two tasks, negatively signed on
+one, and not a scalar on a fourth (Table~\ref{tab:tasks}), and where it exists it is set by wherever each
+repository's recipe happened to land. We report per-task rates instead (\S\ref{sec:setup}). RE-Bench
+supplies the human calibration the field otherwise lacks --- 71 eight-hour expert attempts, with agents
+ahead at two hours and humans ahead at eight \citep{wijk2024rebench} --- and that crossover is why we
+treat our four-hour/twelve-hour split as a variable rather than a constant. MLE-bench established the
+threshold-scored format over 75 Kaggle competitions with human baselines taken from public leaderboards
+\citep{chan2024mlebench}, from which we inherit the discipline of scoring against a measured pool
+rather than an asserted target. PostTrainBench is also where the failure modes we designed against were
+first reported at this scale: agents training on the test set, or downloading an existing
+instruction-tuned checkpoint instead of training their own \citep{rank2026posttrainbench}. Our
+source-only patch and fresh replay exist to make both mechanically impossible rather than merely
+discouraged, and \S\ref{sec:patches} reports the audit that checks it.
+
+\textbf{Validity audits of agent benchmarks} are the line our own metric audit joins. BenchJack
+derives a taxonomy of eight recurring flaw patterns from past reward-hacking incidents, then
+red-teams ten agent benchmarks and surfaces $219$ distinct flaws across those classes --- synthesizing
+exploits that score near-perfectly without solving a single task \citep{wang2026benchjack}; an
+audit of $2{,}385$ traces across 15 benchmarks finds exposure or reward hacking in $67.0\%$ of Frontier
+Science traces \citep{shao2026doagentbench}; and EvilGenie observes explicit reward hacking by both Codex
+and Claude Code \citep{gabor2025evilgenie}, the two harnesses this paper runs, which is why we treated
+harness-level exploitation as a live hypothesis rather than a remote one. The measurement strategies
+in this line are complementary to ours and worth separating. Some embed exploitable opportunities in
+the environment so that taking them is verifiable by construction
+\citep{roth2026hackverifiable,thaman2026rhb}; some make the compromise vectors explicit and detect
+them by comparing the agent's reported metric against a trusted recomputation
+\citep{atinafu2026rha}; one shows that with a test oracle in the loop a coding agent will build to
+that oracle and leave the requested artifact hollow \citep{ma2026buildingtotest}; and a survey now
+organises the mechanisms across the alignment pipeline \citep{wang2026rhsurvey}. Two further
+observations shaped this paper directly: that a saturated benchmark still measures construct validity,
+efficiency and reliability if one looks past accuracy \citep{nadgir2026lifeafter}, which is close to
+our argument for reading trajectories; and that when the deliverable is an artifact to be deployed,
+monitoring must be able to probe the artifact itself \citep{libon2026researcharena}, which is what our
+frozen evaluator does by construction. What this paper adds is that our
+two qualified tasks (\S\ref{sec:validity}) need different remedies, and only one is about reward hacking:
+one is a detection-and-enforcement gap, where an advisory mechanism fired and was ignored by construction;
+the other is a specification gap no anti-hacking defense would catch, because nothing was hacked --- an
+outcome-defined task admitted a method answering a different question from the one it was written to ask,
+and every provenance boundary held while it happened.

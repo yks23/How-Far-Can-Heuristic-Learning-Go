@@ -1,0 +1,38 @@
+\begin{table}[t]
+\centering
+\caption{\textbf{The six evaluated systems and their lifecycle survival.} The unit under test is a
+\emph{(model, native harness, effort)} triple; a model and its harness are not separable, so the
+Codex and Claude~Code columns are not a clean model-only comparison. \textbf{Cfg} is the number of
+configurations (tasks $\times$ effort levels); \textbf{Scored} is those producing an
+independently scored artifact. \textbf{vs.\ recipe} counts, direction-aware, the configurations that
+beat the repository's shipped recipe. Every task publishes one, so the column runs over all $271$
+scored configurations; counts are printed rather than percentages so the denominator is never implied.
+We report no pooled rate against the frozen starting checkpoint: two tasks disclaim that reference and
+elsewhere it is an undertrained artifact (\S\ref{sec:results}). \textbf{Cost}
+is total exploration API cost at each provider's official USD rates, rounded to the dollar per row so
+that the rows sum to one dollar below the exact total, including Kimi~K3 at Moonshot's
+\$3\,/\,\$15 per million input\,/\,output tokens (\$0.30 cached). \textbf{med.\ \$/cfg} is the median
+per-configuration exploration cost, and is the comparable figure because the grids differ in depth: it
+ranges roughly ten-fold across the six systems while win rates vary little, so exploration cost is
+weakly coupled to per-task success (\S\ref{sec:cost}). The reference-free standings are in Table~\ref{tab:medal}.}
+\label{tab:systems}
+\small
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{llrrrrrr}
+\toprule
+\textbf{System} & \textbf{Harness} & \textbf{Efforts} & \textbf{Cfg} & \textbf{Scored}
+& \textbf{vs.\ recipe} & \textbf{Cost} & \textbf{med.\ \$/cfg} \\
+\midrule
+Claude Opus 5   & Claude Code & 5 & 50 & 50 ($100\%$) & $36/50$ & \$909 & \$18 \\
+Claude Sonnet 5 & Claude Code & 5 & 50 & 49 ($98\%$)  & $29/49$ & \$330 & \$6 \\
+Kimi K3         & Claude Code & 1 & 10 & 10 ($100\%$) & $7/10$ & \$59 & \$6 \\
+\midrule
+GPT-5.6 Sol     & Codex & 6 & 60 & 58 ($97\%$) & $35/58$ & \$2{,}692 & \$45 \\
+GPT-5.6 Terra   & Codex & 6 & 60 & 52 ($87\%$) & $30/52$ & \$870 & \$8 \\
+GPT-5.6 Luna    & Codex & 6 & 60 & 52 ($87\%$) & $33/52$ & \$337 & \$4 \\
+\midrule
+\textbf{All}    &       &   & \textbf{290} & \textbf{271 ($93\%$)} & \textbf{$170/271$} & \$5{,}198 & \na{} \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

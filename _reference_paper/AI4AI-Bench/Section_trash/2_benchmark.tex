@@ -1,0 +1,109 @@
+\section{\ai{}}
+\label{sec:benchmark}
+
+\ai{} is ten frozen research repositories, each of which poses the same problem in a different
+domain: improve this repository's \emph{own} training recipe. Table~\ref{tab:tasks} lists them.
+They span generative modelling --- reinforcement learning against an aesthetic reward for diffusion
+\citep{black2023ddpo} and discrete denoising diffusion for graphs \citep{vignac2023digress} ---
+language-model post-training --- direct preference optimization \citep{rafailov2023dpo}, on-policy
+distillation from a reasoning teacher \citep{deepseek2025r1}, reinforcement learning for code against
+a contamination-controlled benchmark \citep{jain2024livecodebench}, and machine unlearning by negative
+preference optimization on a fictitious-forgetting corpus \citep{zhang2024npo,maini2024tofu} ---
+reward modelling scored on RewardBench \citep{lambert2024rewardbench}, one-shot pruning at high
+sparsity \citep{sun2024wanda,yin2024owl}, weight averaging over a bank of fine-tuned checkpoints
+\citep{wortsman2022modelsoups}, and multi-turn agentic RL \citep{wang2025ragen}. Each repository is
+taken as its authors released it, with the recipe it commits to left in place as the thing to be
+improved. We chose
+them for a property the whole design depends on: each ships a concrete training recipe, a frozen
+starting artifact, and a metric that can be recomputed reproducibly under a half-day budget on one
+GPU. They are ten distinct research problems, not ten settings of one, which is why the ten metrics
+cannot be pooled in their raw units and why every aggregate in this paper is a rate over
+per-task comparisons rather than an average of scores.
+
+\paragraph{The task contract.} A task hands the agent a repository at a pinned commit, a starting
+artifact, and an objective stated as ``improve the repository's recipe'' --- not ``reach score
+$x$''. What is held fixed is stated by construction rather than by a checker: the evaluation asset,
+the metric, and the frozen evaluator that computes it. What is open is the method. The agent may
+rewrite the training code, the data pipeline, the objective, or the optimizer; the one line it may
+not cross is the evaluation itself. This is deliberate: fixing the method
+would test whether the agent can follow a prescribed recipe, whereas fixing only the outcome and its
+measurement tests whether it can find \emph{a} way to improve the system at all --- and, as
+\S\ref{sec:analysis} shows, sometimes a way the repository's authors did not intend.
+
+\paragraph{The lifecycle.} Every configuration passes through the same five stages, drawn in
+Figure~\ref{fig:pipeline}. \textbf{(1) Exploration.} The agent works in the repository for four
+hours on one GPU, free to read, edit, train and query a \emph{fast proxy} metric without limit.
+\textbf{(2) Source patch.} Its submission is extracted as a \emph{source-only} diff against the
+pinned commit; nothing from the exploration workspace --- no trained weights, no cached state ---
+crosses forward. \textbf{(3) Formal replay.} The patch is applied to a fresh container built from
+the pinned image digest and retrained under a twelve-hour budget, so the reported artifact is
+produced by the recipe, not carried over from exploration. \textbf{(4) Validation.} The run must
+yield a usable artifact with up to three retained checkpoints; a configuration that produces none
+is recorded as a behaviour failure rather than silently dropped. \textbf{(5) Independent
+evaluation.} Each checkpoint is scored by an evaluator that was frozen before any run began, reads
+nothing from the agent's workspace, and computes a \emph{final} metric the agent never sees during
+exploration.
+
+\paragraph{The visibility boundary.} The separation between the fast proxy the agent may query and
+the final metric it may not is the load-bearing property of the design (the vertical line in
+Figure~\ref{fig:pipeline}). It is what makes a reported gain reproducible and hard to fake: an agent
+can optimize what it can see, but the number that decides its score is computed after the fact, from
+a source-only recipe, by a frozen evaluator the agent cannot run. The separation is one of
+\emph{access and timing} rather than of sample disjointness --- on some tasks the cheap proxy is
+drawn from the same corpus as the final set, since running the full evaluation as a proxy would cost
+more than the exploration budget allows --- so what the boundary guarantees is that no agent can
+score a candidate under the deciding metric, not that it has never seen a row that metric will use. A high score therefore certifies
+that the \emph{recipe} improves the system, not that the agent found the evaluation. The rest of
+the paper is about how far that certification actually reaches, and where the metric behind it stops
+meaning what it appears to.
+
+\input{Tables/TabTasks}
+
+\subsection{Experimental setup}
+\label{sec:setup}
+
+\paragraph{Systems.} We evaluate six systems and treat each \emph{(model, native harness, reasoning
+effort)} triple as a distinct unit, because a model cannot be run without a harness and the two
+jointly determine behaviour. Three GPT-5.6 variants (Sol, Terra, Luna) run under Codex across six
+reasoning-effort levels, \texttt{none} through \texttt{max}; two Claude~5 variants (Opus, Sonnet)
+run under Claude Code across five; and Kimi~K3 runs through the Claude Code harness at a single
+\texttt{max}-effort setting. Crossed with the ten tasks this gives $180+100+10=290$ configurations.
+The grids are complete but not budget-matched across harnesses, so a comparison that spans harnesses
+carries the scaffold with it (\S\ref{sec:standings}); the effort sweep of \S\ref{sec:effort} is
+therefore confined to the Codex grid, where the harness is held fixed.
+
+\paragraph{References.} Calling a change an improvement requires something to compare against, and
+every reference in this paper is measured under the frozen evaluator rather than quoted from a
+publication. One of them carries the results. The \emph{shipped recipe} ($\rshort$) is the
+repository's committed training configuration run at the step count it commits to, scored by the same
+hidden evaluator as every artifact: beating it means beating what the repository actually ships. Every
+task has one, so every scored configuration is comparable, and \S\ref{sec:results} is read against it
+throughout.
+
+Two further references exist to test that result rather than to produce it. A \emph{budget-matched
+replay} ($\rlong$) runs the identical configuration out to the agent's own twelve hours, opening
+exactly the two things the patches most often change --- the training horizon and the checkpoint
+cadence --- and nothing else, which makes it the closest thing the suite has to an agent-free control.
+It is defined wherever extending a training run is meaningful, which is seven of the ten tasks; on the
+other three the question does not arise, since weight averaging and one-shot pruning do no training to
+extend and agentic RL halts under the recipe's own early-stopping rule. \S\ref{sec:validity} uses it.
+The \emph{start} ($b$) is the frozen artifact the agent is handed, scored as delivered;
+Table~\ref{tab:tasks} lists it per task as context for how far each recipe already moves, and
+\S\ref{sec:results} says why we compute no pooled rate against it.
+
+The two recipe references bracket the agent rather than flatter it. A committed run is short enough to
+yield a single checkpoint, so $\rshort$ meets the agent's best of three with one point, which favours
+the agent; the twelve-hour replay retains twelve to twenty-nine checkpoints and is reduced to the best
+of them, which favours the reference by more than that same margin. \S\ref{sec:ckpt} measures what the
+reduction rule is worth.
+
+\paragraph{Metrics and scoring.} Each task declares one final metric, an evaluation asset, and a
+direction; the raw metric keys are in Appendix~\ref{app:extra}. Because the ten metrics are
+incommensurable --- an aesthetic score, a perplexity, a solve rate --- we never average them, and
+report per-task rates and per-task relative changes instead. Every configuration retains up to
+three checkpoints from its formal replay and is scored on the best of them under the task's
+direction; this best-of-three convention is a property of the harness, not a choice available to
+the agent. It is not a neutral bookkeeping detail: it moves the pooled win rate against the shipped
+recipe by nearly eight points relative to reporting final checkpoints, so every rate in
+\S\ref{sec:results} should be read as a best-of-three rate. \S\ref{sec:ckpt} gives the mechanism. Missing values are
+preserved as missing throughout: a checkpoint that produced no score is never counted as a zero.

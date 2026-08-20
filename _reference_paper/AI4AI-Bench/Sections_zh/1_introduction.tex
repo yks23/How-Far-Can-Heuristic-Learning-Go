@@ -1,0 +1,119 @@
+\section{Introduction}
+\label{sec:intro}
+
+% Opening paragraph: the three levels of the RSI loop, and why the algorithmic one
+% is the one that compounds. The claim is deliberately *not* that compute and data
+% saturate -- a power law has no ceiling, it only gets more expensive. The claim is
+% that the three levels differ in whether their result is inherited by the next run.
+Recursive self-improvement (RSI) rests on a loop: a system improves the process that produces its successor, and the successor inherits the improvement. 
+Three levels in that loop can be automated by a coding agent --- the \emph{Systems engineering} level (kernels, parallelism, communication), the \emph{Data} level (mixtures, synthesis, filtering), and the \emph{Algorithmic design} level (objectives, update rules, regularization,
+schedules). 
+Work on the \emph{Systems engineering} level is bounded by the hardware it runs on, since once a kernel reaches the hardware roofline, further gains are no longer possible.
+Work on the \emph{Data} level is bounded by a finite stock of human text \citep{villalobos2022rundata}, by synthetic corpora that
+largely re-express what the model already carries \citep{shumailov2023curse}, and by a power law in which every further halving of the loss gap costs several times more tokens than the halving before it \citep{kaplan2020scaling,hoffmann2022chinchilla}. 
+Work on the \emph{Algorithmic design} level is different in kind: a better objective or update rule changes the exchange rate between compute and capability \citep{ho2024algprogress}, so every training run that follows --- including the run that produces the next agent --- inherits the gain. Adam, layer normalization, DPO and GRPO were each paid for once and have been earning since; if RSI is going to compound, most of the compounding has to come from this level.
+
+% Paragraph 2: no existing benchmark isolates the algorithmic level. Each sentence
+% names what a benchmark's *contract* rewards, rather than grading its quality.
+No benchmark isolates that level. The Kaggle-derived suites ask for a competition submission ---predictions over one fixed dataset --- so what wins is feature engineering and ensembling while the
+learning algorithm stays a library call the agent never edits, and nothing in the submission is
+inherited by the next training run \citep{chan2024mlebench,qiang2025mledojo}. PostTrainBench states
+its task end to end, post-training a base model against a released instruction-tuned checkpoint, and
+its largest levers are which data to assemble and what to initialize from rather than the objective
+\citep{rank2026posttrainbench}; RSIBench-Data makes that emphasis deliberate, freezing the
+post-training stack so that only data-centric decisions vary \citep{meng2026rsibench}. MLS-Bench
+comes closest, with 140 tasks in which an agent improves one component of an ML system
+\citep{lyu2026mlsbench}, but the component boundary is handed to it and the score conflates execution-level improvements with changes to the learning algorithm.
+Closest of all is
+\texttt{autoresearch}, which hands the agent one training file and declares everything in it fair
+game, architecture and optimizer included \citep{karpathy2026autoresearch}; but a five-minute run of a single script is not a research repository, and measured against classical optimizers the agent's
+edits behave like hyperparameter search and lose to CMA-ES and TPE \citep{ferreira2026autoresearch}. Editing source code is therefore not
+the same as designing an algorithm, and none of these settings answers the question the loop turns
+on: did the agent change \emph{how the run was executed}, or \emph{how the model learns}?
+
+% Paragraph 3: the operational distinction. This is the definition the patch
+% taxonomy in Section 5 implements, so it has to be stated mechanically here.
+The line between the two is not the size of a change but what it touches: a hyperparameter is a number
+the training algorithm takes as given, an algorithmic change rewrites the algorithm --- the loss it
+optimizes, the update it applies. 
+The second kind is what a machine learning scientist does at an industrial training system. They read the training dynamics --- the loss curve and where it spikes, gradient norms,
+the entropy of the policy, the divergence from the reference model, the distribution of advantages,
+the loss broken down by token --- and infer from them which part of the algorithm is misbehaving: a
+policy whose entropy has collapsed, a penalty term that has come to dominate the objective, a reward
+model saturating on the easy half of its pairs. The diagnosis names a mechanism and the fix changes
+that mechanism.
+
+% Paragraph 4: the apparatus. Terminology fixed here and to be kept everywhere:
+%   - "training algorithm" for the object of improvement (never "recipe", which in
+%     earlier drafts meant the committed configuration, that same configuration at
+%     a longer budget, and the method in general, all in one word)
+%   - "baseline" for whatever a score is compared against, always named
+%   - "system" = (model, harness, reasoning effort); "cell" = (system, task)
+%   - patches are "classified", not "audited"; the corpus is a grid, not a census
+In this paper, we propose \textbf{\ai{}}, a benchmark built to isolate the algorithmic design level. It includes 10
+research repositories, each representing a distinct family of training algorithms --- supervised fine-tuning,
+multi-turn agentic RL, on-policy distillation, Bradley--Terry reward modeling, preference
+optimization, diffusion RL, machine unlearning, discrete graph diffusion, weight averaging and
+one-shot pruning --- and asks an agent to improve each repository's \emph{own} training algorithm,
+rather than to reach a target somebody else set. Every task carries the same contract. The agent
+has 4 hours on one B300 GPU to read the repository, change its training code, and test each idea
+against a fast proxy metric. When the 4 hours are up the agent stops, and the code it leaves
+behind is trained from a clean start for up to 12 hours. This is the asymmetry a machine learning
+scientist works under: an idea can be triaged in minutes, but the run that settles it takes a day.
+The data behind that final measurement is never available during the 4 hours: the agent may
+consult its proxy as often as it likes, but the evaluation that decides its score is out of reach,
+exactly as a held-out test set is out of reach of the development loop in any industrial training
+system.
+
+% Paragraph 5: what the agents submit, in three steps that build on each other.
+% Numbers computed from build/family_rows.jsonl joined to the final experiment
+% sheet. NPO is a single balance score with baseline 0.95201, so it is included.
+\textbf{Results.} Across 29 configurations of six systems on all ten tasks the mean
+score is $0.166$ and the best system reaches $0.250$, on a scale where $0.1$ is the
+algorithm the repository ships and $1.0$ the task optimum. The submissions say
+where the remaining distance went. Of the 263 that change anything, 141 leave the
+learning procedure exactly as they found it and move budgets, checkpointing,
+hyperparameters and capacity instead. The 122 that do reach it --- the objective,
+the supervision signal, the learning rule, the data --- average $0.226$ against
+$0.126$ for the rest: the algorithmic layer is where the distance gets closed, and
+most submissions never go there. More reasoning effort moves agents towards it,
+taking that share from $8\%$ to $64\%$ and the mean score from $0.094$ to $0.196$,
+which is most of what effort buys. A machine learning scientist reads the training
+dynamics, names the mechanism that is failing, and changes that mechanism; few of
+these submissions do.
+
+% Paragraph 6: contributions. Deliberately three, not 4: the baseline
+% sensitivity result is real but stays out until the sheet's Baseline row has a
+% stated definition.
+In summary, we make the following contributions:
+\begin{itemize}[leftmargin=1.2em,itemsep=3pt,topsep=3pt,parsep=0pt]
+  \item \textbf{A benchmark that isolates the algorithmic level.} Ten research repositories spanning ten families of training algorithms, evaluated under a unified protocol that separates a four-hour agent development window from the up to twelve-hour clean-start training run used for scoring.
+  \item \textbf{A measurement of what agents \emph{do}, not only whether they win.} Every submission is classified by what it changes, which is what turns
+    ``the agent improved the training algorithm'' into a checkable statement
+    rather than a restatement of the score.
+\item \textbf{Revealing a gap between algorithmic exploration and actual improvement.}
+    The algorithmic design level is where the distance to a better algorithm is closed and the one these agents reach least often, and more reasoning effort mostly buys the willingness to reach it.
+\end{itemize}
+% We release every artifact and record behind these numbers.
+
+% TODO: remaining introduction paragraphs.
+% (4a) parked from paragraph 4: the validity argument for splitting the budgets --
+%      had the agent simply been given twelve hours it would have been steering the
+%      run we report, and a good score could mean a better training algorithm or an
+%      agent that stopped a run at a lucky moment. Belongs with the apparatus.
+% (4b) the experiment grid -- six systems, 29 (model, effort) configurations, 290
+%      configuration-task cells, 271 of them scored -- and the fact that every
+%      submitted patch is classified by what it touches. Cut from paragraph 4 so
+%      that it states the contract only; both belong with the results.
+% (5) headline result + the run-management/hyperparameter vs learning-rule split.
+%     Blocked: the final experiment sheet's Baseline row needs a definition, and
+%     resolved: NPO is a balance score, higher better, baseline 0.95201.
+% (6) baseline choice as the second contribution: the same patches move from 0%
+%     to 82% on OpenR1 and from 100% to 44% on DiGress when the baseline changes.
+% Parked from earlier drafts of this section, for use later rather than here:
+%   - the classification criterion in full (which term enters the loss, how the
+%     update is formed, what is regularized, which gradient is applied and when)
+%     belongs in the taxonomy section, not the introduction
+%   - "a one-line diff can cross it and a thousand-line refactor need not, which
+%     is why it has to be read off the patch rather than off the score" belongs
+%     in paragraph 4's account of why patches are extracted and classified

@@ -1,0 +1,27 @@
+\begin{table}[t]
+\centering
+\caption{\textbf{Metric identifiers and evaluation-set sizes.} For each task, the literal evaluator
+key behind the short name used in the body, its direction, and the number of evaluation samples the
+frozen evaluator scores. NPO reports a pair of objectives and OWL/BTRM are scored on full held-out
+corpora rather than a fixed sample count.}
+\label{tab:metrickeys}
+\small
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lllr}
+\toprule
+\textbf{Task} & \textbf{Evaluator key} & \textbf{Dir.} & \textbf{Eval size} \\
+\midrule
+DDPO & \texttt{mean\_aesthetic\_score\_final256} & $\uparrow$ & 256 \\
+DiGress & \texttt{qm9\_test\_nll} & $\downarrow$ & 10000 \\
+DPO & \texttt{ifeval\_strict\_accuracy\_hidden413} & $\uparrow$ & 413 \\
+Model Soup & \texttt{imagenetv2\_top1\_full10000} & $\uparrow$ & 10000 \\
+OPD & \texttt{aime24\_25\_at32} & $\uparrow$ & 60 \\
+OpenR1 & \texttt{livecodebench\_v6\_pass\_at\_1\_first128} & $\uparrow$ & 128 \\
+NPO & \texttt{Extraction} / \texttt{MU} & $\downarrow$ / $\uparrow$ & \na{} \\
+OWL & \texttt{wikitext2\_test\_perplexity} & $\downarrow$ & \na{} \\
+RAGEN & \texttt{held\_out\_512\_board\_solve\_rate} & $\uparrow$ & 512 \\
+BTRM & \texttt{rewardbench\_v1\_score} & $\uparrow$ & 2985 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

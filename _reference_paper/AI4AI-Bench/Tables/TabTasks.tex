@@ -1,0 +1,39 @@
+\begin{table*}[t]
+\centering
+\caption{\textbf{The ten \ai{} tasks.} Each freezes a research repository and asks the agent to
+improve that repository's own training recipe. \textbf{Start} ($b$) is the frozen checkpoint the
+agent is handed and \textbf{Recipe} ($\rshort$) is the repository's committed recipe, both scored
+by the same hidden evaluator; arrows give the metric direction. The suite is ten distinct research
+problems rather than ten variants of one, which is why the ten metrics are not comparable in their
+raw units. Raw metric keys and evaluation-set sizes are in Appendix~\ref{app:extra}; the repositories are cited where they are introduced in \S\ref{sec:benchmark}.}
+\label{tab:tasks}
+\small
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lllcrr}
+\toprule
+\textbf{Task} & \textbf{Family} & \textbf{Starting artifact} & \textbf{Measure} & \textbf{Start $b$} & \textbf{Recipe $\rshort$} \\
+\midrule
+DDPO       & Generative       & Stable Diffusion v1.5 + LoRA        & aesthetic score $\uparrow$      & $5.40$   & $5.53$   \\
+DiGress    & Generative       & QM9 discrete graph diffusion        & test NLL $\downarrow$           & $78.05$  & $69.57$  \\
+DPO        & Preference opt.\ & merged Zephyr/Mistral-7B policy      & IFEval strict $\uparrow$        & $0.397$  & $0.508$  \\
+Model Soup & Merging          & 72 CLIP ingredient checkpoints      & ImageNet-V2 top-1 $\uparrow$    & $0.687$  & $0.686$  \\
+OPD        & LM post-training & DeepSeek-R1-Distill-Qwen-1.5B       & AIME24/25 @32 $\uparrow$        & $0.252$  & $0.427$  \\
+OpenR1     & LM post-training & Qwen2.5-Coder-1.5B-Instruct         & LiveCodeBench pass@1 $\uparrow$ & $0.102$  & $0.133$  \\
+NPO        & LM post-training & Llama-3.2-1B-Instruct               & extraction $\downarrow$ / utility $\uparrow$$^{\dagger}$ & \na{}    & $.063/.479$ \\
+OWL        & Compression      & OPT-6.7B dense, $70\%$ target sparsity & WikiText-2 ppl $\downarrow$  & $10.86$  & $53.36$  \\
+RAGEN      & Agentic RL       & Qwen2.5-3B-Instruct RL policy       & Sokoban solve rate $\uparrow$   & $0.117$  & $0.170$  \\
+BTRM       & Reward modeling  & Mistral-7B-Instruct-v0.2 + reward head & RewardBench score $\uparrow$ & \na{}    & $74.57$  \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\vspace{2pt}
+{\footnotesize Model Soup's start $b$ is a strong single-ingredient reference and its shipped
+$\rshort$ is the naive uniform average of all 72 ingredients, which sits just below the best
+ingredient --- so $\rshort<b$ there is expected, not a regression. $^{\dagger}$NPO reports two components rather than a scalar, and TOFU, the
+NPO paper and this task's own contract all forbid collapsing them into one. We therefore score it by
+\emph{dominance}: a configuration beats the recipe only when a checkpoint is better on both components
+at once. $18$ of $28$ do; $10$ improve one at the other's cost and are counted as not beating it; none
+is worse on both (Appendix~\ref{app:unlearning}). It admits no start row because every unlearning run
+moves extraction away from the start by construction. BTRM ships no trained scalar reward head to serve
+as a start. All are handled explicitly in the results.}
+\end{table*}
