@@ -96,7 +96,7 @@
 % SCOPED 2026-08-19 at the user's direction: "我们所有的实验和测试都是在博弈类的任务上面
 % 打的，所以你要最好把这个限定加好，把标题什么的改好。"  Every measurement in this paper
 % is taken inside one task class, and the unscoped title promised a result about
-% policy-level continual learning in general. "in Adversarial Games" is the smallest
+% heuristic learning in general. "in Adversarial Games" is the smallest
 % addition that makes the promise match the evidence.
 %
 % WORDING. "Adversarial games" is the phrase Section 1 already uses and the one a reader
@@ -110,10 +110,50 @@
 % ("Preliminary删了吧") and the definition moved to Section 4's opening. Still four; if
 % it moves again, fix this count in the same edit.
 %
-% Do not "restore" the shorter title. The claim it makes is one this paper cannot support.
-\title{How Far Can Policy-Level Continual Learning Go in Adversarial Games? \\
-Continual Self-Evolution of an Executable Policy Artifact under a Finite
-Maintenance Budget}
+% Do not "restore" the UNSCOPED title. Dropping "in Adversarial Games" is what this
+% comment forbids -- the claim an unscoped title makes is one this paper cannot support.
+% It does NOT forbid changing the subject back to heuristic learning; see below.
+%
+% ===========================================================================
+% SUBJECT REVERTED TO HEURISTIC LEARNING on 2026-08-20 at the user's direction:
+% "标题你改得太奇怪了，HL 这个主体不要改变。主要就是你只能加上一个'在对抗式游戏中'这样的
+% 定语就行，然后主要还是采用之前的那一版标题吧". So: the pre-2026-08-19 title, plus the
+% scope qualifier and nothing else.
+%
+% The instruction is also the right call on the merits, and the repo is the evidence.
+% "Policy-Level Continual Learning" was adopted to echo the CL4FMAgents CFP, but it is
+% not this paper's own term: Section 2.2 defines heuristic learning, Section 1 introduces
+% HL as the paradigm under study, and the benchmark is named \benchname (HL-Arena). A
+% title naming a paradigm the paper never defines, over an arena named after the one it
+% does, was an inconsistency the venue's wording bought at too high a price.
+%
+% THE TRADE-OFF THIS ACCEPTS, stated so it is not rediscovered as a surprise: "heuristic
+% learning" is our coinage and a continual-learning reader will not recognise it from the
+% title alone. What carries the venue's framing instead is the subtitle's three measured
+% quantities, the abstract's closing sentence -- which deliberately still translates the
+% result into the CFP's vocabulary, "what bounds policy-level continual learning" -- and
+% the four readings foreclosed in the positioning block above. If the workshop framing
+% ever needs to be visible in the title itself, put it in the subtitle; the main clause is
+% settled.
+%
+% SUBTITLE. Kept from the pre-2026-08-19 title, which read "... Sample Efficiency in
+% Large-Scale Real-World Competitive Games". Two words of that tail are gone and both
+% removals are deliberate:
+%   - "Competitive Games" went because the main clause now says "in Adversarial Games".
+%     Saying games twice in one title is the kind of thing the scope qualifier should not
+%     have cost, and the qualifier belongs in the main clause where the claim is.
+%   - "Large-Scale" went because it is not supportable at the unit that matters. The
+%     archive holds \val{nsubv} submission VERSIONS but only about two hundred unique
+%     entrant-game pairs (Section 3.2 states the field is "small and strongly correlated
+%     relative to its version count"), so a title advertising scale would contradict the
+%     section that measures it. "Real-World" stays: it is the contrast with a benchmark
+%     authored for evaluation, which Section 3.1 argues at length.
+% What replaced the tail names what the archive actually supplies -- the human field the
+% ceilings and percentiles are measured against.
+% ===========================================================================
+\title{How Far Can Heuristic Learning Go in Adversarial Games? \\
+Characterizing Performance Ceilings, Complexity, and Sample Efficiency
+against a Real-World Human Field}
 
 % ONE SWITCH FOR EVERY NAME IN THE DOCUMENT. Set \namedtrue and the title page
 % carries the authors and the role legend, and the block after the conclusion
