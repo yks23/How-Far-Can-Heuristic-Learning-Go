@@ -88,15 +88,31 @@
 % from Tsinghua, and is the style reference in _reference_paper/. The project
 % name is still undecided.
 %
-% THE WHOLE UPPER-BOUND ARGUMENT MOVED HERE on 2026-08-18 (second cut, to reach
-% 2.5 pages) and is now WRITTEN, in the three paragraphs under "Long-horizon
-% degradation and maintenance capacity". The introduction no longer argues why the
-% loop stops -- it states the inequality and its observed signature and nothing
-% else -- so those three paragraphs are the only place the paper says what
-% maintenance capacity means. Do not compress them back into a literature-survey
-% paragraph: the mechanism (accumulation defeats placement) has to be argued, not
-% cited, or the intro's central claim is unsupported anywhere in the paper.
-% What that stretch now carries, and must keep carrying:
+% COMPRESSED TO THREE PARAGRAPHS on 2026-08-19 at the user's direction ("related work
+% 压缩成3个自然段，并且scale up引用的文章的数量"). Five paragraphs became three, and the
+% citation count went from 35 to 45 keys -- every key in refs.bib is now cited somewhere
+% in the paper, so a further scale-up requires new bibliography entries and must not be
+% done by re-citing existing ones. The three-way split is:
+%   1. programs as policies      -- representation, heuristic design, program search,
+%                                   and code-written-around-a-learner, merged because
+%                                   they share one axis: who writes the program.
+%   2. adversarial evaluation    -- games as testbed, pool design, human fields as
+%                                   percentile references, and the baseline rationale.
+%   3. continual improvement     -- experience reuse AND the whole maintenance-capacity
+%                                   argument, formerly three paragraphs of its own.
+%
+% THE UPPER-BOUND ARGUMENT MOVED HERE on 2026-08-18 (second cut, to reach 2.5 pages) and
+% the header note that stood here said: do not compress it into a literature-survey
+% paragraph, because the mechanism has to be argued rather than cited or the intro's
+% central claim is unsupported anywhere in the paper. That note was OVERRIDDEN by the
+% compression above, and the constraint behind it was preserved rather than dropped: the
+% mechanism is still STATED IN FULL before its first citation, in paragraph 3, and all
+% six load-bearing elements below survive. What was cut is the numbers, not the argument
+% -- per-repo figures, the four per-model execution horizons, the exact prompting deltas,
+% and the erosion/verbosity slope pairs. They remain recorded in this header, which is
+% now their only home in the repo, so verify against it rather than re-reading the
+% papers. If the argument ever needs to grow back, grow it in Section 6, not here.
+% What paragraph 3 carries, and must keep carrying:
 %   - the mechanism itself, stated before any citation.
 %   - the RATE-not-exemption form of the human comparison. A human exemption would
 %     make capacity look like an agent-specific defect instead of a general limit
@@ -144,119 +160,85 @@
 %     because 05-experiments.tex compares our own \val{decay} against theirs; if that
 %     comparison is written, the exponent enters the paper THERE, not here.
 % ---------------------------------------------------------------------------
-
 \section{Related Work}
 
-\paragraph{Programmatic reinforcement learning and heuristic discovery.}
-Programmatic reinforcement learning represents a policy as an executable
-program rather than an opaque neural network, exposing a size--expressiveness
-trade-off that is directly relevant to our description-length proxy
-\citep{programmaticrl2024foundations}. Subsequent work has used language models
-to synthesize such policies \citep{llmguidedsearch2024}, or searched over
-structured domains such as scheduling \citep{diprl2026,prorl2026}. In parallel,
-automatic heuristic-design systems have combined LLM proposals with
-evolutionary selection, uncertainty balancing, diversity preservation, or
-learned teachers \citep{qube2024,hsevo2024,teacherawareheuristic2026,
-heuristicsearch2026,latentheuristicsearch2026,automodsat2025}. These systems
-mostly optimize a fixed combinatorial objective. Our setting instead evaluates
-an editable policy under adversarial play and asks how far repeated maintenance
-can proceed before the artifact becomes difficult to revise.
+\paragraph{Programs as policies, and who writes them.}
+Programmatic reinforcement learning represents a policy as an executable program rather
+than an opaque network, and bounds the size of an optimal programmatic policy --- the
+formal relative of the description length this paper measures
+\citep{programmaticrl2024foundations}. Language models have since been used to synthesize
+such policies \citep{llmguidedsearch2024} and to search structured domains such as
+scheduling \citep{diprl2026,prorl2026}, while automatic heuristic design pairs model
+proposals with evolutionary selection, uncertainty balancing, diversity preservation, or
+learned teachers \citep{qube2024,hsevo2024,teacherawareheuristic2026,heuristicsearch2026,
+latentheuristicsearch2026,automodsat2025}. A parallel line writes code around a learner
+rather than as the learner: reward functions \citep{eureka2023,rewarddesignagent2026}, and
+the post-training machinery of reinforcement learning itself
+\citep{agent2rlbench2026} --- which is what makes ``then let it write the policy'' the
+next question rather than a contrarian one. On the search side, FunSearch established the
+pattern of model-generated variants filtered by an external evaluator
+\citep{funsearch2024}, extended by systems that make proposal, mutation, repair, and
+verification autonomous \citep{alphaevolve2025,avo2026}, by recursive self-improvement of
+coding agents \citep{selfimprovingcodingagent2025,darwingodelmachine2025,mendelgoedel2026},
+and by iterative refinement from self-generated feedback alone \citep{selfrefine2023}. How
+much of the reported gain belongs to the harness rather than the method is itself now
+measured \citep{harnessengineering2026}, which is why ours is held fixed. The closest
+game-specific systems use model-controlled program search
+\citep{codetoplay2024,kuang2025generative}. These optimize a fixed objective, or a
+population, or the scaffolding; we maintain one artifact across many revisions under
+adversarial play, recording both its strength and its description length.
 
-\paragraph{LLM-guided program search and self-improvement.}
-FunSearch established the now-common pattern of LLM-generated program variants
-combined with an external evaluator \citep{funsearch2024}, followed by systems
-such as AlphaEvolve and agentic variation operators that make proposal,
-mutation, repair, and verification increasingly autonomous
-\citep{alphaevolve2025,avo2026}. Other work studies recursive self-improvement
-of coding agents or comparative evolution across tasks and lineages
-\citep{selfimprovingcodingagent2025,darwingodelmachine2025,mendelgoedel2026}.
-The closest game-specific systems use LLM-controlled program search
-\citep{codetoplay2024,kuang2025generative}. We differ from these lines in
-measuring a single maintained policy across many revisions, recording both its
-performance and its description length, and comparing it against human and RL
-reference points under a shared interaction budget.
+\paragraph{Adversarial evaluation and human fields.}
+Self-play and model-based planning established games as a demanding testbed for learned
+agents \citep{alphazero2018,muzero2020,alphastar2019,openaifive2019}, and code-agent
+evaluation has moved toward tournaments and iterative competition
+\citep{vibecoding2025tournament,catarena2025}. Co-evolutionary work grows a strategy pool
+against which heuristics are discovered \citep{asro2026coevolution}, and
+adversarial-instance generation improves the evaluator instead of the policy
+\citep{adversarialheuristics2026}; our test pool is frozen instead, buying attributable
+rating changes at the cost of co-evolutionary pressure. What the contest archive adds is a
+human field rather than a reference opponent, which is what licenses placing a method as a
+percentile of real contestants --- the protocol used for Kaggle competitions and olympiad
+fields \citep{mlebench2024,olympiad2025percentile}. Placement also requires the right
+learned baseline: comparing against policy gradient alone would confound symbolic against
+neural with on-policy against off-policy, since the loop learns from any opponent's
+replays and from human source, so the primary baseline is off-policy and model-based
+\citep{offpolicyvaluellm2026,samplereuse2022}.
 
-\paragraph{Games, tournaments, and adversarial evaluation.}
-Large-scale self-play and model-based planning established games as a demanding
-testbed for learned agents \citep{alphazero2018,muzero2020,alphastar2019,
-openaifive2019}. Recent code-agent evaluations have moved toward tournaments and
-iterative competition \citep{vibecoding2025tournament,catarena2025}, while
-game-theoretic co-evolution has studied LLM-based heuristic discovery against
-growing strategy pools \citep{asro2026coevolution}. Adversarial-instance
-generation provides a complementary direction in which the evaluator is
-improved rather than the policy \citep{adversarialheuristics2026}. Our protocol
-keeps the test opponent pool frozen so that changes in Elo can be attributed to
-policy revisions, while the contest archive supplies a distribution of human
-skill rather than a single reference opponent.
-
-\paragraph{Experience reuse and continual learning in agents.}
-Memory-based agents improve without changing the underlying program or model by
-rewriting failed trajectories, retaining verbal lessons, or distilling
-deployment feedback into reusable rules \citep{echo2025hindsight,reflexion2023,
-learningonthejob2026}. Recent benchmarks emphasize that continual learning must
-measure transfer and interference rather than only long-context retrieval
-\citep{agentcl2026,clbench2026}. These approaches motivate our append-only
-revision log and our separation of learning, evaluation, and total budgets, but
-they do not study the maintenance of an executable heuristic under adversarial
-feedback. In HL, experience is not merely retrieved: it changes the policy
-artifact, which creates both the opportunity for cross-policy reuse and the
-failure mode of regression through misplaced edits.
-
-\paragraph{Long-horizon degradation and maintenance capacity.}
-Section~\ref{sec:introduction} asserts that a maintenance capacity, rather than
-the expressiveness of the symbolic paradigm, is what ends the revision loop. The
-mechanism is accumulation: revisions leave the program larger and more
-interconnected, and each further revision has to place an edit without disturbing
-what already works. Past some size that placement fails more often than it
-succeeds --- not because the paradigm ran out of things to express, but because the
-artifact has outgrown what its maintainer can hold, attribute, and change at once.
-Recent measurements outside our setting make each term of that account concrete.
-SlopCodeBench tracks 15 agents across 196 checkpoints of 36 iterative tasks and
-finds erosion rising in 77\% of trajectories and verbosity in 75.5\%, with cost per
-checkpoint 2.2$\times$ higher at the last checkpoint than the first ``without
-corresponding improvements to correctness'' \citep{slopcodebench2026}. Against 473
-open-source Python repositories the agents' code is 2.3$\times$ more verbose and
-2.0$\times$ more eroded, and it accumulates both 6.6$\times$ and 5.0$\times$ faster
-per revision. Human maintainers are not exempt --- 68\% of the human repositories
-end more verbose than they began, median $+36\%$ --- so the distinction is a rate
-(per-checkpoint slopes 0.0022 and 0.0053, against the agents' 0.0144 and 0.0264)
-rather than an exemption, which is the form the claim has to take if maintenance
-capacity is a general limit that agents reach sooner rather than an agent-specific
-defect. That degradation also survives the obvious intervention: quality-aware
-prompting lowers verbosity by 27.5--35.6\% and erosion by 34.3--57.6\% at the
-intercept while leaving the growth rate intact, and pays 2.3\,pp of strict
-correctness and 12.1\% additional cost for it. An intervention that buys a better
-starting point, charges capability for it, and still does not bend the curve is
-evidence for a capacity rather than a prompting artifact.
-
-Two mechanisms underneath are not about code quality at all. Agentic repair
-succeeds while the context each step accumulates stays small --- successful
-trajectories stay under 20--30k tokens --- which locates the advantage in
-decomposition rather than retrieval \citep{longcontextbugfix2026}. And given the
-plan up front, per-step accuracy still falls as steps accumulate, leaving
-single-turn execution horizons that differ by an order of magnitude across frontier
-models \citep{longhorizonexecution2026}; scaling model size increases the
-self-conditioning behind this, while reasoning removes it entirely. We cite that
-mechanism and not its authors' thesis, and the direction of the reasoning result
-helps us: a plateau reached by a reasoning agent cannot be attributed to
-self-conditioning. A program under revision is then the case that cannot be
-decomposed away, because the artifact \emph{is} the accumulated context and every
-revision must hold it whole. One boundary has to be drawn here, or these results
-predict that our loop cannot work at all: the degradation they measure is driven by
-a specification that keeps growing, so nothing may be discarded. A game's rules do
-not change, so a better heuristic may \emph{replace} a worse one and the program is
-free to get shorter. Accumulation is a tendency in our setting rather than an
-obligation, which is why the ceiling is worth measuring instead of assuming.
-
-Most directly, Frontier-Eng measures self-improvement on real engineering tasks and
-finds both the frequency and the magnitude of improvements decaying with continued
-iteration \citep{frontiereng2026}; those tasks are single-agent and carry neither a
-human field nor an RL baseline, so the position of the symbolic paradigm against a
-learned one is left open. Where both reference points have been present the
-maintainer was always human, measuring the paradigm and the cost of human iteration
-together, and a survey of this literature organizes it instead by the strength of the
-verification signal the loop closes on \citep{selfimprovement2026survey} --- at whose
-strong end a game engine with a frozen opponent pool sits. Our contribution is to
-carry the same longitudinal question into adversarial games and test whether the
-plateau is explained by the maintainable description length of the policy rather than
-by the complexity of the game's rules.
+\paragraph{Continual improvement and its ceiling.}
+Memory-based agents improve without changing the program or the weights, by rewriting
+failed trajectories, retaining verbal lessons, or distilling deployment feedback into rules
+\citep{echo2025hindsight,reflexion2023,learningonthejob2026}, and recent benchmarks argue
+that continual learning must measure transfer and interference rather than long-context
+retrieval \citep{agentcl2026,clbench2026}. In heuristic learning experience is not
+retrieved but written into the artifact, which is what creates the failure mode this paper
+measures. The mechanism is accumulation: revisions leave the program larger and more
+interconnected \citep{mccabe1976complexity}, and each further revision must place an edit
+without disturbing what already works, until past some size placement fails more often
+than it succeeds --- not because the paradigm ran out of things to express, but because the
+artifact has outgrown what its maintainer can hold, attribute, and change at once. Each
+term of that account is now measured outside our setting. Across 196 checkpoints of
+iterative tasks, erosion rises in 77\% of trajectories and verbosity in 75.5\%, at 2.2$\times$
+the cost per checkpoint and without matching gains in correctness; human repositories are
+not exempt but degrade an order of magnitude more slowly, so capacity is a rate rather
+than an agent-specific defect \citep{slopcodebench2026}. Quality-aware prompting moves the
+intercept and leaves the growth rate intact, at a cost in correctness, which is evidence
+for a capacity rather than a prompting artifact. Two mechanisms underneath are not about
+code quality: agentic repair succeeds while the context each step accumulates stays small
+\citep{longcontextbugfix2026}, and per-step accuracy falls as steps accumulate even when
+the plan is given, though reasoning removes the self-conditioning behind it
+\citep{longhorizonexecution2026} --- so a plateau reached by a reasoning agent cannot be
+attributed to that effect. A program under revision is the case that cannot be decomposed
+away, since the artifact \emph{is} the accumulated context. One boundary keeps these
+results from predicting that our loop cannot work at all: the degradation they measure is
+driven by a specification that keeps growing, so nothing may be discarded, whereas a
+game's rules are fixed and a better heuristic may \emph{replace} a worse one. Accumulation
+is a tendency here rather than an obligation, which is why the ceiling is worth measuring
+instead of assuming. Frequency and magnitude of improvement do both decay on real
+engineering tasks \citep{frontiereng2026}, but those tasks are single-agent and carry
+neither a human field nor a learned baseline, leaving the position of the symbolic paradigm
+against a learned one open; a survey of this literature organizes it by the strength of the
+verification signal the loop closes on \citep{selfimprovement2026survey}, at whose strong
+end a game engine with a frozen pool sits. We carry the same longitudinal question into
+adversarial games and ask whether the plateau is explained by the maintainable description
+length of the policy rather than by the complexity of the game's rules.
