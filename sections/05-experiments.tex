@@ -117,3 +117,90 @@
 
 \section{Experiments}
 \label{sec:experiments}
+
+This section evaluates HL along the two comparisons that define the paper, followed by
+ablations that identify which parts of the loop are responsible for any observed gain.
+The first experiment is the primary test of the paradigm in its intended setting; the
+second asks where that advantage does and does not survive against learned baselines;
+the third is diagnostic rather than a second headline result. All evaluations use the
+same append-only event schema and report the learning, evaluation, and total budgets
+separately (Section~\ref{sec:arena-eval}).
+
+\subsection{HL against human programs on \benchname}
+\label{sec:exp-human}
+
+\paragraph{Question.} Can an agent that repeatedly revises one executable heuristic
+policy defeat programs written and refined by human contestants in the same adversarial
+games? This is the primary experiment: it tests whether heuristic learning changes the
+maintenance bottleneck that historically limited rule-based game programs, rather than
+testing whether a language model can produce a strong first draft.
+
+\paragraph{Setting.} We run the full HL loop on \benchname, the archive-backed suite of
+\val{ngames} contest games described in Section~\ref{sec:benchmark}. For each game, the
+agent receives the public rules, its current source, and replay traces from its own
+matches. It may revise the current policy and submit the resulting version for scoring;
+each version is evaluated against the pre-registered frozen test pool. The archive's
+human submissions provide both the distribution used for percentile placement and the
+best-ever human program used as the per-game state-of-the-art reference. The pools and
+the cross-edition Elo procedure are fixed before any HL run, so a later revision cannot
+benefit from a moving opponent set.
+
+\paragraph{Protocol and outcome.} We use one independent run per game and seed, with the
+same initial-policy contract and revision budget across games. The primary outcome is
+whether HL exceeds the strongest archived human submission on each game, reported as
+\val{nbeat} of \val{ngames}, not as a pooled score. We also report the Elo gap to that
+submission, percentile within the archived field, the full Elo--revision trajectory,
+and the revision depth at which the best policy appears. Human maintenance depth is
+reported beside the HL budget rather than converted into fictitious labour hours: the
+archive records submission revisions, not wall-clock effort. This experiment therefore
+answers both whether HL can beat the human field and how much continued maintenance was
+required when it does.
+
+\subsection{HL versus RL under matched interaction budgets}
+\label{sec:exp-rl}
+
+The second primary experiment compares HL with learned policies on established RL
+benchmarks. We use the classic game and control environments in which RL baselines are
+normally reported, and run HL and the RL methods through the same referee-facing
+interfaces wherever the environment permits. Model-based RL is the primary baseline:
+it is off-policy and therefore does not confound the representational comparison with
+on-policy data disposal. A policy-gradient baseline is retained as the on-policy
+reference point.
+
+The comparison is budget-conditional, not a claim that HL dominates RL. We match the
+methods at the evaluation boundary and report environment interactions, agent
+invocations, wall-clock, and total cost separately. We measure final performance,
+performance as a function of interaction budget, Elo-budget area under the curve, and
+the crossover at which the learned baseline overtakes HL. We additionally report
+transfer to held-out environments without retuning when that protocol is available.
+The result is intended to locate the regime in which the richer feedback channel of an
+editable program pays for itself, and the regime in which the scaling properties of a
+learned policy make RL the better use of the budget.
+
+\subsection{Ablations: feedback, revision, and hybrid policies}
+\label{sec:exp-ablation}
+
+The ablation experiment tests whether the observed effect comes from the full HL loop
+or from one accidental implementation choice. We keep the game, initial policy, model,
+and total budget fixed and vary one component at a time:
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Feedback channel.} Compare full decision-level replays with outcome-only
+    feedback and with progressively masked traces. This tests whether the lower-bound
+    advantage is information per sample rather than a prompt-length effect.
+  \item \textbf{Revision rule.} Compare one-revision-per-iteration with batched edits,
+    rescoring disabled, and no rollback of a regressing version. These variants test
+    whether attribution and acceptance control the stability of the trajectory.
+  \item \textbf{Policy representation.} Compare a pure symbolic policy with a hybrid
+    policy that contains a learned component behind the same executable interface. This
+    tests whether HL can maintain a mixed artifact while preserving the same logging and
+    evaluation contract.
+  \item \textbf{Opponent and pool controls.} Replace the frozen field with a single
+    opponent or a moving pool in controlled runs. The expected effect is a change in
+    rating stability, which verifies why the primary experiment fixes the pool.
+\end{itemize}
+
+For each ablation we report the change in final Elo, improvement frequency, regression
+rate, policy-description length, and robustness across seeds. The ablations are not
+used to redefine the primary result; they identify which feedback, revision, and
+representation choices are necessary for the main comparison to be interpretable.

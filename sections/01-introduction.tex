@@ -308,6 +308,47 @@ were not one-shot --- most were revised and all debugged over many cycles --- bu
 loop optimized compilability, not tournament standing. The missing term is revisions
 carrying an adversarial signal.
 
+Figure~\ref{fig:hl-arena-overview} previews the object we measure: one executable policy
+is revised from game feedback and then placed against a fixed field of opponents. The
+lower row shows the heterogeneous contest games that make the comparison a test of
+heuristic learning on games rather than a claim about one task family.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth,
+  box/.style={draw,rounded corners=2pt,fill=blue!4,align=center,
+              minimum height=0.62cm,inner sep=3pt,font=\scriptsize},
+  game/.style={draw,rounded corners=2pt,fill=gray!8,align=center,
+               minimum height=0.42cm,inner sep=2pt,font=\scriptsize}]
+  \node[box,minimum width=2.25cm] (ctx) at (1.35,1.05)
+    {rules + source\\loss replays};
+  \node[box,minimum width=2.25cm] (agent) at (4.1,1.05)
+    {generative\\agent};
+  \node[box,minimum width=2.25cm] (pol) at (6.85,1.05)
+    {revised executable\\policy};
+  \node[box,minimum width=2.25cm] (eval) at (9.6,1.05)
+    {frozen opponent\\pool / Elo};
+  \draw[->] (ctx) -- node[above,font=\scriptsize]{read} (agent);
+  \draw[->] (agent) -- node[above,font=\scriptsize]{edit} (pol);
+  \draw[->] (pol) -- node[above,font=\scriptsize]{rescore} (eval);
+  \draw[->,rounded corners] (eval.north) -- ++(0,0.35) -| node[pos=.65,above,font=\scriptsize]{score + trace} (agent.north);
+  \node[font=\scriptsize\bfseries,anchor=west] at (0,0.35) {HL-Arena: adversarial-game suite};
+  \node[game,minimum width=1.55cm] at (1.15,-0.15) {Miracle};
+  \node[game,minimum width=1.55cm] at (2.85,-0.15) {AquaWar};
+  \node[game,minimum width=1.55cm] at (4.55,-0.15) {LostSpace};
+  \node[game,minimum width=1.55cm] at (6.25,-0.15) {SnakeGo};
+  \node[game,minimum width=1.55cm] at (7.95,-0.15) {AntWar};
+  \node[game,minimum width=1.55cm] at (9.65,-0.15) {Generals};
+  \node[game,minimum width=1.55cm] at (1.75,-0.72) {Rollman};
+  \node[game,minimum width=1.55cm] at (4.05,-0.72) {DeepClue};
+  \node[game,minimum width=1.55cm] at (6.35,-0.72) {AntWar2};
+\end{tikzpicture}
+\caption{Overview of heuristic learning and \benchname. The upper row is the single-artifact
+revision loop; the lower row lists the contest games used as its adversarial-game setting.
+This is a structural placeholder for the final overview figure.}
+\label{fig:hl-arena-overview}
+\end{figure}
+
 Measuring a ceiling needs a domain where many independent authors already pushed the
 symbolic paradigm as far as a real budget allowed, with the results recorded, so we
 build \benchname on the complete archive of a collegiate game AI contest running
@@ -395,4 +436,3 @@ Our contributions are threefold.
   applying HL --- when to expect it to pay, and when a learned method is the better
   spend (Section~\ref{sec:discussion}).
 \end{itemize}
-
