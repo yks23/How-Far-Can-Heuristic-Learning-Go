@@ -275,6 +275,31 @@ Section~\ref{sec:experiments} rather than a claim to make here; the architectura
 point is only that the channel is wide and that nothing in the loop has to
 translate between representations for it to close.
 
+% THE NAMING AND THE CONCESSION, moved here from 02-preliminary.tex on 2026-08-20 when that
+% section was deleted. The paragraph above already argued the channel is wide; what only
+% existed in Section 2 was the NAME and the limit on what the name licenses. Both have to
+% survive, and this is the last paragraph that can carry them -- Section 3.3's "observation
+% trace" and Section 4's replay contract both use the term as though it were defined.
+%
+% THE CONCESSION IS THE POINT, and it must not be softened into a hedge. The channel's width
+% is a property of what is available and of the agent reading it, NOT of the policy being
+% symbolic: echo2025hindsight rewrites failed episodes into a memory, holds no program
+% anywhere, and gets the same kind of per-sample gain. So the paper states two bounds over
+% two different objects and never merges them -- lower over what the loop can read, where
+% the symbolic form earns no credit; upper over what the loop can edit, where the program is
+% answerable. Merging them is what produces the unsupportable version of the claim, and a
+% reader will supply the merged version unaided if this is left loose. 01-introduction.tex
+% already concedes the same limit; keep the two statements consistent if either is edited.
+We call this the loop's \emph{information channel}, and keep the term separate from the
+representation on purpose. The channel's width is a property of what the harness makes
+available and of the agent reading it, not of the policy being a program: a loop that holds
+no program at all, rewriting its failed episodes in hindsight into a memory, obtains the same
+kind of per-sample gain~\citep{echo2025hindsight}. This paper therefore states two bounds
+over two different objects and never merges them. The lower bound is over what the loop can
+read, and the symbolic form earns no credit for it. The upper bound is over what the loop can
+edit, and that is where the program is answerable --- which is the subject of
+Section~\ref{sec:discussion}.
+
 \subsection{Introducing heuristic learning}
 \label{sec:hl-method}
 
@@ -282,7 +307,10 @@ translate between representations for it to close.
 and directly modifies a program, or another interpretable system, in response. The
 definition names no game and no game-specific machinery: adversarial games are
 where this paper measures HL, not the boundary of the paradigm. Its two halves are
-the two properties Section~\ref{sec:preliminary} defined --- what the loop can
+% Repointed 2026-08-20: this said Section~\ref{sec:preliminary}, which no longer exists. The
+% two properties are now defined in 3.1 above -- editability in the paragraph on the agent
+% era, the channel at its end -- so the reference is backwards within this same section.
+the two properties Section~\ref{sec:hl-motivation} set out --- what the loop can
 read, and what it can edit --- and they are one object here, because a loop that
 reads without editing is analysis and a loop that edits without reading is search.
 

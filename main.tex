@@ -103,9 +103,12 @@
 % of this literature recognises. Do not put "zero-sum" in the title -- it would be FALSE
 % of the suite (LostSpace is four-player and not zero-sum, Section 4.2). The scope is
 % carried by four short statements and nothing more: this title, one sentence in the
-% abstract, two in Section 1, and the definition in Section 2. A longer treatment
-% (numbered conditions, a Section 6 subsection) was written on 2026-08-19 and cut the
-% same day at the user's direction -- "就说我们在博弈类上面打，就行".
+% abstract, two in Section 1, and the definition at the head of Section 4. A longer
+% treatment (numbered conditions, a Section 6 subsection) was written on 2026-08-19 and
+% cut the same day at the user's direction -- "就说我们在博弈类上面打，就行".
+% The fourth statement was in Section 2 until 2026-08-20, when Preliminary was deleted
+% ("Preliminary删了吧") and the definition moved to Section 4's opening. Still four; if
+% it moves again, fix this count in the same edit.
 %
 % Do not "restore" the shorter title. The claim it makes is one this paper cannot support.
 \title{How Far Can Policy-Level Continual Learning Go in Adversarial Games? \\
@@ -384,7 +387,28 @@ description length of a winning program, not the complexity of the rules.}
 \maketitle
 
 \input{sections/01-introduction}
-\input{sections/02-preliminary}
+% Section 2 (Preliminary) was DELETED on 2026-08-20 at the user's direction: "Preliminary
+% 删了吧，目前看起来没有定义啥好的符号". The judgement was right and the file's own contents
+% bore it out -- it defined no symbol the paper reuses, and two of its nine paragraphs
+% (editability vs interpretability, and the K(pi_good) axis) duplicated Section 1 down to
+% the same two citations and the same Go example. What it DID carry has been rehomed rather
+% than dropped, each into the section that uses it:
+%   games definition               -> 04, head of section     (scope limit, one of four)
+%   structural controls            -> 04.1, after Table 1
+%   learned-component criterion    -> 04.2  (\val{pheur}, \val{prl} rest on it)
+%   folk ordering's consequence    -> 04.2
+%   Elo / three pools / percentile
+%     / human state of the art     -> 04.3  (Section 5 depends on all of it)
+%   budget: units + comparability  -> 04.3, folded into the schema paragraph
+%   information channel, named,
+%     plus the echo2025hindsight
+%     concession                   -> 03.1, end
+%   editability vs interpretability-> dropped, already in Section 1
+%   K(pi_good) axis                -> dropped, already in Section 1
+%   HL definition                  -> dropped, already verbatim in 03.2
+% Three \ref{sec:preliminary} were repointed in the same edit (01 twice, 03 once). Do not
+% recreate this section; if a genuine notation block is ever needed, it belongs where the
+% notation is used, which is what this move established.
 \input{sections/03-heuristic-learning}
 \input{sections/04-benchmark}
 \input{sections/05-experiments}

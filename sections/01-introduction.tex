@@ -314,8 +314,12 @@ build \benchname on the complete archive of a collegiate game AI contest running
 since \val{founded}:
 games authored for the contest itself, \val{nsub} submissions, and \val{nmatch}
 adjudicated matches, written under deadline with standings at stake. That provenance
+% Repointed 2026-08-20 from sec:preliminary, deleted that day. This sentence is about what
+% the archive SUPPLIES -- contamination resistance and a distribution to place a method
+% within -- and both are now argued in 4.1 (provenance, and the finalist-field caveat) with
+% the percentile defined in 4.3. Provenance is the closer match for the sentence as written.
 supplies contamination resistance and a \emph{distribution} of human skill to place a
-method within (Section~\ref{sec:preliminary}), and it records a folk ordering --- rules
+method within (Section~\ref{sec:arena-provenance}), and it records a folk ordering --- rules
 for beginners, search for the intermediate, RL as the highest ceiling --- that gets
 the asymptotic ceilings right and still fails to predict who wins: \val{pheur} of
 prize-winning programs contain no learned component, and RL, present in \val{prl} of
@@ -367,7 +371,9 @@ Our contributions are threefold.
   policy under adversarial pressure, instrumented --- one revision per iteration,
   every version and score logged --- so that a plateau can be diagnosed and not
   merely observed, and scoped to games rather than claimed of tasks in general
-  (Section~\ref{sec:preliminary}).
+  % Repointed 2026-08-20 from sec:preliminary. The scope definition moved to the head of
+  % Section 4 when Preliminary was deleted; sec:benchmark is where it now sits.
+  (Section~\ref{sec:benchmark}).
 
   \item \textbf{We introduce \benchname}, a benchmark drawn from a real
   competition rather than built for evaluation: the archive's \val{nsub}

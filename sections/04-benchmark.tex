@@ -283,13 +283,42 @@ contest, and the rankings it records were produced by that contest rather than b
 What we add is a uniform way to run those programs against each other and against
 methods of our own, described in Section~\ref{sec:arena-eval}.
 
-% The scope definition is Section 2's job and this section should not restate it. One
-% clause here, because it is the one part that is auditable in the arena's own files
-% rather than asserted: every game ships a legal-move specification with the predicate
-% that decides it (legal_actions plus policy_interface.legality in all nine
-% decision_space.yaml files), and every game is adjudicated by the evaluate() contract.
-% A longer version of this existed on 2026-08-19 and was cut with the rest of the
-% four-condition scaffolding.
+% THE SCOPE DEFINITION NOW LIVES HERE, moved from 02-preliminary.tex on 2026-08-20 when
+% that section was deleted at the user's direction ("Preliminary删了吧，目前看起来没有定义
+% 啥好的符号"). It is one of the four places that carry this paper's scope limit -- the
+% title, one sentence in the abstract, two in Section 1, and this paragraph -- and the
+% comment at the head of main.tex names all four. If this paragraph moves again, update
+% that comment in the same edit or the count silently goes wrong.
+%
+% WHAT THIS DEFINITION REPLACED, kept because the error is easy to reintroduce: the old
+% text read "a game is a two-player adversarial game of perfect information", which is
+% FALSE of five of the nine games below -- LostSpace is four-player and not zero-sum,
+% AquaWar hides each side's roster, LostSpace and Rollman are partially observable,
+% Rollman's two roles are asymmetric and separately ranked, DeepClue is single-player.
+% The heterogeneity paragraph in 4.1 is the detailed statement; this is the definition
+% written so as not to contradict it.
+%
+% KEEP IT THIS SHORT. A four-numbered-condition version with a page of argument about
+% what each condition supplies the loop was written on 2026-08-19 and cut the same day
+% ("就说我们在博弈类上面打，就行"). The three requirements below are the ones a claim in
+% this paper actually rests on, and the sentence after them earns its place because
+% dropping two-player / zero-sum / perfect-information is exactly what makes the
+% definition true of our suite rather than true of chess.
+%
+% The legality clause is here rather than in the definition because it is the one part
+% auditable in the arena's own files rather than asserted: every game ships a legal-move
+% specification with the predicate that decides it (legal_actions plus
+% policy_interface.legality in all nine decision_space.yaml files), and every game is
+% adjudicated by the evaluate() contract.
+Throughout, a \emph{game} is a task with rules fixed in advance, in which a
+\emph{policy} --- a program that reads the state visible to its role and returns a move
+--- is scored by an external referee against opponents it does not control, so strength
+exists only relative to those opponents rather than as an absolute score. Nothing here
+requires two players, a zero-sum payoff, perfect information, or symmetric roles: the
+suite departs from each of these somewhere, and Section~\ref{sec:arena-provenance} says
+where. Both halves are auditable in the arena rather than asserted of it --- every game
+ships a legal-move specification together with the predicate that decides it, and every
+game is adjudicated by one referee contract.
 
 \subsection{Provenance}
 \label{sec:arena-provenance}
@@ -373,6 +402,21 @@ latter is also a confound for a comparison between a language-model method and
 reinforcement learning; we report it apart rather than dropping it. Where a claim needs a
 two-player zero-sum setting we state which games it covers.
 
+% STRUCTURAL CONTROLS, moved here from 02-preliminary.tex on 2026-08-20 with the rest of
+% that section. It has to survive somewhere: 01-introduction.tex's contribution 2 promises
+% "classic games as structural controls" as part of the apparatus, and this is now the only
+% place the paper says what they control FOR. Without that sentence the word "control" is
+% decoration -- which is why it is spelled out rather than named.
+% These games are NOT in Table 1 and must not be added to it: the table is the contest
+% suite, \val{ngames} counts the contest's own games, and folding the classics in would
+% break every per-game count in this section.
+Alongside the venue's own games we retain a set of classic games --- chess, Go, and others
+whose strategic structure has an independent literature --- as structural controls. What
+they control for is that our complexity measurements might validate only themselves: their
+policy complexity can be argued about on external grounds, so they calibrate the proxy of
+Section~\ref{sec:hl-motivation} and give the cross-game ordering a reference point our own
+pipeline did not produce.
+
 \subsection{Contents}
 \label{sec:arena-archive}
 
@@ -409,6 +453,55 @@ inside their submission directory, and the vendored share differs across games b
 orders of magnitude, so any measurement of program size ---
 Section~\ref{sec:hl-motivation}'s description length in particular --- must strip these
 first, as part of the measurement rather than as preprocessing.
+
+% THE AUDIT CRITERION AND THE FOLK ORDERING, moved here from 02-preliminary.tex on
+% 2026-08-20. Both belong to this subsection rather than to a vocabulary section: they are
+% how the archive gets classified, and the classification is a result this paper reports.
+%
+% WHY THE CRITERION MUST BE DECIDABLE, and why it is worth the sentences it costs:
+% \val{pheur} and \val{prl} appear in the abstract and in Section 1, and they are worth
+% exactly as much as this definition is. Classifying the winners is also how RQ3 gets
+% answered, so it is not bookkeeping.
+% The hand-tuning clause is the load-bearing half. Without it the category swallows every
+% serious entry and measures nothing, because a contestant who tuned coefficients over a
+% season of ladder matches has run an optimization loop -- with themselves as the
+% optimizer. That is the distinction the clause draws, and it is a distinction about WHO
+% the optimizer is, not about how much evidence informed the tuning.
+%
+% THE FOLK ORDERING WAS FIRST DRAFTED IN THE PROHIBITED REGISTER and fixed the same day.
+% It read "Practitioners in this venue have long ordered approaches by expected ceiling",
+% which is the received-opinion framing the user prohibited twice ("不要说什么'一般别人觉得
+% 怎么样'，这样写论文不够严谨"). Treat that ban as global -- it was given for
+% 01-introduction.tex and has now resurfaced in three other files. Two things make the
+% present version defensible: it attributes the ordering to nobody, and it is stated as a
+% hypothesis with a consequence the archive can check. There is also a factual reason the
+% old wording could not stand: nothing in this repo establishes what this venue's
+% contestants believe, so "have long ordered" asserted an unmeasured fact about a
+% population. Section 1 states the ordering itself; what is added here is the consequence,
+% which is what makes it testable rather than a piece of framing.
+Classifying these versions by whether their strength is stored in code or in parameters
+requires a criterion that decides cases, since the shares reported in
+Section~\ref{sec:experiments} are worth no more than the criterion is. A submission counts
+as containing a learned component when the repository ships parameters fitted from data,
+or the code that fits them, for a component that affects move selection. Evaluation
+coefficients a contestant tuned by hand do not count, however many matches informed the
+tuning: the contestant is the optimizer in that loop, and treating human iteration as
+learning would make the category include every serious entry and measure nothing. That
+audit is also what makes the folk ordering of Section~\ref{sec:introduction} --- rules
+lowest, search above them, learned policies highest --- a hypothesis rather than a piece
+of framing, because it has a consequence the archive can check: if the ordering holds, the
+paradigm composition of winning entries should climb it as budgets and tooling improve
+% FIXED ON THE WAY IN, 2026-08-20. The sentence in 02-preliminary.tex read "reports what
+% \val{editions} editions of outcomes say", and \val{editions}=30 is the VENUE's age, not
+% this archive's span -- numbers.tex carries the standing instruction "Never use editions to
+% describe the archive again -- that was the error". The audit runs over what we hold, which
+% is editions \val{edfirst}--\val{edlast}, seven of them. Two other body uses of the same key
+% are still wrong for the same reason and are NOT fixed here because they are the unresolved
+% archive-scale conflict awaiting the user's decision: 01-introduction.tex's "finals in
+% \val{nrlfinal} of \val{editions} editions" and the abstract's "spanning \val{editions}
+% editions". Fix all three together when that decision lands.
+across editions. Section~\ref{sec:experiments} reports what editions
+\val{edfirst}--\val{edlast} say.
 
 \subsection{Protocol}
 \label{sec:arena-eval}
@@ -449,13 +542,80 @@ information each role's view is recorded separately. Rejected moves are recorded
 marked and excluded from the decision sequence. Appendix~\ref{app:case} shows a frame
 in full.
 
+% RATINGS, POOLS, AND THE TWO HUMAN QUANTITIES, moved here from 02-preliminary.tex on
+% 2026-08-20. This is the paragraph Section 5 depends on most: every number it quotes is
+% either an Elo, a percentile, or a comparison against the human state of the art, and
+% none of the three means anything without the pool it was computed on. It goes in the
+% Protocol subsection because all of it is protocol.
+%
+% NO ELO CITATION EXISTS. refs.bib still has no elo1978rating or equivalent as of
+% 2026-08-20, so the protocol is defined here without attributing the system -- an
+% unattributed Elo is the kind of thing a referee notices. Add the key before submission;
+% this paragraph is written so the citation drops in after "Elo ratings" without rewording.
+%
+% THE THREE POOLS ARE ALSO IN Algorithm 1 (\mathcal{O}_train, \mathcal{O}_test as
+% \Require) and in Section 7's "frozen test pool drawn from a whole human field". Those
+% two uses now depend on this definition. The frozen pool is what makes our Elo comparable
+% within a run; the ARCHIVE's human population drifts across editions, which is what the
+% anchor pool absorbs. Never write "drifting opponent pool" of the frozen test pool --
+% 07-related-work.tex's header carries the same warning for the same reason.
+%
+% PERCENTILE AND HUMAN SOTA ANSWER DIFFERENT QUESTIONS and the paper reports both. The
+% distinction is load-bearing twice over: 01-introduction.tex claims both \val{pct} (a
+% distribution) and \val{nbeat} of \val{ngames} (a maximum), and 4.2 above has already
+% conceded that our ranked pools are FINALIST fields, so a percentile here is a percentile
+% of finalists. That concession and this definition must be read together; do not restate
+% the percentile as a percentile of all entrants.
+% "Across all editions rather than within one" is the only honest reading of "human state
+% of the art" -- it is a bar that rises with every edition, and taking it within one
+% edition would let a weak edition supply a cheap win.
+Because a policy's strength exists only relative to its opponents, every result in this
+paper is an Elo rating computed from match outcomes on this referee, never an environment
+return, and the archive's own ratings are treated as provenance rather than as data. Two
+protocols appear and we distinguish them wherever a number is quoted: \emph{batch} Elo,
+where a set of policies is rated jointly from a round-robin played after the fact, and
+\emph{online} Elo, where a policy under revision is rated as it plays, so its trajectory
+can be read. Ratings are comparable only within a fixed set of adversaries, so three pools
+are kept apart. The \emph{training pool} is what a method may play while it improves. The
+\emph{frozen test pool} is fixed before any run begins and never updated, which is what
+makes ratings comparable across revisions, across methods, and across seeds. The
+\emph{anchor pool}, a stratified set of archived human submissions, places ratings from
+different games and different editions on one scale. Against that field two quantities are
+reported and they answer different questions. A \emph{percentile} is the fraction of
+recorded human versions of a game that a policy outranks --- a statement about the
+distribution, and the measurement thousands of independent attempts uniquely afford, read
+subject to the finalist-field caveat of Section~\ref{sec:arena-provenance}. The
+\emph{human state of the art} for a game is the single strongest submission the archive
+records for it, taken across editions \val{edfirst}--\val{edlast} rather than within one, a
+bar that rises with every edition. Beating it is a claim about a maximum and placing within
+the field is a claim about a distribution; Section~\ref{sec:experiments} reports both
+because neither substitutes for the other.
+
 Runs report through one schema so results from different methods and games are
 commensurable. Per-iteration events carry the candidate, the reference it is scored
 against, behavioural change measured at the decision level, and three separate budgets:
 what the method spent learning, what it spent being evaluated, and the total, each in
 tokens and wall-clock. Separating learning from evaluation cost is what makes a
 sample-efficiency comparison possible at all, since a method that learns cheaply by
-evaluating exhaustively has saved nothing. Two conventions are load-bearing and we
+evaluating exhaustively has saved nothing.
+% CONFLICT RESOLVED HERE, not papered over. 02-preliminary.tex said each ledger is reported
+% "in whichever units apply to the method -- environment steps, agent invocations, tokens,
+% wall-clock time, currency"; this schema paragraph said "each in tokens and wall-clock".
+% Those disagree, and the schema is the one that describes what the apparatus records, so it
+% wins on the common units. But the wider list cannot simply be dropped: 01-introduction.tex
+% claims a crossover at \val{crossover} ENVIRONMENT STEPS, which is not expressible in
+% tokens, and no single unit is native to both an RL learner and an agent maintaining source
+% code. Hence the sentence below: common units for every method, plus the native unit where
+% one exists. If the apparatus turns out not to record native units, this sentence is the
+% thing to fix -- do not fix it by deleting the \val{crossover} claim.
+% "The total is the only one comparable across paradigms without qualification" is the
+% reason all three are carried rather than just the total: quoting one paradigm's favourable
+% denominator is the easiest way to make a budget comparison say nothing.
+All three are recorded for every method in the common units, and additionally in whichever
+unit is native to it --- environment steps for a reinforcement learner, agent invocations
+for a maintenance loop --- because no single unit is native to both. Of the three only the
+total may be compared across paradigms without qualification, and we say which ledger a
+number comes from wherever one is quoted. Two conventions are load-bearing and we
 follow them throughout. Change in what a policy chooses and change in which states it
 reaches are recorded separately and never summed, because a policy can be edited
 without changing where it goes and can go somewhere new without being edited. And an
