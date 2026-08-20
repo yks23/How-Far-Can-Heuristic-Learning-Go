@@ -137,61 +137,43 @@ Maintenance Budget}
 \newif\ifcameraready
 \ifnamed\camerareadytrue\else\camerareadyfalse\fi
 
-\ifnamed
-  % Roles are superscript symbols, the group's house style -- see the header of
-  % sections/08a-contributions.tex for the reference paper and the full mapping.
-  % \dagger and \ddagger are the math forms, because the class sets every author
-  % marker inside $^{...}$; the legend below is text mode and uses \dag/\ddag.
-  % ORDER IS ALPHABETICAL BY LAST NAME (Liu before Yang), which is what makes it a
-  % convention rather than a ranking. Insert new names at their alphabetical
-  % position; appending one turns the list into a claim its owner never agreed to.
-  % This list and the one in 08a-contributions.tex are the same list and must be
-  % edited together.
-  % TODO(names): Core Contributor and Contributor are still unsupplied. Core takes
-  % [*]; a plain contributor takes no optional argument at all.
-  \author[\dagger]{Qingle Liu}
-  \author[\ddagger]{Kaisen Yang}
-  % NO TRAILING FULL STOPS in these three. The class joins \contribution entries
-  % with ", ", so a period inside each one renders as "Project lead., " -- period
-  % against comma. The reference paper's block ends each line with a period
-  % because it sets them as separate lines with "\\"; here they run on, so the
-  % separator does that work. The end-of-document block keeps its periods.
-  \contribution[*]{Core contribution; names sorted alphabetically by last name}
-  \contribution[\dagger]{Project lead}
-  \contribution[\ddagger]{Corresponding author}
-  % AFFILIATION AND CONTACT, supplied 2026-08-20: "aff都写清华大学计算机系。email就行
-  % contact yks23@mails.tsinghua.edu.cn". Rendered in English because the document
-  % is; this is the department's own official English name, not a translation of
-  % convenience. One affiliation covers both authors, so it carries no superscript
-  % marker -- a "1" would imply a second affiliation exists somewhere.
-  % Inside \ifnamed with everything else: an affiliation is as de-anonymising as a
-  % name, and a blind build must not keep it.
-  \affiliation{Department of Computer Science and Technology, Tsinghua University}
-  % \email sets the mailto link; the class supplies it. The address belongs to the
-  % corresponding author, which is what makes it the contact.
-  \correspondence{\email{yks23@mails.tsinghua.edu.cn}}
-  % PROJECT PAGE AND CODE BASE, requested 2026-08-20 ("再来两个在标题下的：一个是
-  % project page，还有一个是 code base"). \metadata is the class's own labelled-line
-  % macro and is where Correspondence already sits, so these three render as one
-  % block in the title box rather than as a loose line under the affiliation.
-  %
-  % THE TWO URLS ARE NOT SUPPLIED YET and are deliberately \todo placeholders,
-  % which print red and bold, rather than plausible-looking guesses. Two URLs were
-  % available and both are wrong for this slot, so neither was used:
-  %   - origin, github.com/yks23/How-Far-Can-Heuristic-Learning-Go, is THIS PAPER's
-  %     LaTeX source, not the method's implementation. Putting it behind "Code" is
-  %     a promise the link does not keep.
-  %   - the platform repo (Aoraku/AgentBench) is the contest archive HL-Arena is
-  %     built from -- a dataset dependency, not our code base, and it is the repo
-  %     the anonymity note says must not be cited by URL.
-  % Replace both with real links before submission. \url is already loaded; wrap
-  % each in \url{} so it breaks and is clickable.
-  \metadata[Project page]{\todo{project page URL not supplied}}
-  \metadata[Code]{\todo{code base URL not supplied}}
-\else
-  % Double-blind: no author, no affiliation, no acknowledgements.
-  \author{Anonymous submission}
-\fi
+% NOTHING ABOUT THE AUTHORS IS SET HERE, as of 2026-08-20 at the user's direction:
+% "有关作者的部分，包括作者的所有标记，都放在文末". So the title box carries no author
+% list, no role markers, no legend, no affiliation and no contact -- all of it is in
+% sections/08a-contributions.tex, which is the single place any of it is written.
+% Do not add \author, \contribution, \affiliation or \correspondence here. The class
+% renders an empty \authorlist harmlessly, and the box closes up.
+%
+% What this does to \ifnamed, which still exists and still matters: with the names
+% gone from page 1, that switch now gates exactly one thing -- the end block. A
+% blind build is \namedfalse and carries no name anywhere; the named build carries
+% them once, at the back. The two-places-out-of-sync failure the switch was built
+% for cannot occur any more, because there is only one place.
+%
+% PROJECT CONFIGURATION LINKS, requested 2026-08-20 ("有关这个项目的配置链接，放在一开始
+% 的蓝色框内"). \metadata is the class's own labelled-line macro; the links render as
+% a block at the foot of the title box. They are NOT inside \ifnamed, because they
+% describe the project rather than its authors -- which is the distinction the user
+% drew, and it is also why the anonymity note below is needed rather than automatic.
+%
+% THE TWO URLS ARE NOT SUPPLIED YET and are deliberately \todo placeholders, which
+% print red and bold, rather than plausible-looking guesses. Two URLs were available
+% and both are wrong for this slot, so neither was used:
+%   - origin, github.com/yks23/How-Far-Can-Heuristic-Learning-Go, is THIS PAPER's
+%     LaTeX source, not the method's implementation. Behind "Code" it is a promise
+%     the link does not keep.
+%   - the platform repo (Aoraku/AgentBench) is the contest archive HL-Arena is built
+%     from -- a dataset dependency, not our code base, and it is the repo the
+%     anonymity note above says must not be cited by URL.
+%
+% !! THESE TWO LINES ARE THE ONE THING \namedfalse DOES NOT ANONYMISE. A GitHub URL
+% carries its owner's username, so a real link here de-anonymises the paper even in a
+% blind build. Nothing leaks today because both values are placeholders. When the
+% real URLs go in, either supply anonymised mirrors for the blind build (the usual
+% form is an anonymous code-hosting proxy) or move these two lines inside \ifnamed
+% and accept that the submitted PDF advertises no artifact.
+\metadata[Project page]{\todo{project page URL not supplied}}
+\metadata[Code]{\todo{code base URL not supplied}}
 
 % RESTRUCTURED 2026-08-19 to the user's five-move logic (recorded in full at the
 % top of sections/01-introduction.tex). The abstract now runs in that order:
