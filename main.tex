@@ -341,10 +341,14 @@ description length of a winning program, not the complexity of the rules.}
 \input{sections/07-related-work}
 \input{sections/08-conclusion}
 
-% Contribution roles, after the Conclusion. Gated on \ifcameraready because the
-% submission is double-blind; see the header of the file for the full reason and
-% for the three name lists still outstanding.
+% Contributions, after the Conclusion and before the bibliography, on its own
+% page -- the placement and the \clearpage\newpage separators are the group's
+% house style (see the header of the file, which records the reference paper it
+% was taken from). Gated on \ifcameraready because the submission is
+% double-blind; the header also lists the three name groups still outstanding.
 \ifcameraready
+  \clearpage
+  \newpage
   \input{sections/08a-contributions}
 \fi
 

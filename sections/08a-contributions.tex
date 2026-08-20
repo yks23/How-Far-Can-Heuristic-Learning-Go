@@ -1,59 +1,93 @@
 % ---------------------------------------------------------------------------
-% Contribution roles, placed after the Conclusion at the user's direction
+% Contributions, placed after the Conclusion at the user's direction
 % (2026-08-19): "能不能在文末（也就是 Conclusion 后面）加上作者的排序？主要分为以下
 % 四个部分：1. Core Contributor 2. Contributor 3. Corresponding Author：由 Kaisen
 % Yang 担任 4. Project Lead".
 %
+% FORMAT: the group's house style, at the user's direction (2026-08-20, "格式参考
+% 之前给你发的AI4AI的那个格式"). AI4AI_Bench.zip itself carries no contribution block
+% -- it credits an organisation, \author{Navers Lab, Einsia.AI} -- so the format
+% is taken from the same group's Scalable-Behaviour-Cloning paper, which is where
+% that block lives:
+%   ~/Downloads/Scalable_Behaviour_Cloning_on_Browser_via_Distributed_Skill_
+%   Summarization/sections/contributions.tex, \input after the conclusion and
+%   before the bibliography, each separated by \clearpage\newpage.
+% The house pattern is NOT four labelled groups. It is one flat comma-separated
+% list of names in a single paragraph, with roles carried by superscript symbols
+% and a legend under it. Reproduced here exactly:
+%
+%   \section{Contributions and Acknowledgements}
+%   Zheng Jiang\textsuperscript{*}, ... Kaisen Yang\textsuperscript{*,\dag}, ...
+%   Qinhuai Na\textsuperscript{\ddag}
+%   \vspace{0.5em}
+%   \noindent\textsuperscript{*}Equal contribution. Names are sorted in
+%     alphabetical order of the last name.\\
+%   \textsuperscript{\dag}Project lead.\\
+%   \textsuperscript{\ddag}Corresponding author.
+%   This project is founded and supported by ...
+%
+% HOW THE USER'S FOUR GROUPS MAP ONTO IT, which is the one design decision here:
+%   Core Contributor      -> \textsuperscript{*}, legend "Core contribution".
+%   Contributor           -> no symbol. In the house format a plain name IS the
+%                            non-core contributor; the reference paper lists four
+%                            such names after the starred ones. Do not invent a
+%                            symbol for it.
+%   Project Lead          -> \textsuperscript{\dag}
+%   Corresponding Author  -> \textsuperscript{\ddag}
+% Symbols combine on one name, as "\textsuperscript{*,\dag}" does in the
+% reference. A project lead who is also core keeps both.
+%
+% The reference paper's legend says "Equal contribution"; ours says "Core
+% contribution" because the user asked for a Core/Contributor SPLIT, and "equal"
+% would contradict the existence of a second, unstarred tier. The alphabetical
+% sentence is kept from the reference -- see the ordering note below.
+%
 % WHY THIS FILE IS SWITCHED OFF BY DEFAULT. The venue is DOUBLE-BLIND
 % (NeurIPS.cc/2026/Workshop/CL4FMAgents, see the header of main.tex), and
 % main.tex carries \author{Anonymous submission} under "no author, no
-% affiliation, no acknowledgements until camera-ready". A named contribution
-% block in the submitted PDF de-anonymises the paper to the reviewers, which is
-% a desk-reject risk at most OpenReview venues and is not reversible once
-% uploaded. So the block lives here, in the source, and renders only when
-% \camerareadytrue is set in main.tex. Flip it at camera-ready (2026-10-10),
-% not before, and flip it TOGETHER with \author -- a real \author line and an
-% anonymous contribution block are as inconsistent as the reverse.
+% affiliation, no acknowledgements until camera-ready". A named block after the
+% conclusion de-anonymises the paper to the reviewers just as the author line
+% would, and it cannot be withdrawn once uploaded to OpenReview. So the block
+% lives here, in the source, and renders only when \camerareadytrue is set in
+% main.tex. Flip it at camera-ready (2026-10-10), not before, and flip it
+% TOGETHER with \author -- the two must agree.
+%
+% Note that the house format's funding sentence ("This project is founded and
+% supported by ...") is an acknowledgement, which the same double-blind rule
+% excludes. It is stubbed below and gated with the rest.
 %
 % NAMES ARE INCOMPLETE. Only the Corresponding Author was supplied. The other
-% three groups are marked TODO rather than guessed: git history shows two
-% committers (Tianxin Tech <txc@...>, 杨凯森/Kaisen Yang <yangkaisen39@gmail.com>),
-% which is evidence about who edited the repo and NOT about authorship order or
-% role -- inferring one from the other would put a name in a group its owner did
-% not agree to. Ask before filling them in.
+% three groups are TODO rather than guessed: git history shows two committers
+% (Tianxin Tech <txc@...>, 杨凯森/Kaisen Yang <yangkaisen39@gmail.com>), which is
+% evidence about who edited the repo and NOT about role or order -- inferring one
+% from the other would put a name in a group its owner did not agree to.
 %
-% ORDER WITHIN A GROUP. State the convention explicitly once names exist, since
-% a bare list is ambiguous: either alphabetical-by-surname (and then say so) or
-% contribution-ordered (and then the order is a claim each listed person has to
-% have seen). Do not leave it unstated.
-%
-% FORMAT. \section*, so the block takes no section number and stays out of the
-% numbered argument -- it is metadata about the paper, not a part of it. Roles
-% are run-in \paragraph-style labels rather than a table, which survives a
-% change of document class; the style file for this venue is still unconfirmed
-% (main.tex header), so anything that depends on a class-specific environment
-% would have to be rewritten when the class changes.
+% ORDERING. The house legend states alphabetical-by-last-name, which makes the
+% order a convention rather than a ranking and is why the reference paper can
+% list eleven names without any of them reading as a claim. Keep that sentence,
+% and sort by LAST name when the names arrive -- if the order is instead meant to
+% be contribution-ordered, the sentence must be deleted in the same edit, because
+% leaving it in would misdescribe the list.
 % ---------------------------------------------------------------------------
 
-\section*{Contributions}
+\section{Contributions and Acknowledgements}
 
-\noindent\textbf{Core Contributor.}
-% TODO(names): not yet supplied. One or more names, with the intra-group
-% ordering convention stated above.
-\emph{Names to be supplied.}
+% TODO(names): three of the four groups are unsupplied. Replace this paragraph
+% with the flat list once they arrive, in the house form:
+%   Core:        Name\textsuperscript{*}
+%   Contributor: Name            (no symbol)
+%   Lead:        Name\textsuperscript{\dag}   (add * too if also core)
+%   Corresp.:    Kaisen Yang\textsuperscript{\ddag}
+% sorted by last name, symbols comma-separated inside one \textsuperscript.
+\emph{Core contributors and contributors to be supplied.}
+Kaisen Yang\textsuperscript{\ddag}
 
-\smallskip
-\noindent\textbf{Contributor.}
-% TODO(names): not yet supplied.
-\emph{Names to be supplied.}
+\vspace{0.5em}
+\noindent\textsuperscript{*}Core contribution. Names are sorted in alphabetical
+order of the last name.\\
+\textsuperscript{\dag}Project lead.\\
+\textsuperscript{\ddag}Corresponding author.
 
-\smallskip
-\noindent\textbf{Corresponding Author.}
-Kaisen Yang.
-% Supplied by the user. A corresponding author is normally given with a contact
-% address; add the e-mail at camera-ready, when affiliations go in.
-
-\smallskip
-\noindent\textbf{Project Lead.}
-% TODO(names): not yet supplied.
-\emph{Names to be supplied.}
+% TODO(funding): the house format closes with a funding sentence. Supply the
+% correct body and affiliation before camera-ready; do not copy the reference
+% paper's sponsor.
