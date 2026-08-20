@@ -170,6 +170,24 @@ Maintenance Budget}
   % \email sets the mailto link; the class supplies it. The address belongs to the
   % corresponding author, which is what makes it the contact.
   \correspondence{\email{yks23@mails.tsinghua.edu.cn}}
+  % PROJECT PAGE AND CODE BASE, requested 2026-08-20 ("再来两个在标题下的：一个是
+  % project page，还有一个是 code base"). \metadata is the class's own labelled-line
+  % macro and is where Correspondence already sits, so these three render as one
+  % block in the title box rather than as a loose line under the affiliation.
+  %
+  % THE TWO URLS ARE NOT SUPPLIED YET and are deliberately \todo placeholders,
+  % which print red and bold, rather than plausible-looking guesses. Two URLs were
+  % available and both are wrong for this slot, so neither was used:
+  %   - origin, github.com/yks23/How-Far-Can-Heuristic-Learning-Go, is THIS PAPER's
+  %     LaTeX source, not the method's implementation. Putting it behind "Code" is
+  %     a promise the link does not keep.
+  %   - the platform repo (Aoraku/AgentBench) is the contest archive HL-Arena is
+  %     built from -- a dataset dependency, not our code base, and it is the repo
+  %     the anonymity note says must not be cited by URL.
+  % Replace both with real links before submission. \url is already loaded; wrap
+  % each in \url{} so it breaks and is clickable.
+  \metadata[Project page]{\todo{project page URL not supplied}}
+  \metadata[Code]{\todo{code base URL not supplied}}
 \else
   % Double-blind: no author, no affiliation, no acknowledgements.
   \author{Anonymous submission}
