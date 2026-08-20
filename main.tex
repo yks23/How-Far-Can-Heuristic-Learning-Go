@@ -114,6 +114,16 @@ Maintenance Budget}
 % Double-blind: no author, no affiliation, no acknowledgements until camera-ready.
 \author{Anonymous submission}
 
+% CAMERA-READY SWITCH. False for the blind submission; flip to \camerareadytrue
+% only for the camera-ready build (2026-10-10). It gates the named contribution
+% block in sections/08a-contributions.tex, which would otherwise de-anonymise
+% the paper. When flipping it, flip \author above in the same edit -- the two
+% must agree, or the PDF names its authors in one place and hides them in the
+% other. A build with \camerareadytrue and \author{Anonymous submission} is a
+% mistake, not a configuration.
+\newif\ifcameraready
+\camerareadyfalse
+
 % RESTRUCTURED 2026-08-19 to the user's five-move logic (recorded in full at the
 % top of sections/01-introduction.tex). The abstract now runs in that order:
 %   move 1, background and problem -> sentences 1-3. The symbolic paradigm was
@@ -330,6 +340,13 @@ description length of a winning program, not the complexity of the rules.}
 \input{sections/06-discussion}
 \input{sections/07-related-work}
 \input{sections/08-conclusion}
+
+% Contribution roles, after the Conclusion. Gated on \ifcameraready because the
+% submission is double-blind; see the header of the file for the full reason and
+% for the three name lists still outstanding.
+\ifcameraready
+  \input{sections/08a-contributions}
+\fi
 
 \printTBD
 
