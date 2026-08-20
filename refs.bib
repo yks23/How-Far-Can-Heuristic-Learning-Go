@@ -997,3 +997,333 @@
   year    = {2026},
   note    = {Agentic reward-function design rather than policy-source editing}
 }
+
+% ===========================================================================
+% ADDED 2026-08-19 at the user's direction: Section 7's three paragraphs are now
+% (1) RL on adversarial games, the line descending from Go, (2) program-as-policy,
+% (3) agent self-evolution -- and the first line had only four keys. These entries
+% fill it out and deepen the other two.
+%
+% PROVENANCE OF THESE ENTRIES: written from my own knowledge of the literature, not
+% from a fetched record. Titles, authors, venues and years are stated as I know them;
+% volume/page numbers are given only where I am confident. VERIFY BEFORE CAMERA-READY
+% -- a wrong page number is a referee's cheapest catch. Where a paper's final venue
+% was uncertain it is recorded as an arXiv preprint, which is the safe form.
+% ===========================================================================
+
+% --- RL on adversarial games: the Go line and its branches ------------------
+
+@article{alphago2016,
+  title   = {Mastering the Game of {Go} with Deep Neural Networks and Tree
+             Search},
+  author  = {Silver, David and Huang, Aja and Maddison, Chris J. and others},
+  journal = {Nature},
+  volume  = {529},
+  number  = {7587},
+  pages   = {484--489},
+  year    = {2016},
+  note    = {The root of the line Section 7 traces}
+}
+
+@article{alphagozero2017,
+  title   = {Mastering the Game of {Go} without Human Knowledge},
+  author  = {Silver, David and Schrittwieser, Julian and Simonyan, Karen and
+             others},
+  journal = {Nature},
+  volume  = {550},
+  number  = {7676},
+  pages   = {354--359},
+  year    = {2017},
+  note    = {Removes the human-game bootstrap; pure self-play}
+}
+
+@article{dqn2015,
+  title   = {Human-Level Control through Deep Reinforcement Learning},
+  author  = {Mnih, Volodymyr and Kavukcuoglu, Koray and Silver, David and
+             others},
+  journal = {Nature},
+  volume  = {518},
+  number  = {7540},
+  pages   = {529--533},
+  year    = {2015}
+}
+
+@article{efficientzero2021,
+  title   = {Mastering {Atari} Games with Limited Data},
+  author  = {Ye, Weirui and Liu, Shaohuai and Kurutach, Thanard and others},
+  journal = {Advances in Neural Information Processing Systems},
+  year    = {2021},
+  note    = {Sample efficiency of model-based self-play; relevant to our
+             crossover claim}
+}
+
+@article{deepstack2017,
+  title   = {{DeepStack}: Expert-Level Artificial Intelligence in Heads-Up
+             No-Limit Poker},
+  author  = {Morav{\v c}{\'i}k, Matej and Schmid, Martin and Burch, Neil and
+             others},
+  journal = {Science},
+  volume  = {356},
+  number  = {6337},
+  pages   = {508--513},
+  year    = {2017}
+}
+
+@article{libratus2018,
+  title   = {Superhuman {AI} for Heads-Up No-Limit Poker: {Libratus} Beats Top
+             Professionals},
+  author  = {Brown, Noam and Sandholm, Tuomas},
+  journal = {Science},
+  volume  = {359},
+  number  = {6374},
+  pages   = {418--424},
+  year    = {2018}
+}
+
+@article{pluribus2019,
+  title   = {Superhuman {AI} for Multiplayer Poker},
+  author  = {Brown, Noam and Sandholm, Tuomas},
+  journal = {Science},
+  volume  = {365},
+  number  = {6456},
+  pages   = {885--890},
+  year    = {2019},
+  note    = {Multiplayer and not zero-sum-two-player -- the precedent for
+             LostSpace being in scope}
+}
+
+@article{deepnash2022,
+  title   = {Mastering the Game of {Stratego} with Model-Free Multiagent
+             Reinforcement Learning},
+  author  = {P{\'e}rolat, Julien and de Vylder, Bart and Hennes, Daniel and
+             others},
+  journal = {Science},
+  volume  = {378},
+  number  = {6623},
+  pages   = {990--996},
+  year    = {2022},
+  note    = {Imperfect information at scale}
+}
+
+@article{cicero2022,
+  title   = {Human-Level Play in the Game of {Diplomacy} by Combining Language
+             Models with Strategic Reasoning},
+  author  = {{Meta Fundamental AI Research Diplomacy Team} and Bakhtin, Anton
+             and Brown, Noam and others},
+  journal = {Science},
+  volume  = {378},
+  number  = {6624},
+  pages   = {1067--1074},
+  year    = {2022},
+  note    = {A language model inside an adversarial game, but as a negotiator
+             beside a planner rather than as the policy's author}
+}
+
+@article{gtsophy2022,
+  title   = {Outracing Champion {Gran Turismo} Drivers with Deep Reinforcement
+             Learning},
+  author  = {Wurman, Peter R. and Barrett, Samuel and Kawamoto, Kenta and
+             others},
+  journal = {Nature},
+  volume  = {602},
+  number  = {7896},
+  pages   = {223--228},
+  year    = {2022}
+}
+
+@article{suphx2020,
+  title   = {{Suphx}: Mastering {Mahjong} with Deep Reinforcement Learning},
+  author  = {Li, Junjie and Koyamada, Sotetsu and Ye, Qiwei and others},
+  journal = {arXiv preprint arXiv:2003.13590},
+  year    = {2020}
+}
+
+@article{douzero2021,
+  title   = {{DouZero}: Mastering {DouDizhu} with Self-Play Deep Reinforcement
+             Learning},
+  author  = {Zha, Daochen and Xie, Jingru and Ma, Wenye and others},
+  journal = {International Conference on Machine Learning},
+  year    = {2021}
+}
+
+@article{cfr2007,
+  title   = {Regret Minimization in Games with Incomplete Information},
+  author  = {Zinkevich, Martin and Johanson, Michael and Bowling, Michael and
+             Piccione, Carmelo},
+  journal = {Advances in Neural Information Processing Systems},
+  year    = {2007},
+  note    = {The equilibrium-computation branch, cited for the contrast with
+             maintaining a program}
+}
+
+@article{psro2017,
+  title   = {A Unified Game-Theoretic Approach to Multiagent Reinforcement
+             Learning},
+  author  = {Lanctot, Marc and Zambaldi, Vinicius and Gruslys, Audrunas and
+             others},
+  journal = {Advances in Neural Information Processing Systems},
+  year    = {2017},
+  note    = {Opponent-pool construction; the ancestor of
+             asro2026coevolution's design and the contrast to our frozen pool}
+}
+
+@article{katago2019,
+  title   = {Accelerating Self-Play Learning in {Go}},
+  author  = {Wu, David J.},
+  journal = {arXiv preprint arXiv:1902.10565},
+  year    = {2019},
+  note    = {Cost, not just strength -- the branch of this line that is about
+             budget}
+}
+
+@article{adversarialgo2023,
+  title   = {Adversarial Policies Beat Superhuman {Go} {AI}s},
+  author  = {Wang, Tony Tong and Gleave, Adam and Tseng, Tom and others},
+  journal = {International Conference on Machine Learning},
+  year    = {2023},
+  note    = {Superhuman average strength coexisting with exploitable holes;
+             why a frozen pool measures something a single reference does not}
+}
+
+% --- Program-as-policy -----------------------------------------------------
+
+@article{pirl2018,
+  title   = {Programmatically Interpretable Reinforcement Learning},
+  author  = {Verma, Abhinav and Murali, Vijayaraghavan and Singh, Rishabh and
+             others},
+  journal = {International Conference on Machine Learning},
+  year    = {2018},
+  note    = {The original program-as-policy formulation}
+}
+
+@article{viper2018,
+  title   = {Verifiable Reinforcement Learning via Policy Extraction},
+  author  = {Bastani, Osbert and Pu, Yewen and Solar-Lezama, Armando},
+  journal = {Advances in Neural Information Processing Systems},
+  year    = {2018},
+  note    = {Extraction rather than authoring: a program distilled FROM a
+             network, which is the direction we do not take}
+}
+
+@article{leaps2021,
+  title   = {Learning to Synthesize Programs as Interpretable and Generalizable
+             Policies},
+  author  = {Trivedi, Dweep and Zhang, Jesse and Sun, Shao-Hua and Lim,
+             Joseph J.},
+  journal = {Advances in Neural Information Processing Systems},
+  year    = {2021}
+}
+
+@article{inductivegen2020,
+  title   = {Synthesizing Programmatic Policies that Inductively Generalize},
+  author  = {Inala, Jeevana Priya and Bastani, Osbert and Tavares, Zenna and
+             Solar-Lezama, Armando},
+  journal = {International Conference on Learning Representations},
+  year    = {2020}
+}
+
+@article{symbolicpolicies2021,
+  title   = {Discovering Symbolic Policies with Deep Reinforcement Learning},
+  author  = {Landajuela, Mikel and Petersen, Brenden K. and Kim, Sookyung and
+             others},
+  journal = {International Conference on Machine Learning},
+  year    = {2021}
+}
+
+@article{alphatensor2022,
+  title   = {Discovering Faster Matrix Multiplication Algorithms with
+             Reinforcement Learning},
+  author  = {Fawzi, Alhussein and Balog, Matej and Huang, Aja and others},
+  journal = {Nature},
+  volume  = {610},
+  number  = {7930},
+  pages   = {47--53},
+  year    = {2022}
+}
+
+@article{alphadev2023,
+  title   = {Faster Sorting Algorithms Discovered Using Deep Reinforcement
+             Learning},
+  author  = {Mankowitz, Daniel J. and Michi, Andrea and Zhernov, Anton and
+             others},
+  journal = {Nature},
+  volume  = {618},
+  number  = {7964},
+  pages   = {257--263},
+  year    = {2023},
+  note    = {Program discovery by RL: the search is learned, the artifact is
+             code -- the mirror image of HL, where the artifact is code and the
+             search is an agent}
+}
+
+% --- Agent self-evolution --------------------------------------------------
+
+@article{voyager2023,
+  title   = {{Voyager}: An Open-Ended Embodied Agent with Large Language
+             Models},
+  author  = {Wang, Guanzhi and Xie, Yuqi and Jiang, Yunfan and others},
+  journal = {arXiv preprint arXiv:2305.16291},
+  year    = {2023},
+  note    = {A growing library of executable skills -- accumulation as an
+             asset, and the closest precedent for code as the carrier of
+             experience}
+}
+
+@article{stop2023,
+  title   = {Self-Taught Optimizer ({STOP}): Recursively Self-Improving Code
+             Generation},
+  author  = {Zelikman, Eric and Lu, Eliana and Goodman, Noah and others},
+  journal = {arXiv preprint arXiv:2310.02304},
+  year    = {2023}
+}
+
+@article{expel2024,
+  title   = {{ExpeL}: {LLM} Agents Are Experiential Learners},
+  author  = {Zhao, Andrew and Huang, Daniel and Xu, Quentin and others},
+  journal = {AAAI Conference on Artificial Intelligence},
+  year    = {2024}
+}
+
+@article{adas2024,
+  title   = {Automated Design of Agentic Systems},
+  author  = {Hu, Shengran and Lu, Cong and Clune, Jeff},
+  journal = {arXiv preprint arXiv:2408.08435},
+  year    = {2024},
+  note    = {Evolves the agent's own scaffolding -- the axis we deliberately
+             hold fixed}
+}
+
+@article{textgrad2024,
+  title   = {{TextGrad}: Automatic Differentiation via Text},
+  author  = {Yuksekgonul, Mert and Bianchi, Federico and Boen, Joseph and
+             others},
+  journal = {arXiv preprint arXiv:2406.07496},
+  year    = {2024}
+}
+
+@article{promptbreeder2023,
+  title   = {{Promptbreeder}: Self-Referential Self-Improvement via Prompt
+             Evolution},
+  author  = {Fernando, Chrisantha and Banarse, Dylan and Michalewski, Henryk
+             and others},
+  journal = {arXiv preprint arXiv:2309.16797},
+  year    = {2023},
+  note    = {Self-improvement located in the PROMPT, one of the four
+             misreadings the abstract forecloses}
+}
+
+@article{aiscientist2024,
+  title   = {The {AI} {S}cientist: Towards Fully Automated Open-Ended
+             Scientific Discovery},
+  author  = {Lu, Chris and Lu, Cong and Lange, Robert Tjarko and others},
+  journal = {arXiv preprint arXiv:2408.06292},
+  year    = {2024}
+}
+
+@article{generativeagents2023,
+  title   = {Generative Agents: Interactive Simulacra of Human Behavior},
+  author  = {Park, Joon Sung and O'Brien, Joseph C. and Cai, Carrie J. and
+             others},
+  journal = {ACM Symposium on User Interface Software and Technology},
+  year    = {2023}
+}
