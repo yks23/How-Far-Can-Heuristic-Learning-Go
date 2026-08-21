@@ -180,27 +180,18 @@ learned policy make RL the better use of the budget.
 \subsection{Ablations: feedback, revision, and hybrid policies}
 \label{sec:exp-ablation}
 
-The ablation experiment tests whether the observed effect comes from the full HL loop
-or from one accidental implementation choice. We keep the game, initial policy, model,
-and total budget fixed and vary one component at a time:
+The ablation keeps the game, initial policy, model, and total budget fixed while varying
+one component of the loop at a time:
 
 \begin{itemize}[leftmargin=*]
-  \item \textbf{Feedback channel.} Compare full decision-level replays with outcome-only
-    feedback and with progressively masked traces. This tests whether the lower-bound
-    advantage is information per sample rather than a prompt-length effect.
-  \item \textbf{Revision rule.} Compare one-revision-per-iteration with batched edits,
-    rescoring disabled, and no rollback of a regressing version. These variants test
-    whether attribution and acceptance control the stability of the trajectory.
-  \item \textbf{Policy representation.} Compare a pure symbolic policy with a hybrid
-    policy that contains a learned component behind the same executable interface. This
-    tests whether HL can maintain a mixed artifact while preserving the same logging and
-    evaluation contract.
-  \item \textbf{Opponent and pool controls.} Replace the frozen field with a single
-    opponent or a moving pool in controlled runs. The expected effect is a change in
-    rating stability, which verifies why the primary experiment fixes the pool.
+  \item \textbf{Feedback.} Full decision-level replays versus outcome-only or masked
+    traces test whether gains come from information per sample.
+  \item \textbf{Revision.} Batched edits, no rescoring, and no rollback test whether
+    attribution and acceptance stabilize the trajectory.
+  \item \textbf{Representation and pool.} A hybrid policy and a single or moving
+    opponent pool test the mixed-artifact interface and the need for a frozen field.
 \end{itemize}
 
-For each ablation we report the change in final Elo, improvement frequency, regression
-rate, policy-description length, and robustness across seeds. The ablations are not
-used to redefine the primary result; they identify which feedback, revision, and
-representation choices are necessary for the main comparison to be interpretable.
+We report changes in final Elo, improvement and regression rates, description length,
+and seed robustness. These runs diagnose the primary comparison; they do not redefine
+its headline metric.
