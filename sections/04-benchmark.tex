@@ -323,18 +323,15 @@ AHL 在每轮接收 $(R,A)$、当前程序和训练回放，并输出修改后�
 \subsection{比赛内容与来源}
 \label{sec:arena-provenance}
 
-这些游戏来自一个年度计算机智能体竞赛。每届比赛发布一个游戏的规则与运行套件，
-进行持续数月的排行榜对局，并保留选手反复提交的每个版本。因此，存档记录的是
-真实人力预算下的程序维护轨迹，而不只是最终方案。
-
-公开且完整的资源从第~\val{edfirst}~届开始，因此 \benchname 覆盖
-\val{edfirst}--\val{edlast}：共七届、\val{ngames} 个游戏。该竞赛早于本文基准，
-并非为模型评测而设计，因此可以提供有用的污染检查，但不能证明数据完全独立
-\citep{livecodebench2024,workbuddybench2026}。
-
-表~\ref{tab:games} 总结了这组异质游戏，涵盖网格与领地争夺、生存、隐藏身份以及
-脚本化问答等任务。每个游戏的具体规则、动作空间和回放格式见附录~\ref{app:arena}；
+该比赛源于由顶尖高校学生组织的经典游戏赛事，已经持续举办数十年。我们整理了
+历届比赛的规则、后端、前端以及玩家提交，并从中选取九个具有代表性的游戏作为
+\benchname 的样本。每个游戏的具体规则、动作空间和回放格式见附录~\ref{app:arena}；
 附录~\ref{app:case} 进一步完整展示其中一个游戏的实例。
+
+这组样本强调三个性质：\textbf{广泛性}，覆盖面向绝大多数参与者的常见游戏形式；
+\textbf{经典性}，由持续数十年的赛事历史提供时间上的验证；以及\textbf{多样性}，
+同时包含网格与领地争夺、生存、隐藏身份、角色不对称和脚本化推理等不同类型，
+从而避免结论依赖单一游戏机制。
 
 % [b], not [t], for the same reason as Section 3's two floats: with [t] this table
 % lands at the top of the page and sits ABOVE the \subsection{The games} heading that
