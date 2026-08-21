@@ -204,6 +204,13 @@ does not dispute that. It is an argument that the two paradigms sit at points on
 the description-length axis separated by orders of magnitude, which is what makes
 that axis worth measuring rather than assuming.
 
+\begin{center}
+\fcolorbox{brandaccent}{white}{\parbox{0.93\linewidth}{\small
+\textbf{Observation.} Symbolic policies are compact and locally editable; learned
+policies can be stronger but hide decisions in weights. The missing variable is who can
+keep maintaining the artifact.}}
+\end{center}
+
 % PLACEMENT: [b], not [t], and the reason is worth keeping. With [t] this float
 % went to the top of the page its reference falls on, which put it above Section 3's
 % own heading and inside the tail of Section 2 -- a reader met the figure while
@@ -262,6 +269,13 @@ addition has to be checked against a larger body of existing behaviour, so the s
 edit costs more late than early. Where revision stops has therefore always been a
 fact about the person doing it rather than about what a program can express.
 
+\begin{center}
+\fcolorbox{brandaccent}{white}{\parbox{0.93\linewidth}{\small
+\textbf{Observation.} The cost of a heuristic edit grows with the behavior it must
+preserve. A coding agent changes the maintainer, so this ceiling can be measured rather
+than assumed.}}
+\end{center}
+
 In the agent era the constraint changes character, because a coding agent's input
 and output space is program text. It does not need the program translated into
 some other representation to act on it: the artifact it reads is the artifact it
@@ -274,6 +288,13 @@ loss and which rule was responsible. What this buys is a question for
 Section~\ref{sec:experiments} rather than a claim to make here; the architectural
 point is only that the channel is wide and that nothing in the loop has to
 translate between representations for it to close.
+
+\begin{center}
+\fcolorbox{brandaccent}{white}{\parbox{0.93\linewidth}{\small
+\textbf{Consequence.} Source code and decision-level replays are native inputs to a
+coding agent. This motivates AHL: one persistent policy, external opponents, and
+referee-side evaluation.}}
+\end{center}
 
 % THE NAMING AND THE CONCESSION, moved here from 02-preliminary.tex on 2026-08-20 when that
 % section was deleted. The paragraph above already argued the channel is wide; what only
