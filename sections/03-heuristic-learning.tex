@@ -242,18 +242,18 @@ different strength says nothing.}
 \label{fig:size}
 \end{figure}
 
-但这种优势需要持续的人力投入。增加规则并不难，难的是不断检查它是否破坏已有行为；随着程序变大，维护工作越来越多，也越来越难以持续。瓶颈不是程序不能表达，而是没有足够的人力长期维护它。
+但这种优势需要持续的人力投入。增加规则并不难，难的是不断检查它是否破坏已有行为；程序越复杂，维护所需的人力越多。瓶颈不是程序不能表达，而是维护需要人力，无法长期持续投入。
 
 \begin{center}
 \fcolorbox{brandaccent}{white}{\parbox{0.93\linewidth}{\small
 \textbf{观察 2：维护需要人力。} 程序的持续修改依赖人力；当人力无法长期投入，策略改进就会停止。}}
 \end{center}
 
-在对抗式游戏中，LLM-based coding agent 可以同时利用并弥补这两点。输入空间包含程序本身和逐决策的轨迹 replay：agent 直接阅读程序及其失败案例，获得高度启发性且可解释的上下文；相比只有胜负的稀疏 reward，这一信息通道更加宽，能够充分利用符号程序的优势。输出仍是可执行、可读、可局部修改的程序，而 agent 可以持续进行这些修改，逐步补上原本需要人力承担的维护工作。
+在对抗式游戏中，LLM-based coding agent 可以同时利用并弥补这两点。程序本身是高度启发性且可解释的输入；agent 进一步读取逐决策的轨迹回放来维护程序，相比只有胜负的稀疏 reward，这一信息通道更宽，能够充分利用符号程序的优势。与此同时，agent 可以持续修改同一个可执行、可读、可局部编辑的程序，逐步承担原本需要人力完成的维护工作。
 
 \begin{center}
 \fcolorbox{brandaccent}{white}{\parbox{0.93\linewidth}{\small
-\textbf{观察 3：LLM agent 的闭环作用。} Agent 通过阅读程序和回放获得宽而可解释的信息通道，再持续修改同一个程序；它既利用了符号式策略的优势，也逐步解决了原本依赖人力、难以持续的维护问题。}}
+\textbf{观察 3：LLM agent 的闭环作用。} 直接读取程序提供高度启发性、可解释的输入；结合轨迹回放，agent 获得宽信息通道来维护程序，并逐步承担原本需要人力的持续维护。}}
 \end{center}
 
 % THE NAMING AND THE CONCESSION, moved here from 02-preliminary.tex on 2026-08-20 when that
