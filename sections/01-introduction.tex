@@ -408,32 +408,19 @@ constraints. Every comparison here is budget-conditional.
 Our contributions are threefold.
 
 \begin{itemize}[leftmargin=*]
-  \item \textbf{We formally define adversarial-game heuristic learning}, the
-  game-scoped form of HL: an agent-maintained symbolic
-  policy under adversarial pressure, instrumented --- one revision per iteration,
-  every version and score logged --- so that a plateau can be diagnosed and not
-  merely observed, and scoped to games rather than claimed of tasks in general
-  % Repointed 2026-08-20 from sec:preliminary. The scope definition moved to the head of
-  % Section 4 when Preliminary was deleted; sec:benchmark is where it now sits.
-  (Section~\ref{sec:benchmark}).
+  \item \textbf{We define adversarial-game heuristic learning}: an agent maintains
+  one executable symbolic policy under adversarial feedback. Each iteration makes
+  one revision and logs the version, score, and trace, making improvement and
+  maintenance plateaus measurable rather than anecdotal (Section~\ref{sec:benchmark}).
 
-  \item \textbf{We introduce \benchname}, a benchmark drawn from a real
-  competition rather than built for evaluation: the archive's \val{nsub}
-  submissions and \val{nmatch} matches, plus the apparatus one needs --- classic games as structural controls,
-  three opponent pools, a frozen evaluation set, a cross-edition Elo protocol, and a
-  per-submission audit of whether it contains a learned component.
+  \item \textbf{We introduce \benchname}, an archive drawn from a real competition
+  rather than built for evaluation. It supplies human programs and matches, classic
+  game controls, frozen opponent pools, cross-edition Elo, and an audit of learned
+  components, providing a reproducible human field for adversarial evaluation.
 
-  \item \textbf{We compare adversarial-game HL and RL broadly} --- against model-based RL, policy
-  gradient, and the human field, across budgets and in every denominator rather than
-  the favourable one --- and establish which paradigm holds the advantage where. The
-  primary comparison is against the human state of the art: on \val{nbeat} of
-  \val{ngames} games adversarial-game HL overtakes the archive's strongest recorded submission,
-  \val{elogap} Elo over a program its authors refined across \val{humanspan} of
-  competition. Against RL it costs more \val{loseaxis}. Improvement frequency
-  decays as \val{decay} to a plateau near
-  \val{plateau} revisions, which we trace to maintenance capacity: description length
-  there converges to \val{maintcap} within \val{maintcapspread} while the Elo reached
-  varies by \val{eloplatspread}. From that we derive practical guidelines for
-  applying adversarial-game HL --- when to expect it to pay, and when a learned method is the better
-  spend (Section~\ref{sec:discussion}).
+  \item \textbf{We compare adversarial-game HL with human and RL baselines} under
+  matched interaction budgets. We report performance, sample efficiency, and the
+  maintenance-capacity signature, then identify the budget regimes in which an
+  editable policy pays off and those in which a learned policy is the better spend
+  (Section~\ref{sec:discussion}).
 \end{itemize}
