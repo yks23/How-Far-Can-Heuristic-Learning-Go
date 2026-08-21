@@ -192,29 +192,53 @@
 \subsection{Motivation}
 \label{sec:hl-motivation}
 
-\begin{CJK*}{UTF8}{gbsn}
-
-符号式范式的吸引力首先来自它的可读、可解释与可编辑性：程序直接写出决策边界，一条规则或一个搜索截断即可表达复杂行为，并能被人检查和局部修改。
+The appeal of a symbolic paradigm begins with readability and interpretability.
+A programmatic policy is intelligible to people rather than a black box: every
+rule and every search decision has an explicit meaning and can be inspected or
+edited locally.
 
 \begin{center}
 \fcolorbox{brandaccent}{white}{\parbox{0.93\linewidth}{\small
-\textbf{观察 1：可解释且可编辑。} 符号策略把决策写成可检查、可局部修改的程序；每条经验都能直接落到策略实体上，并立即影响后续决策。}}
+\textbf{Observation 1: readable and interpretable.} A symbolic policy exposes
+the decisions it makes as meaningful, inspectable program constructs.}}
 \end{center}
 
-但这种优势需要持续的人力投入。增加规则并不难，难的是不断检查它是否破坏已有行为；程序越复杂，维护所需的人力越多。瓶颈不是程序不能表达，而是维护需要人力，无法长期持续投入。
+This advantage, however, depends on sustained human heuristic design. When new
+experience reveals a failure, an expert must intervene to revise the program and
+check that the change does not break behaviours that already work. As the program
+grows, this maintenance requires more human labour and becomes difficult to sustain;
+the bottleneck is not expressiveness but the need for people to keep maintaining it.
+This limitation made reinforcement learning, which learns from feedback without
+manually rewriting rules, appear to be a more attractive alternative.
 
 \begin{center}
 \fcolorbox{brandaccent}{white}{\parbox{0.93\linewidth}{\small
-\textbf{观察 2：维护需要人力。} 程序的持续修改依赖人力；当人力无法长期投入，策略改进就会停止。}}
+\textbf{Observation 2: maintenance requires human labour.} Without sustained
+human intervention, a symbolic policy stops incorporating new experience.}}
 \end{center}
 
-多人对抗环境高度变化：对手策略不断切换，使每一种局面都只能获得有限样本。没有对手的单机游戏中，RL 面对近似不变的环境，反复采样相对容易；而在对手多变、样本稀疏的环境中，单纯拟合每种行为模式很难充分学习。此时，从每条轨迹中提取结构并直接优化程序，能够把一次观测中的信息迁移到后续决策，因而更适合少样本条件。
+LLM agents with coding capabilities change this trade-off. First, an LLM
+operates in a language space and can directly use an interpretable symbolic policy,
+attributing feedback to concrete code and mapping an observed failure to a specific
+edit. Unlike reinforcement learning, which commonly receives only a scalar reward,
+the agent can preserve a much wider feedback channel from trajectory to program to
+policy revision. Second, the agent can repeatedly observe and revise in natural
+language, supplying the sustained maintenance that the original heuristic paradigm
+required from humans.
 
-LLM-based coding agent 可以同时利用并弥补前述两点。程序本身是高度启发性且可解释的输入；agent 读取逐决策的轨迹回放来维护程序。轨迹、程序与 policy 修改构成一条信息传递链：若中间表示不能保留决策细节，信道容量就会很低；程序形式则把这条链条直接打开，使回放中的信息能够指向具体规则并落实为局部修改。与此同时，agent 可以持续修改同一个可执行、可读、可局部编辑的程序，逐步承担原本需要人力完成的维护工作。
+The benefit is especially consequential in adversarial environments. Different
+opponents induce substantially different behaviours and effective environments,
+creating a highly dynamic, large search space in which each pattern is observed only
+through sparse samples. This diversity places unusually strong demands on robustness:
+the learner must use each informative interaction and transfer what it learns across
+opponents. Maintaining an executable program through an agent is therefore a natural
+fit for this setting.
 
 \begin{center}
 \fcolorbox{brandaccent}{white}{\parbox{0.93\linewidth}{\small
-\textbf{观察 3：LLM agent 的闭环作用。} 直接读取程序提供高度启发性、可解释的输入；结合轨迹回放，agent 获得宽信息通道来维护程序，并逐步承担原本需要人力的持续维护。}}
+\textbf{Observation 3: the coding-agent loop.} An LLM agent can exploit the
+interpretability of program policies through a wide trajectory-to-code feedback
+channel, while gradually taking over the human maintenance burden.}}
 \end{center}
 
 % THE NAMING AND THE CONCESSION, moved here from 02-preliminary.tex on 2026-08-20 when that
@@ -232,9 +256,12 @@ LLM-based coding agent 可以同时利用并弥补前述两点。程序本身是
 % answerable. Merging them is what produces the unsupportable version of the claim, and a
 % reader will supply the merged version unaided if this is left loose. 01-introduction.tex
 % already concedes the same limit; keep the two statements consistent if either is edited.
-这里的“宽信道”需要轨迹提供丰富的决策信息，也需要程序形式把这些信息完整传递到 policy 修改；没有程序、只把失败经验写入记忆的循环也可能获得部分类似的信息增益~\citep{echo2025hindsight}。本文真正要测量的是：在对抗式游戏的少样本条件下，这条信息链能否通过一个可解释、可持续修改的程序转化为策略性能。
-
-\end{CJK*}
+The width of this channel depends both on the decision-level information in the
+trajectory and on a representation that can carry it into a concrete policy edit;
+an agent that stores failed episodes in memory can obtain part of the same
+information gain without a program~\citep{echo2025hindsight}. We therefore ask whether,
+under the sparse and shifting feedback of adversarial games, this agent--program
+loop converts that information into measurable policy improvement.
 
 \subsection{Introducing Adversarial Heuristic Learning}
 \label{sec:hl-method}
