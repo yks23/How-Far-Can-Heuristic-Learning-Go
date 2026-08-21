@@ -332,19 +332,17 @@ purpose is to motivate the sample-efficiency comparison.}
 \subsection{Key Elements of AHL}
 \label{sec:hl-bottleneck}
 
-Algorithm~\ref{alg:loop} has two elements that determine what AHL can learn. The
-maintenance rule determines whether feedback can be written into the persistent
-program continuously and effectively. The feedback information determines how much
-the agent can observe in each round, including which opponents it plays and which
-parts of each interaction are recorded.
+Algorithm~\ref{alg:loop} has three elements that determine what AHL can learn:
+the opponents, the feedback information, and the maintenance rule. They determine
+which behaviours are exposed, how much of each interaction reaches the agent, and
+whether that information can be written into the persistent program.
 
-\paragraph{Maintenance rule.}
-The rule controls how revisions are proposed, checked, accepted, and remembered.
-It must prevent a fix for one opponent from silently breaking behaviour that already
-works against others, while retaining rejected changes so that the loop does not
-rediscover them. Recording each revision and its feedback makes the maintenance
-process attributable; its stability is an empirical question evaluated in
-Section~\ref{sec:experiments}.
+\paragraph{Opponents.}
+Each round selects an opponent subset from the available pool. The subset may be
+the full pool or a smaller set, and its composition determines which behaviours and
+failure modes the policy encounters. A narrow or repetitive subset can leave parts
+of the policy untested; a broader or changing subset supplies more diverse evidence
+but divides the available samples across more strategies.
 
 \paragraph{Feedback information.}
 The feedback contract controls the input channel. As illustrated in
@@ -356,3 +354,11 @@ it may be the full pool or a smaller selected set, and the agent can only learn 
 failures that those opponents elicit. Thus both who the policy plays and what each replay contains determine the information
 available for the next revision; our concrete trace is specified in
 Section~\ref{sec:benchmark}.
+
+\paragraph{Maintenance rule.}
+The rule controls how revisions are proposed, checked, accepted, and remembered.
+It must prevent a fix for one opponent from silently breaking behaviour that already
+works against others, while retaining rejected changes so that the loop does not
+rediscover them. Recording each revision and its feedback makes the maintenance
+process attributable; its stability is an empirical question evaluated in
+Section~\ref{sec:experiments}.
