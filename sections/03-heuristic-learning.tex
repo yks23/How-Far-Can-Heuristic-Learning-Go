@@ -241,8 +241,8 @@ LLM-based coding agent 可以同时利用并弥补前述两点。程序本身是
 
 We use \emph{Adversarial Heuristic Learning} (\ahl) for the following setting:
 an agent iteratively edits one executable policy, receives decision-level traces
-from matches against changing external opponents, and is scored by a referee-side
-evaluation pool it cannot rewrite. AHL is therefore the adversarial-game
+from matches against changing external opponents, and is evaluated after training
+against a referee-side evaluation pool it cannot rewrite. AHL is therefore the adversarial-game
 instantiation studied here, rather than a definition of heuristic learning in
 general. The policy artifact persists across rounds; each revision is made from
 the current program, the game rules, and the feedback collected so far.
@@ -251,8 +251,8 @@ The instantiation is a loop between two agents, and it is deliberately simple. A
 \emph{policy agent} is the program under revision; it plays the game and produces
 interaction traces. A \emph{generative agent} observes those traces, together with
 the rules and the policy agent's own source, and either generates a policy or
-revises the one in hand. Its output is the next version of the policy agent, which
-is then rescored against the frozen test pool, and the loop repeats.
+revises the one in hand. Its output is the next version of the policy agent, and
+the loop repeats.
 Algorithm~\ref{alg:loop} states it in full.
 The complete overview, including the contest-game suite in which the loop is measured,
 is shown in Figure~\ref{fig:hl-arena-overview}.
@@ -275,31 +275,27 @@ is shown in Figure~\ref{fig:hl-arena-overview}.
 \begin{algorithm}[b]
 \caption{Heuristic learning. A generative agent observes the interaction between
 the policy agent and its environment, then generates or revises the policy agent.
-One revision per iteration; every version, score, and trace is appended to the log.}
+Each round selects an opponent subset and returns a revised policy.}
 \label{alg:loop}
 \begin{algorithmic}[1]
-  \Require game rules $R$, training pool $\mathcal{O}_{\text{train}}$, frozen test
-    pool $\mathcal{O}_{\text{test}}$, budget $B$
+  \Require game rules $R$, opponent pool $\mathcal{O}$, budget $B$
   \State $\pi_0 \gets \Call{Generate}{R}$
     \Comment{no policy in hand: the agent writes one}
-  \State $\mathcal{L} \gets \langle\,\rangle$
-    \Comment{append-only log}
   \For{$t = 1$ \textbf{to} $B$}
-    \State $\tau_t \gets \Call{Play}{\pi_{t-1}, \mathcal{O}_{\text{train}}}$
-      \Comment{interaction traces, including the losses}
+    \State $\mathcal{O}_t \gets \Call{SelectOpponents}{\mathcal{O}}$
+      \Comment{$\mathcal{O}_t \subseteq \mathcal{O}$; size is a design choice}
+    \State $\tau_t \gets \Call{Play}{\pi_{t-1}, \mathcal{O}_t}$
+      \Comment{states, actions, and final outcomes}
     \State $\pi_t \gets \Call{Revise}{\pi_{t-1}, R, \textsc{src}(\pi_{t-1}), \tau_t}$
       \Comment{reads; then edits}
-    \State $e_t \gets \Call{Score}{\pi_t, \mathcal{O}_{\text{test}}}$
-      \Comment{Elo on the frozen pool}
-    \State append $(\pi_t, e_t, \tau_t)$ to $\mathcal{L}$
   \EndFor
-  \State \Return $\mathcal{L}$
-    \Comment{the trajectory is the result, not $\pi_B$ alone}
+  \State \Return $\pi_B$
+    \Comment{evaluation is performed after training}
 \end{algorithmic}
 \end{algorithm}
 
-We use one revision per iteration and append every policy version, score, and trace
-to the log so that changes remain attributable.
+We use one revision per iteration; evaluation scores are measured after training,
+not supplied to the agent during this loop.
 
 % PLACEHOLDER FIGURE 2: replace the schematic with a measured information-accounting
 % visualization once the replay schema and RL logging are finalized. The intended
@@ -346,17 +342,17 @@ parts of each interaction are recorded.
 The rule controls how revisions are proposed, checked, accepted, and remembered.
 It must prevent a fix for one opponent from silently breaking behaviour that already
 works against others, while retaining rejected changes so that the loop does not
-rediscover them. Rescoring each revision against a fixed reference and logging the
-decision makes the maintenance process attributable; its stability is an empirical
-question evaluated in Section~\ref{sec:experiments}.
+rediscover them. Recording each revision and its feedback makes the maintenance
+process attributable; its stability is an empirical question evaluated in
+Section~\ref{sec:experiments}.
 
 \paragraph{Feedback information.}
 The feedback contract controls the input channel. As illustrated in
 Figure~\ref{fig:feedback-width}, outcome-only feedback forces the
 agent to guess which rule caused a loss, whereas decision-level traces expose the
 sequence of actions, opponent replies, and the turning point needed to edit a
-specific rule. In adversarial games, the opponent pool is part of this contract:
-the agent can only learn from failures that the selected opponents elicit. Thus both
-who the policy plays and what each replay contains determine the information
+specific rule. In adversarial games, the opponent subset is part of this contract:
+it may be the full pool or a smaller selected set, and the agent can only learn from
+failures that those opponents elicit. Thus both who the policy plays and what each replay contains determine the information
 available for the next revision; our concrete trace is specified in
 Section~\ref{sec:benchmark}.
