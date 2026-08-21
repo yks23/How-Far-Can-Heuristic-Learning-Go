@@ -266,6 +266,12 @@ loop converts that information into measurable policy improvement.
 \subsection{Introducing Adversarial Heuristic Learning}
 \label{sec:hl-method}
 
+We call a game \emph{adversarial} when the policy interacts with an externally
+controlled opponent whose behaviour changes the effective environment. Let
+$\mathcal{O}$ denote the available opponent pool; each round selects a subset
+$\mathcal{O}_t\subseteq\mathcal{O}$, which determines the behaviours and feedback
+observed in that round.
+
 We use \emph{Adversarial Heuristic Learning} (\ahl) for the following setting:
 an agent iteratively edits one executable policy, receives decision-level traces
 from matches against changing external opponents, and is evaluated after training
@@ -300,7 +306,7 @@ is shown in Figure~\ref{fig:hl-arena-overview}.
 % subsection heading, inside the tail of 3.1. Check the rendered page after any edit
 % above it.
 \begin{algorithm}[b]
-\caption{Heuristic learning. A generative agent observes the interaction between
+\caption{Adversarial heuristic learning. A generative agent observes the interaction between
 the policy agent and its environment, then generates or revises the policy agent.
 Each round selects an opponent subset and returns a revised policy.}
 \label{alg:loop}
