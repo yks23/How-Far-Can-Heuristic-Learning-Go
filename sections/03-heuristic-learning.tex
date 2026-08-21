@@ -269,20 +269,22 @@ loop converts that information into measurable policy improvement.
 \begin{definition}[Adversarial game]
 An adversarial game is an interactive environment
 \[
-\mathcal{G}=\bigl(\mathcal{S},\mathcal{A},\mathcal{B},\mathcal{O},P,R\bigr),
+\mathcal{G}=\bigl(\mathcal{E},\boldsymbol{\Pi}\bigr),\qquad
+\boldsymbol{\Pi}=\{\pi_i:\mathcal{H}_i\!\to\!\Delta(\mathcal{A}_i)\}_{i=1}^{n},\quad n\ge 2,
 \]
-where the policy acts with $a_t\in\mathcal{A}$, an external opponent acts with
-$b_t\in\mathcal{B}$, and the transition or outcome distribution
-$\bigl(P,R\bigr)(\cdot\mid s_t,a_t,b_t,o)$ depends on the opponent
-$o\in\mathcal{O}$. Each round selects an opponent subset
-$\mathcal{O}_t\subseteq\mathcal{O}$, which determines the behaviours and feedback
-observed in that round.
+where $\boldsymbol{\Pi}$ is a set of agent policies and $\mathcal{E}$ is the shared
+environment. At each step, the participating policies jointly produce actions
+$a_t^i\sim\pi_i(\cdot\mid h_t^i)$, and the environment generates the next state,
+observations, and outcome according to
+$\mathcal{E}(\cdot\mid s_t,a_t^1,\ldots,a_t^n)$. A round may instantiate any
+subset $\boldsymbol{\Pi}_t\subseteq\boldsymbol{\Pi}$, which determines the
+behaviours and feedback observed in that round.
 \end{definition}
 
 We use \emph{Adversarial Heuristic Learning} (\ahl) for the following setting:
 an agent iteratively edits one executable policy, receives decision-level traces
-from matches against changing external opponents, and is evaluated after training
-against a referee-side evaluation pool it cannot rewrite. AHL is therefore the adversarial-game
+from matches instantiated with changing subsets of agent policies, and is evaluated
+after training against a referee-side evaluation pool it cannot rewrite. AHL is therefore the adversarial-game
 instantiation studied here, rather than a definition of heuristic learning in
 general. The policy artifact persists across rounds; each revision is made from
 the current program, the game rules, and the feedback collected so far.
