@@ -194,11 +194,11 @@
 
 \begin{CJK*}{UTF8}{gbsn}
 
-符号式范式之所以有吸引力，靠的是两个性质；而让它逐渐退出主流的，恰恰是另一个问题。程序可以直接写出决策边界：一个条件判断或搜索截断，用一行代码就能表达神经网络需要大量参数逼近的关系，而且这行代码可以被阅读、讨论和局部修改。图~\ref{fig:size}把两种范式放在本文关注的描述长度轴上：在这些游戏中达到竞争力的符号策略占用约 \val{progsize}，同等强度的学习策略占用约 \val{netsize}。这并不是说越小越好——交互足够多时，学习策略仍然会胜出，本文对此并无异议。两种范式在描述长度轴上相隔数个数量级，因此描述长度值得被测量，而不应被想当然地假定。
+符号式范式的吸引力首先来自它的可读、可解释与可编辑性：程序直接写出决策边界，一条规则或一个搜索截断即可表达复杂行为，并能被人检查和局部修改。图~\ref{fig:size}将这种紧凑性与同等强度的学习策略进行对比；这不是说越小越好，而是说明两者的描述长度可能相差数个数量级。
 
 \begin{center}
 \fcolorbox{brandaccent}{white}{\parbox{0.93\linewidth}{\small
-\textbf{观察。} 符号策略紧凑且可以局部编辑；学习策略可能更强，但把决策隐藏在权重中。真正缺少的变量不是表达能力，而是谁能够持续维护这个策略实体。}}
+\textbf{观察 1：可解释且可编辑。} 符号策略把决策写成可检查、可局部修改的程序；它的优势不是表达能力更强，而是每条经验都能直接落到策略实体上。}}
 \end{center}
 
 % PLACEMENT: [b], not [t], and the reason is worth keeping. With [t] this float
@@ -242,20 +242,18 @@ different strength says nothing.}
 \label{fig:size}
 \end{figure}
 
-正因为紧凑，程序空间才适合承载人的经验。一个人理解了某个游戏规律——例如某种结构值得交换，或某条开局路线会输——就可以把它写成规则并立即生效，中间不需要训练，也无需担心这条经验是否在优化中幸存。本文使用的档案记录了数千次这样的“把经验写下来”，因此它记录的不只是程序结果，也记录了这一范式实际走到了哪里。
-
-这个范式过去缺少的是一个愿意持续付出维护成本的维护者。增加一条规则并不昂贵，昂贵的是确认它不会破坏已有规则。随着程序变大，同一次修改在后期比早期更贵。因此，修改何时停止，过去取决于维护者能付出多少，而不是程序能够表达什么。
+但这种优势依赖持续维护。增加规则并不难，难的是确认它不会破坏已有行为；程序越大，每次修改的协调成本越高。过去的瓶颈不是程序不能表达，而是人类维护者最终无力继续修改。
 
 \begin{center}
 \fcolorbox{brandaccent}{white}{\parbox{0.93\linewidth}{\small
-\textbf{观察。} 启发式修改的成本会随着需要保留的既有行为增长。Coding agent 改变了维护者，因此这个上限可以被测量，而不必继续假定。}}
+\textbf{观察 2：维护是瓶颈。} 启发式修改的成本随既有行为增长；coding agent 恰好替代维护者，使持续修改成为可执行、可测量的过程。}}
 \end{center}
 
-进入 agent 时代后，约束发生了变化：coding agent 的输入和输出空间本来就是程序文本。它读到的策略实体，就是它要写回的策略实体；一局失败的交互轨迹或 replay，也可以直接与产生它的程序对照。相比标量奖励，循环每次经验可以携带更多信息：不仅知道“输了”，还知道输之前做了哪个决策、是哪条规则导致失败。这里的架构性结论是，反馈通道足够宽，循环闭合时不需要在不同表示之间翻译。
+在对抗式游戏中，coding agent 还能同时利用两类优势。输入端不是只有胜负这一稀疏 reward，而是包含逐决策状态、合法动作、所选动作和结果的轨迹 replay，能够指出失败发生在哪里；输出端不是难以检查的神经网络权重，而是可执行、可读、可局部修改的程序。于是，AHL 让宽反馈通道直接作用于可解释策略：coding agent 充分利用符号式范式的优势，同时弥补人类维护成本过高的劣势。
 
 \begin{center}
 \fcolorbox{brandaccent}{white}{\parbox{0.93\linewidth}{\small
-\textbf{结论。} 源代码和决策级 replay 都是 coding agent 的原生输入。这引出了 AHL：一个持续保留的策略、外部对手，以及由 referee 侧完成的评测。}}
+\textbf{观察 3：对抗反馈闭环。} 轨迹 replay 比稀疏 reward 提供更宽的信息通道，可解释程序比神经网络权重更高效地承载修改；AHL 将二者闭合在一个持续演化的策略中。}}
 \end{center}
 
 % THE NAMING AND THE CONCESSION, moved here from 02-preliminary.tex on 2026-08-20 when that
@@ -273,15 +271,7 @@ different strength says nothing.}
 % answerable. Merging them is what produces the unsupportable version of the claim, and a
 % reader will supply the merged version unaided if this is left loose. 01-introduction.tex
 % already concedes the same limit; keep the two statements consistent if either is edited.
-We call this the loop's \emph{information channel}, and keep the term separate from the
-representation on purpose. The channel's width is a property of what the harness makes
-available and of the agent reading it, not of the policy being a program: a loop that holds
-no program at all, rewriting its failed episodes in hindsight into a memory, obtains the same
-kind of per-sample gain~\citep{echo2025hindsight}. This paper therefore states two bounds
-over two different objects and never merges them. The lower bound is over what the loop can
-read, and the symbolic form earns no credit for it. The upper bound is over what the loop can
-edit, and that is where the program is answerable --- which is the subject of
-Section~\ref{sec:discussion}.
+这里的“宽信道”来自轨迹本身，而不是程序表示的魔力；没有程序、只把失败经验写入记忆的循环也可能获得类似的信息增益~\citep{echo2025hindsight}。本文真正要测量的是：在对抗式游戏中，这种宽反馈能否通过一个可解释、可持续修改的程序转化为策略性能。
 
 \end{CJK*}
 
