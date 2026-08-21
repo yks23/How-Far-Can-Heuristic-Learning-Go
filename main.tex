@@ -354,27 +354,19 @@
 % baseline, and no rescoring of the archive pool exists as of 2026-08-19. With ten
 % days to the deadline that is the binding constraint on the paper, not the prose.
 % ===========================================================================
-\abstract{We study \emph{heuristic learning} in adversarial games: an agent reads
-feedback and directly revises an executable policy rather than updating model weights.
-This setting returns to the terrain on which reinforcement learning first displaced
-rule-based game programs. A coding agent is given a game's rules, its own source, and
-replays of its losses, and each revision is rescored against a frozen opponent pool.
-The program is the persistent object --- not an accumulated prompt, not a population
-of candidates, and not a changing harness. We ask how far that object can be maintained.
-The setting is \benchname, built from \val{ngames} games of a collegiate game AI contest
-spanning editions \val{edfirst}--\val{edlast}, with \val{nsubv} archived submission
-versions supplying a graded field of human-written policies. We compare the maintained
-policy with that field and with model-based RL under matched budgets. The lower-bound
-comparison tests the information available per interaction: rules, source, and a replay
-identify what happened, whereas a scalar reward reports only the outcome. The upper
-bound is a maintenance question. Improvement gains decay as \val{decay} and flatten
-near \val{plateau} revisions while the policy's description length approaches
-\val{maintcap}, the size beyond which the agent can no longer place an edit without
-disturbing behavior that already works. Across games of differing complexity that size
-converges within \val{maintcapspread} while the strength reached there spreads by
-\val{eloplatspread}. The resulting claim is deliberately conditional: on adversarial
-games, HL is useful while a winning policy remains below the maintainer's capacity;
-beyond that budget--complexity boundary, a learned method is the better spend.}
+\abstract{\begin{CJK*}{UTF8}{gbsn}
+随着具备 coding 能力的 LLM agent 快速发展，agent 已经能够读写程序并执行复杂的迭代任务。
+然而，在对手不断变化、反馈稀疏的对抗式游戏中，如何让 agent 持续改进一个可执行策略，
+仍然缺乏可靠的评测方法。如果这一能力得到解决，agent 将能够把可解释的程序策略转化为
+可持续演化的决策系统。为衡量这一能力，我们提出 AHL-Arena，用于评测对抗式启发学习。
+该 benchmark 整理了一个由顶尖高校学生组织、持续数十年的经典游戏赛事的规则、后端、
+前端和玩家提交，并选取九个具有广泛性、经典性和多样性的代表性游戏。我们为所有游戏
+提供统一的判别器、决策级回放和 Elo 评分协议，并结合自动化评测与人工整理的程序存档，
+保证结果客观、可复现且能够与人类选手比较。实验在匹配交互预算下评测 coding agent，
+并与强化学习策略进行比较，同时分析对手集、反馈信息和维护规则三个关键因素。结果用于
+刻画可编辑程序的性能上限、样本效率及维护能力，揭示 agent 在不同对抗环境中的能力差异。
+AHL-Arena 旨在推动 agent 从一次性生成策略走向能够持续维护、解释和演化程序策略的系统。
+\end{CJK*}}
 
 \iffalse
 \abstract{For decades a competitive game program was a symbolic construction,
