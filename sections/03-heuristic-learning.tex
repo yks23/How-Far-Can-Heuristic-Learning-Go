@@ -198,7 +198,7 @@
 
 \begin{center}
 \fcolorbox{brandaccent}{white}{\parbox{0.93\linewidth}{\small
-\textbf{观察 1：可解释且可编辑。} 符号策略把决策写成可检查、可局部修改的程序；它的优势不是表达能力更强，而是每条经验都能直接落到策略实体上。}}
+\textbf{观察 1：可解释且可编辑。} 符号策略把决策写成可检查、可局部修改的程序；每条经验都能直接落到策略实体上，并立即影响后续决策。}}
 \end{center}
 
 % PLACEMENT: [b], not [t], and the reason is worth keeping. With [t] this float
@@ -242,18 +242,18 @@ different strength says nothing.}
 \label{fig:size}
 \end{figure}
 
-但这种优势依赖持续维护。增加规则并不难，难的是确认它不会破坏已有行为；程序越大，每次修改的协调成本越高。过去的瓶颈不是程序不能表达，而是人类维护者最终无力继续修改。
+但这种优势伴随着维护代价。增加规则并不难，难的是确认它不会破坏已有行为；程序越大，每次修改的协调成本越高。瓶颈不是程序不能表达，而是持续维护最终变得过于昂贵。
 
 \begin{center}
 \fcolorbox{brandaccent}{white}{\parbox{0.93\linewidth}{\small
-\textbf{观察 2：维护是瓶颈。} 启发式修改的成本随既有行为增长；coding agent 恰好替代维护者，使持续修改成为可执行、可测量的过程。}}
+\textbf{观察 2：维护是瓶颈。} 启发式修改的成本随既有行为增长；当维护成本超过可投入的预算，策略改进就会停止。}}
 \end{center}
 
-在对抗式游戏中，coding agent 还能同时利用两类优势。输入端不是只有胜负这一稀疏 reward，而是包含逐决策状态、合法动作、所选动作和结果的轨迹 replay，能够指出失败发生在哪里；输出端不是难以检查的神经网络权重，而是可执行、可读、可局部修改的程序。于是，AHL 让宽反馈通道直接作用于可解释策略：coding agent 充分利用符号式范式的优势，同时弥补人类维护成本过高的劣势。
+在对抗式游戏中，LLM-based coding agent 可以同时利用并弥补这两点。输入端不是只有胜负这一稀疏 reward，而是包含逐决策状态、合法动作、所选动作和结果的轨迹 replay，能够指出失败发生在哪里；输出端仍是可执行、可读、可局部修改的程序。于是，agent 继承符号式范式的可解释性与编辑性，同时承担原本由人类承担的持续维护工作。
 
 \begin{center}
 \fcolorbox{brandaccent}{white}{\parbox{0.93\linewidth}{\small
-\textbf{观察 3：对抗反馈闭环。} 轨迹 replay 比稀疏 reward 提供更宽的信息通道，可解释程序比神经网络权重更高效地承载修改；AHL 将二者闭合在一个持续演化的策略中。}}
+\textbf{观察 3：LLM agent 的闭环作用。} LLM-based coding agent 将宽轨迹反馈转化为对可解释程序的连续修改：它利用符号式策略的优势，并弥补维护成本过高的劣势。}}
 \end{center}
 
 % THE NAMING AND THE CONCESSION, moved here from 02-preliminary.tex on 2026-08-20 when that
