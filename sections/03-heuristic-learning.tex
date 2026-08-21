@@ -249,7 +249,9 @@ different strength says nothing.}
 \textbf{观察 2：维护需要人力。} 程序的持续修改依赖人力；当人力无法长期投入，策略改进就会停止。}}
 \end{center}
 
-在对抗式游戏中，LLM-based coding agent 可以同时利用并弥补这两点。程序本身是高度启发性且可解释的输入；agent 进一步读取逐决策的轨迹回放来维护程序，相比只有胜负的稀疏 reward，这一信息通道更宽，能够充分利用符号程序的优势。与此同时，agent 可以持续修改同一个可执行、可读、可局部编辑的程序，逐步承担原本需要人力完成的维护工作。
+多人对抗环境高度变化：对手策略不断切换，使每一种局面都只能获得有限样本。没有对手的单机游戏中，RL 面对近似不变的环境，反复采样相对容易；而在对手多变、样本稀疏的环境中，单纯拟合每种行为模式很难充分学习。此时，从每条轨迹中提取结构并直接优化程序，能够把一次观测中的信息迁移到后续决策，因而更适合少样本条件。
+
+LLM-based coding agent 可以同时利用并弥补前述两点。程序本身是高度启发性且可解释的输入；agent 读取逐决策的轨迹回放来维护程序。轨迹、程序与 policy 修改构成一条信息传递链：若中间表示不能保留决策细节，信道容量就会很低；程序形式则把这条链条直接打开，使回放中的信息能够指向具体规则并落实为局部修改。与此同时，agent 可以持续修改同一个可执行、可读、可局部编辑的程序，逐步承担原本需要人力完成的维护工作。
 
 \begin{center}
 \fcolorbox{brandaccent}{white}{\parbox{0.93\linewidth}{\small
@@ -271,7 +273,7 @@ different strength says nothing.}
 % answerable. Merging them is what produces the unsupportable version of the claim, and a
 % reader will supply the merged version unaided if this is left loose. 01-introduction.tex
 % already concedes the same limit; keep the two statements consistent if either is edited.
-这里的“宽信道”来自轨迹本身，而不是程序表示的魔力；没有程序、只把失败经验写入记忆的循环也可能获得类似的信息增益~\citep{echo2025hindsight}。本文真正要测量的是：在对抗式游戏中，这种宽反馈能否通过一个可解释、可持续修改的程序转化为策略性能。
+这里的“宽信道”需要轨迹提供丰富的决策信息，也需要程序形式把这些信息完整传递到 policy 修改；没有程序、只把失败经验写入记忆的循环也可能获得部分类似的信息增益~\citep{echo2025hindsight}。本文真正要测量的是：在对抗式游戏的少样本条件下，这条信息链能否通过一个可解释、可持续修改的程序转化为策略性能。
 
 \end{CJK*}
 
