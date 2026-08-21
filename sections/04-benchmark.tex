@@ -273,15 +273,11 @@
 \section{\benchname}
 \label{sec:benchmark}
 
-\benchname is an evaluation arena built on the archive of a long-running collegiate
-game AI contest. It holds \val{ngames} games, each with its rules, a machine-readable
-decision space, a runnable referee, and the graded field of human programs that
-competed in it; \val{nsubv} archived submission versions in total. It is not a
-collection of tasks authored for a benchmark. Every game was designed to be played
-competitively by people, every opponent in it is a program somebody wrote to win a
-contest, and the rankings it records were produced by that contest rather than by us.
-What we add is a uniform way to run those programs against each other and against
-methods of our own, described in Section~\ref{sec:arena-eval}.
+\benchname is an archive-backed arena of \val{ngames} competitive games, each with
+fixed rules, a machine-readable action space, a runnable referee, and human-written
+programs (\val{nsubv} archived versions). It is not a benchmark task collection:
+the games and rankings predate our study. We add only a uniform evaluator for the
+archived programs and our methods (Section~\ref{sec:arena-eval}).
 
 % THE SCOPE DEFINITION NOW LIVES HERE, moved from 02-preliminary.tex on 2026-08-20 when
 % that section was deleted at the user's direction ("Preliminary删了吧，目前看起来没有定义
@@ -310,49 +306,31 @@ methods of our own, described in Section~\ref{sec:arena-eval}.
 % specification with the predicate that decides it (legal_actions plus
 % policy_interface.legality in all nine decision_space.yaml files), and every game is
 % adjudicated by the evaluate() contract.
-Throughout, a \emph{game} is a task with rules fixed in advance, in which a
-\emph{policy} --- a program that reads the state visible to its role and returns a move
---- is scored by an external referee against opponents it does not control, so strength
-exists only relative to those opponents rather than as an absolute score. Nothing here
-requires two players, a zero-sum payoff, perfect information, or symmetric roles: the
-suite departs from each of these somewhere, and Section~\ref{sec:arena-provenance} says
-where. Both halves are auditable in the arena rather than asserted of it --- every game
-ships a legal-move specification together with the predicate that decides it, and every
-game is adjudicated by one referee contract.
+Throughout, a \emph{game} has fixed rules; a \emph{policy} reads its role's visible
+state and returns a legal move; and an external referee scores it against opponents it
+does not control. The suite includes multiplayer, non-zero-sum, partial-observation,
+and asymmetric games, so no stronger game assumption is made. Each game ships its
+legality specification and referee contract, making both sides auditable.
 
 \subsection{Provenance}
 \label{sec:arena-provenance}
 
-The venue is a computer science department's annual agent contest, founded in
-\val{founded} and in its \val{editions}th edition. Each edition poses one new game,
-publishes its rules and a development kit, and runs an online ladder over a semester in
-which entrants submit, play ranked matches, and resubmit; the strongest advance to a
-final ladder. Two properties of this arrangement are what the archive is for. Entrants
-iterate under their own effort budget over months, so a submission history records
-sustained human maintenance rather than one attempt. And every version submitted was
-kept, not only the last, so the archive holds trajectories and not just endpoints.
+The source is an annual computer-science agent contest, founded in \val{founded} and
+now in its \val{editions}th edition. Each edition publishes one game's rules and kit,
+runs a semester ladder, and retains every resubmitted version. The archive therefore
+records trajectories of human maintenance under a real effort budget, not only final
+endpoints.
 
-Verifiable material does not reach back to the founding: the platform's own
-edition-level index reports the earliest editions surviving only as an inferred list of
-years, and the first edition with a complete asset set is edition~\val{edfirst}.
-\benchname therefore spans editions \val{edfirst}--\val{edlast} --- seven editions,
-\val{ngames} games, two editions having posed two each. The venue's age is what makes
-the archive what it is but is not the archive's reach, and we quote the two separately.
-Because the contest predates this benchmark by decades and was never built for
-evaluation, the archive was not assembled with any model's training data in view, where
-benchmarks needing that property otherwise buy it by authoring tasks
-continuously~\citep{livecodebench2024,workbuddybench2026}. Provenance is not proof: the
-archive is a public web artifact, so what it licenses is a contamination check rather
-than an assumption.
+The complete public asset set begins at edition~\val{edfirst}, so \benchname spans
+\val{edfirst}--\val{edlast}: seven editions and \val{ngames} games. The contest
+predates this benchmark and was not assembled for model evaluation, which gives a
+useful contamination check rather than a proof of independence
+\citep{livecodebench2024,workbuddybench2026}.
 
-Table~\ref{tab:games} lists the suite --- a hex-grid tower defence, a snake-and-go
-territory hybrid, a maze pursuit, a resource-and-terrain war game, a four-player
-survival scramble, a hidden-identity card battle, a scripted interrogation --- with
-rules running from a handful of operations to several interacting subsystems, which is
-what makes it usable for asking whether a limit belongs to the method or to the game.
-Appendix~\ref{app:arena} gives the per-game archive breakdown and the two game
-directories excluded from the suite; Appendix~\ref{app:case} works one game's decision
-space and replay through in full.
+Table~\ref{tab:games} summarizes the heterogeneous suite, from grid and territory
+games to survival, hidden-identity, and scripted-interrogation tasks. Appendix
+~\ref{app:arena} gives the per-game archive breakdown; Appendix~\ref{app:case}
+works one game's decision space and replay in full.
 
 % [b], not [t], for the same reason as Section 3's two floats: with [t] this table
 % lands at the top of the page and sits ABOVE the \subsection{The games} heading that
