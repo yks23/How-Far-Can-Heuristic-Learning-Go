@@ -186,7 +186,7 @@
 % about their normalization protocol.
 % ---------------------------------------------------------------------------
 
-\section{Adversarial-Game Heuristic Learning}
+\section{Adversarial Heuristic Learning (AHL)}
 \label{sec:hl}
 
 \subsection{Motivation}
@@ -300,13 +300,17 @@ read, and the symbolic form earns no credit for it. The upper bound is over what
 edit, and that is where the program is answerable --- which is the subject of
 Section~\ref{sec:discussion}.
 
-\subsection{Introducing heuristic learning}
+\subsection{From heuristic learning to adversarial heuristic learning}
 \label{sec:hl-method}
 
-\emph{Adversarial-game heuristic learning} is the game-scoped form of the paradigm in which an agent interprets feedback
-and directly modifies a program, or another interpretable system, in response. The
-definition names no game and no game-specific machinery: adversarial games are
-where this paper measures HL, not the boundary of the paradigm. Its two halves are
+\emph{Heuristic learning} is an umbrella term rather than a settled single task
+definition. Recent uses include hierarchical norm updates and coding agents that revise
+executable feedback laws under simulator budgets~\citep{yang2018hierarchical,garnier2026heuristic}.
+We use the narrower name \emph{Adversarial Heuristic Learning} (\ahl): an agent
+iteratively edits one executable policy, receives decision-level traces from matches
+against external opponents, and is scored by a referee-side evaluation pool it cannot
+rewrite. Thus AHL is not a claim about HL in general; it is the adversarial-game
+instantiation studied here. Its two halves are
 % Repointed 2026-08-20: this said Section~\ref{sec:preliminary}, which no longer exists. The
 % two properties are now defined in 3.1 above -- editability in the paragraph on the agent
 % era, the channel at its end -- so the reference is backwards within this same section.
