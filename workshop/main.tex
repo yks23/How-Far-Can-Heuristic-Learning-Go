@@ -1,0 +1,56 @@
+\documentclass{article}
+\usepackage[dblblindworkshop]{neurips_2026}
+\workshoptitle{TongNa Workshop}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts,amsmath,amssymb}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{multirow,array,multicol,adjustbox}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\definecolor{brandaccent}{RGB}{24,119,242}
+\usepackage{xspace}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\setlength{\emergencystretch}{3em}
+\input{../numbers}
+\newcommand{\benchname}{\mbox{HL-Arena}\xspace}
+
+\title{How Far Can Heuristic Learning Go in Adversarial Games?\\
+Characterizing Performance Ceilings, Complexity, and Sample Efficiency
+against a Real-World Human Field}
+\author{Anonymous Submission}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We study heuristic learning (HL) in adversarial games: a coding agent reads
+environment feedback and directly revises a persistent, executable heuristic
+policy while the base model remains frozen. Unlike prompt optimization or
+population-based search, each round edits the single artifact produced by the
+previous round. We evaluate this setting on \benchname, an archive-backed suite
+of adversarial games with human-written programs, and compare it with learned
+reinforcement-learning policies under matched interaction budgets. Our protocol
+measures performance against the human field, sample efficiency, and the
+maintenance capacity at which policy revisions cease to pay. The resulting
+comparison makes explicit when an editable program is a useful learning object
+and when a learned policy is the better use of interaction budget.
+\end{abstract}
+
+\input{../sections/01-introduction}
+\input{../sections/03-heuristic-learning}
+\input{../sections/04-benchmark}
+\input{../sections/05-experiments}
+\input{../sections/06-discussion}
+\input{../sections/07-related-work}
+\input{../sections/08-conclusion}
+\bibliographystyle{plainnat}
+\bibliography{refs}
+% Bibliography is kept local to this submission tree so BibTeX works from build/.
+\input{../sections/09-appendix}
+\end{document}
