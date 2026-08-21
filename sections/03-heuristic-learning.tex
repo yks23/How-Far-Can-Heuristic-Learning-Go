@@ -199,11 +199,11 @@ edited locally.
 
 \begin{center}
 \fcolorbox{brandaccent}{white}{\parbox{0.93\linewidth}{\small
-\textbf{Observation 1: readable and interpretable.} A symbolic policy exposes
+\textbf{Observation 1: readable and intelligible.} A symbolic policy exposes
 the decisions it makes as meaningful, inspectable program constructs.}}
 \end{center}
 
-This advantage, however, depends on sustained human heuristic design. When new
+This advantage, however, depends on sustained heuristic maintenance by people. When new
 experience reveals a failure, an expert must intervene to revise the program and
 check that the change does not break behaviours that already work. As the program
 grows, this maintenance requires more human labour and becomes difficult to sustain;
@@ -213,11 +213,11 @@ manually rewriting rules, appear to be a more attractive alternative.
 
 \begin{center}
 \fcolorbox{brandaccent}{white}{\parbox{0.93\linewidth}{\small
-\textbf{Observation 2: maintenance requires human labour.} Without sustained
-human intervention, a symbolic policy stops incorporating new experience.}}
+\textbf{Observation 2: heuristic maintenance requires human labour.} A symbolic
+policy incorporates new experience only when people continue to revise it.}}
 \end{center}
 
-LLM agents with coding capabilities change this trade-off. First, an LLM
+Coding agents built on LLMs change this trade-off. First, an LLM
 operates in a language space and can directly use an interpretable symbolic policy,
 attributing feedback to concrete code and mapping an observed failure to a specific
 edit. Unlike reinforcement learning, which commonly receives only a scalar reward,
@@ -236,9 +236,10 @@ fit for this setting.
 
 \begin{center}
 \fcolorbox{brandaccent}{white}{\parbox{0.93\linewidth}{\small
-\textbf{Observation 3: the coding-agent loop.} An LLM agent can exploit the
-interpretability of program policies through a wide trajectory-to-code feedback
-channel, while gradually taking over the human maintenance burden.}}
+\textbf{Observation 3: coding agents exploit and compensate.} A coding agent
+uses the readability of program policies to turn rich feedback into targeted edits,
+while gradually taking over the heuristic maintenance that otherwise requires
+human labour.}}
 \end{center}
 
 % THE NAMING AND THE CONCESSION, moved here from 02-preliminary.tex on 2026-08-20 when that
