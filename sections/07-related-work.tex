@@ -231,7 +231,10 @@ proposal and repair, self-rewriting coding agents, skill libraries, and whole re
 selfimprovingcodingagent2025,darwingodelmachine2025,aiscientist2024,avo2026,
 mendelgoedel2026}. Benchmarks alongside them measure such learning by transfer and
 interference rather than retrieval, and separate the gain from the harness
-\citep{agentcl2026,clbench2026,harnessengineering2026} --- hence ours is fixed. Ours carries
+\citep{agentcl2026,clbench2026,harnessengineering2026} --- hence ours is fixed. Trajectory
+distillation has likewise been used to turn interaction traces into compact, reusable
+skills organized for later retrieval and composition \citep{browserbc2026}; our feedback
+is instead written directly into an executable game policy. Ours carries
 one artifact rather than a population, so experience is written into the program rather than
 retrieved, which creates the failure mode measured here. The mechanism is accumulation:
 revisions leave the program larger and more interconnected \citep{mccabe1976complexity}, and
