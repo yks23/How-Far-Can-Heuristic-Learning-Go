@@ -279,7 +279,7 @@
 An arena instance is the tuple $(G,R,A,F,H)$: a game $G$, its fixed rules $R$,
 role-specific action space $A$, referee $F$, and the archived human field $H$.
 A policy reads the state visible to its role and returns an action in $A$; the referee
-executes the match and returns scores and a replay. An HL run receives $(R,A)$, its
+executes the match and returns scores and a replay. An AHL run receives $(R,A)$, its
 current source, and training replays, then returns a revised source. Final policies are
 scored against a frozen opponent pool; the source is the only object carried between
 revisions.
@@ -469,7 +469,7 @@ Player faults (illegal move, timeout, crash) count as losses; infrastructure fau
 rerun.
 
 A replay retains each role's public state, legal actions, chosen move, and acceptance,
-without exposing hidden state; this is the trace consumed by HL (Appendix~\ref{app:case}).
+without exposing hidden state; this is the trace consumed by AHL (Appendix~\ref{app:case}).
 
 % RATINGS, POOLS, AND THE TWO HUMAN QUANTITIES, moved here from 02-preliminary.tex on
 % 2026-08-20. This is the paragraph Section 5 depends on most: every number it quotes is

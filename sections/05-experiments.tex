@@ -118,7 +118,7 @@
 \section{Experiments}
 \label{sec:experiments}
 
-This section evaluates HL along the two comparisons that define the paper, followed by
+This section evaluates AHL along the two comparisons that define the paper, followed by
 ablations that identify which parts of the loop are responsible for any observed gain.
 The first experiment is the primary test of the paradigm in its intended setting; the
 second asks where that advantage does and does not survive against learned baselines;
@@ -126,7 +126,7 @@ the third is diagnostic rather than a second headline result. All evaluations us
 same append-only event schema and report the learning, evaluation, and total budgets
 separately (Section~\ref{sec:arena-eval}).
 
-\subsection{Adversarial-game HL against human programs on \benchname}
+\subsection{AHL against human programs on \benchname}
 \label{sec:exp-human}
 
 \paragraph{Question.} Can an agent that repeatedly revises one executable heuristic
@@ -135,43 +135,43 @@ games? This is the primary experiment: it tests whether heuristic learning chang
 maintenance bottleneck that historically limited rule-based game programs, rather than
 testing whether a language model can produce a strong first draft.
 
-\paragraph{Setting.} We run the full HL loop on \benchname, the archive-backed suite of
+\paragraph{Setting.} We run the full AHL loop on \benchname, the archive-backed suite of
 \val{ngames} contest games described in Section~\ref{sec:benchmark}. For each game, the
 agent receives the public rules, its current source, and replay traces from its own
 matches. It may revise the current policy and submit the resulting version for scoring;
 each version is evaluated against the pre-registered frozen test pool. The archive's
 human submissions provide both the distribution used for percentile placement and the
 best-ever human program used as the per-game state-of-the-art reference. The pools and
-the cross-edition Elo procedure are fixed before any HL run, so a later revision cannot
+the cross-edition Elo procedure are fixed before any AHL run, so a later revision cannot
 benefit from a moving opponent set.
 
 \paragraph{Protocol and outcome.} We use one independent run per game and seed, with the
 same initial-policy contract and revision budget across games. The primary outcome is
-whether HL exceeds the strongest archived human submission on each game, reported as
+whether AHL exceeds the strongest archived human submission on each game, reported as
 \val{nbeat} of \val{ngames}, not as a pooled score. We also report the Elo gap to that
 submission, percentile within the archived field, the full Elo--revision trajectory,
 and the revision depth at which the best policy appears. Human maintenance depth is
-reported beside the HL budget rather than converted into fictitious labour hours: the
+reported beside the AHL budget rather than converted into fictitious labour hours: the
 archive records submission revisions, not wall-clock effort. This experiment therefore
-answers both whether HL can beat the human field and how much continued maintenance was
+answers both whether AHL can beat the human field and how much continued maintenance was
 required when it does.
 
-\subsection{Adversarial-game HL versus RL under matched interaction budgets}
+\subsection{AHL versus RL under matched interaction budgets}
 \label{sec:exp-rl}
 
-The second primary experiment compares HL with learned policies on established RL
+The second primary experiment compares AHL with learned policies on established RL
 benchmarks. We use the classic game and control environments in which RL baselines are
-normally reported, and run HL and the RL methods through the same referee-facing
+normally reported, and run AHL and the RL methods through the same referee-facing
 interfaces wherever the environment permits. Model-based RL is the primary baseline:
 it is off-policy and therefore does not confound the representational comparison with
 on-policy data disposal. A policy-gradient baseline is retained as the on-policy
 reference point.
 
-The comparison is budget-conditional, not a claim that HL dominates RL. We match the
+The comparison is budget-conditional, not a claim that AHL dominates RL. We match the
 methods at the evaluation boundary and report environment interactions, agent
 invocations, wall-clock, and total cost separately. We measure final performance,
 performance as a function of interaction budget, Elo-budget area under the curve, and
-the crossover at which the learned baseline overtakes HL. We additionally report
+the crossover at which the learned baseline overtakes AHL. We additionally report
 transfer to held-out environments without retuning when that protocol is available.
 The result is intended to locate the regime in which the richer feedback channel of an
 editable program pays for itself, and the regime in which the scaling properties of a
