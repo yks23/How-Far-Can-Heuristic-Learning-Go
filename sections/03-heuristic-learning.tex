@@ -266,11 +266,18 @@ loop converts that information into measurable policy improvement.
 \subsection{Introducing Adversarial Heuristic Learning}
 \label{sec:hl-method}
 
-\textbf{Definition (adversarial game).} An adversarial game is an interactive
-environment in which the policy's observations, transitions, or outcomes depend
-on actions chosen by an external opponent. Let $\mathcal{O}$ denote the available
-opponent pool; each round selects a subset $\mathcal{O}_t\subseteq\mathcal{O}$,
-which determines the behaviours and feedback observed in that round.
+\begin{definition}[Adversarial game]
+An adversarial game is an interactive environment
+\[
+\mathcal{G}=\bigl(\mathcal{S},\mathcal{A},\mathcal{B},\mathcal{O},P,R\bigr),
+\]
+where the policy acts with $a_t\in\mathcal{A}$, an external opponent acts with
+$b_t\in\mathcal{B}$, and the transition or outcome distribution
+$\bigl(P,R\bigr)(\cdot\mid s_t,a_t,b_t,o)$ depends on the opponent
+$o\in\mathcal{O}$. Each round selects an opponent subset
+$\mathcal{O}_t\subseteq\mathcal{O}$, which determines the behaviours and feedback
+observed in that round.
+\end{definition}
 
 We use \emph{Adversarial Heuristic Learning} (\ahl) for the following setting:
 an agent iteratively edits one executable policy, receives decision-level traces
