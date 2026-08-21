@@ -409,39 +409,16 @@ pipeline did not produce.
 \subsection{Contents}
 \label{sec:arena-archive}
 
-Every submission version is kept as an independent entry: the entrant's source as
-submitted, plus a manifest row giving the entrant, the version index, the track, and the
-finals rank and rating where the ladder recorded them. The unit is the version, not the
-person, and the two must not be conflated. \val{nrownamed} versions carry a plaintext
-entrant identity, from \val{nusersnamed} distinct people; the remaining \val{nrowanon}
-are anonymised, and their identities resolve to at most \val{nusersanon} distinct
-hashes which cannot be linked across games or to the named entrants. The field is
-therefore small and strongly correlated relative to its version count, and any placement
-computed over versions must state its unit of independence. Of the registered versions
-\val{nsubcode} have source on disk and are playable; the rest are registered without
-code and excluded from every pool. The archive arrives with a fixed split,
-\val{ntrain} development and \val{ntest} held out, which we adopt as given.
+Each submission is a versioned source snapshot with a manifest row. We report versions,
+not people: identities are incomplete and correlated, so percentiles state their unit of
+independence. Only playable snapshots enter the pools; the archive's development/held-out
+split is retained.
 
-The version index is the archive's most useful record, because the platform numbers each
-entrant's resubmissions: a row's index is the number of times that person had revised
-their program. Human effort is thus measurable in the same unit as ours --- revisions,
-not months. Across the \val{nrank} ranked versions the median placing entry is revision
-\val{humanmedrev}, the upper quartile \val{humanq3rev}, and the deepest
-\val{humanmaxrev}. Appendix~\ref{app:human} reports this per game and states the
-caveats; it is the reference \val{hlspan} is set against.
+The version index supplies a common revision count for human maintenance;
+Appendix~\ref{app:human} gives its distribution and caveats.
 
-Two limits of the metadata bear on that comparison. The pools are finals ladders rather
-than every entrant, so all \val{nrank} ranked versions fall within the named entrants
-and a percentile against them is a percentile of a finalist field --- a stronger
-opponent set than the full entry list and a much smaller one. And the ratings are not
-one scale: \val{nelo} versions carry a rating, computed by whatever each edition's
-ladder used, one game's on an unrelated scale and another's absent. We treat the
-archive's ratings as provenance and recompute every rating in this paper with our own
-referee. Separately, entrants ship the contest SDK and often third-party libraries
-inside their submission directory, and the vendored share differs across games by
-orders of magnitude, so any measurement of program size ---
-Section~\ref{sec:hl-motivation}'s description length in particular --- must strip these
-first, as part of the measurement rather than as preprocessing.
+The ranked field is a finalist subset and archive ratings are provenance only; all
+ratings and program-size measurements are recomputed under our contracts.
 
 % THE AUDIT CRITERION AND THE FOLK ORDERING, moved here from 02-preliminary.tex on
 % 2026-08-20. Both belong to this subsection rather than to a vocabulary section: they are
@@ -468,18 +445,9 @@ first, as part of the measurement rather than as preprocessing.
 % contestants believe, so "have long ordered" asserted an unmeasured fact about a
 % population. Section 1 states the ordering itself; what is added here is the consequence,
 % which is what makes it testable rather than a piece of framing.
-Classifying these versions by whether their strength is stored in code or in parameters
-requires a criterion that decides cases, since the shares reported in
-Section~\ref{sec:experiments} are worth no more than the criterion is. A submission counts
-as containing a learned component when the repository ships parameters fitted from data,
-or the code that fits them, for a component that affects move selection. Evaluation
-coefficients a contestant tuned by hand do not count, however many matches informed the
-tuning: the contestant is the optimizer in that loop, and treating human iteration as
-learning would make the category include every serious entry and measure nothing. That
-audit is also what makes the folk ordering of Section~\ref{sec:introduction} --- rules
-lowest, search above them, learned policies highest --- a hypothesis rather than a piece
-of framing, because it has a consequence the archive can check: if the ordering holds, the
-paradigm composition of winning entries should climb it as budgets and tooling improve
+We classify a submission as learned only when fitted parameters or a fitting procedure
+affects move selection; hand-tuned coefficients remain heuristic. This makes the reported
+composition testable rather than dependent on how ``learning'' is named.
 % FIXED ON THE WAY IN, 2026-08-20. The sentence in 02-preliminary.tex read "reports what
 % \val{editions} editions of outcomes say", and \val{editions}=30 is the VENUE's age, not
 % this archive's span -- numbers.tex carries the standing instruction "Never use editions to
@@ -489,47 +457,19 @@ paradigm composition of winning entries should climb it as budgets and tooling i
 % archive-scale conflict awaiting the user's decision: 01-introduction.tex's "finals in
 % \val{nrlfinal} of \val{editions} editions" and the abstract's "spanning \val{editions}
 % editions". Fix all three together when that decision lands.
-across editions. Section~\ref{sec:experiments} reports what editions
-\val{edfirst}--\val{edlast} say.
 
 \subsection{Protocol}
 \label{sec:arena-eval}
 
-The arena exposes one referee interface for all \val{ngames} games. A match is
-requested as a game, an ordered list of players, the roles they occupy, and a seed, and
-returns the winner, a score per role, the number of rounds, and a replay. Games differ
-in how they adjudicate and nothing above the interface knows how, so a method under
-test is a player and nothing else. Fixing the seed with the players and their roles
-fixes the match: the same request reproduces the same outcome and the same replay,
-which records the referee and backend versions that produced it. Player code runs
-isolated under time and memory limits and cannot read its opponent's source or the
-referee's internal state. Where roles are not symmetric --- unequal starting positions,
-or the two sides of an asymmetric game --- every pairing is played in both role orders
-on paired seeds and only the balanced result is used.
+One referee interface handles all games: a seeded request fixes players and roles and
+returns scores, winner, and a replay. Code is sandboxed; asymmetric roles are evaluated
+in paired orders.
 
-Outcomes are separated into three states, and the separation is what makes ratings from
-this arena trustworthy. A match either completes, or fails inside the rules, or fails in
-the infrastructure. Failure inside the rules is the player's: a timeout, an illegal
-move, a crash of the submitted program, all adjudicated as a loss under the game's own
-rules and all counted. Failure of the infrastructure is not the player's, is never
-recorded as a loss, and is rerun. Conflating the two silently transfers the arena's
-own faults onto whichever method happens to be slower or heavier, which for a
-comparison between a compiled human submission and an agent-driven pipeline is not a
-neutral error. When attribution is unclear the match is marked infrastructure failure
-and reviewed rather than charged to the player.
+Player faults (illegal move, timeout, crash) count as losses; infrastructure faults are
+rerun.
 
-A replay is a full per-decision record rather than an outcome log, which is the property
-Section~\ref{sec:hl-bottleneck} identified as setting the ceiling on what any revision
-can be held responsible for. Every frame carries the acting role, the public state it
-faced, the legal moves available there, the move it chose, and whether the referee
-accepted it, so the trace answers at each decision what the player could see, what it
-could have done, and what it did. That is what makes a loss attributable to a rule in
-the program rather than to the game as a whole, and it is the $\tau_t$ the loop of
-Section~\ref{sec:hl-method} consumes. The record respects the game's information
-boundary: hidden state never enters a public observation, and under imperfect
-information each role's view is recorded separately. Rejected moves are recorded but
-marked and excluded from the decision sequence. Appendix~\ref{app:case} shows a frame
-in full.
+A replay retains each role's public state, legal actions, chosen move, and acceptance,
+without exposing hidden state; this is the trace consumed by HL (Appendix~\ref{app:case}).
 
 % RATINGS, POOLS, AND THE TWO HUMAN QUANTITIES, moved here from 02-preliminary.tex on
 % 2026-08-20. This is the paragraph Section 5 depends on most: every number it quotes is
@@ -558,35 +498,14 @@ in full.
 % "Across all editions rather than within one" is the only honest reading of "human state
 % of the art" -- it is a bar that rises with every edition, and taking it within one
 % edition would let a weak edition supply a cheap win.
-Because a policy's strength exists only relative to its opponents, every result in this
-paper is an Elo rating computed from match outcomes on this referee, never an environment
-return, and the archive's own ratings are treated as provenance rather than as data. Two
-protocols appear and we distinguish them wherever a number is quoted: \emph{batch} Elo,
-where a set of policies is rated jointly from a round-robin played after the fact, and
-\emph{online} Elo, where a policy under revision is rated as it plays, so its trajectory
-can be read. Ratings are comparable only within a fixed set of adversaries, so three pools
-are kept apart. The \emph{training pool} is what a method may play while it improves. The
-\emph{frozen test pool} is fixed before any run begins and never updated, which is what
-makes ratings comparable across revisions, across methods, and across seeds. The
-\emph{anchor pool}, a stratified set of archived human submissions, places ratings from
-different games and different editions on one scale. Against that field two quantities are
-reported and they answer different questions. A \emph{percentile} is the fraction of
-recorded human versions of a game that a policy outranks --- a statement about the
-distribution, and the measurement thousands of independent attempts uniquely afford, read
-subject to the finalist-field caveat of Section~\ref{sec:arena-provenance}. The
-\emph{human state of the art} for a game is the single strongest submission the archive
-records for it, taken across editions \val{edfirst}--\val{edlast} rather than within one, a
-bar that rises with every edition. Beating it is a claim about a maximum and placing within
-the field is a claim about a distribution; Section~\ref{sec:experiments} reports both
-because neither substitutes for the other.
+We report Elo from this referee, not raw return. Training, frozen-test, and human-anchor
+pools stay separate; the test pool is fixed before runs. Percentile measures placement in
+the archived field, while the human state of the art is its strongest submission; both are
+reported because they answer different questions.
 
-Runs report through one schema so results from different methods and games are
-commensurable. Per-iteration events carry the candidate, the reference it is scored
-against, behavioural change measured at the decision level, and three separate budgets:
-what the method spent learning, what it spent being evaluated, and the total, each in
-tokens and wall-clock. Separating learning from evaluation cost is what makes a
-sample-efficiency comparison possible at all, since a method that learns cheaply by
-evaluating exhaustively has saved nothing.
+Runs share one schema: candidate, reference, decision-level change, and learning,
+evaluation, and total budgets. Common and native units are recorded; missing values remain
+missing (Appendix~\ref{app:apparatus}).
 % CONFLICT RESOLVED HERE, not papered over. 02-preliminary.tex said each ledger is reported
 % "in whichever units apply to the method -- environment steps, agent invocations, tokens,
 % wall-clock time, currency"; this schema paragraph said "each in tokens and wall-clock".
@@ -600,14 +519,3 @@ evaluating exhaustively has saved nothing.
 % "The total is the only one comparable across paradigms without qualification" is the
 % reason all three are carried rather than just the total: quoting one paradigm's favourable
 % denominator is the easiest way to make a budget comparison say nothing.
-All three are recorded for every method in the common units, and additionally in whichever
-unit is native to it --- environment steps for a reinforcement learner, agent invocations
-for a maintenance loop --- because no single unit is native to both. Of the three only the
-total may be compared across paradigms without qualification, and we say which ledger a
-number comes from wherever one is quoted. Two conventions are load-bearing and we
-follow them throughout. Change in what a policy chooses and change in which states it
-reaches are recorded separately and never summed, because a policy can be edited
-without changing where it goes and can go somewhere new without being edited. And an
-unmeasured quantity is recorded as missing rather than zero, since zero is itself a
-measurement --- the distinction is what keeps an unevaluated run from averaging into a
-result. Appendix~\ref{app:apparatus} gives both contracts.
