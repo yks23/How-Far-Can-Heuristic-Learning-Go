@@ -273,20 +273,20 @@
 \section{\benchname}
 \label{sec:benchmark}
 
-\begin{CJK*}{UTF8}{gbsn}
-
-\subsection{规则描述}
+\subsection{Rules and Arena Definition}
 \label{sec:arena-formulation}
 
-一个 arena 实例表示为 $(G,R,A,F,H)$：其中 $G$ 是游戏，$R$ 是固定规则，
-$A$ 是与角色相关的动作空间，$F$ 是判别器（referee），$H$ 是存档中的人类选手集合。
-策略读取其角色可见的状态并返回一个合法动作；判别器执行对局并返回结果与回放。
-AHL 在每轮接收 $(R,A)$、当前程序和训练回放，并输出修改后的程序；程序是跨轮次
-持续保留的对象。
+An arena instance is the tuple $(G,R,A,F,H)$: a game $G$, fixed rules $R$,
+role-specific action space $A$, referee $F$, and archived human field $H$.
+A policy reads its role's visible state and returns a legal action; the referee executes
+the match and returns its outcome and replay. At each round, AHL receives $(R,A)$, the
+current program, and training replays, then outputs a revised program that persists
+across rounds.
 
-\benchname 是一个由存档支持的竞技场，包含 \val{ngames} 个竞争性游戏；每个游戏都提供
-固定规则、机器可读的动作空间、可运行的判别器以及人类编写的程序（共 \val{nsubv} 个版本）。
-这些游戏和排行榜早于本文研究；我们只为存档程序和本文方法增加统一的评测器。
+\benchname is an archive-backed arena of \val{ngames} competitive games. Each game
+provides fixed rules, a machine-readable action space, a runnable referee, and
+human-written programs (\val{nsubv} archived versions). We use one uniform evaluator
+for both the archived programs and our methods.
 
 % THE SCOPE DEFINITION NOW LIVES HERE, moved from 02-preliminary.tex on 2026-08-20 when
 % that section was deleted at the user's direction ("Preliminary删了吧，目前看起来没有定义
@@ -315,23 +315,26 @@ AHL 在每轮接收 $(R,A)$、当前程序和训练回放，并输出修改后�
 % specification with the predicate that decides it (legal_actions plus
 % policy_interface.legality in all nine decision_space.yaml files), and every game is
 % adjudicated by the evaluate() contract.
-在本文中，\emph{game} 具有固定规则；\emph{policy} 读取其角色可见的
-状态并返回合法动作；外部判别器则在其无法控制的对手集上进行评分。这组游戏包含多人、
-非零和、部分可观测和角色不对称的情况，因此本文不作更强的游戏假设。每个游戏都提供
-合法性规范和判别器协议，保证对局双方均可审计。
+Throughout, a \emph{game} has fixed rules; a \emph{policy} reads its role's visible
+state and returns a legal action; and an external referee scores it against opponents
+it does not control. The suite includes multiplayer, non-zero-sum, partially observable,
+and asymmetric games, so we make no stronger game assumption. Each game ships a
+legality specification and referee contract, making both sides auditable.
 
-\subsection{比赛内容与来源}
+\subsection{Task Suite and Provenance}
 \label{sec:arena-provenance}
 
-该比赛源于由顶尖高校学生组织的经典游戏赛事，已经持续举办数十年。我们整理了
-历届比赛的规则、后端、前端以及玩家提交，并从中选取九个具有代表性的游戏作为
-\benchname 的样本。每个游戏的具体规则、动作空间和回放格式见附录~\ref{app:arena}；
-附录~\ref{app:case} 进一步完整展示其中一个游戏的实例。
+The arena originates from a classic game competition organized by students at leading
+universities and held for several decades. We consolidate its historical rules,
+backends, frontends, and player submissions, and select nine representative games as
+the \benchname suite. Per-game rules, action spaces, and replay formats are given in
+Appendix~\ref{app:arena}; Appendix~\ref{app:case} works through one game in full.
 
-这组样本强调三个性质：\textbf{广泛性}，覆盖面向绝大多数参与者的常见游戏形式；
-\textbf{经典性}，由持续数十年的赛事历史提供时间上的验证；以及\textbf{多样性}，
-同时包含网格与领地争夺、生存、隐藏身份、角色不对称和脚本化推理等不同类型，
-从而避免结论依赖单一游戏机制。
+The sample emphasizes three properties: \textbf{breadth}, covering game forms familiar
+to a broad population of participants; \textbf{classicism}, grounded in a competition
+with a multi-decade history; and \textbf{diversity}, spanning grid and territory games,
+survival, hidden identity, asymmetric roles, and scripted reasoning so that conclusions
+do not depend on one game mechanism.
 
 % [b], not [t], for the same reason as Section 3's two floats: with [t] this table
 % lands at the top of the page and sits ABOVE the \subsection{The games} heading that
@@ -357,9 +360,11 @@ AntWar2    & 30 & 2 & perfect   & 631 & 20 \\
 \multicolumn{4}{l}{Total} & \val{nsubv} & \\
 \bottomrule
 \end{tabular}
-\caption{\benchname 中的 \val{ngames} 个游戏及其竞赛届次。Versions 统计存档的提交版本数；
-Entrants 统计该游戏中产生这些版本的不同实名选手数，但不求总和：存档中多数记录匿名，
-无法跨游戏关联身份，因此该字段只能作为规模上界。具体统计见附录~\ref{app:arena}。}
+\caption{The \val{ngames} games in \benchname by contest edition. Versions counts
+archived submission versions. Entrants counts distinct named people who produced them
+within each game and is deliberately not totalled: most archive rows are anonymised and
+identities cannot be linked across games, so this field is only an upper bound. See
+Appendix~\ref{app:arena} for the full breakdown.}
 \label{tab:games}
 \end{table}
 
@@ -369,12 +374,14 @@ Entrants 统计该游戏中产生这些版本的不同实名选手数，但不�
 % itself (single-player, and requires_llm_api: true so its referee calls a language
 % model), which is why it is reported apart; that is a consequence of the definition, not
 % an exception to it. Do not let a later edit quietly fold DeepClue into the main claim.
-这组游戏的差异既拓宽了结论的适用范围，也限制了可以作出的统一表述。LostSpace 是四人
-且非零和；AquaWar 隐藏双方身份信息；LostSpace 和 Rollman 部分可观测，因此回放记录的
-是角色当时能看到的内容，而不是完整局面；Rollman 的两个角色不对称并分别排名。DeepClue
-是单人脚本化推理任务，其判别器还会调用外部语言模型，因此没有对手和固定判定机制；这对
-比较语言模型方法与强化学习也构成混淆，我们单独报告它而不删除它。凡是需要二人零和假设
-的结论，我们会明确列出适用的游戏。
+The suite's variation both broadens and limits what a single claim can say. LostSpace
+is four-player and non-zero-sum; AquaWar hides each side's identity information; and
+LostSpace and Rollman are partially observable, so a replay records what a role could
+see rather than the complete state. Rollman has two asymmetric roles ranked separately.
+DeepClue is a single-player scripted reasoning task whose referee calls an external
+language model, so it has no opponent or fixed adjudication; this also confounds a
+comparison between a language-model method and RL, and we report it separately. Claims
+requiring a two-player zero-sum setting identify the games to which they apply.
 
 % STRUCTURAL CONTROLS, moved here from 02-preliminary.tex on 2026-08-20 with the rest of
 % that section. It has to survive somewhere: 01-introduction.tex's contribution 2 promises
@@ -384,21 +391,24 @@ Entrants 统计该游戏中产生这些版本的不同实名选手数，但不�
 % These games are NOT in Table 1 and must not be added to it: the table is the contest
 % suite, \val{ngames} counts the contest's own games, and folding the classics in would
 % break every per-game count in this section.
-除竞赛自身的游戏外，我们还保留国际象棋、围棋等具有独立研究传统的经典游戏作为结构
-控制。它们用于检验复杂度测量是否只对本套游戏成立：这些游戏的策略复杂度已有外部依据，
-因此可以校准第~\ref{sec:hl-motivation} 节中的复杂度代理指标，并为跨游戏排序提供参照。
+Alongside the venue's games, we retain classic games such as chess and Go as structural
+controls. Their strategic structure has an independent literature, allowing us to test
+whether complexity measurements validate only this suite, calibrate the proxy in
+Section~\ref{sec:hl-motivation}, and provide an external reference for cross-game orderings.
 
-\subsection{存档与参赛程序}
+\subsection{Archive and Submissions}
 \label{sec:arena-archive}
 
-每个提交都是一个带版本号的源代码快照，并对应 manifest 中的一行记录。我们统计的是版本，
-而不是人数：身份信息不完整且版本之间存在相关性，因此百分位数必须注明独立性单位。
-只有可运行的快照进入对手池，并保留存档中的开发集/留出集划分。
+Each submission is a versioned source snapshot with a manifest row. We report versions,
+not people: identities are incomplete and versions are correlated, so percentiles state
+their unit of independence. Only playable snapshots enter the opponent pools, and the
+archive's development/held-out split is retained.
 
-版本索引为人类维护过程提供统一的修订次数；其分布和注意事项见附录~\ref{app:human}。
+The version index provides a common revision count for human maintenance; its
+distribution and caveats appear in Appendix~\ref{app:human}.
 
-排行榜中的选手是决赛子集，存档中的原始分数仅用于溯源；本文会根据统一协议重新计算
-所有分数和程序规模指标。
+The ranked field is a finalist subset and archive ratings are used only for provenance;
+we recompute all ratings and program-size measurements under our uniform contracts.
 
 % THE AUDIT CRITERION AND THE FOLK ORDERING, moved here from 02-preliminary.tex on
 % 2026-08-20. Both belong to this subsection rather than to a vocabulary section: they are
@@ -425,8 +435,9 @@ Entrants 统计该游戏中产生这些版本的不同实名选手数，但不�
 % contestants believe, so "have long ordered" asserted an unmeasured fact about a
 % population. Section 1 states the ordering itself; what is added here is the consequence,
 % which is what makes it testable rather than a piece of framing.
-只有当拟合参数或拟合过程实际影响动作选择时，我们才将提交归类为 learned；手工调节的
-系数仍归为 heuristic。这样，类别统计可以被复核，而不依赖于提交者如何命名自己的方法。
+We classify a submission as learned only when fitted parameters or a fitting procedure
+affects move selection; hand-tuned coefficients remain heuristic. This makes the
+composition testable rather than dependent on how a submission names its method.
 % FIXED ON THE WAY IN, 2026-08-20. The sentence in 02-preliminary.tex read "reports what
 % \val{editions} editions of outcomes say", and \val{editions}=30 is the VENUE's age, not
 % this archive's span -- numbers.tex carries the standing instruction "Never use editions to
@@ -437,29 +448,33 @@ Entrants 统计该游戏中产生这些版本的不同实名选手数，但不�
 % \val{nrlfinal} of \val{editions} editions" and the abstract's "spanning \val{editions}
 % editions". Fix all three together when that decision lands.
 
-\subsection{双方对局的评测协议}
+\subsection{Match Evaluation Protocol}
 \label{sec:arena-eval}
 
-所有游戏都通过统一的判别器接口评测：带有随机种子的请求固定参赛程序与角色，
-判别器执行对局并返回分数、胜者和回放。代码在沙箱中运行；对于非对称角色，交换双方
-角色并成对评测。
+All games use one referee interface: a seeded request fixes the programs and roles, and
+the referee returns scores, a winner, and a replay. Code runs in a sandbox; asymmetric
+roles are evaluated in paired swapped orders.
 
-对局成功与否由判别器的最终结果决定：非法动作、超时或程序崩溃均判为该方失败；
-基础设施故障则重新运行，不计入选手结果。
+Match success is determined by the referee's final result: an illegal move, timeout,
+or crash is a loss for that player, while infrastructure failures are rerun and do not
+count toward player results.
 
-回放记录每个角色在每一步可见的状态、合法动作集合、实际选择的动作及其是否被接受，
-并不泄露隐藏状态；这正是 AHL 使用的训练轨迹，具体格式见附录~\ref{app:case}。
+The replay records each role's visible state at every step, legal action set, selected
+action, and whether it was accepted, without exposing hidden state. This is the training
+trace consumed by AHL; its concrete format is given in Appendix~\ref{app:case}.
 
-\subsection{排行榜分数}
+\subsection{Leaderboard Scores}
 
-对于每一场对局，胜者得分 $S=1$，败者得分 $S=0$；若判别器返回平局，双方均得
-$S=1/2$。给定当前评分 $r_i,r_j$，选手 $i$ 的预期得分为
+For each match, the winner receives $S=1$ and the loser $S=0$; if the referee returns a
+draw, both receive
+$S=1/2$. Given current ratings $r_i,r_j$, player $i$'s expected score is
 \[
 E_i=\frac{1}{1+10^{(r_j-r_i)/400}},
 \qquad r_i' = r_i + K(S_i-E_i),
 \]
-其中 $K$ 是预先固定的更新系数。排行榜分数是选手在规定对手集上完成全部对局后的
-最终 Elo；训练过程中的 AHL agent 不读取该排行榜分数，Elo 只作为训练结束后的评测指标。
+where $K$ is fixed in advance. The leaderboard score is the final Elo after all matches
+against the specified opponent set; the AHL agent never reads this score during training,
+and Elo is used only as a post-training evaluation metric.
 
 % RATINGS, POOLS, AND THE TWO HUMAN QUANTITIES, moved here from 02-preliminary.tex on
 % 2026-08-20. This is the paragraph Section 5 depends on most: every number it quotes is
@@ -488,14 +503,15 @@ E_i=\frac{1}{1+10^{(r_j-r_i)/400}},
 % "Across all editions rather than within one" is the only honest reading of "human state
 % of the art" -- it is a bar that rises with every edition, and taking it within one
 % edition would let a weak edition supply a cheap win.
-排行榜报告的是该判别器计算的 Elo，而不是原始回报。训练集、冻结测试集和人类锚定集
-彼此独立；测试集在运行前固定。百分位数衡量方法在存档选手中的位置，人类 state of the art
-则取其中最强提交；二者回答不同问题，因此分别报告。
+We report Elo from this referee rather than raw return. Training, frozen-test, and
+human-anchor pools remain separate, with the test pool fixed before each run. Percentile
+measures placement in the archived field, whereas the human state of the art is its
+strongest submission; both are reported because they answer different questions.
 
-所有实验运行共享同一记录格式：候选程序、参考程序、决策级变化，以及学习、评测和总预算。
-同时记录跨方法通用单位和各方法的原生单位；缺失值保持缺失（见附录~\ref{app:apparatus}）。
+All runs share one schema: candidate, reference, decision-level change, and learning,
+evaluation, and total budgets. We record common and native units; missing values remain
+missing (Appendix~\ref{app:apparatus}).
 
-\end{CJK*}
 % CONFLICT RESOLVED HERE, not papered over. 02-preliminary.tex said each ledger is reported
 % "in whichever units apply to the method -- environment steps, agent invocations, tokens,
 % wall-clock time, currency"; this schema paragraph said "each in tokens and wall-clock".
