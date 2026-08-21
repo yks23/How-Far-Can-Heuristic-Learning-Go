@@ -273,6 +273,17 @@
 \section{\benchname}
 \label{sec:benchmark}
 
+\subsection{Arena formulation}
+\label{sec:arena-formulation}
+
+An arena instance is the tuple $(G,R,A,F,H)$: a game $G$, its fixed rules $R$,
+role-specific action space $A$, referee $F$, and the archived human field $H$.
+A policy reads the state visible to its role and returns an action in $A$; the referee
+executes the match and returns scores and a replay. An HL run receives $(R,A)$, its
+current source, and training replays, then returns a revised source. Final policies are
+scored against a frozen opponent pool; the source is the only object carried between
+revisions.
+
 \benchname is an archive-backed arena of \val{ngames} competitive games, each with
 fixed rules, a machine-readable action space, a runnable referee, and human-written
 programs (\val{nsubv} archived versions). It is not a benchmark task collection:
@@ -312,7 +323,7 @@ does not control. The suite includes multiplayer, non-zero-sum, partial-observat
 and asymmetric games, so no stronger game assumption is made. Each game ships its
 legality specification and referee contract, making both sides auditable.
 
-\subsection{Provenance}
+\subsection{Task suite and provenance}
 \label{sec:arena-provenance}
 
 The source is an annual computer-science agent contest, founded in \val{founded} and
