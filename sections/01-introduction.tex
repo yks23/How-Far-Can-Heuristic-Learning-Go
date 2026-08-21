@@ -296,7 +296,7 @@ of a symbolic program, in place of the human whose cost bounded the paradigm ---
 question the paradigm was retired on becomes askable again, and quantitatively: how
 high is the ceiling?
 
-We study it through \emph{heuristic learning} (HL): a coding agent maintains a heuristic program
+We study it through \emph{adversarial-game heuristic learning} (HL): a coding agent maintains a heuristic program
 by reading the rules, its own source, and replays of its losses, then rescores it
 against a frozen opponent pool. The loop is deliberately narrow --- one revision per
 iteration, every version and score kept in an append-only log --- because attribution
@@ -311,7 +311,7 @@ carrying an adversarial signal.
 Figure~\ref{fig:hl-arena-overview} previews the object we measure: one executable policy
 is revised from game feedback and then placed against a fixed field of opponents. The
 lower row shows the heterogeneous contest games that make the comparison a test of
-heuristic learning on games rather than a claim about one task family.
+adversarial-game heuristic learning rather than a claim about HL in general.
 
 \begin{figure}[t]
 \centering
@@ -408,7 +408,8 @@ constraints. Every comparison here is budget-conditional.
 Our contributions are threefold.
 
 \begin{itemize}[leftmargin=*]
-  \item \textbf{We formally define heuristic learning}, an agent-maintained symbolic
+  \item \textbf{We formally define adversarial-game heuristic learning}, the
+  game-scoped form of HL: an agent-maintained symbolic
   policy under adversarial pressure, instrumented --- one revision per iteration,
   every version and score logged --- so that a plateau can be diagnosed and not
   merely observed, and scoped to games rather than claimed of tasks in general
@@ -422,17 +423,17 @@ Our contributions are threefold.
   three opponent pools, a frozen evaluation set, a cross-edition Elo protocol, and a
   per-submission audit of whether it contains a learned component.
 
-  \item \textbf{We compare HL and RL broadly} --- against model-based RL, policy
+  \item \textbf{We compare adversarial-game HL and RL broadly} --- against model-based RL, policy
   gradient, and the human field, across budgets and in every denominator rather than
   the favourable one --- and establish which paradigm holds the advantage where. The
   primary comparison is against the human state of the art: on \val{nbeat} of
-  \val{ngames} games HL overtakes the archive's strongest recorded submission,
+  \val{ngames} games adversarial-game HL overtakes the archive's strongest recorded submission,
   \val{elogap} Elo over a program its authors refined across \val{humanspan} of
   competition. Against RL it costs more \val{loseaxis}. Improvement frequency
   decays as \val{decay} to a plateau near
   \val{plateau} revisions, which we trace to maintenance capacity: description length
   there converges to \val{maintcap} within \val{maintcapspread} while the Elo reached
   varies by \val{eloplatspread}. From that we derive practical guidelines for
-  applying HL --- when to expect it to pay, and when a learned method is the better
+  applying adversarial-game HL --- when to expect it to pay, and when a learned method is the better
   spend (Section~\ref{sec:discussion}).
 \end{itemize}
