@@ -354,21 +354,26 @@
 % baseline, and no rescoring of the archive pool exists as of 2026-08-19. With ten
 % days to the deadline that is the binding constraint on the paper, not the prose.
 % ===========================================================================
-\abstract{\begin{CJK*}{UTF8}{gbsn}
-传统符号式程序具有可读、可解释的优势，但持续吸收新经验需要人力进行启发式维护；在
-对抗式游戏中，对手变化和反馈稀疏使这一缺陷更加突出。Coding agent 能够读取程序和
-决策级回放，将经验直接映射为代码修改，从而利用符号策略的优势并弥补维护缺陷。基于
-这一动机，我们提出对抗式启发学习（Adversarial Heuristic Learning, AHL）：在对抗式
-游戏中，coding agent 维护一个可执行的启发式程序，每轮选择对手子集、读取回放并修改
-上一轮程序，基础模型保持冻结。为评测 AHL，我们提出 AHL-Arena，整理一个由顶尖高校
-学生组织、持续数十年的经典游戏赛事的规则、后端、前端和玩家提交，并选取九个具有
-广泛性、经典性和多样性的代表性游戏。
-我们为所有游戏提供统一的判别器、决策级回放和 Elo 评分协议，并结合自动化评测与人工
-整理的程序存档，保证结果客观、可复现且能够与人类选手比较。实验在匹配交互预算下评测 coding agent，
-并与强化学习策略进行比较，同时分析对手集、反馈信息和维护规则三个关键因素。结果用于
-刻画可编辑程序的性能上限、样本效率及维护能力，揭示 agent 在不同对抗环境中的能力差异。
-AHL-Arena 旨在推动 agent 从一次性生成策略走向能够持续维护、解释和演化程序策略的系统。
-\end{CJK*}}
+\abstract{Symbolic programs are readable and interpretable, but incorporating new
+experience requires sustained human heuristic maintenance; changing opponents and
+sparse feedback make this limitation especially acute in adversarial games. Coding
+agents can read the program and decision-level replays, mapping experience directly
+to code edits and thereby exploiting symbolic policies while compensating for their
+maintenance burden. Motivated by this capability, we introduce Adversarial Heuristic
+Learning (AHL), in which a coding agent maintains an executable heuristic program in
+an adversarial game: each round selects an opponent subset, reads the resulting replay,
+and revises the previous program while the base model remains frozen. To evaluate AHL,
+we introduce AHL-Arena, a suite of nine representative games drawn from the rules,
+backends, frontends, and player submissions of a classic game competition organized
+by students at leading universities and held for several decades. The suite emphasizes
+breadth, classicism, and diversity. We provide a uniform referee, decision-level replay,
+and Elo protocol, combining automated evaluation with curated program archives so that
+results are objective, reproducible, and comparable with human players. We evaluate
+coding agents under matched interaction budgets against reinforcement-learning policies
+and analyze opponents, feedback information, and maintenance rules. The resulting
+measurements characterize the performance ceiling, sample efficiency, and maintenance
+capacity of editable programs across adversarial environments, positioning AHL-Arena as
+a step toward agents that can continuously maintain, explain, and evolve program policies.}
 
 \iffalse
 \abstract{For decades a competitive game program was a symbolic construction,
