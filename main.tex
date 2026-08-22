@@ -354,12 +354,16 @@
 % baseline, and no rescoring of the archive pool exists as of 2026-08-19. With ten
 % days to the deadline that is the binding constraint on the paper, not the prose.
 % ===========================================================================
-\abstract{Symbolic programs are readable and interpretable, but incorporating new
-experience requires sustained human heuristic maintenance; changing opponents and
-sparse feedback make this limitation especially acute in adversarial games. Coding
-agents can read the program and decision-level replays, mapping experience directly
-to code edits and thereby exploiting symbolic policies while compensating for their
-maintenance burden. Motivated by this capability, we introduce Adversarial Heuristic
+\abstract{Coding agents have made heuristic learning a viable form of self-evolution:
+an agent can read an executable program, interpret execution feedback, and revise the
+program itself. This connects heuristic learning to self-evolving agents, program
+search, and algorithmic design. Symbolic policies are compact, interpretable, and
+locally editable, but traditionally require sustained human maintenance, whereas
+reinforcement learning avoids manual revision but can struggle with non-stationary
+opponents, distribution shift, and conflicting behavioural modes. Existing heuristic-
+learning studies have not systematically evaluated this trade-off in adversarial
+games, where opponent variation and rich decision-level replays make the contrast
+especially consequential. We therefore introduce Adversarial Heuristic
 Learning (AHL), in which a coding agent maintains an executable heuristic program in
 an adversarial game: each round selects an opponent subset, reads the resulting replay,
 and revises the previous program while the base model remains frozen. To evaluate AHL,
