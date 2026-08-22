@@ -210,6 +210,13 @@ grows, this maintenance requires more human labour and becomes difficult to sust
 the bottleneck is not expressiveness but the need for people to keep maintaining it.
 This limitation made reinforcement learning, which learns from feedback without
 manually rewriting rules, appear to be a more attractive alternative.
+Yet this advantage weakens when the environment changes sharply: opponent-induced
+non-stationarity and distribution shift can make replay data stale, promote
+overfitting to the training environment, and expose large generalization gaps
+\citep{hernandezleal2019survey,zhang2018overfitting,cobbe2019quantifying,gleave2021adversarial}.
+When distinct opponent modes require conflicting responses, standard RL also does
+not automatically preserve a diverse set of behaviours without additional
+skill-discovery or multi-task mechanisms \citep{eysenbach2019diversity,yu2020metaworld}.
 
 \begin{center}
 \fcolorbox{brandaccent}{white}{\parbox{0.93\linewidth}{\small
