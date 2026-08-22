@@ -242,34 +242,37 @@
 \section{Introduction}
 \label{sec:introduction}
 
-Adversarial games were first won by symbolic construction. A hand-authored
-evaluation function over a search procedure is what defeated a reigning world chess
-champion \citep{deepblue2002}, and for decades that construction --- rules, an
-evaluation function, a search --- was how a competitive game program was built.
-Reinforcement learning (RL) then displaced it on the same terrain. Chess, Go, shogi,
-StarCraft, and Dota are where learned policies beat the strongest humans alive, and
-where the field's characteristic result took shape: a policy trained by self-play,
-given enough interaction, exceeds anything a person wrote by hand
-\citep{alphazero2018,alphastar2019,openaifive2019}. What separates the two paradigms
-is how each one improves. A learned policy improves by continuing to play, and the
-adversary supplies the signal indefinitely. A symbolic program improves only when
-somebody revises it: every new case has to be noticed, encoded, and reconciled with
-the rules already present, at a cost that grows with the program until further
-revision stops being worth its price. That maintenance cost, and not any limit on
-what a program can express, is what bounded the paradigm.
+Coding agents have made heuristic learning a viable form of self-evolution: an agent
+can read an executable program, interpret execution feedback, and revise the program
+itself. This connects heuristic learning to the broader study of self-evolving agents,
+program search, and algorithmic design, where recent systems have begun to explore
+iterative policy or algorithm revision \citep{garnier2026heuristic,evopolicygym2026,
+ai4aibench2026}. The attraction is that the artifact remains readable and editable,
+while the labour of incorporating new experience can be delegated to an agent.
 
-The cost, though, is a property of the author rather than of the artifact. Per unit of
-construction the symbolic paradigm is if anything the more expressive of the two: a
-search procedure or a conditional test states in one line a decision boundary that
-takes a great many neurons to approximate. What binds is how much of such a program a
-human will maintain before the reconciliation cost exceeds what they can pay.
-Asymptotically the learned policy still wins, and this paper does not dispute that.
-The question is what happens under a budget, where the authoring cost binds --- and
-because that question is about games, this paper stays on the terrain where RL is
-strongest. Every measurement below is taken on a game: fixed rules, an external referee,
-and opponents the method does not control. That is a real limitation and also a
-favourable case, since a game hands a maintenance loop a verdict it can act on, so the
-ceiling we report is a ceiling on games and we do not extrapolate past them.
+This opportunity also reopens the contrast between symbolic policies and reinforcement
+learning (RL). Symbolic construction defeated strong human players through explicit
+rules, evaluation functions, and search \citep{deepblue2002}; RL later surpassed
+hand-written programs through continued interaction and self-play
+\citep{alphazero2018,alphastar2019,openaifive2019}. The two paradigms therefore
+improve differently: RL updates parameters from repeated experience, whereas a
+symbolic policy changes only when its rules are revised. The latter is compact,
+interpretable, and locally editable, but traditionally requires sustained human
+maintenance. RL avoids that manual labour, yet its advantage is less secure when
+opponents change sharply: non-stationarity, distribution shift, stale replay data,
+and conflicting behavioural modes can all impair generalization
+\citep{hernandezleal2019survey,zhang2018overfitting,cobbe2019quantifying,
+gleave2021adversarial,eysenbach2019diversity,yu2020metaworld}.
+
+Adversarial games are therefore a particularly revealing setting for heuristic
+learning. Different opponents induce different effective environments, while each
+opponent pattern is observed through only a limited number of samples. At the same
+time, a game replay exposes states, actions, opponent behaviour, and outcomes that can
+be mapped to concrete program edits. Existing heuristic-learning studies do not yet
+provide a systematic evaluation in this regime: they primarily use single-agent
+environments, fixed evaluators, or algorithm-level rather than policy-level revision.
+This paper asks how far an agent can maintain a symbolic policy when the feedback is
+adversarial and the policy must face a changing field.
 
 % SCOPE, added 2026-08-19 at the user's direction, then cut to two sentences the same day
 % ("就说我们在博弈类上面打，就行"). It belongs in this paragraph rather than its own
