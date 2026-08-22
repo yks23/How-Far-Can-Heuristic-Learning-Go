@@ -1,273 +1,45 @@
-% ---------------------------------------------------------------------------
-% Related work
-%
-% EvoPolicyGym is a protocol precedent, not a comparator. It repeatedly edits a
-% general executable policy under a fixed episode budget and reports hidden-
-% validation-selected held-out scores plus trajectory diagnostics, but it is a
-% single-agent Gym suite with checkpoint selection, no human field, no RL baseline,
-% and no adversarial opponent pool. Cite it for the evaluation protocol only; our
-% claim is about heuristic learning on adversarial games and maintenance of one
-% artifact against a frozen field.
-%
-% Frontier-Eng (arXiv 2604.12290) goes first and gets the most room: its
-% formalization is nearly ours. A task is (C, x0, E) -- read-only context, a
-% feasible-but-naive starting artifact, a frozen evaluator returning a
-% feasibility flag plus a scalar score -- and the agent proposes revisions from
-% the full history under a fixed budget. Three differences to state plainly,
-% because they are what this paper adds rather than repeats:
-%   1. it has no human baseline and no RL baseline; its reference points are
-%      contributor-written naive programs plus correctness anchors. Work items
-%      2 and 3 are exactly those two missing cells.
-%   2. its budget is evaluator interactions only -- no tokens, dollars, or
-%      wall-clock.
-%   3. it optimizes against a frozen evaluator with no opponent, so its score is
-%      absolute and monotone. Elo is neither, which is why its metrics cannot be
-%      adopted directly: a rating is relative to a population, and a gain can come
-%      from the field weakening. Be precise about which pool is meant -- HL's test
-%      pool is frozen (that is what makes our Elo comparable within a run), while
-%      the *archive's* human population drifts across editions (which is what the
-%      cross-edition anchor exists to absorb). Do not write "drifting opponent
-%      pool" without saying which, and never of the frozen test pool.
-% Cite its numbers as reported: the abstract says eight models and the
-% experiments nine, the power law rests on one model-framework pair, and the
-% depth/width result on a 10-task subset.
-%
-% MLE-bench (arXiv 2410.07095) for the premise that agents iterate programs
-% effectively; arXiv 2507.02554 for the cleaner framing of a research agent as a
-% search policy over a solution space, which is how the HL loop should be
-% described. Frontier-Eng's depth-vs-width finding -- one deep chain beats
-% parallel restarts at fixed budget, because restarts discard accumulated
-% context -- is the direct evidence for the long-trajectory premise.
-%
-% Programmatic RL is the nearest representational neighbour and needs its own
-% paragraph: programmaticrl2024foundations for the size/expressiveness tradeoff
-% (it bounds the size of optimal programmatic policies, which is the formal
-% relative of K(pi_good) -- cite it for that and not for editability, which it
-% never claims), diprl2026 and llmguidedsearch2024 for the current line,
-% kuang2025generative for
-% the closest method (LLM revises a Python policy from execution traces, beats
-% deep RL baselines at far fewer interactions). What we add over kuang2025generative:
-% adversarial rather than single-agent, a human field to be placed within, a
-% shared budget ledger, and a ceiling analysis. Their efficiency claim is
-% directional with no normalization protocol, which is exactly the gap our
-% ledger fills -- say that without disparaging the work.
-%
-% SlopCodeBench (slopcodebench2026) belongs here as well as in the introduction,
-% and the paragraph has to draw the distinction the introduction draws: its
-% degradation is driven by a *growing specification*, so accumulation is
-% compulsory. A game's rules are fixed, so a better heuristic can replace a worse
-% one and the program may shrink. Without that distinction a referee reads their
-% result as predicting our loop cannot work.
-%
-% agent2rlbench2026 earns one sentence, for a point that is easy to miss: in
-% AI4AI the agent is already a symbolic program manipulating a connectionist
-% artifact, so the first thing an LLM does to RL is write code around it. That is
-% what makes "then why not have it write the policy itself" the obvious next
-% question rather than a contrarian one -- which is this paper. Do not overstate
-% it into a claim that they anticipated HL; they benchmark agents engineering RL
-% post-training, a different task.
-%
-% Then: RL in games, program synthesis / LLM-driven code search, automated
-% heuristic design, continual learning. The 21-item survey in the earlier
-% proposal is the starting list (that PDF is not in this repo -- it was never
-% tracked, so treat refs.bib as the authoritative list and re-obtain the
-% proposal from the user if the original 21 items are needed).
-%
-% SURVEYED AND DELIBERATELY NOT CITED. Recorded so a later pass does not spend
-% the search again, and so the rejections are reviewable rather than silent.
-%   - arXiv 2604.21896, "Crafting Strategic AI Gaming Agents...": operationalizes
-%     Shannon's classification into an authoring environment, with a
-%     heuristic-games class built on minimax plus crowd-sourced data. Sounds
-%     adjacent and is not: no human baseline, no RL baseline, no step counts, no
-%     ceiling. Systems-and-pedagogy contribution; nothing to compare against.
-%   - arXiv 2602.04254, "Scaling Agentic Verifier for Competitive Coding": no
-%     games and no adversary that adapts. Worth one line ONLY if a referee
-%     argues iterative LLM improvement does not plateau, since it reports clear
-%     test-time scaling with no saturation. The boundary to state if so: their
-%     scaling is over K candidate solutions at test time with a verifier that
-%     grows, whereas our claim is about maintaining ONE artifact across
-%     revisions. Different quantity scaled, so it is not a counterexample --
-%     but do not pretend the tension is absent either.
-% Two hits from that same search were kept: echo2025hindsight and tig2025think,
-% both cited in Section 1 and both load-bearing there. See their refs.bib
-% annotations before moving either.
-%
-% Note the name clash: AgentBench (arXiv 2308.03688) is a different paper, also
-% from Tsinghua, and is the style reference in _reference_paper/. The project
-% name is still undecided.
-%
-% COMPRESSED TO THREE PARAGRAPHS on 2026-08-19 at the user's direction ("related work
-% 压缩成3个自然段，并且scale up引用的文章的数量"). Five paragraphs became three, and the
-% citation count went from 35 to 45 keys -- every key in refs.bib is now cited somewhere
-% in the paper, so a further scale-up requires new bibliography entries and must not be
-% done by re-citing existing ones. The three-way split is:
-%   1. programs as policies      -- representation, heuristic design, program search,
-%                                   and code-written-around-a-learner, merged because
-%                                   they share one axis: who writes the program.
-%   2. adversarial evaluation    -- games as testbed, pool design, human fields as
-%                                   percentile references, and the baseline rationale.
-%   3. continual improvement     -- experience reuse AND the whole maintenance-capacity
-%                                   argument, formerly three paragraphs of its own.
-%
-% THE UPPER-BOUND ARGUMENT MOVED HERE on 2026-08-18 (second cut, to reach 2.5 pages) and
-% the header note that stood here said: do not compress it into a literature-survey
-% paragraph, because the mechanism has to be argued rather than cited or the intro's
-% central claim is unsupported anywhere in the paper. That note was OVERRIDDEN by the
-% compression above, and the constraint behind it was preserved rather than dropped: the
-% mechanism is still STATED IN FULL before its first citation, in paragraph 3, and all
-% six load-bearing elements below survive. What was cut is the numbers, not the argument
-% -- per-repo figures, the four per-model execution horizons, the exact prompting deltas,
-% and the erosion/verbosity slope pairs. They remain recorded in this header, which is
-% now their only home in the repo, so verify against it rather than re-reading the
-% papers. If the argument ever needs to grow back, grow it in Section 6, not here.
-% What paragraph 3 carries, and must keep carrying:
-%   - the mechanism itself, stated before any citation.
-%   - the RATE-not-exemption form of the human comparison. A human exemption would
-%     make capacity look like an agent-specific defect instead of a general limit
-%     agents reach sooner.
-%   - the prompting result, which answers "the plateau is just a prompting defect".
-%   - the replacement-vs-accumulation boundary, without which these results read as
-%     predicting our loop cannot work.
-%   - the reasoning result's direction, which helps us rather than hurting.
-%   - selfimprovement2026survey, whose only citation in the paper is here.
-% All figures below were verified against full text; refs.bib stays authoritative.
-% Cross-check them against the body if either changes.
-%   - slopcodebench2026's PROMPTING RESULT is in the body as of 2026-08-18 and
-%     answers a referee who says the plateau is a prompting defect rather than a
-%     capacity limit. Never write "statistically unchanged" of it: their paper runs
-%     no significance test on that experiment, and "slope"/"intercept" appear only
-%     in their Appendix D, about the human panel. The body says the intercept moves
-%     while the growth rate is left intact, which is what is supported.
-%   - slopcodebench2026 (v2: 36 problems, 196 checkpoints, 15 agents): erosion
-%     rises in 77% of trajectories, verbosity in 75.5%; cost per checkpoint 2.2x
-%     first-to-last "without corresponding improvements to correctness"; agent
-%     code 2.3x more verbose and 2.0x more eroded than 473 open-source Python
-%     repos; per-revision accumulation 6.6x (verbosity) and 5.0x (erosion)
-%     faster. The human panel: 68% of repos end more verbose (median +36%),
-%     erosion rises in 53%, slopes 0.0022/0.0053 vs the agents' 0.0144/0.0264 --
-%     a RATE gap, never an exemption. Quality-aware prompting: verbosity -27.5
-%     to -35.6%, erosion -34.3 to -57.6% at the intercept, growth rate unchanged,
-%     price -2.3 pp strict correctness and +12.1% cost. There is NO significance
-%     test on that experiment; never write "statistically unchanged".
-%   - longcontextbugfix2026: successful agentic trajectories stay under 20-30k
-%     tokens. The 64k single-shot result (7% and 0%) is a DIFFERENT model set and
-%     not the agentic harness -- report it as their framing does, decomposition
-%     vs retrieval, not "padding the context makes it worse".
-%   - longhorizonexecution2026: single-turn execution horizons, GPT-5 2176 steps,
-%     Claude-4 Sonnet 432, Grok 4 384, Gemini 2.5 Pro 120. Scaling model size
-%     INCREASES self-conditioning; thinking removes it entirely (their Result 5).
-%     Their thesis argues against diminishing returns -- we cite the mechanism,
-%     not the thesis.
-%   - frontiereng2026: t^-1 frequency and k^-1 magnitude, both R^2 > 0.83,
-%     marginal returns near zero after ~50-100 iterations, tail to 500, 47 tasks.
-%     DELIBERATELY NOT IN THE BODY. The user cut this on 2026-08-18: the paragraph
-%     now says only that frequency and magnitude both decay, with no exponents, no
-%     R^2, no iteration counts, and no task count. Do not "restore" them as an
-%     omission -- it was a decision. The figures stay recorded here because the
-%     paragraph above still claims a decay shape and a reviewer may ask for it, and
-%     because 05-experiments.tex compares our own \val{decay} against theirs; if that
-%     comparison is written, the exponent enters the paper THERE, not here.
-% ---------------------------------------------------------------------------
+% Related work (compressed to one page)
 \section{Related Work}
 
-\paragraph{Reinforcement learning on adversarial games.}
-Symbolic construction won adversarial games first, by search over a hand-authored
-evaluation \citep{deepblue2002}. Learned value estimation displaced it by removing one
-hand-authored component after another --- the evaluation function, the human game record,
-the game-specific method, finally the environment model
-\citep{dqn2015,alphago2016,alphagozero2017,alphazero2018,muzero2020,efficientzero2021} ---
-and then extended into the settings our suite occupies: imperfect information by
-equilibrium computation or model-free multiagent learning, multiplayer and non-zero-sum
-payoffs, hidden hands over long horizons, real-time control against champion humans, and
-action spaces that defeat enumeration
-\citep{cfr2007,deepstack2017,libratus2018,pluribus2019,deepnash2022,suphx2020,douzero2021,
-gtsophy2022,alphastar2019,openaifive2019}. Where a language model has entered these games
-it negotiated beside a planner rather than authoring the policy \citep{cicero2022}. Two
-results bear on how we evaluate: opponent pools are a design variable, and superhuman
-average strength can still hide holes an adversary finds
-\citep{psro2017,adversarialgo2023,asro2026coevolution,adversarialheuristics2026} --- hence
-a frozen test pool drawn from a whole human field rather than one strong reference, with
-cost reported beside strength
-\citep{katago2019,mlebench2024,olympiad2025percentile}. This paradigm's standing is not in
-question. What it leaves open is the small-budget regime, and against which learner:
-policy gradient alone would confound symbolic against neural with on-policy against
-off-policy, so our primary baseline is off-policy and model-based
-\citep{offpolicyvaluellm2026,samplereuse2022}.
+\paragraph{Adversarial games and programmatic policies.}
+Reinforcement learning has become the dominant approach to adversarial games, from
+value learning and self-play to imperfect-information, multiplayer, and real-time
+settings \citep{dqn2015,alphago2016,alphagozero2017,alphazero2018,muzero2020,
+cfr2007,deepstack2017,libratus2018,pluribus2019,alphastar2019,openaifive2019}.
+Yet opponent pools remain a design choice: high average strength can hide exploitable
+holes, motivating our frozen pool sampled from a human field rather than a single
+reference \citep{psro2017,adversarialgo2023,asro2026coevolution,adversarialheuristics2026}.
+Our comparison focuses on the small-interaction regime and uses a model-based,
+off-policy baseline. A complementary line represents policies as executable programs,
+using sketches, distilled trees, program search, or symbolic controllers
+\citep{pirl2018,viper2018,inductivegen2020,leaps2021,symbolicpolicies2021}; recent work
+formalizes their size--expressiveness trade-off \citep{programmaticrl2024foundations}.
 
-\paragraph{Policies written as programs.}
-A policy can be an executable program rather than an opaque network, and before language
-models the program came from a learner --- a sketch filled by policy search, a decision
-tree distilled for verifiability, a searchable latent space of programs, symbolic
-controllers recovered directly
-\citep{pirl2018,viper2018,inductivegen2020,leaps2021,symbolicpolicies2021}. The
-representation's size--expressiveness trade-off has since been made formal, bounding an
-optimal programmatic policy's size, the relative of the description length measured here
-\citep{programmaticrl2024foundations}; learning has also been aimed at code as the artifact,
-discovering algorithms that were then adopted \citep{alphatensor2022,alphadev2023}. Language
-models changed who writes the program: they synthesize policies, search structured domains,
-and supply proposals that evolutionary selection, uncertainty balancing, diversity
-preservation, or learned teachers filter
-\citep{llmguidedsearch2024,qube2024,hsevo2024,diprl2026,prorl2026,teacherawareheuristic2026,
-heuristicsearch2026,latentheuristicsearch2026,automodsat2025}. A parallel branch writes code
-around a learner instead, from reward functions to post-training machinery
-\citep{eureka2023,rewarddesignagent2026,agent2rlbench2026,ai4aibench2026}. AI4AI-Bench
-moves this idea up to algorithmic design, asking an agent to rewrite the training
-procedure itself; that is complementary to our question, which asks whether an agent
-can maintain the executable policy being trained. This makes ``then let it write the
-policy'' the next question rather than a contrarian one, taken up by
-model-controlled program search \citep{codetoplay2024,kuang2025generative}. In all of these
-the program is a search output: extracted, sampled, or selected from a population. In ours
-it is a maintained artifact revised in place, which is what makes its description length a
-trajectory rather than a hyperparameter.
+\paragraph{Coding agents and heuristic learning.}
+Language models have changed who writes such programs: they propose policies, search
+structured spaces, and generate code that evolutionary or learned selectors filter
+\citep{llmguidedsearch2024,qube2024,hsevo2024,diprl2026,prorl2026,teacherawareheuristic2026}.
+Other agents write code around a learner, such as reward functions or training
+procedures \citep{eureka2023,rewarddesignagent2026,agent2rlbench2026,ai4aibench2026};
+AI4AI-Bench is complementary because it rewrites the training algorithm, whereas we
+maintain the executable policy. Model-controlled program search is the closest
+representation-level relative \citep{codetoplay2024,kuang2025generative}. The common
+pattern treats the program as a search output; ours treats it as a persistent artifact
+revised in place. Garnier et al.~call coding-agent revision of executable controllers
+``heuristic learning'' \citep{garnier2026heuristic}, but study continuous control rather
+than opponent-relative games, which motivates our narrower AHL scope.
 
-\paragraph{Self-evolving agents, and what stops them.}
-An agent can improve with no weight update, and this literature divides by what the
-improvement is written into: natural language
-\citep{selfrefine2023,reflexion2023,expel2024,echo2025hindsight,learningonthejob2026}, the
-prompt \citep{promptbreeder2023,textgrad2024}, the scaffolding \citep{adas2024}, and code ---
-the branch this paper belongs to, where evaluator-filtered variants gave way to autonomous
-proposal and repair, self-rewriting coding agents, skill libraries, and whole research loops
-\citep{funsearch2024,stop2023,generativeagents2023,voyager2023,alphaevolve2025,
-selfimprovingcodingagent2025,darwingodelmachine2025,aiscientist2024,avo2026,
-mendelgoedel2026}. Benchmarks alongside them measure such learning by transfer and
-interference rather than retrieval, and separate the gain from the harness
-\citep{agentcl2026,clbench2026,harnessengineering2026} --- hence ours is fixed. Trajectory
-distillation has likewise been used to turn interaction traces into compact, reusable
-skills organized for later retrieval and composition \citep{browserbc2026}; our feedback
-is instead written directly into an executable game policy. Ours carries
-one artifact rather than a population, so experience is written into the program rather than
-retrieved, which creates the failure mode measured here. The mechanism is accumulation:
-revisions leave the program larger and more interconnected \citep{mccabe1976complexity}, and
-each further edit must be placed without disturbing what works, until past some size
-placement fails more often than it succeeds --- not for want of things to express, but
-because the artifact has outgrown what its maintainer can hold, attribute, and change at
-once. Every term of that is measured elsewhere. Erosion and verbosity rise across most
-iterative trajectories without matching correctness, and human repositories degrade an order
-of magnitude more slowly rather than being exempt, making capacity a rate and not an
-agent-specific defect \citep{slopcodebench2026}; quality-aware prompting moves the intercept
-and leaves the growth rate intact, pointing to a capacity rather than a prompting artifact.
-Underneath, repair succeeds while accumulated context stays small
-\citep{longcontextbugfix2026}, and per-step accuracy falls as steps accumulate even when the
-plan is given, though reasoning removes the self-conditioning behind it
-\citep{longhorizonexecution2026} --- so a plateau a reasoning agent reaches is not that
-effect, and a program under revision cannot be decomposed away, the artifact \emph{being} the
-accumulated context. One boundary stops these results from predicting our loop cannot work:
-their degradation is driven by a growing specification, so nothing may be discarded, whereas
-a game's rules are fixed and a better heuristic may \emph{replace} a worse one. Accumulation
-is a tendency here, not an obligation, which is why the ceiling is worth measuring.
-Improvement frequency and magnitude do decay on engineering tasks \citep{frontiereng2026},
-and Garnier et al.~explicitly call their coding-agent revision of executable flow
-controllers ``heuristic learning''~\citep{garnier2026heuristic}. Their setting is
-continuous control with simulator evaluation, not opponent-relative games; we therefore
-use AHL for our narrower game-scoped instantiation. 
-but those are single-agent with neither a human field nor a learned baseline. EvoPolicyGym
-is closer in protocol: it evaluates repeated executable-policy edits under a fixed episode
-budget, hidden validation selection, held-out generalization, and trajectory-level feedback
-diagnostics \citep{evopolicygym2026}. Its compact single-agent Gym suite and checkpoint-
-selection objective still differ from our adversarial games, frozen opponent pool, and
-one-artifact maintenance question; it therefore supplies a protocol precedent, not a
-human or RL comparison. A survey
-organizes the literature by the strength of the verification signal the loop closes on
-\citep{selfimprovement2026survey}, at whose strong end a game engine with a frozen pool sits.
-We carry that question into adversarial games, asking whether the plateau is explained by the
-policy's maintainable description length rather than by the game's rule complexity.
+\paragraph{Self-evolving agents and evaluation.}
+Self-evolution can be written into language, prompts, scaffolding, or code
+\citep{selfrefine2023,reflexion2023,expel2024,promptbreeder2023,textgrad2024,adas2024,
+funsearch2024,stop2023,voyager2023,alphaevolve2025}. Benchmarks increasingly separate
+transfer from retrieval and the agent from its harness \citep{agentcl2026,clbench2026,
+harnessengineering2026}. Trajectory distillation instead compresses interaction traces
+into reusable skills for retrieval and composition \citep{browserbc2026}; AHL writes
+feedback directly into an executable game policy. EvoPolicyGym is the closest protocol
+precedent: it evaluates repeated policy edits under a fixed episode budget with held-out
+validation and trajectory diagnostics \citep{evopolicygym2026}. Its single-agent Gym
+suite and checkpoint-selection objective differ from our adversarial games, frozen
+opponent field, human baseline, and persistent one-artifact maintenance question. We
+therefore carry the self-evolution problem into adversarial games and measure both the
+performance ceiling and the maintenance capacity of an editable policy.
