@@ -388,13 +388,13 @@ to the agent rather than the game, the inequality predicts a signature we then
 observe --- description length at the plateau converges across games of differing
 complexity while the Elo reached there does not, and it is the pairing, not either
 half, that separates a limit of the maintainer from a limit of the game
-(Section~\ref{sec:discussion}). Neither paradigm dominates: model-based RL overtakes
+(Section~\ref{sec:experiments}). Neither paradigm dominates: model-based RL overtakes
 HL beyond \val{crossover} environment steps, so the budget and the game's structure
 decide, while the loop itself transfers to \val{ntransfer} further benchmarks without
 retuning.
 
-Two objections are conceded here and answered in Section~\ref{sec:discussion}. The
-agent arrives with a pretraining corpus while RL starts cold, and no denominator makes
+Two objections are conceded here and included in our budget accounting. The agent
+arrives with a pretraining corpus while RL starts cold, and no denominator makes
 that symmetric; we report environment steps as what is scarce in a new domain and test
 what pretraining supplies (Section~\ref{sec:benchmark}). And the archive's RL
 scarcity is confounded with its participants' cost structure --- students on a deadline
@@ -425,5 +425,5 @@ Our contributions are threefold.
   matched interaction budgets. We report performance, sample efficiency, and the
   maintenance-capacity signature, then identify the budget regimes in which an
   editable policy pays off and those in which a learned policy is the better spend
-  (Section~\ref{sec:discussion}).
+  (Section~\ref{sec:experiments}).
 \end{itemize}
