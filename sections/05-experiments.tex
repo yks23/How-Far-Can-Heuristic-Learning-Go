@@ -1,197 +1,61 @@
 % ---------------------------------------------------------------------------
 % Experiments
-%
-% RENAMED from "Results" on 2026-08-19. The apparatus moved out to
-% 04-benchmark.tex; what stays here is what was found. Four blocks, matching the
-% four claims in the abstract.
-%
-% 1. The archive audit. \val{pheur}, \val{prl}, \val{nrlfinal}. Descriptive
-%    shares over the archive; no counterfactual is claimed here.
-%
-% 2. HL against the human state of the art. REORDERED 2026-08-19: the user's
-%    framing is that the main thing HL-Arena is for is testing whether rules an
-%    agent maintains continuously can overtake the human SOTA -- the result of
-%    contestants competing over a season. So \val{nbeat} and \val{elogap} lead
-%    and \val{pct} follows. Percentile is still the metric the archive uniquely
-%    affords (a gradient, not a single baseline) and it stays in the section: it
-%    is the aggregate that stops \val{nbeat} reading as a cherry-pick. What is
-%    dropped is leading with percentage improvement over a reference.
-%
-%    DEFINE HUMAN SOTA HERE, before either key is quoted. Two readings give
-%    different numbers: the strongest submission ever recorded for a game, across
-%    all \val{editions} editions, or the winner of one edition. Use best-ever --
-%    it is the only reading under which "state of the art" is honest, and the bar
-%    it sets rises with every edition. State the reading in the text each time.
-%    Three things the definition has to settle, all of which move the number:
-%      - is the SOTA program the best by final standing, or the best by Elo on our
-%        frozen pool? Standing is the venue's own judgement but was measured
-%        against that edition's field; Elo on our pool is what makes it comparable
-%        to HL. They can disagree, and if they do, report both.
-%      - a program that won its edition may lose to a later edition's entry. The
-%        best-ever bar is cross-edition, so it needs the cross-edition Elo
-%        protocol (Section 4) and inherits that protocol's caveat: the human
-%        population's composition drifts year to year.
-%      - per game, never pooled. \val{nbeat} of \val{ngames} is the only reportable
-%        form; a bare "beats the human SOTA" is the most inflatable claim available
-%        here and must not appear even in the section's own prose.
-%
-%    THE EFFORT ASYMMETRY is what makes this comparison about maintenance rather
-%    than compute, and it is the reason the archive is worth using: the human
-%    program was refined over \val{humanspan} of competition, HL's over
-%    \val{hlspan}. Report both, in the same sentence, wherever \val{nbeat} appears.
-%    Two disciplines come with it. \val{humanspan} is CALENDAR span and is not
-%    labour -- the archive does not record hours worked, so never write
-%    "\val{humanspan} of human effort", and confirm the figure against the venue's
-%    schedule before it enters the body (it is currently the user's recollection
-%    only). And the wall-clock direction REVERSES between comparisons: HL loses
-%    wall-clock to RL (\val{loseaxis}) and wins it against the humans. Never let
-%    one "but costs more" clause cover both -- that error was in contribution 3
-%    until 2026-08-19.
-%
-%    The asymmetry also cuts the other way and the section owes the concession: the
-%    contestants were solving the game for the first time with no reference,
-%    while HL is handed rules a human wrote and, on the older editions, works in a
-%    domain whose archive is public. That is the contamination question
-%    (Section 4), and if a familiarity probe fires on a game where HL beats SOTA,
-%    that game is reported separately -- it is exactly where the objection bites
-%    hardest.
-%
-% 3. Sample efficiency vs RL. \val{effratio} at matched Elo, crossover at
-%    \val{crossover}. Frame as budget-conditional; do not claim HL dominates.
-%    Show the axes where it does not.
-%
-% 4. The ceiling -- this is the section the title promises. Improvement
-%    frequency decays as \val{decay}, plateau near \val{plateau} revisions,
-%    mechanism \val{ceilingcause}. Fit the same way Frontier-Eng did (slope
-%    constrained, report R^2) so the exponents are comparable; their single-agent
-%    tasks give t^-1 with a plateau by 50-100 iterations. A different exponent
-%    here is the more interesting outcome, but it needs a mechanism, not just a
-%    curve: rule count growth, rules interfering with each other, or the agent
-%    losing the ability to read its own program.
-%
-%    The mechanism claim is the load-bearing one and needs its own evidence, not
-%    just a plateau. Program description length at the plateau, \val{maintcap},
-%    compared across games: if it converges within \val{maintcapspread} the
-%    ceiling is the agent's, if it tracks game complexity the ceiling is the
-%    game's. State which outcome occurred before interpreting it -- the
-%    convergence result is a prediction here, and reporting it as confirmed when
-%    it is not is the single easiest way to lose the paper. If it fails, the
-%    finding is still worth reporting; the framing changes, not the data.
-%
-%    Report starting Elo and improvement rate as separate quantities, never
-%    folded into final Elo. catarena2025 scores code agents on iterated
-%    tournaments along two axes -- proficiency at initial generation and
-%    improvement realized through iteration -- and finds the two not strictly
-%    correlated. So a strong final Elo can come from a strong first draft with a
-%    flat trajectory, which is the opposite of the claim this paper makes. The
-%    decay exponent \val{decay} is a statement about the trajectory and is
-%    uninterpretable without the intercept beside it.
-%
-%    Report the two halves of the prediction together, because each is weak
-%    alone. The mechanism says the capacity belongs to the agent and K(pi_good) to
-%    the game, so description length at the plateau should CONVERGE across games
-%    (\val{maintcapspread}) while the Elo reached at that plateau should VARY with
-%    the game (\val{eloplatspread}) -- high where a winning policy is short enough
-%    to fit under the capacity, low where it is not. Convergent length with
-%    convergent Elo would undercut the story as much as divergent length does: it
-%    would suggest the games do not actually differ in K(pi_good), and the
-%    cross-game comparison carries no information. So plot length-at-plateau and
-%    Elo-at-plateau on the same set of games and say explicitly which of the four
-%    combinations the data show.
-%
-%    Two supporting cuts, both cheap given the log: does program size at the
-%    plateau move with model capability (the mechanism predicts it should, since
-%    the bound is the maintainer's), and do the failed revisions near the plateau
-%    fail by regression on already-working behaviour rather than by adding
-%    nothing? The second is the direct signature of a maintenance limit and
-%    distinguishes it from simple diminishing returns.
-%
-% 5. The archive's free experiment, which belongs to the benchmark rather than to
-%    HL: for each Elo band, the shortest human program reaching it. Lower
-%    envelope, not mean -- description length is a minimum. Slope \val{envslope},
-%    knee at \val{envknee}. This is the only place the complexity axis is
-%    measured on humans rather than on the agent, so it is what licenses ordering
-%    games by K(pi_good) instead of by rule length. Same proxy as Section 3, and
-%    say so.
 % ---------------------------------------------------------------------------
-
 \section{Experiments}
 \label{sec:experiments}
 
-This section evaluates AHL along the two comparisons that define the paper, followed by
-ablations that identify which parts of the loop are responsible for any observed gain.
-The first experiment is the primary test of the paradigm in its intended setting; the
-second asks where that advantage does and does not survive against learned baselines;
-the third is diagnostic rather than a second headline result. All evaluations use the
-same append-only event schema and report the learning, evaluation, and total budgets
-separately (Section~\ref{sec:arena-eval}).
+We organize the evaluation into five experiments. The first two measure how far AHL
+can improve against the human field; the third compares it with reinforcement learning
+on a standard game benchmark; the final two isolate the role of opponent selection and
+history. Unless stated otherwise, all runs use the same referee, frozen evaluation
+pool, and append-only event schema described in Section~\ref{sec:arena-eval}.
 
-\subsection{AHL against human programs on \benchname}
+\subsection{Fixed-budget performance against human programs}
 \label{sec:exp-human}
 
-\paragraph{Question.} Can an agent that repeatedly revises one executable heuristic
-policy defeat programs written and refined by human contestants in the same adversarial
-games? This is the primary experiment: it tests whether heuristic learning changes the
-maintenance bottleneck that historically limited rule-based game programs, rather than
-testing whether a language model can produce a strong first draft.
+Under a common revision budget, we run several coding-agent models on every game in
+\benchname. For each model and game, we report the initial (raw) Elo, the Elo after
+the fixed number of AHL iterations, and the gain. We also place the final policy in
+the archived human leaderboard and report its rank and percentile. This experiment
+measures cross-model performance at a matched budget rather than the benefit of a
+single particularly long run.
 
-\paragraph{Setting.} We run the full AHL loop on \benchname, the archive-backed suite of
-\val{ngames} contest games described in Section~\ref{sec:benchmark}. For each game, the
-agent receives the public rules, its current source, and replay traces from its own
-matches. It may revise the current policy and submit the resulting version for scoring;
-each version is evaluated against the pre-registered frozen test pool. The archive's
-human submissions provide both the distribution used for percentile placement and the
-best-ever human program used as the per-game state-of-the-art reference. The pools and
-the cross-edition Elo procedure are fixed before any AHL run, so a later revision cannot
-benefit from a moving opponent set.
+\subsection{Long-horizon heuristic evolution}
+\label{sec:exp-long}
 
-\paragraph{Protocol and outcome.} We use one independent run per game and seed, with the
-same initial-policy contract and revision budget across games. The primary outcome is
-whether AHL exceeds the strongest archived human submission on each game, reported as
-\val{nbeat} of \val{ngames}, not as a pooled score. We also report the Elo gap to that
-submission, percentile within the archived field, the full Elo--revision trajectory,
-and the revision depth at which the best policy appears. Human maintenance depth is
-reported beside the AHL budget rather than converted into fictitious labour hours: the
-archive records submission revisions, not wall-clock effort. This experiment therefore
-answers both whether AHL can beat the human field and how much continued maintenance was
-required when it does.
+We select one representative model and run it for a substantially longer horizon,
+recording Elo after every revision on a diverse subset of games. The resulting curves
+show the initial policy quality, the gains from continued maintenance, the point at
+which AHL reaches the human reference, and whether improvement eventually plateaus.
+We additionally relate the plateau to the maintained program's description length.
 
-\subsection{AHL versus RL under matched interaction budgets}
+\subsection{AHL versus RL on Go or Chess}
 \label{sec:exp-rl}
 
-The second primary experiment compares AHL with learned policies on established RL
-benchmarks. We use the classic game and control environments in which RL baselines are
-normally reported, and run AHL and the RL methods through the same referee-facing
-interfaces wherever the environment permits. Model-based RL is the primary baseline:
-it is off-policy and therefore does not confound the representational comparison with
-on-policy data disposal. A policy-gradient baseline is retained as the on-policy
-reference point.
+We compare AHL with established RL baselines on either Go or Chess, using the same
+referee-facing interface and matched interaction budgets. The primary plot uses the
+number of observed trajectories as the horizontal axis and Elo as the vertical axis;
+we report both the final matched-budget Elo and the number of trajectories required to
+reach a fixed Elo level. This isolates the sample-efficiency regime in which the
+decision-level feedback of an editable program may compensate for the scaling
+advantage of a learned policy.
 
-The comparison is budget-conditional, not a claim that AHL dominates RL. We match the
-methods at the evaluation boundary and report environment interactions, agent
-invocations, wall-clock, and total cost separately. We measure final performance,
-performance as a function of interaction budget, Elo-budget area under the curve, and
-the crossover at which the learned baseline overtakes AHL. We additionally report
-transfer to held-out environments without retuning when that protocol is available.
-The result is intended to locate the regime in which the richer feedback channel of an
-editable program pays for itself, and the regime in which the scaling properties of a
-learned policy make RL the better use of the budget.
+\subsection{Ablation: opponent selection and pool size}
+\label{sec:exp-opponent-ablation}
 
-\subsection{Ablations: feedback, revision, and hybrid policies}
-\label{sec:exp-ablation}
+Keeping the model, game, initial policy, and total budget fixed, we vary how AHL
+selects the policies that participate in each round and how many policies it samples.
+We compare random sampling, agent-selected opponents, easy-to-hard scheduling, and
+rank-based selection, together with multiple opponent-set sizes. We report final Elo,
+Elo gain, and regression rate to determine whether improvements come from the identity
+of the opponents, the diversity of the pool, or simply more matches per round.
 
-The ablation keeps the game, initial policy, model, and total budget fixed while varying
-one component of the loop at a time:
+\subsection{Ablation: the role of history}
+\label{sec:exp-history-ablation}
 
-\begin{itemize}[leftmargin=*]
-  \item \textbf{Feedback.} Full decision-level replays versus outcome-only or masked
-    traces test whether gains come from information per sample.
-  \item \textbf{Revision.} Batched edits, no rescoring, and no rollback test whether
-    attribution and acceptance stabilize the trajectory.
-  \item \textbf{Representation and pool.} A hybrid policy and a single or moving
-    opponent pool test the mixed-artifact interface and the need for a frozen field.
-\end{itemize}
-
-We report changes in final Elo, improvement and regression rates, description length,
-and seed robustness. These runs diagnose the primary comparison; they do not redefine
-its headline metric.
+We compare the standard history-aware agent with a history-free variant. The former
+can inspect prior policies, replays, revisions, and outcomes; the latter receives only
+the current policy and the latest feedback. All other components and budgets remain
+fixed. The difference in final Elo and revision efficiency measures whether sustained
+cross-round context is necessary for maintaining a policy rather than merely producing
+independent edits.
