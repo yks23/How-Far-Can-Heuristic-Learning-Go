@@ -317,28 +317,34 @@ lower row shows the heterogeneous contest games that make the comparison a test 
 adversarial-game heuristic learning rather than a claim about HL in general.
 
 % TODO (2026-08-21): Figure 1 -- Liu Qingle and Zhao Yicheng to redraw promptly.
-% Keep the upper AHL loop and lower AHL-Arena game-suite structure, but replace
-% this placeholder with the final visual.
+% This version exposes the high-level interaction among the revising HL agent,
+% multiple policies, and multiple adversarial environments.
 \begin{figure}[t]
 \centering
 \begin{tikzpicture}[x=1cm,y=1cm,>=Stealth,
   box/.style={draw,rounded corners=2pt,fill=blue!4,align=center,
               minimum height=0.62cm,inner sep=3pt,font=\scriptsize},
+  env/.style={draw,rounded corners=2pt,fill=green!8,align=center,
+              minimum height=0.42cm,inner sep=2pt,font=\scriptsize},
+  pol/.style={draw,rounded corners=2pt,fill=orange!10,align=center,
+              minimum height=0.42cm,inner sep=2pt,font=\scriptsize},
   game/.style={draw,rounded corners=2pt,fill=gray!8,align=center,
-               minimum height=0.42cm,inner sep=2pt,font=\scriptsize}]
-  \node[box,minimum width=2.25cm] (ctx) at (1.35,1.05)
-    {rules + source\\loss replays};
-  \node[box,minimum width=2.25cm] (agent) at (4.1,1.05)
-    {generative\\agent};
-  \node[box,minimum width=2.25cm] (pol) at (6.85,1.05)
-    {revised executable\\policy};
-  \node[box,minimum width=2.25cm] (eval) at (9.6,1.05)
-    {frozen opponent\\pool / Elo};
-  \draw[->] (ctx) -- node[above,font=\scriptsize]{read} (agent);
-  \draw[->] (agent) -- node[above,font=\scriptsize]{edit} (pol);
-  \draw[->] (pol) -- node[above,font=\scriptsize]{rescore} (eval);
-  \draw[->,rounded corners] (eval.north) -- ++(0,0.35) -| node[pos=.65,above,font=\scriptsize]{score + trace} (agent.north);
-  \node[font=\scriptsize\bfseries,anchor=west] at (0,0.35) {AHL-Arena: adversarial-game suite};
+              minimum height=0.42cm,inner sep=2pt,font=\scriptsize}]
+  \node[box,minimum width=2.55cm] (hl) at (1.7,1.25)
+    {HL coding agent\\read, attribute, revise};
+  \node[box,minimum width=2.55cm] (policy) at (5.0,1.25)
+    {editable policy\\$\pi_{t-1}\;\rightarrow\;\pi_t$};
+  \node[draw,rounded corners=3pt,fill=green!3,minimum width=4.55cm,
+        minimum height=1.72cm] (arena) at (9.0,1.25) {};
+  \node[font=\scriptsize\bfseries] at (9.0,1.88) {adversarial environments};
+  \node[env,minimum width=1.18cm] (e1) at (7.65,1.15) {game $\mathcal{E}_1$\\+ agents};
+  \node[env,minimum width=1.18cm] (e2) at (9.0,1.15) {game $\mathcal{E}_2$\\+ agents};
+  \node[env,minimum width=1.18cm] (e3) at (10.35,1.15) {game $\mathcal{E}_3$\\+ agents};
+  \draw[->,thick] (hl) -- node[above,font=\scriptsize]{edit} (policy);
+  \draw[->,thick] (policy.east) -- node[above,font=\scriptsize]{play} (arena.west);
+  \draw[->,thick,rounded corners] (arena.south) |- (hl.south);
+  \node[font=\scriptsize\bfseries,anchor=west] at (0,0.28)
+    {AHL loop: one policy is revised while it faces different agents and environments};
   \node[game,minimum width=1.55cm] at (1.15,-0.15) {Miracle};
   \node[game,minimum width=1.55cm] at (2.85,-0.15) {AquaWar};
   \node[game,minimum width=1.55cm] at (4.55,-0.15) {LostSpace};
@@ -349,9 +355,9 @@ adversarial-game heuristic learning rather than a claim about HL in general.
   \node[game,minimum width=1.55cm] at (4.05,-0.72) {DeepClue};
   \node[game,minimum width=1.55cm] at (6.35,-0.72) {AntWar2};
 \end{tikzpicture}
-\caption{Overview of heuristic learning and \benchname. The upper row is the single-artifact
-revision loop; the lower row lists the contest games used as its adversarial-game setting.
-This is a structural placeholder for the final overview figure.}
+\caption{High-level overview of AHL and \benchname. The upper panel shows one editable
+policy being revised by a coding agent while interacting with different agent policies
+across multiple adversarial environments. The lower panel lists the games in the suite.}
 \label{fig:hl-arena-overview}
 \end{figure}
 
