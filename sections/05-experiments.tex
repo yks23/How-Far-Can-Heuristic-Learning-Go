@@ -20,6 +20,36 @@ the archived human leaderboard and report its rank and percentile. This experime
 measures cross-model performance at a matched budget rather than the benefit of a
 single particularly long run.
 
+\begin{table}[t]
+\centering\scriptsize
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrrrrrrrr}
+\toprule
+Harness / model & Total & AquaWar & Miracle & Rollman & Generals & AntWar & AntWar2 & LostSpace & Go & Chess & Connect4 \\
+\midrule
+\multicolumn{11}{l}{\emph{Each entry: raw Elo / evolved Elo / gain}} \\
+GPT-5.6 & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- \\
+Opus 5 & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- \\
+GLM 5.3 & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- \\
+Kimi K3 & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- \\
+DS v4 & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- \\
+Qwen 3.8 & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- \\
+Longcat 2.0 & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- \\
+\midrule
+CC / GPT-5.6 & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- \\
+CC / Opus 5 & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- \\
+CC / GLM 5.3 & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- \\
+CC / Kimi K3 & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- \\
+CC / DS v4 & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- \\
+CC / Qwen 3.8 & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- \\
+CC / Longcat 2.0 & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- & -- \\
+\bottomrule
+\end{tabular}}
+\caption{Fixed-budget AHL performance across models. Each cell will contain raw Elo,
+evolved Elo, and their gain; the final leaderboard rank and percentile will be added.}
+\label{tab:human-results}
+\end{table}
+
 \subsection{Long-horizon heuristic evolution}
 \label{sec:exp-long}
 
@@ -28,6 +58,14 @@ recording Elo after every revision on a diverse subset of games. The resulting c
 show the initial policy quality, the gains from continued maintenance, the point at
 which AHL reaches the human reference, and whether improvement eventually plateaus.
 We additionally relate the plateau to the maintained program's description length.
+
+\begin{figure}[t]
+\centering
+\fbox{\rule{0pt}{4.2cm}\rule{0.92\linewidth}{0pt}}
+\caption{Placeholder for long-horizon AHL curves: one model over 64--128 revisions
+on eight games, with the human reference shown as a horizontal line.}
+\label{fig:long-horizon}
+\end{figure}
 
 \subsection{AHL versus RL on Go or Chess}
 \label{sec:exp-rl}
@@ -40,6 +78,21 @@ reach a fixed Elo level. This isolates the sample-efficiency regime in which the
 decision-level feedback of an editable program may compensate for the scaling
 advantage of a learned policy.
 
+\begin{table}[t]
+\centering\scriptsize
+\begin{tabular}{lrrrrrr}
+\toprule
+Method & Game & Budget & Final Elo & Elo at budget & Trajectories to target & Crossover \\
+\midrule
+AHL & Go/Chess & -- & -- & -- & -- & -- \\
+Model-based RL & Go/Chess & -- & -- & -- & -- & -- \\
+Policy-gradient RL & Go/Chess & -- & -- & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\caption{Placeholder for the matched-interaction AHL--RL comparison.}
+\label{tab:rl-results}
+\end{table}
+
 \subsection{Ablation: opponent selection and pool size}
 \label{sec:exp-opponent-ablation}
 
@@ -50,6 +103,22 @@ rank-based selection, together with multiple opponent-set sizes. We report final
 Elo gain, and regression rate to determine whether improvements come from the identity
 of the opponents, the diversity of the pool, or simply more matches per round.
 
+\begin{table}[t]
+\centering\scriptsize
+\begin{tabular}{lrrrr}
+\toprule
+Opponent strategy & Opponent count & Final Elo & Elo gain & Regression rate \\
+\midrule
+Random sample & -- & -- & -- & -- \\
+Self-decide & -- & -- & -- & -- \\
+Easy-to-hard & -- & -- & -- & -- \\
+Only rank & -- & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\caption{Placeholder for the opponent-selection and opponent-count ablation.}
+\label{tab:opponent-ablation}
+\end{table}
+
 \subsection{Ablation: the role of history}
 \label{sec:exp-history-ablation}
 
@@ -59,3 +128,17 @@ the current policy and the latest feedback. All other components and budgets rem
 fixed. The difference in final Elo and revision efficiency measures whether sustained
 cross-round context is necessary for maintaining a policy rather than merely producing
 independent edits.
+
+\begin{table}[t]
+\centering\scriptsize
+\begin{tabular}{lrrrr}
+\toprule
+History & Final Elo & Elo gain & Best revision & Regression rate \\
+\midrule
+With history & -- & -- & -- & -- \\
+Without history & -- & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\caption{Placeholder for the history ablation.}
+\label{tab:history-ablation}
+\end{table}
